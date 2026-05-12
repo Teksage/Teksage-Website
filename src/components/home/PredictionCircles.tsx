@@ -1,35 +1,23 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
 
-interface PredictionItem {
-  label: string;
-  href: string;
-  emoji: string;
-  bgColor: string;
-  textColor: string;
-}
-
-const PREDICTION_ITEMS: PredictionItem[] = [
+const PREDICTION_ICONS: { label: string; href: string; src: string }[] = [
   {
-    label: "Weekly",
+    label: HOME_DASHBOARD.weeklyPrediction,
     href: "/predictions/weekly",
-    emoji: "📅",
-    bgColor: "#61CC95",
-    textColor: "#ffffff",
+    src: DASHBOARD_ASSETS.weeklyIcon,
   },
   {
-    label: "Yearly",
+    label: HOME_DASHBOARD.yearlyPrediction,
     href: "/predictions/yearly",
-    emoji: "🌟",
-    bgColor: "#EF8B8B",
-    textColor: "#ffffff",
+    src: DASHBOARD_ASSETS.yearlyIcon,
   },
   {
-    label: "Life",
+    label: HOME_DASHBOARD.lifePrediction,
     href: "/predictions/life",
-    emoji: "✨",
-    bgColor: "#9754F6",
-    textColor: "#ffffff",
+    src: DASHBOARD_ASSETS.lifeIcon,
   },
 ];
 
@@ -38,35 +26,58 @@ interface PredictionCirclesProps {
   className?: string;
 }
 
+function HomeRuleLine() {
+  return (
+    <Image
+      src={DASHBOARD_ASSETS.homeLine}
+      alt=""
+      width={77}
+      height={1}
+      unoptimized
+      className="h-px min-h-px min-w-[2rem] flex-1 object-cover opacity-40"
+    />
+  );
+}
+
 export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesProps) {
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
-      {/* Section header */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-gray-300" />
-        <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-          Explore Other Predictions
+    <div className={cn("flex flex-col", HOME_LAYOUT.exploreSectionGap, className)}>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <HomeRuleLine />
+        <span
+          className={cn(
+            "whitespace-nowrap text-sm font-semibold sm:text-[0.9375rem]",
+            "text-[color:var(--color-brand-panchang)]"
+          )}
+        >
+          {HOME_DASHBOARD.explorePredictionsTitle}
         </span>
-        <div className="flex-1 h-px bg-gray-300" />
+        <HomeRuleLine />
       </div>
 
-      {/* 3 prediction circles */}
-      <div className="flex justify-around">
-        {PREDICTION_ITEMS.map((item) => (
+      <div className="flex justify-between gap-2 px-0 sm:gap-3 sm:px-1">
+        {PREDICTION_ICONS.map((item) => (
           <Link
             key={item.label}
             href={isLoggedIn ? item.href : "/login"}
-            className="flex flex-col items-center gap-2 group"
+            className="flex max-w-[33%] flex-1 flex-col items-center gap-2"
           >
             <div
-              className="w-20 h-20 rounded-full flex items-center justify-center shadow-md transition-transform group-hover:scale-105"
-              style={{ backgroundColor: item.bgColor }}
+              className={cn(
+                "flex w-full max-w-[5.75rem] justify-center drop-shadow-[0_6px_20px_rgba(0,0,0,0.12)]",
+                "transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              )}
             >
-              <span className="text-3xl" role="img" aria-label={item.label}>
-                {item.emoji}
-              </span>
+              <Image
+                src={item.src}
+                alt=""
+                width={95}
+                height={94}
+                unoptimized
+                className="h-[5.5rem] w-auto max-w-full object-contain"
+              />
             </div>
-            <span className="text-xs font-semibold text-gray-600">
+            <span className="text-center text-xs font-semibold leading-snug text-neutral-700 sm:text-[0.8125rem]">
               {item.label}
             </span>
           </Link>

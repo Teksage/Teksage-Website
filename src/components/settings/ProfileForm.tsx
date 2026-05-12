@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ProfileField } from "@/components/settings/ProfileField";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Loader } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import type { UserProfile } from "@/types";
 
@@ -77,7 +77,11 @@ export function ProfileForm({ user, onSave, isSaving, className }: ProfileFormPr
               disabled={isSaving}
               className="rounded-full bg-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary)]/90 text-white"
             >
-              {isSaving ? <LoadingSpinner size="sm" className="border-t-white" /> : "Save"}
+              {isSaving ? (
+                <Loader variant="spinner" size="sm" className="border-t-white" />
+              ) : (
+                "Save"
+              )}
             </Button>
           </div>
         )}

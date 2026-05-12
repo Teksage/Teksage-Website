@@ -1,48 +1,84 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
 
 interface ChatBannerProps {
   isLoggedIn: boolean;
   className?: string;
 }
 
+/**
+ * Mirrors Flutter `homePage.dart` AI chat strip: `homeBanner2` + `bottomBanner.png`
+ * (`BoxFit.cover`), then `Row` + `spaceEvenly`: title | `bannerElement` | white pill
+ * (`Chat Now` + `rightArrow`).
+ */
 export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
   const href = isLoggedIn ? "/chat" : "/login";
 
   return (
-    <Link href={href} className={cn("block group", className)}>
+    <Link href={href} className={cn("group block", className)}>
       <div
-        className="flex items-center justify-between rounded-2xl px-5 h-[90px]"
-        style={{ backgroundColor: "#100C0D" }}
+        className={cn(
+          "relative isolate min-h-[6.25rem] w-full min-w-0 overflow-hidden sm:min-h-[6.5rem]",
+          HOME_LAYOUT.homeCardRadius,
+          "bg-[var(--color-brand-banner-dark)] shadow-md"
+        )}
       >
-        <p className="text-base font-bold text-white flex-1">
-          AI Astro{"\n"}Chat Assistant
-        </p>
+        <Image
+          src={DASHBOARD_ASSETS.chatStripBackground}
+          alt=""
+          width={960}
+          height={320}
+          sizes="100vw"
+          unoptimized
+          className={cn(
+            "pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+          )}
+        />
 
-        {/* Decorative element */}
-        <div className="flex items-center justify-center w-10 h-10 shrink-0">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" fill="#A2C734" opacity="0.3" />
-            <path
-              d="M8 12h8M12 8l4 4-4 4"
-              stroke="#A2C734"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-
-        {/* CTA button */}
         <div
           className={cn(
-            "ml-4 px-4 py-2 rounded-full bg-white flex items-center gap-1 shrink-0 transition-opacity group-hover:opacity-90"
+            "relative z-10 flex min-h-[6.25rem] w-full items-center justify-evenly gap-2 px-2 py-2 sm:min-h-[6.5rem] sm:gap-3 sm:px-3 sm:py-3"
           )}
         >
-          <span className="text-xs font-semibold text-[#0E0D0C]">Chat Now</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-            <path d="M9 18l6-6-6-6" stroke="#0E0D0C" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
+          <p
+            className={cn(
+              "min-w-0 shrink whitespace-pre-line text-left text-sm font-bold leading-snug text-white sm:text-base"
+            )}
+          >
+            {HOME_DASHBOARD.aiVoiceChatTitle}
+          </p>
+
+          <Image
+            src={DASHBOARD_ASSETS.chatBannerElement}
+            alt=""
+            width={38}
+            height={38}
+            unoptimized
+            className="pointer-events-none size-[2.125rem] shrink-0 sm:size-[2.375rem]"
+            aria-hidden
+          />
+
+          <div
+            className={cn(
+              "flex h-9 shrink-0 items-center justify-evenly gap-1.5 rounded-full bg-white px-3 py-1.5 sm:h-10 sm:min-w-[8.75rem] sm:gap-2 sm:px-4",
+              "transition-opacity group-hover:opacity-95"
+            )}
+          >
+            <span className="text-[11px] font-semibold leading-none text-[var(--color-brand-banner-font)] sm:text-xs">
+              {HOME_DASHBOARD.chatNow}
+            </span>
+            <Image
+              src={DASHBOARD_ASSETS.chatStripArrow}
+              alt=""
+              width={14}
+              height={14}
+              unoptimized
+              className="shrink-0"
+              aria-hidden
+            />
+          </div>
         </div>
       </div>
     </Link>

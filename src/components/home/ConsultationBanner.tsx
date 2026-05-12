@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
 
 interface ConsultationBannerProps {
   isLoggedIn: boolean;
@@ -7,13 +9,21 @@ interface ConsultationBannerProps {
   className?: string;
 }
 
+/**
+ * Consultation banner — `homeBannerDeco.png` on the **left** behind the portrait
+ * (design ref image 2); solid `homeBanner` + border like Flutter `homePage.dart` Stack.
+ */
 export function ConsultationBanner({
   isLoggedIn,
   isAstrologer = false,
   className,
 }: ConsultationBannerProps) {
-  const buttonLabel = isAstrologer ? "My Profile" : "Book Now";
-  const title = isAstrologer ? "Astrologer" : "Astrologer Consultation";
+  const buttonLabel = isAstrologer
+    ? HOME_DASHBOARD.myProfile
+    : HOME_DASHBOARD.bookNow;
+  const titleLines = isAstrologer
+    ? HOME_DASHBOARD.astrologerShort
+    : HOME_DASHBOARD.astrologerConsultationLines;
   const href = isLoggedIn
     ? isAstrologer
       ? "/consultation/astrologer"
@@ -23,49 +33,67 @@ export function ConsultationBanner({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-between rounded-2xl overflow-hidden px-4 py-3",
-        "border-2 h-[90px]",
+        "relative isolate min-h-[6.25rem] w-full min-w-0 overflow-hidden sm:min-h-[6.5rem]",
+        HOME_LAYOUT.homeCardRadius,
+        "border-2 border-[var(--color-brand-banner-border)]",
+        "bg-[var(--color-brand-banner)] shadow-md",
         className
       )}
-      style={{
-        borderColor: "#C8EF54",
-        backgroundColor: "#A2C734",
-      }}
     >
-      {/* Decorative circle (mirrors Flutter homeBanDeco) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute -right-8 -top-8 w-40 h-40 rounded-full opacity-20"
-          style={{ backgroundColor: "#ffffff" }}
-        />
-      </div>
-
-      {/* Avatar placeholder */}
-      <div className="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center shrink-0">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="4" fill="white" />
-          <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" fill="white" />
-        </svg>
-      </div>
-
-      {/* Title */}
-      <p
-        className="text-sm font-bold flex-1 mx-3 leading-tight"
-        style={{ color: "#3a3b00" }}
-      >
-        {title}
-      </p>
-
-      {/* CTA button */}
-      <Link
-        href={href}
+      <Image
+        src={DASHBOARD_ASSETS.bannerDeco}
+        alt=""
+        width={800}
+        height={400}
+        sizes="100vw"
+        unoptimized
         className={cn(
-          "px-4 py-2 rounded-full bg-white text-xs font-semibold shrink-0 transition-opacity hover:opacity-90",
-          "text-[var(--color-brand-banner-dark)]"
+          "pointer-events-none absolute inset-0 z-0 h-full w-full",
+          "object-contain object-left",
+          "opacity-[0.55] sm:opacity-[0.62]"
+        )}
+      />
+
+      <div
+        className={cn(
+          "relative z-10 flex min-h-[6.25rem] w-full items-center justify-evenly gap-1 px-1 py-2 sm:min-h-[6.5rem] sm:gap-2 sm:px-2 sm:py-2.5"
         )}
       >
-        {buttonLabel}
-      </Link>
+        <div
+          className={cn(
+            "relative z-[1] flex shrink-0 justify-center self-end",
+            "pt-2.5 pl-2 pb-0.5 sm:pt-3 sm:pl-3 sm:pb-1"
+          )}
+        >
+          <Image
+            src={DASHBOARD_ASSETS.consultationAstrologer}
+            alt="Astrologer"
+            width={120}
+            height={160}
+            unoptimized
+            className="h-auto max-h-[5.25rem] w-auto max-w-[5.5rem] object-contain object-bottom sm:max-h-[5.5rem] sm:max-w-[6rem]"
+          />
+        </div>
+
+        <p
+          className={cn(
+            "min-w-0 max-w-[11rem] flex-none whitespace-pre-line text-left text-[0.8125rem] font-bold leading-snug sm:max-w-none sm:flex-1 sm:text-[0.95rem]",
+            "text-[var(--color-brand-consultation-heading)]"
+          )}
+        >
+          {titleLines}
+        </p>
+
+        <Link
+          href={href}
+          className={cn(
+            "shrink-0 rounded-full bg-white px-4 py-2.5 text-center text-xs font-semibold sm:px-5 sm:py-3",
+            "text-[var(--color-brand-banner-dark)] shadow-sm transition-opacity hover:opacity-90"
+          )}
+        >
+          {buttonLabel}
+        </Link>
+      </div>
     </div>
   );
 }

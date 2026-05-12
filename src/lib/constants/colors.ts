@@ -16,6 +16,13 @@ export const COLORS = {
   notEditable: "#F6F6F6",
   lightGrey: "#ECECEC",
 
+  // Home screen (design ref: mint behind dashboard + AI chat strip)
+  homeScreenMint: "#C6E7B9",
+  consultationHeading: "#3A3B00",
+
+  /** AI Voice chat — sparkle tile + CTA arrow (design ref, not primary CTA green). */
+  aiChatIconGreen: "#2E8B1E",
+
   // Home banners
   homeBanner: "#A2C734",
   homeBanner2: "#100C0D",

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/auth/OtpInput";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Loader } from "@/components/common/Loader";
 import { BrandLoginLogo } from "@/components/common/BrandLoginLogo";
 import { LoginBackButton } from "@/components/auth/LoginChrome";
 import { useAuthStore } from "@/store/auth.store";
@@ -103,7 +103,7 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
           )}
         >
           {isLoading ? (
-            <LoadingSpinner size="sm" className="border-t-white" />
+            <Loader variant="spinner" size="sm" className="border-t-white" />
           ) : (
             "Verify & Login"
           )}

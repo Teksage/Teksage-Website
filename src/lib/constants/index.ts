@@ -3,6 +3,8 @@ export * from "./colors";
 export * from "./typography";
 export * from "./api";
 export * from "./assets";
+export * from "./home-dashboard";
+export * from "./home-layout";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";

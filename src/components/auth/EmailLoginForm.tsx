@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Loader } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { http } from "@/lib/services/http";
@@ -82,7 +82,7 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
         )}
       >
         {isLoading ? (
-          <LoadingSpinner size="sm" className="border-t-white" />
+          <Loader variant="spinner" size="sm" className="border-t-white" />
         ) : (
           "Continue"
         )}

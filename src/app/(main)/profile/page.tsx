@@ -3,7 +3,7 @@
 import { AppHeader } from "@/components/common/AppHeader";
 import { ProfileAvatar } from "@/components/settings/ProfileAvatar";
 import { ProfileForm } from "@/components/settings/ProfileForm";
-import { FullPageLoader } from "@/components/common/LoadingSpinner";
+import { FullPageLoader } from "@/components/common/Loader";
 import { EmptyState } from "@/components/common/EmptyState";
 import { useProfile } from "@/hooks/useProfile";
 import { useRouter } from "next/navigation";
