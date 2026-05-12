@@ -42,3 +42,20 @@ export const DASHBOARD_ASSETS = {
   navSettingsOn: flutterSvg("selectSetting.svg"),
   navSettingsOff: flutterSvg("unSelectSetting.svg"),
 } as const;
+
+/** Settings menu — same SVGs as Flutter `settings_page.dart` / `imageConstant.dart`. */
+export const SETTINGS_ASSETS = {
+  profile: flutterSvg("profile.svg"),
+  pushNotifications: flutterSvg("notifySetting.svg"),
+  language: flutterSvg("languageIcon.svg"),
+  subscription: flutterSvg("subscription.svg"),
+  terms: flutterSvg("terms.svg"),
+  privacy: flutterSvg("privacy.svg"),
+  support: flutterSvg("support.svg"),
+  faq: flutterSvg("faq.svg"),
+  rating: flutterSvg("rating.svg"),
+  deleteAccount: flutterSvg("deleteAcc.svg"),
+  logout: flutterSvg("logout.svg"),
+} as const;
+
+export type SettingsAssetKey = keyof typeof SETTINGS_ASSETS;

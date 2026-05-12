@@ -29,18 +29,48 @@ function assertValidHttpUrl(value: string): string {
   return stripTrailingSlash(value);
 }
 
+function misconfiguredNextDevServerUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    return u.port === "3000" && (u.hostname === "localhost" || u.hostname === "127.0.0.1");
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Backend API origin for browser-side requests (axios).
- * Set in `.env.local` as `NEXT_PUBLIC_API_BASE_URL`.
+ *
+ * - Set `NEXT_PUBLIC_API_BASE_URL` to your FastAPI origin (same idea as Flutter `ApiEndpoint.mainUrl`),
+ *   e.g. `http://127.0.0.1:8000` or `http://10.x.x.x:8000` on a LAN device.
+ * - Set `NEXT_PUBLIC_API_BASE_URL=same-origin` (or rely on the development default below) so axios calls
+ *   `/api/...` on the Next.js host; `next.config.ts` rewrites proxy those to FastAPI (`BACKEND_PROXY_TARGET`).
  */
 function readPublicApiBaseUrl(): string {
   const raw = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+
+  if (raw === "same-origin") {
+    return "";
+  }
+
   if (!raw) {
+    if (process.env.NODE_ENV === "development") {
+      return "";
+    }
     throw new Error(
-      "[env] NEXT_PUBLIC_API_BASE_URL is missing. Copy `.env.example` to `.env.local` in the project root, set your backend base URL (e.g. http://127.0.0.1:8000), restart `npm run dev`. On deploy, set the same variable in your hosting provider — never commit `.env.local`."
+      "[env] NEXT_PUBLIC_API_BASE_URL is missing. Copy `.env.example` to `.env.local`, set your backend base URL (e.g. http://127.0.0.1:8000), or use NEXT_PUBLIC_API_BASE_URL=same-origin with BACKEND_PROXY_TARGET for Next.js API rewrites. Restart `npm run dev`."
     );
   }
-  return assertValidHttpUrl(raw);
+
+  const normalized = assertValidHttpUrl(raw);
+
+  if (misconfiguredNextDevServerUrl(normalized)) {
+    throw new Error(
+      `[env] NEXT_PUBLIC_API_BASE_URL points at the Next.js dev server (port 3000). Point it at FastAPI (e.g. http://127.0.0.1:8000), matching Flutter ApiEndpoint.mainUrl + port 8000. Or use NEXT_PUBLIC_API_BASE_URL=same-origin so /api/* is proxied (see next.config.ts). Got: ${normalized}`
+    );
+  }
+
+  return normalized;
 }
 
 let cachedPublicApiBaseUrl: string | null = null;

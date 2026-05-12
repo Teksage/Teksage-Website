@@ -10,6 +10,9 @@ interface ProfileFieldProps {
   placeholder?: string;
   isEditable?: boolean;
   isReadOnly?: boolean;
+  required?: boolean;
+  /** Flutter-style grey tiles + sentence-case labels. */
+  appearance?: "default" | "profile";
   hasError?: boolean;
   errorMessage?: string;
   className?: string;
@@ -23,31 +26,50 @@ export function ProfileField({
   placeholder,
   isEditable = true,
   isReadOnly = false,
+  required = false,
+  appearance = "default",
   hasError = false,
   errorMessage,
   className,
 }: ProfileFieldProps) {
   const disabled = isReadOnly || !isEditable;
+  const isProfile = appearance === "profile";
 
   return (
-    <div className={cn("flex flex-col gap-1", className)}>
-      <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {label}
-      </Label>
+    <div className={cn("flex flex-col gap-1.5", className)}>
+      {label ? (
+        <Label
+          className={cn(
+            "font-medium text-[var(--color-brand-black)]",
+            isProfile ? "text-sm" : "text-xs uppercase tracking-wide text-gray-500"
+          )}
+        >
+          {label}
+          {required ? (
+            <span className="text-[var(--color-brand-error)]">*</span>
+          ) : null}
+        </Label>
+      ) : null}
       <Input
         type={type}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder ?? label}
         disabled={disabled}
+        readOnly={disabled}
         className={cn(
-          "h-12 rounded-xl text-sm font-semibold px-4 transition-colors",
+          "h-12 rounded-xl px-4 text-sm font-medium transition-colors",
           "focus-visible:ring-0",
+          isProfile && "border border-black/15 bg-neutral-100",
           disabled
-            ? "bg-[var(--color-brand-bg)] border-transparent text-gray-500 cursor-not-allowed"
+            ? isProfile
+              ? "cursor-not-allowed border-black/10 bg-neutral-100 text-neutral-800"
+              : "cursor-not-allowed border-transparent bg-[var(--color-brand-bg)] text-gray-500"
             : hasError
-            ? "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]"
-            : "border-black/20 focus-visible:border-[var(--color-brand-primary)]"
+              ? "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]"
+              : isProfile
+                ? "border-black/15 focus-visible:border-[var(--color-brand-primary)]"
+                : "border-black/20 focus-visible:border-[var(--color-brand-primary)]"
         )}
       />
       {hasError && errorMessage && (

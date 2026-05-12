@@ -157,3 +157,19 @@
     @apply font-sans;
   }
 }
+
+/**
+ * Settings shell — visually matches Flutter `settings_page.dart` body (mint wash).
+ * Stops are opaque so the parent `(main)` layout gray (`--color-brand-bg`) does not
+ * bleed through semi-transparent whites (which made green disappear).
+ */
+@layer utilities {
+  .settings-shell-gradient {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-home-screen-mint) 88%, white) 0%,
+      color-mix(in srgb, var(--color-home-screen-mint) 45%, white) 42%,
+      rgb(255 255 255) 88%
+    );
+  }
+}

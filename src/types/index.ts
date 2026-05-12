@@ -25,11 +25,22 @@ export interface AuthResponse {
 export interface UserProfile {
   id: string;
   name: string;
+  /** When present, from API `first_name` / `last_name` (Flutter separate fields). */
+  firstName?: string;
+  lastName?: string;
   email?: string;
   mobile?: string;
+  countryCode?: string;
+  isMobileVerified?: boolean;
   dateOfBirth?: string;
   placeOfBirth?: string;
   timeOfBirth?: string;
+  /** Maps API `chat_languages`. */
+  chatLanguages?: string;
+  /** Maps API `preferred_location`. */
+  preferredLocation?: string;
+  rashi?: string;
+  nakshatra?: string;
   gender?: "male" | "female" | "other";
   language?: string;
   avatarUrl?: string;

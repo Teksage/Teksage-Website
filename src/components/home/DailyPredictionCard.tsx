@@ -15,6 +15,8 @@ interface DailyPredictionCardProps {
   data?: DailyPredictionData;
   isLoading?: boolean;
   isLoggedIn: boolean;
+  /** Set when `/api/prediction/daily` or `/api/notifications` failed (home dashboard). */
+  fetchError?: string | null;
   currentDate: string;
   className?: string;
 }
@@ -23,6 +25,7 @@ export function DailyPredictionCard({
   data,
   isLoading,
   isLoggedIn,
+  fetchError,
   currentDate,
   className,
 }: DailyPredictionCardProps) {
@@ -68,6 +71,10 @@ export function DailyPredictionCard({
               <p className="py-1 text-center text-xs font-semibold text-[var(--color-brand-primary)]">
                 {HOME_DASHBOARD.clickToView}
               </p>
+            ) : fetchError ? (
+              <p className="py-1 text-center text-xs font-semibold text-neutral-600">
+                {HOME_DASHBOARD.dailyPredictionUnavailable}
+              </p>
             ) : data ? (
               <div className="flex items-stretch justify-around">
                 <div className="flex flex-1 flex-col items-center justify-center text-center">
@@ -89,8 +96,8 @@ export function DailyPredictionCard({
                 </div>
               </div>
             ) : (
-              <p className="py-1 text-center text-xs text-neutral-400">
-                {HOME_DASHBOARD.loadingEllipsis}
+              <p className="py-1 text-center text-xs font-semibold text-[var(--color-brand-primary)]">
+                {HOME_DASHBOARD.clickToView}
               </p>
             )}
           </div>

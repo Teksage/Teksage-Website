@@ -18,6 +18,8 @@ export const HOME_DASHBOARD = {
   tharaBala: "Thara Bala",
   chandraBala: "Chandra Bala",
   clickToView: "Click to view",
+  /** Shown when dashboard APIs fail — avoids looking stuck on “Loading …”. */
+  dailyPredictionUnavailable: "Couldn't load summary. Tap to open.",
   loadingEllipsis: "Loading …",
   aiVoiceChatTitle: "AI Voice Astro Chat",
   chatNow: "Chat Now",

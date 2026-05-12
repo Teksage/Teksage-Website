@@ -12,10 +12,11 @@ export const API_ENDPOINTS = {
   refreshToken: "/api/auth/refresh",
   logout: "/api/auth/logout",
 
-  // User / Profile
-  profile: "/api/user/profile",
-  updateProfile: "/api/user/profile/update",
-  deleteAccount: "/api/user/delete",
+  // User / Profile — FastAPI `profile.router` uses prefix `/auth` (`api/routers.py`)
+  profile: "/api/auth/profile",
+  updateProfile: "/api/auth/update-profile",
+  deleteAccountRequest: "/api/auth/delete/request",
+  deleteAccountConfirm: "/api/auth/delete/confirm",
 
   // Home / Dashboard
   dashboard: "/api/home/dashboard",

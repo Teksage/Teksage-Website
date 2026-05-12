@@ -12,8 +12,14 @@ import { HOME_LAYOUT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
-  const { user, isAuthenticated, dailyPrediction, unreadCount, isLoading } =
-    useDashboard();
+  const {
+    user,
+    isAuthenticated,
+    dailyPrediction,
+    unreadCount,
+    isLoading,
+    error: dashboardError,
+  } = useDashboard();
 
   const greeting = user?.name ? `Good day ${user.name}!` : "Good day!";
 
@@ -45,6 +51,7 @@ export default function HomePage() {
             data={dailyPrediction ?? undefined}
             isLoading={isLoading}
             isLoggedIn={isAuthenticated}
+            fetchError={dashboardError}
             currentDate={formatHomeDashboardDate()}
           />
         </div>

@@ -18,6 +18,10 @@ http.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz) {
+      config.headers["X-Timezone"] = tz;
+    }
   }
   return config;
 });

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { APP_NAME } from "@/lib/constants";
 
@@ -9,6 +10,10 @@ interface AppHeaderProps {
   showNotification?: boolean;
   showBack?: boolean;
   onBackClick?: () => void;
+  /** Match Flutter settings AppBar: translucent bar over gradient (no solid white strip). */
+  blend?: boolean;
+  /** e.g. Flutter profile AppBar trailing `Edit`. */
+  action?: ReactNode;
   className?: string;
 }
 
@@ -52,38 +57,50 @@ export function AppHeader({
   showNotification = false,
   showBack = false,
   onBackClick,
+  blend = false,
+  action,
   className,
 }: AppHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 bg-white border-b border-gray-100",
-        "px-4 py-3 flex items-center justify-between",
+        "sticky top-0 z-40",
+        "relative flex min-h-[52px] items-center justify-center px-4 py-3",
+        blend
+          ? "border-transparent bg-white/50 backdrop-blur-[2px]"
+          : "border-b border-gray-100 bg-white",
         className
       )}
     >
-      <div className="flex items-center gap-3">
-        {showBack && (
+      <div className="absolute left-4 top-1/2 z-10 flex -translate-y-1/2 items-center">
+        {showBack ? (
           <button
+            type="button"
             onClick={onBackClick}
-            className="p-1 rounded-full hover:bg-gray-100 transition-colors text-gray-700"
+            className="rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-100"
             aria-label="Go back"
           >
             <BackIcon />
           </button>
-        )}
-        <h1 className="text-lg font-bold text-gray-900">{title}</h1>
+        ) : null}
       </div>
 
-      {showNotification && (
-        <Link
-          href="/notifications"
-          className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600"
-          aria-label="Notifications"
-        >
-          <BellIcon />
-        </Link>
-      )}
+      <h1 className="max-w-[min(100%,18rem)] truncate px-10 text-center text-lg font-bold text-gray-900 sm:max-w-[min(100%,22rem)]">
+        {title}
+      </h1>
+
+      <div className="absolute right-4 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2">
+        {action}
+        {showNotification ? (
+          <Link
+            href="/notifications"
+            className="rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100"
+            aria-label="Notifications"
+          >
+            <BellIcon />
+          </Link>
+        ) : null}
+      </div>
     </header>
   );
 }

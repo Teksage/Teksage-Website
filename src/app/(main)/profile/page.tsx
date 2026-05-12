@@ -1,24 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
-import { ProfileAvatar } from "@/components/settings/ProfileAvatar";
-import { ProfileForm } from "@/components/settings/ProfileForm";
+import { ProfileDetailsForm } from "@/components/settings/ProfileDetailsForm";
 import { FullPageLoader } from "@/components/common/Loader";
 import { EmptyState } from "@/components/common/EmptyState";
 import { useProfile } from "@/hooks/useProfile";
 import { useRouter } from "next/navigation";
+import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 
 export default function ProfilePage() {
   const router = useRouter();
   const { user, isLoading, isSaving, error, saveProfile } = useProfile();
+  const [isEditing, setIsEditing] = useState(false);
 
   if (isLoading) return <FullPageLoader />;
 
   if (!user) {
     return (
-      <div className="flex flex-col min-h-screen bg-[var(--color-brand-bg)]">
+      <div className="flex min-h-dvh flex-col bg-white">
         <AppHeader
-          title="Profile"
+          title={PROFILE_DETAILS.title}
           showBack
           onBackClick={() => router.back()}
         />
@@ -31,32 +33,38 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[var(--color-brand-bg)]">
+    <div className="flex min-h-dvh flex-col bg-white">
       <AppHeader
-        title="Profile Details"
+        title={PROFILE_DETAILS.title}
         showBack
         onBackClick={() => router.back()}
+        action={
+          !isEditing ? (
+            <button
+              type="button"
+              onClick={() => setIsEditing(true)}
+              className="mr-1 px-2 py-2 text-lg font-semibold text-[var(--color-brand-primary)]"
+            >
+              {PROFILE_DETAILS.edit}
+            </button>
+          ) : null
+        }
       />
 
-      <main className="flex-1 max-w-lg mx-auto w-full px-5 pb-10">
-        {/* Avatar section */}
-        <div className="bg-white rounded-2xl shadow-sm mb-4">
-          <ProfileAvatar
-            name={user.name}
-            avatarUrl={user.avatarUrl}
-            isPremium={user.isPremium}
-          />
-        </div>
-
-        {/* Form section */}
-        <div className="bg-white rounded-2xl shadow-sm px-5 py-6">
-          {error && (
-            <p className="text-sm font-semibold text-center text-[var(--color-brand-error)] mb-4">
-              {error}
-            </p>
-          )}
-          <ProfileForm user={user} onSave={saveProfile} isSaving={isSaving} />
-        </div>
+      <main className="mx-auto w-full max-w-lg flex-1 px-5 pb-28 pt-5">
+        {error && (
+          <p className="mb-4 text-center text-sm font-semibold text-[var(--color-brand-error)]">
+            {error}
+          </p>
+        )}
+        <ProfileDetailsForm
+          key={`${user.id}-${user.email ?? ""}-${user.mobile ?? ""}`}
+          user={user}
+          isEditing={isEditing}
+          onSave={saveProfile}
+          isSaving={isSaving}
+          onDoneEditing={() => setIsEditing(false)}
+        />
       </main>
     </div>
   );
