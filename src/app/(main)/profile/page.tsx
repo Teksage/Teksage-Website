@@ -11,7 +11,8 @@ import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, isLoading, isSaving, error, saveProfile } = useProfile();
+  const { user, isLoading, isSaving, error, saveProfile, refetchProfile } =
+    useProfile();
   const [isEditing, setIsEditing] = useState(false);
 
   if (isLoading) return <FullPageLoader />;
@@ -64,6 +65,7 @@ export default function ProfilePage() {
           onSave={saveProfile}
           isSaving={isSaving}
           onDoneEditing={() => setIsEditing(false)}
+          onProfileRefresh={refetchProfile}
         />
       </main>
     </div>

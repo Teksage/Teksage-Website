@@ -50,5 +50,15 @@ export function useProfile() {
     }
   }
 
-  return { user, isLoading, isSaving, error, saveProfile };
+  async function refetchProfile() {
+    setError(null);
+    try {
+      const data = await fetchProfile();
+      updateUser(data);
+    } catch {
+      setError("Failed to load profile.");
+    }
+  }
+
+  return { user, isLoading, isSaving, error, saveProfile, refetchProfile };
 }

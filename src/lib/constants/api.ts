@@ -9,6 +9,10 @@ export const API_ENDPOINTS = {
   sendOtp: "/api/auth/otp/request",
   /** `POST` body: `VerifyOTPSchema` — `email` or `mobile_number` + `country_code`, `otp` */
   verifyOtp: "/api/auth/otp/login-verify",
+  /** Authenticated user — send OTP to email or mobile (`LoginSchema`). Matches Flutter `profileVerify`. */
+  sendAuthenticatedOtp: "/api/auth/otp/send-authenticated",
+  /** Authenticated user — verify OTP (`VerifyOTPSchema`). Query `update` matches Flutter `profileVerifyOtp`. */
+  verifyAuthenticatedOtp: "/api/auth/otp/verify",
   refreshToken: "/api/auth/refresh",
   logout: "/api/auth/logout",
 

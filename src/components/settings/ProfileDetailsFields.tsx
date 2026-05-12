@@ -33,6 +33,7 @@ interface ProfileDetailsFieldsProps {
   isEditing: boolean;
   isSaving: boolean;
   onSave: () => void;
+  onProfileRefresh?: () => void | Promise<void>;
 }
 
 export function ProfileDetailsFields({
@@ -42,6 +43,7 @@ export function ProfileDetailsFields({
   isEditing,
   isSaving,
   onSave,
+  onProfileRefresh,
 }: ProfileDetailsFieldsProps) {
   return (
     <div className="flex flex-col gap-3.5">
@@ -80,6 +82,7 @@ export function ProfileDetailsFields({
         onMobileChange={(v) => setField("mobile", v)}
         isMobileVerified={user.isMobileVerified}
         isEditing={isEditing}
+        onVerificationSuccess={onProfileRefresh}
       />
 
       <div className="flex flex-col gap-1.5">

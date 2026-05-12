@@ -41,6 +41,7 @@ interface ProfileDetailsFormProps {
   onSave: (updates: Partial<UserProfile>) => Promise<boolean>;
   isSaving: boolean;
   onDoneEditing: () => void;
+  onProfileRefresh?: () => void | Promise<void>;
   className?: string;
 }
 
@@ -50,6 +51,7 @@ export function ProfileDetailsForm({
   onSave,
   isSaving,
   onDoneEditing,
+  onProfileRefresh,
   className,
 }: ProfileDetailsFormProps) {
   const [form, setForm] = useState<ProfileDetailsFormState>(() =>
@@ -90,6 +92,7 @@ export function ProfileDetailsForm({
         isEditing={isEditing}
         isSaving={isSaving}
         onSave={handleSave}
+        onProfileRefresh={onProfileRefresh}
       />
     </div>
   );

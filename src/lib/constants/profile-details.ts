@@ -19,6 +19,10 @@ export const PROFILE_DETAILS = {
   save: "Save",
   edit: "Edit",
   discard: "Discard",
+  otpHint: "We sent a 6-digit code to your mobile.",
+  otpLabel: "OTP",
+  confirmOtp: "Confirm",
+  resentPrompt: "Did not receive a code? Tap Verify again.",
 } as const;
 
 /** Default chat options — align with backend `VALID_LANGUAGES` / Flutter. */
