@@ -1,0 +1,24 @@
+---
+alwaysApply: true
+---
+
+# Teksage Website — Global Development Rules
+
+- Always understand existing code structure before writing new code.
+- Check for reusable components/functions before creating new ones (DRY principle).
+- No file may exceed 200 lines; split into smaller focused files if needed.
+- Never hardcode colors — always import from `src/lib/constants/colors.ts`.
+- Never hardcode public asset paths — import from `src/lib/constants/assets.ts` (`PUBLIC_ASSETS`).
+- Never hardcode string/number constants — import from `src/lib/constants/index.ts`.
+- Never use inline `style={{}}` — always use `className` with Tailwind utilities.
+- Use `cn()` from `src/lib/utils.ts` for conditional/dynamic class composition.
+- Use shadcn/ui for all UI primitives (Button, Input, Dialog, Sheet, etc.).
+- Shared primitives (shadcn wrappers) → `src/components/ui/`.
+- Shared app-specific components → `src/components/common/`.
+- Feature-specific components → `src/components/<feature>/`.
+- Backend API base URL → `NEXT_PUBLIC_API_BASE_URL` in `.env.local`, read via `src/lib/env.ts` (`getPublicApiBaseUrl()`). Never hardcode hosts in code.
+- API path segments only → `src/lib/constants/api.ts` (`API_ENDPOINTS`).
+- Custom data-fetching hooks → `src/hooks/use<Feature>.ts`.
+- Typed request/response interfaces → `src/types/index.ts`.
+- Mirror Flutter widget names in component names for traceability (e.g. `HomeBanner` mirrors Flutter `HomeBannerWidget`).
+- Mobile-first responsive design — the site must feel native on mobile (mirrors Flutter app).
