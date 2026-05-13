@@ -35,7 +35,8 @@ export function DailyPredictionCard({
     <Link href={href} className={cn("group block flex-1", className)}>
       <div
         className={cn(
-          "relative h-[11rem] overflow-hidden",
+          "relative overflow-hidden",
+          HOME_LAYOUT.featureCardHeight,
           HOME_LAYOUT.homeCardRadius,
           "border border-black/[0.06]",
           "bg-[linear-gradient(180deg,var(--color-daily-green-from)_0%,var(--color-daily-green-to)_100%)]"

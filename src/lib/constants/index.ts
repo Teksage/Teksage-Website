@@ -5,6 +5,7 @@ export * from "./api";
 export * from "./assets";
 export * from "./home-dashboard";
 export * from "./home-layout";
+export * from "./main-nav";
 export * from "./settings-screen";
 
 // App-wide string/number constants

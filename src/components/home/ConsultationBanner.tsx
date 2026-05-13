@@ -33,7 +33,8 @@ export function ConsultationBanner({
   return (
     <div
       className={cn(
-        "relative isolate min-h-[6.25rem] w-full min-w-0 overflow-hidden sm:min-h-[6.5rem]",
+        "relative isolate w-full min-w-0 overflow-hidden",
+        HOME_LAYOUT.homeBannerStripMinH,
         HOME_LAYOUT.homeCardRadius,
         "border-2 border-[var(--color-brand-banner-border)]",
         "bg-[var(--color-brand-banner)] shadow-md",
@@ -56,7 +57,8 @@ export function ConsultationBanner({
 
       <div
         className={cn(
-          "relative z-10 flex min-h-[6.25rem] w-full items-center justify-evenly gap-1 px-1 py-2 sm:min-h-[6.5rem] sm:gap-2 sm:px-2 sm:py-2.5"
+          "relative z-10 flex w-full items-center justify-evenly gap-1 px-1 py-2 sm:gap-2 sm:px-2 sm:py-2.5",
+          HOME_LAYOUT.homeBannerStripMinH,
         )}
       >
         <div
@@ -71,13 +73,13 @@ export function ConsultationBanner({
             width={120}
             height={160}
             unoptimized
-            className="h-auto max-h-[5.25rem] w-auto max-w-[5.5rem] object-contain object-bottom sm:max-h-[5.5rem] sm:max-w-[6rem]"
+            className="h-auto max-h-[5.25rem] w-auto max-w-[5.5rem] object-contain object-bottom sm:max-h-[5.5rem] sm:max-w-[6rem] lg:max-h-[6rem] lg:max-w-[6.75rem]"
           />
         </div>
 
         <p
           className={cn(
-            "min-w-0 max-w-[11rem] flex-none whitespace-pre-line text-left text-[0.8125rem] font-bold leading-snug sm:max-w-none sm:flex-1 sm:text-[0.95rem]",
+            "min-w-0 max-w-[11rem] flex-none whitespace-pre-line text-left text-[0.8125rem] font-bold leading-snug sm:max-w-none sm:flex-1 sm:text-[0.95rem] lg:text-base",
             "text-[var(--color-brand-consultation-heading)]"
           )}
         >

@@ -24,7 +24,8 @@ export function MatchMakingCard({
     <Link href={href} className={cn("group block flex-1", className)}>
       <div
         className={cn(
-          "relative flex h-[11rem] flex-col overflow-hidden bg-white",
+          "relative flex flex-col overflow-hidden bg-white",
+          HOME_LAYOUT.featureCardHeight,
           HOME_LAYOUT.homeCardRadius,
           "shadow-[0_4px_20px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.05]"
         )}

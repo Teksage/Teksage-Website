@@ -18,6 +18,10 @@ export const COLORS = {
 
   // Home screen (design ref: mint behind dashboard + AI chat strip)
   homeScreenMint: "#C6E7B9",
+  /** Greeting + “Explore Other Predictions” title (ref: black, not panchang green). */
+  homeDashboardHeading: "#000000",
+  /** Hairlines under greeting + flanking explore title — black @ ~26% on mint (ref: soft grey). */
+  homeDashboardRule: "rgb(0 0 0 / 0.26)",
   consultationHeading: "#3A3B00",
 
   /** AI Voice chat — sparkle tile + CTA arrow (design ref, not primary CTA green). */

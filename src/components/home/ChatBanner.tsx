@@ -20,7 +20,8 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
     <Link href={href} className={cn("group block", className)}>
       <div
         className={cn(
-          "relative isolate min-h-[6.25rem] w-full min-w-0 overflow-hidden sm:min-h-[6.5rem]",
+          "relative isolate w-full min-w-0 overflow-hidden",
+          HOME_LAYOUT.homeBannerStripMinH,
           HOME_LAYOUT.homeCardRadius,
           "bg-[var(--color-brand-banner-dark)] shadow-md"
         )}
@@ -39,12 +40,13 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
 
         <div
           className={cn(
-            "relative z-10 flex min-h-[6.25rem] w-full items-center justify-evenly gap-2 px-2 py-2 sm:min-h-[6.5rem] sm:gap-3 sm:px-3 sm:py-3"
+            "relative z-10 flex w-full items-center justify-evenly gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-3",
+            HOME_LAYOUT.homeBannerStripMinH,
           )}
         >
           <p
             className={cn(
-              "min-w-0 shrink whitespace-pre-line text-left text-sm font-bold leading-snug text-white sm:text-base"
+              "min-w-0 shrink whitespace-pre-line text-left text-sm font-bold leading-snug text-white sm:text-base lg:text-lg"
             )}
           >
             {HOME_DASHBOARD.aiVoiceChatTitle}

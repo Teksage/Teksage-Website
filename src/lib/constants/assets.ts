@@ -9,9 +9,9 @@ const flutterImage = (file: string) => `/flutter-assets/images/${file}` as const
 
 export const PUBLIC_ASSETS = {
   /** Flutter `loginLogo.svg` */
-  loginLogo: flutterSvg("loginLogo.svg"),
-  /** Flutter `logo.svg` */
-  appLogo: flutterSvg("logo.svg"),
+  loginLogo: flutterSvg("loginLogo_ios.svg"),
+  /** Flutter `logo_ios.svg` */
+  appLogo: flutterSvg("logo_ios.svg"),
 } as const;
 
 /** Home dashboard — same files as Flutter `imageConstant.dart` home / bottom nav. */

@@ -4,34 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_LAYOUT } from "@/lib/constants";
-
-const NAV_TABS = [
-  {
-    href: "/home",
-    label: "Home",
-    iconOn: DASHBOARD_ASSETS.navHomeOn,
-    iconOff: DASHBOARD_ASSETS.navHomeOff,
-  },
-  {
-    href: "/panchang",
-    label: "Panchang",
-    iconOn: DASHBOARD_ASSETS.navPanchangOn,
-    iconOff: DASHBOARD_ASSETS.navPanchangOff,
-  },
-  {
-    href: "/horoscope",
-    label: "Horoscope",
-    iconOn: DASHBOARD_ASSETS.navHoroscopeOn,
-    iconOff: DASHBOARD_ASSETS.navHoroscopeOff,
-  },
-  {
-    href: "/settings",
-    label: "Settings",
-    iconOn: DASHBOARD_ASSETS.navSettingsOn,
-    iconOff: DASHBOARD_ASSETS.navSettingsOff,
-  },
-] as const;
+import { HOME_LAYOUT, MAIN_NAV_ITEMS } from "@/lib/constants";
 
 interface BottomNavProps {
   className?: string;
@@ -43,7 +16,7 @@ export function BottomNav({ className }: BottomNavProps) {
   return (
     <nav
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 pb-safe",
+        "fixed bottom-0 left-0 right-0 z-50 pb-safe lg:hidden",
         className
       )}
     >
@@ -57,7 +30,7 @@ export function BottomNav({ className }: BottomNavProps) {
         )}
       >
         <div className="flex items-end justify-between gap-0.5 sm:justify-around sm:gap-1">
-          {NAV_TABS.map((tab) => {
+          {MAIN_NAV_ITEMS.map((tab) => {
             const active = pathname.startsWith(tab.href);
             return (
               <Link

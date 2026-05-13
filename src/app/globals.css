@@ -22,6 +22,8 @@
   --color-home-screen-mint: #c6e7b9;
   --color-ai-chat-icon: #2e8b1e;
   --color-brand-black: #000000;
+  --color-home-dashboard-heading: var(--color-brand-black);
+  --color-home-dashboard-rule: rgb(0 0 0 / 0.30);
   --color-daily-green-from: #0da602;
   --color-daily-green-to: rgb(16 177 0 / 0.75);
   --color-brand-match-card-peach: #ffe1d4;
@@ -150,9 +152,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
@@ -165,11 +169,9 @@
  */
 @layer utilities {
   .settings-shell-gradient {
-    background: linear-gradient(
-      to top,
-      color-mix(in srgb, var(--color-home-screen-mint) 88%, white) 0%,
-      color-mix(in srgb, var(--color-home-screen-mint) 45%, white) 42%,
-      rgb(255 255 255) 88%
-    );
+    background: linear-gradient(to top,
+        color-mix(in srgb, var(--color-home-screen-mint) 88%, white) 0%,
+        color-mix(in srgb, var(--color-home-screen-mint) 45%, white) 42%,
+        rgb(255 255 255) 88%);
   }
 }

@@ -26,15 +26,14 @@ interface PredictionCirclesProps {
   className?: string;
 }
 
-function HomeRuleLine() {
+function ExploreRuleLine() {
   return (
-    <Image
-      src={DASHBOARD_ASSETS.homeLine}
-      alt=""
-      width={77}
-      height={1}
-      unoptimized
-      className="h-px min-h-px min-w-[2rem] flex-1 object-cover opacity-40"
+    <div
+      className={cn(
+        "h-px min-h-px min-w-[2rem] flex-1 shrink-0 self-center",
+        "bg-[var(--color-home-dashboard-rule)]"
+      )}
+      aria-hidden
     />
   );
 }
@@ -43,19 +42,24 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
   return (
     <div className={cn("flex flex-col", HOME_LAYOUT.exploreSectionGap, className)}>
       <div className="flex items-center gap-2 sm:gap-3">
-        <HomeRuleLine />
+        <ExploreRuleLine />
         <span
           className={cn(
             "whitespace-nowrap text-sm font-semibold sm:text-[0.9375rem]",
-            "text-[color:var(--color-brand-panchang)]"
+            "text-[color:var(--color-home-dashboard-heading)]"
           )}
         >
           {HOME_DASHBOARD.explorePredictionsTitle}
         </span>
-        <HomeRuleLine />
+        <ExploreRuleLine />
       </div>
 
-      <div className="flex justify-between gap-2 px-0 sm:gap-3 sm:px-1">
+      <div
+        className={cn(
+          "flex justify-between gap-2 px-0 sm:gap-3 sm:px-1",
+          "lg:mx-auto lg:max-w-md lg:justify-center lg:gap-8 lg:px-0"
+        )}
+      >
         {PREDICTION_ICONS.map((item) => (
           <Link
             key={item.label}
@@ -77,7 +81,12 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
                 className="h-[5.5rem] w-auto max-w-full object-contain"
               />
             </div>
-            <span className="text-center text-xs font-semibold leading-snug text-neutral-700 sm:text-[0.8125rem]">
+            <span
+              className={cn(
+                "text-center text-xs font-semibold leading-snug sm:text-[0.8125rem]",
+                "text-[color:var(--color-home-dashboard-heading)]"
+              )}
+            >
               {item.label}
             </span>
           </Link>

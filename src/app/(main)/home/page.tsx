@@ -43,17 +43,34 @@ export default function HomePage() {
       >
         <ConsultationBanner isLoggedIn={isAuthenticated} />
 
-        <PredictionCircles isLoggedIn={isAuthenticated} />
-
-        <div className={cn("flex", HOME_LAYOUT.featureGridGap)}>
-          <MatchMakingCard isLoggedIn={isAuthenticated} />
-          <DailyPredictionCard
-            data={dailyPrediction ?? undefined}
-            isLoading={isLoading}
+        <div
+          className={cn(
+            "flex flex-col",
+            HOME_LAYOUT.exploreFeatureStackGap,
+            "lg:grid lg:grid-cols-2 lg:items-stretch"
+          )}
+        >
+          <PredictionCircles
             isLoggedIn={isAuthenticated}
-            fetchError={dashboardError}
-            currentDate={formatHomeDashboardDate()}
+            className="lg:max-w-none"
           />
+
+          <div
+            className={cn(
+              "flex min-h-0 min-w-0",
+              HOME_LAYOUT.featureGridGap,
+              "lg:items-stretch"
+            )}
+          >
+            <MatchMakingCard isLoggedIn={isAuthenticated} />
+            <DailyPredictionCard
+              data={dailyPrediction ?? undefined}
+              isLoading={isLoading}
+              isLoggedIn={isAuthenticated}
+              fetchError={dashboardError}
+              currentDate={formatHomeDashboardDate()}
+            />
+          </div>
         </div>
 
         <ChatBanner isLoggedIn={isAuthenticated} />

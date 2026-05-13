@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/auth.store";
 import { fetchProfile, updateProfile } from "@/lib/services/profile";
 import type { UserProfile } from "@/types";
@@ -10,19 +10,29 @@ export function useProfile() {
   const [isFetched, setIsFetched] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const hasFetched = useRef(false);
 
   // Derive loading from whether fetch has completed
   const isLoading = !!user && !isFetched && error === null;
 
+  /**
+   * Load profile for the current user id only. Depending on the whole `user`
+   * object + a `hasFetched` ref could skip the refetch after a mid-flight
+   * `updateUser` identity change, leaving `isFetched` false forever (spinner).
+   */
   useEffect(() => {
-    if (!user || hasFetched.current) return;
-    hasFetched.current = true;
+    if (!user?.id) {
+      setIsFetched(false);
+      setError(null);
+      return;
+    }
+
     let cancelled = false;
+    setError(null);
+
     fetchProfile()
       .then((data) => {
         if (!cancelled) {
-          updateUser(data);
+          useAuthStore.getState().updateUser(data);
           setIsFetched(true);
         }
       })
@@ -32,8 +42,11 @@ export function useProfile() {
           setIsFetched(true);
         }
       });
-    return () => { cancelled = true; };
-  }, [user, updateUser]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   async function saveProfile(updates: Partial<UserProfile>) {
     setIsSaving(true);
