@@ -9,7 +9,7 @@ import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { HOME_LAYOUT } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, isAstrologerHomeSession } from "@/lib/utils";
 
 export default function HomePage() {
   const {
@@ -22,6 +22,7 @@ export default function HomePage() {
   } = useDashboard();
 
   const greeting = user?.name ? `Good day ${user.name}!` : "Good day!";
+  const isAstrologer = isAstrologerHomeSession(user ?? undefined);
 
   return (
     <div className="flex min-h-dvh flex-col bg-[var(--color-home-screen-mint)]">
@@ -41,7 +42,10 @@ export default function HomePage() {
           "flex-1"
         )}
       >
-        <ConsultationBanner isLoggedIn={isAuthenticated} />
+        <ConsultationBanner
+          isLoggedIn={isAuthenticated}
+          isAstrologer={isAuthenticated && isAstrologer}
+        />
 
         <div
           className={cn(

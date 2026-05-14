@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import type { UserProfile } from "@/types"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -16,4 +17,13 @@ export function formatHomeDashboardDate(now = new Date()): string {
   const day = display.getDate()
   const year = display.getFullYear()
   return `${weekday} - ${month} ${day}, ${year}`
+}
+
+/** Backend `user_type` !== `customer` → astrologer-style home banner (Flutter `homePage.dart`). */
+export function isAstrologerHomeSession(
+  user: UserProfile | null | undefined
+): boolean {
+  const t = user?.userType?.trim().toLowerCase()
+  if (!t) return false
+  return t !== "customer"
 }

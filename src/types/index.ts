@@ -45,6 +45,11 @@ export interface UserProfile {
   language?: string;
   avatarUrl?: string;
   isPremium: boolean;
+  /**
+   * Backend `user_type` (e.g. `customer`, `astrologer`). When missing, web treats user as customer for home chrome.
+   * Mirrors Flutter `saveUserType(result['user_type'] == 'customer')` used for consultation banner vs astrologer flow.
+   */
+  userType?: string;
 }
 
 // --- Prediction ---

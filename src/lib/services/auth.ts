@@ -20,6 +20,7 @@ interface LoginVerifyApiResponse {
   mobile_number?: string | null;
   user_id: number | string;
   premium_member?: boolean;
+  user_type?: string | null;
 }
 
 function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthResponse {
@@ -40,6 +41,7 @@ function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthRespons
       email: data.email ?? undefined,
       mobile: data.mobile_number ?? undefined,
       isPremium: Boolean(data.premium_member),
+      userType: data.user_type?.trim() || undefined,
     },
   };
 }
