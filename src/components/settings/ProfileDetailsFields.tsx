@@ -6,35 +6,7 @@ import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
 import { Loader } from "@/components/common/Loader";
 import { CHAT_LANGUAGE_OPTIONS, PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { cn } from "@/lib/utils";
-import type { UserProfile } from "@/types";
-
-export type ProfileDetailsFormState = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  mobile: string;
-  countryCode: string;
-  chatLanguages: string;
-  dateOfBirth: string;
-  timeOfBirth: string;
-  placeOfBirth: string;
-  preferredLocation: string;
-  rashi: string;
-  nakshatra: string;
-};
-
-interface ProfileDetailsFieldsProps {
-  form: ProfileDetailsFormState;
-  setField: <K extends keyof ProfileDetailsFormState>(
-    key: K,
-    value: ProfileDetailsFormState[K]
-  ) => void;
-  user: UserProfile;
-  isEditing: boolean;
-  isSaving: boolean;
-  onSave: () => void;
-  onProfileRefresh?: () => void | Promise<void>;
-}
+import type { ProfileDetailsFieldsProps } from "@/types";
 
 export function ProfileDetailsFields({
   form,

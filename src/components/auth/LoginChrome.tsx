@@ -1,11 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
-type LoginBackButtonProps = {
-  /** When set (e.g. OTP step), runs instead of `router.back()`. */
-  onNavigateBack?: () => void;
-};
+import type { LoginBackButtonProps } from "@/types";
 
 export function LoginBackButton({ onNavigateBack }: LoginBackButtonProps) {
   const router = useRouter();

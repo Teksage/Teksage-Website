@@ -2,13 +2,15 @@
 
 import { notFound, useParams, useRouter } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
+import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import {
+  SETTINGS_LAYOUT,
   SETTINGS_PLACEHOLDER_SLUGS,
   SETTINGS_SCREEN,
   SETTINGS_SECTION_TITLE,
-  SETTINGS_SHELL_GRADIENT_CLASS,
   type SettingsPlaceholderSlug,
 } from "@/lib/constants/settings-screen";
+import { MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 function isPlaceholderSlug(s: string): s is SettingsPlaceholderSlug {
@@ -25,25 +27,22 @@ export default function SettingsSectionPlaceholderPage() {
   const title = SETTINGS_SECTION_TITLE[section];
 
   return (
-    <div
-      className={cn(
-        "flex min-h-dvh flex-col",
-        SETTINGS_SHELL_GRADIENT_CLASS
-      )}
-    >
+    <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
+      <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.settings} />
       <AppHeader
         title={title}
         blend
         showBack
         onBackClick={() => router.back()}
+        className={PAGE_SHELL.contentLayer}
       />
 
-      <div className="mx-auto w-full max-w-lg flex-1 px-5 pb-28 pt-8">
-        <div className="rounded-2xl border border-black/[0.06] bg-white/90 px-5 py-8 shadow-sm">
-          <p className="text-lg font-semibold text-neutral-900">
+      <div className={SETTINGS_LAYOUT.sectionContent}>
+        <div className={SETTINGS_LAYOUT.placeholderCard}>
+          <p className={SETTINGS_LAYOUT.placeholderTitle}>
             {SETTINGS_SCREEN.placeholderLead}
           </p>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+          <p className={SETTINGS_LAYOUT.placeholderHint}>
             {SETTINGS_SCREEN.placeholderHint}
           </p>
         </div>

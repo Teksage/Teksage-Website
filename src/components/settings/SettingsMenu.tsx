@@ -1,24 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/constants";
 import { SETTINGS_ASSETS } from "@/lib/constants/assets";
 import {
   SETTINGS_PRIMARY_LINKS,
   SETTINGS_SCREEN,
 } from "@/lib/constants/settings-screen";
 import { useAuth } from "@/hooks/useAuth";
+import { buildLoginRedirectPath } from "@/lib/login-redirect";
 import { SettingsRow } from "@/components/settings/SettingsRow";
-
-function loginRedirectHref(target: string): string {
-  return `/login?redirect=${encodeURIComponent(target)}`;
-}
 
 export function SettingsMenu() {
   const router = useRouter();
   const { isAuthenticated, logout } = useAuth();
 
   function resolveHref(href: string, gateLogin?: boolean): string {
-    if (gateLogin && !isAuthenticated) return loginRedirectHref(href);
+    if (gateLogin && !isAuthenticated) return buildLoginRedirectPath(href);
     return href;
   }
 
@@ -29,7 +27,7 @@ export function SettingsMenu() {
 
   function handleRateUs() {
     if (!isAuthenticated) {
-      router.push(loginRedirectHref("/settings"));
+      router.push(buildLoginRedirectPath(ROUTES.settings));
       return;
     }
     window.alert(SETTINGS_SCREEN.rateThanks);
@@ -47,7 +45,7 @@ export function SettingsMenu() {
       ))}
 
       <SettingsRow
-        label="Rate us"
+        label={SETTINGS_SCREEN.rateUsLabel}
         iconSrc={SETTINGS_ASSETS.rating}
         onClick={handleRateUs}
       />
@@ -59,12 +57,12 @@ export function SettingsMenu() {
             aria-hidden
           />
           <SettingsRow
-            label="Delete Account"
+            label={SETTINGS_SCREEN.deleteAccountLabel}
             iconSrc={SETTINGS_ASSETS.deleteAccount}
-            href="/settings/delete-account"
+            href={`${ROUTES.settings}/delete-account`}
           />
           <SettingsRow
-            label="Logout"
+            label={SETTINGS_SCREEN.logoutLabel}
             iconSrc={SETTINGS_ASSETS.logout}
             variant="logout"
             onClick={handleLogout}

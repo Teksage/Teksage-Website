@@ -1,5 +1,6 @@
 import { BottomNav } from "@/components/common/BottomNav";
 import { DesktopMainNav } from "@/components/common/DesktopMainNav";
+import { HOME_LAYOUT } from "@/lib/constants";
 
 export default function MainLayout({
   children,
@@ -7,10 +8,10 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-[var(--color-brand-bg)]">
+    <div className="flex min-h-screen bg-transparent">
       <DesktopMainNav />
-      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
-        <main className="flex-1 pb-28 lg:pb-8">{children}</main>
+      <div className="relative flex min-h-screen min-w-0 flex-1 flex-col">
+        <main className={HOME_LAYOUT.bottomNavClearance}>{children}</main>
         <BottomNav />
       </div>
     </div>

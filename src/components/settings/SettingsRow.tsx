@@ -3,17 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import type { SettingsRowProps, SettingsRowVariant } from "@/types";
 
-export type SettingsRowVariant = "default" | "logout";
-
-interface SettingsRowProps {
-  label: string;
-  iconSrc: string;
-  variant?: SettingsRowVariant;
-  href?: string;
-  onClick?: () => void;
-  className?: string;
-}
+export type { SettingsRowVariant };
 
 function ChevronRight() {
   return (

@@ -21,27 +21,33 @@ export function useProfile() {
    */
   useEffect(() => {
     if (!user?.id) {
-      setIsFetched(false);
-      setError(null);
+      queueMicrotask(() => {
+        setIsFetched(false);
+        setError(null);
+      });
       return;
     }
 
     let cancelled = false;
-    setError(null);
 
-    fetchProfile()
-      .then((data) => {
-        if (!cancelled) {
-          useAuthStore.getState().updateUser(data);
-          setIsFetched(true);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setError("Failed to load profile.");
-          setIsFetched(true);
-        }
-      });
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setError(null);
+
+      fetchProfile()
+        .then((data) => {
+          if (!cancelled) {
+            useAuthStore.getState().updateUser(data);
+            setIsFetched(true);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setError("Failed to load profile.");
+            setIsFetched(true);
+          }
+        });
+    });
 
     return () => {
       cancelled = true;

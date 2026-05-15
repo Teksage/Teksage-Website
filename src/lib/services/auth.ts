@@ -1,13 +1,8 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
-import { STORAGE_KEYS } from "@/lib/constants";
+import { DEFAULT_COUNTRY_CODE_NUMERIC, STORAGE_KEYS } from "@/lib/constants";
 import { clearAuthCookie, setAuthCookie } from "@/lib/auth-cookie";
-import type {
-  LoginEmailPayload,
-  LoginMobilePayload,
-  OtpPayload,
-  AuthResponse,
-} from "@/types";
+import type { OtpPayload, AuthResponse } from "@/types";
 
 /** Flat JSON from `POST /api/auth/otp/login-verify` (backend `login_verify`). */
 interface LoginVerifyApiResponse {
@@ -52,36 +47,15 @@ function verifyOtpRequestBody(payload: OtpPayload) {
   }
   return {
     mobile_number: payload.mobile,
-    country_code: "91",
+    country_code: DEFAULT_COUNTRY_CODE_NUMERIC,
     otp: payload.otp,
   };
-}
-
-export async function loginWithEmail(
-  payload: LoginEmailPayload
-): Promise<AuthResponse> {
-  const { data } = await http.post<AuthResponse>(
-    API_ENDPOINTS.login,
-    payload
-  );
-  persistAuthTokens(data);
-  return data;
-}
-
-export async function loginWithMobile(
-  payload: LoginMobilePayload
-): Promise<{ message: string }> {
-  const { data } = await http.post<{ message: string }>(
-    API_ENDPOINTS.loginWithMobile,
-    payload
-  );
-  return data;
 }
 
 export async function sendOtp(mobile: string): Promise<{ message: string }> {
   const { data } = await http.post<{ message: string }>(
     API_ENDPOINTS.sendOtp,
-    { mobile_number: mobile, country_code: "91" }
+    { mobile_number: mobile, country_code: DEFAULT_COUNTRY_CODE_NUMERIC }
   );
   return data;
 }

@@ -1,11 +1,5 @@
 import { cn } from "@/lib/utils";
-
-interface ProfileAvatarProps {
-  name?: string;
-  avatarUrl?: string;
-  isPremium?: boolean;
-  className?: string;
-}
+import type { ProfileAvatarProps } from "@/types";
 
 function getInitials(name: string): string {
   return name

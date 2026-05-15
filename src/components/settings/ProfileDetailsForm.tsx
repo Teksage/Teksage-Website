@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ProfileDetailsFields,
-  type ProfileDetailsFormState,
-} from "@/components/settings/ProfileDetailsFields";
-import type { UserProfile } from "@/types";
+import { ProfileDetailsFields } from "@/components/settings/ProfileDetailsFields";
+import type {
+  ProfileDetailsFormProps,
+  ProfileDetailsFormState,
+  UserProfile,
+} from "@/types";
+import { DEFAULT_CHAT_LANGUAGE, DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
 
 function splitNameForForm(u: UserProfile): { first: string; last: string } {
   if (u.firstName != null || u.lastName != null) {
@@ -24,8 +26,8 @@ function userToFormState(user: UserProfile): ProfileDetailsFormState {
     lastName: last,
     email: user.email ?? "",
     mobile: user.mobile ?? "",
-    countryCode: user.countryCode ?? "91",
-    chatLanguages: user.chatLanguages ?? "English",
+    countryCode: user.countryCode ?? DEFAULT_COUNTRY_CODE_NUMERIC,
+    chatLanguages: user.chatLanguages ?? DEFAULT_CHAT_LANGUAGE,
     dateOfBirth: user.dateOfBirth ?? "",
     timeOfBirth: user.timeOfBirth ?? "",
     placeOfBirth: user.placeOfBirth ?? "",
@@ -33,16 +35,6 @@ function userToFormState(user: UserProfile): ProfileDetailsFormState {
     rashi: user.rashi ?? "",
     nakshatra: user.nakshatra ?? "",
   };
-}
-
-interface ProfileDetailsFormProps {
-  user: UserProfile;
-  isEditing: boolean;
-  onSave: (updates: Partial<UserProfile>) => Promise<boolean>;
-  isSaving: boolean;
-  onDoneEditing: () => void;
-  onProfileRefresh?: () => void | Promise<void>;
-  className?: string;
 }
 
 export function ProfileDetailsForm({

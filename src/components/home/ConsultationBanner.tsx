@@ -1,13 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
-
-interface ConsultationBannerProps {
-  isLoggedIn: boolean;
-  isAstrologer?: boolean;
-  className?: string;
-}
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import type { ConsultationBannerProps } from "@/types";
 
 /**
  * Consultation banner — `homeBannerDeco.png` on the **left** behind the portrait
@@ -26,9 +21,9 @@ export function ConsultationBanner({
     : HOME_DASHBOARD.astrologerConsultationLines;
   const href = isLoggedIn
     ? isAstrologer
-      ? "/consultation/astrologer"
-      : "/consultation"
-    : "/login";
+      ? ROUTES.consultationAstrologer
+      : ROUTES.consultation
+    : ROUTES.login;
 
   return (
     <div

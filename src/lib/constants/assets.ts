@@ -32,6 +32,8 @@ export const DASHBOARD_ASSETS = {
   chatBannerElement: flutterSvg("bannerElement.svg"),
   /** Flutter `rightArrow.svg` inside white “Chat Now” pill. */
   chatStripArrow: flutterSvg("rightArrow.svg"),
+  /** Flutter `panchangBG` — non‑premium Panchang tab hero (`emptyPanchangPage.dart`). */
+  panchangHero: flutterImage("panchangBG.png"),
   notification: flutterSvg("notification.svg"),
   navHomeOn: flutterSvg("selectHome.svg"),
   navHomeOff: flutterSvg("unSelectHome.svg"),
@@ -41,6 +43,21 @@ export const DASHBOARD_ASSETS = {
   navHoroscopeOff: flutterSvg("unSelectHoroscope.svg"),
   navSettingsOn: flutterSvg("selectSetting.svg"),
   navSettingsOff: flutterSvg("unSelectSetting.svg"),
+} as const;
+
+/** Premium Personalized Panchang — `panchangPage.dart` + `imageConstant.dart`. */
+export const PANCHANG_ASSETS = {
+  /**
+   * Full-screen background — **`public/flutter-assets/images/panchangBG.png`**
+   * (Flutter `panchangBG`). Reuses `DASHBOARD_ASSETS.panchangHero` so the path stays single-source.
+   */
+  personalizedBackground: DASHBOARD_ASSETS.panchangHero,
+  timeRibbon: flutterSvg("panchangTimeContainer.svg"),
+  sunrise: flutterSvg("sunrise.svg"),
+  sunset: flutterSvg("sunset.svg"),
+  timeDivider: flutterSvg("dashLine.svg"),
+  balaPositive: flutterImage("panchangUp.png"),
+  balaNegative: flutterImage("panchangDown.png"),
 } as const;
 
 /** Settings menu — same SVGs as Flutter `settings_page.dart` / `imageConstant.dart`. */

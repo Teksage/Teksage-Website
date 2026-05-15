@@ -1,12 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
-
-interface ChatBannerProps {
-  isLoggedIn: boolean;
-  className?: string;
-}
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import type { ChatBannerProps } from "@/types";
 
 /**
  * Mirrors Flutter `homePage.dart` AI chat strip: `homeBanner2` + `bottomBanner.png`
@@ -14,7 +10,7 @@ interface ChatBannerProps {
  * (`Chat Now` + `rightArrow`).
  */
 export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
-  const href = isLoggedIn ? "/chat" : "/login";
+  const href = isLoggedIn ? ROUTES.chat : ROUTES.login;
 
   return (
     <Link href={href} className={cn("group block", className)}>

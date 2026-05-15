@@ -11,15 +11,7 @@ import {
   verifyAuthenticatedOtp,
 } from "@/lib/services/profile-verify";
 import { cn } from "@/lib/utils";
-
-interface ProfilePhoneRowProps {
-  countryCode: string;
-  mobile: string;
-  onMobileChange: (value: string) => void;
-  isMobileVerified?: boolean;
-  isEditing: boolean;
-  onVerificationSuccess?: () => void | Promise<void>;
-}
+import type { ProfilePhoneRowProps } from "@/types";
 
 export function ProfilePhoneRow({
   countryCode,

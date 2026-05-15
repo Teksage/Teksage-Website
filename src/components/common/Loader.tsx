@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { LOADER_DEFAULT_ARIA_LABEL } from "@/lib/constants";
+import type { LoaderSize, LoaderProps } from "@/types";
 
-export type LoaderVariant = "spinner" | "dots";
-export type LoaderSize = "sm" | "md" | "lg";
+export type { LoaderVariant, LoaderSize, LoaderProps } from "@/types";
 
 const spinnerSizeClass: Record<LoaderSize, string> = {
   sm: "h-4 w-4 border-2",
@@ -29,20 +30,11 @@ const dotsWrapperMinH: Record<LoaderSize, string> = {
   lg: "min-h-14",
 };
 
-export interface LoaderProps {
-  /** Default `spinner` — ring spin. `dots` — three pulsing dots (Flutter-style). */
-  variant?: LoaderVariant;
-  size?: LoaderSize;
-  className?: string;
-  /** Accessible name; defaults to `"Loading"`. */
-  label?: string;
-}
-
 export function Loader({
   variant = "spinner",
   size = "md",
   className,
-  label = "Loading",
+  label = LOADER_DEFAULT_ARIA_LABEL,
 }: LoaderProps) {
   if (variant === "dots") {
     const dot =
@@ -99,7 +91,7 @@ export function Loader({
 
 export function FullPageLoader() {
   return (
-    <div className="flex min-h-screen flex-1 items-center justify-center bg-[var(--color-brand-bg)]">
+    <div className="flex items-center justify-center bg-[var(--color-brand-bg)] py-24">
       <Loader variant="spinner" size="lg" />
     </div>
   );

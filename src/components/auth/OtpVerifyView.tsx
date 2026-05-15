@@ -10,16 +10,12 @@ import { LoginBackButton } from "@/components/auth/LoginChrome";
 import { useAuthStore } from "@/store/auth.store";
 import { verifyOtp } from "@/lib/services/auth";
 import { cn } from "@/lib/utils";
-import { OTP_LENGTH } from "@/lib/constants";
+import { OTP_LENGTH, LOGIN_SCREEN, OTP_VERIFY_SCREEN, ROUTES } from "@/lib/constants";
+import type { OtpVerifyViewProps } from "@/types";
+import { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "@/types";
 
 function emptyOtpCells(): string[] {
   return Array.from({ length: OTP_LENGTH }, () => "");
-}
-
-interface OtpVerifyViewProps {
-  contact: string;
-  contactType: "mobile" | "email";
-  onBack: () => void;
 }
 
 export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewProps) {
@@ -38,14 +34,14 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
     setError(null);
     try {
       const response = await verifyOtp(
-        contactType === "email"
+        contactType === OTP_CONTACT_TYPE_EMAIL
           ? { email: contact, otp: otpDigits }
           : { mobile: contact, otp: otpDigits }
       );
       setAuth(response.user, response.token);
-      router.push("/home");
+      router.push(ROUTES.home);
     } catch {
-      setError("Invalid OTP. Please try again.");
+      setError(OTP_VERIFY_SCREEN.invalidOtp);
       setOtpCells(emptyOtpCells());
     } finally {
       setIsLoading(false);
@@ -53,25 +49,22 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
   }
 
   const maskedContact =
-    contactType === "mobile"
+    contactType === OTP_CONTACT_TYPE_MOBILE
       ? contact.replace(/(\d{2})\d{6}(\d{2})/, "$1xxxxxx$2")
       : contact.replace(/^(.{2}).*(@.*)$/, "$1****$2");
 
   return (
-    <div
-      className={
-        "relative flex min-h-dvh flex-col " +
-        "bg-[linear-gradient(180deg,#C2EDC0_0%,#eef8ed_42%,#ffffff_100%)]"
-      }
-    >
+    <div className={LOGIN_SCREEN.shellClassName}>
       <LoginBackButton onNavigateBack={onBack} />
 
-      <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-6 pb-10 pt-16">
+      <div className="relative mx-auto flex w-full max-w-md flex-col px-6 pb-10 pt-16">
         <div className="mb-10 flex flex-col items-center text-center">
-          <BrandLoginLogo widthPx={176} className="mb-4" />
-          <h1 className="mb-2 text-2xl font-bold text-neutral-900">Enter OTP</h1>
+          <BrandLoginLogo widthPx={LOGIN_SCREEN.brandLogoWidthPx} className="mb-4" />
+          <h1 className="mb-2 text-2xl font-bold text-neutral-900">{OTP_VERIFY_SCREEN.heading}</h1>
           <p className="text-sm text-neutral-500">
-            We sent a 6-digit code to{" "}
+            {OTP_VERIFY_SCREEN.sentBeforeDigits}
+            {OTP_LENGTH}
+            {OTP_VERIFY_SCREEN.sentAfterDigits}{" "}
             <span className="font-semibold text-neutral-800">{maskedContact}</span>
           </p>
         </div>
@@ -96,16 +89,16 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
           onClick={handleVerify}
           disabled={!isComplete || isLoading}
           className={cn(
-            "mt-6 h-14 w-full rounded-full text-lg font-medium transition-all",
-            isComplete
-              ? "bg-[#10B100] text-white hover:bg-[#0ea000]"
-              : "cursor-not-allowed bg-[#E4F0E2] text-[#4a9c45]"
+            "mt-6 h-14 w-full rounded-full text-lg font-medium",
+            isComplete && "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
+            !isComplete &&
+              "cursor-not-allowed bg-[var(--login-email-cta-disabled-bg)] text-[var(--login-email-cta-disabled-text)]"
           )}
         >
           {isLoading ? (
             <Loader variant="spinner" size="sm" className="border-t-white" />
           ) : (
-            "Verify & Login"
+            OTP_VERIFY_SCREEN.verifyCta
           )}
         </Button>
 
@@ -114,8 +107,10 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
           className="mt-6 text-center text-sm text-neutral-500 transition-colors hover:text-[var(--color-brand-primary)]"
           onClick={onBack}
         >
-          Didn&apos;t receive OTP?{" "}
-          <span className="font-semibold text-[var(--color-brand-primary)]">Resend</span>
+          {OTP_VERIFY_SCREEN.resendQuestion}{" "}
+          <span className="font-semibold text-[var(--color-brand-primary)]">
+            {OTP_VERIFY_SCREEN.resendCta}
+          </span>
         </button>
       </div>
     </div>

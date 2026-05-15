@@ -1,30 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
-
-const PREDICTION_ICONS: { label: string; href: string; src: string }[] = [
-  {
-    label: HOME_DASHBOARD.weeklyPrediction,
-    href: "/predictions/weekly",
-    src: DASHBOARD_ASSETS.weeklyIcon,
-  },
-  {
-    label: HOME_DASHBOARD.yearlyPrediction,
-    href: "/predictions/yearly",
-    src: DASHBOARD_ASSETS.yearlyIcon,
-  },
-  {
-    label: HOME_DASHBOARD.lifePrediction,
-    href: "/predictions/life",
-    src: DASHBOARD_ASSETS.lifeIcon,
-  },
-];
-
-interface PredictionCirclesProps {
-  isLoggedIn: boolean;
-  className?: string;
-}
+import { HOME_DASHBOARD, HOME_LAYOUT, PREDICTION_CIRCLE_LINKS, ROUTES } from "@/lib/constants";
+import type { PredictionCirclesProps } from "@/types";
 
 function ExploreRuleLine() {
   return (
@@ -60,10 +38,10 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
           "lg:mx-auto lg:max-w-md lg:justify-center lg:gap-8 lg:px-0"
         )}
       >
-        {PREDICTION_ICONS.map((item) => (
+        {PREDICTION_CIRCLE_LINKS.map((item) => (
           <Link
             key={item.label}
-            href={isLoggedIn ? item.href : "/login"}
+            href={isLoggedIn ? item.href : ROUTES.login}
             className="flex max-w-[33%] flex-1 flex-col items-center gap-2"
           >
             <div

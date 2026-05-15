@@ -1,60 +1,100 @@
-// Backend API — path segments only (no host). Base URL comes from `.env.local`
-// via `getPublicApiBaseUrl()` in `@/lib/env` (used by `src/lib/services/http.ts`).
+// Backend API — path segments only (no host). Base URL from `.env.local`
+// via `getPublicApiBaseUrl()` in `@/lib/env` (used by `http.ts`).
+// Contract: FastAPI `app.include_router(api_router, prefix="/api")` +
+// `api/routers.py` (see repo `Teksage-backend-latest`).
 
 export const API_ENDPOINTS = {
-  // Auth — paths match FastAPI `api/endpoints/auth.py` + `routers.py` (`/api` + `/auth` prefix)
-  login: "/api/auth/login",
-  loginWithMobile: "/api/auth/login/mobile",
-  /** `POST` body: `LoginSchema` — `email` and/or `mobile_number` + `country_code` */
+  // --- Auth (OTP) — `api/endpoints/auth.py`, mount `/auth` ---
+  /** `POST` — `LoginSchema`: email and/or mobile_number + country_code */
   sendOtp: "/api/auth/otp/request",
-  /** `POST` body: `VerifyOTPSchema` — `email` or `mobile_number` + `country_code`, `otp` */
+  /** `POST` — `VerifyOTPSchema` + OTP */
   verifyOtp: "/api/auth/otp/login-verify",
-  /** Authenticated user — send OTP to email or mobile (`LoginSchema`). Matches Flutter `profileVerify`. */
+  /** Authenticated — send OTP (`LoginSchema`). */
   sendAuthenticatedOtp: "/api/auth/otp/send-authenticated",
-  /** Authenticated user — verify OTP (`VerifyOTPSchema`). Query `update` matches Flutter `profileVerifyOtp`. */
+  /** Authenticated — verify OTP; query `update` per backend. */
   verifyAuthenticatedOtp: "/api/auth/otp/verify",
   refreshToken: "/api/auth/refresh",
   logout: "/api/auth/logout",
+  /** `GET` — sync timezone from preferred location (see OpenAPI). */
+  timezoneUpdate: "/api/auth/timezone/update",
+  /** `GET` / `PUT` — chat history retention flag */
+  maintainHistory: "/api/auth/maintain_history",
 
-  // User / Profile — FastAPI `profile.router` uses prefix `/auth` (`api/routers.py`)
+  // --- Profile — `api/endpoints/profile.py`, same `/auth` prefix ---
   profile: "/api/auth/profile",
   updateProfile: "/api/auth/update-profile",
+  /** `GET` — user horoscope payload */
+  horoscope: "/api/auth/horoscope",
+  /** `POST` — rashi/nakshatra resolution */
+  rashiNakshatra: "/api/auth/rashi-nakshatra",
+  support: "/api/auth/support",
+  notifyUpdate: "/api/auth/notify-update",
+  registerToken: "/api/auth/register-token/",
+  updateAppLanguage: "/api/auth/update-app-language",
   deleteAccountRequest: "/api/auth/delete/request",
   deleteAccountConfirm: "/api/auth/delete/confirm",
 
-  // Home / Dashboard
-  dashboard: "/api/home/dashboard",
+  // --- Notifications — `api/endpoints/notification.py` ---
   notifications: "/api/notifications",
+  notificationsUpdateStatus: "/api/notifications/update-status",
 
-  // Predictions
+  // --- Predictions — `api/endpoints/predictions.py`, mount `/prediction` ---
   dailyPrediction: "/api/prediction/daily",
   weeklyPrediction: "/api/prediction/weekly",
   yearlyPrediction: "/api/prediction/yearly",
   lifePrediction: "/api/prediction/life",
+  panchang: "/api/prediction/panchang",
+  relatedQueries: "/api/prediction/related_queries",
+  /** `GET` | `POST` — match-making compatibility */
+  matchMakingCompatibility: "/api/prediction/compatibility",
 
-  // Panchang
-  panchang: "/api/panchang",
+  // --- Horoscope PDF — `chat_history.py` at API root ---
+  horoscopeDownload: "/api/horoscope/download",
 
-  // Horoscope
-  horoscope: "/api/horoscope",
+  // --- Astrologer / consultation — `astrologer.py`, `events.py` ---
+  astrologerFilter: "/api/astrologer/filter",
+  /** Append `/{astrologer_id}` */
+  astrologerDetail: "/api/astrologer/astrologer",
+  astrologerRashi: "/api/astrologer/rashi",
+  astrologerNakshatra: "/api/astrologer/nakshatra",
+  astrologerSlots: "/api/astrologer/slots",
+  astrologerSlotsCreate: "/api/astrologer/slots/create",
+  astrologerBook: "/api/astrologer/book",
+  astrologerQuestions: "/api/astrologer/questions",
+  astroEvents: "/api/astrologer/events",
 
-  // Match Making
-  matchMaking: "/api/matchmaking",
-  matchMakingDetails: "/api/matchmaking/details",
+  // --- AI chat — `chat.py`; WebSocket handler (Flutter may use root `/chat`) ---
+  /** WebSocket URL: `ws(s)://<host>/api/chat` */
+  chatWebSocket: "/api/chat",
+  downloadChatPdf: "/api/download-chat-pdf",
+  transcribeAudio: "/api/transcribe-audio",
 
-  // Chat
-  chat: "/api/chat",
-  chatHistory: "/api/chat/history",
+  // --- Chat history — `chat_history.py` at API root ---
+  chatHistory: "/api/chat-history",
+  chatHistoryDownload: "/api/chat-history/download",
 
-  // Consultation
-  consultationList: "/api/consultation/astrologers",
-  consultationBook: "/api/consultation/book",
-  consultationHistory: "/api/consultation/history",
+  // --- Payment — `payment.py`, mount `/payment` ---
+  paymentVerify: "/api/payment/verify-payment/",
+  paymentSubscribe: "/api/payment/subscribe",
+  paymentApplyCoupon: "/api/payment/apply-coupon",
+  paymentIosSubscription: "/api/payment/ios-subscription",
 
-  // Subscription
-  subscriptionPlans: "/api/subscription/plans",
-  subscriptionStatus: "/api/subscription/status",
-  subscriptionPurchase: "/api/subscription/purchase",
+  // --- Plans — `admin/subscriptions.py`; public list GET ---
+  serviceCatalogs: "/api/admin/service-catalogs/",
+
+  // --- Share PDF — `share_predictions.py` ---
+  shareDaily: "/api/share/daily",
+  shareWeekly: "/api/share/weekly",
+  shareYearly: "/api/share/yearly",
+  shareLife: "/api/share/life",
+  sharePanchang: "/api/share/panchang",
+  shareMatchMaking: "/api/share/match_making",
+
+  // --- FAQ — `faq.py`, mount `/faq` ---
+  faq: "/api/faq/",
+
+  // --- Countries — `country.py` ---
+  countries: "/api/countries",
 } as const;
 
 export type ApiEndpointKey = keyof typeof API_ENDPOINTS;

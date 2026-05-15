@@ -12,9 +12,9 @@ import { EmailLoginForm } from "@/components/auth/EmailLoginForm";
 import { OtpVerifyView } from "@/components/auth/OtpVerifyView";
 import { BrandLoginLogo } from "@/components/common/BrandLoginLogo";
 import { LoginBackButton, LoginOrSignupHeading } from "@/components/auth/LoginChrome";
-// import { MobileLoginForm } from "@/components/auth/MobileLoginForm";
-
-type LoginStep = "form" | "otp";
+import { LOGIN_SCREEN } from "@/lib/constants";
+import type { LoginStep } from "@/types";
+import { OTP_CONTACT_TYPE_EMAIL } from "@/types";
 
 export default function LoginPage() {
   const [step, setStep] = useState<LoginStep>("form");
@@ -29,25 +29,20 @@ export default function LoginPage() {
     return (
       <OtpVerifyView
         contact={contact}
-        contactType="email"
+        contactType={OTP_CONTACT_TYPE_EMAIL}
         onBack={() => setStep("form")}
       />
     );
   }
 
   return (
-    <div
-      className={
-        "relative flex min-h-dvh flex-col " +
-        "bg-[linear-gradient(180deg,#C2EDC0_0%,#eef8ed_42%,#ffffff_100%)]"
-      }
-    >
+    <div className={LOGIN_SCREEN.shellClassName}>
       {/* Status bar / native chrome is not rendered — web only (per design reference). */}
       <LoginBackButton />
 
-      <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-6 pb-10 pt-16">
+      <div className="relative mx-auto flex w-full max-w-md flex-col px-6 pb-10 pt-16">
         <div className="mb-10 flex flex-col items-center">
-          <BrandLoginLogo widthPx={176} />
+          <BrandLoginLogo widthPx={LOGIN_SCREEN.brandLogoWidthPx} />
         </div>
 
         <LoginOrSignupHeading />
@@ -66,7 +61,7 @@ export default function LoginPage() {
         */}
 
         <p className="mt-10 text-center text-xs text-neutral-400">
-          By continuing, you agree to our Terms of Service and Privacy Policy.
+          {LOGIN_SCREEN.legalFootnote}
         </p>
       </div>
     </div>

@@ -1,11 +1,5 @@
 import { cn } from "@/lib/utils";
-
-interface EmptyStateProps {
-  title: string;
-  description?: string;
-  action?: React.ReactNode;
-  className?: string;
-}
+import type { EmptyStateProps } from "@/types";
 
 export function EmptyState({
   title,

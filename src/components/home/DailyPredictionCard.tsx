@@ -3,23 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import { Loader } from "@/components/common/Loader";
-
-interface DailyPredictionData {
-  tharaBala?: string;
-  chandraBala?: string;
-}
-
-interface DailyPredictionCardProps {
-  data?: DailyPredictionData;
-  isLoading?: boolean;
-  isLoggedIn: boolean;
-  /** Set when `/api/prediction/daily` or `/api/notifications` failed (home dashboard). */
-  fetchError?: string | null;
-  currentDate: string;
-  className?: string;
-}
+import type { DailyPredictionCardProps } from "@/types";
 
 export function DailyPredictionCard({
   data,
@@ -29,7 +15,7 @@ export function DailyPredictionCard({
   currentDate,
   className,
 }: DailyPredictionCardProps) {
-  const href = isLoggedIn ? "/predictions/daily" : "/login";
+  const href = isLoggedIn ? ROUTES.predictionsDaily : ROUTES.login;
 
   return (
     <Link href={href} className={cn("group block flex-1", className)}>

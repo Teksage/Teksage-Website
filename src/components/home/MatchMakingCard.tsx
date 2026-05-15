@@ -1,13 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT } from "@/lib/constants";
-
-interface MatchMakingCardProps {
-  isLoggedIn: boolean;
-  hasExistingMatch?: boolean;
-  className?: string;
-}
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import type { MatchMakingCardProps } from "@/types";
 
 export function MatchMakingCard({
   isLoggedIn,
@@ -16,9 +11,9 @@ export function MatchMakingCard({
 }: MatchMakingCardProps) {
   const href = isLoggedIn
     ? hasExistingMatch
-      ? "/matchmaking/details"
-      : "/matchmaking"
-    : "/login";
+      ? ROUTES.matchmakingDetails
+      : ROUTES.matchmaking
+    : ROUTES.login;
 
   return (
     <Link href={href} className={cn("group block flex-1", className)}>

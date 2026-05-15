@@ -5,27 +5,32 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { HOME_LAYOUT, MAIN_NAV_ITEMS } from "@/lib/constants";
+import type { BottomNavProps } from "@/types";
 
-interface BottomNavProps {
-  className?: string;
-}
-
+/**
+ * Floating pill bottom nav — mirrors Flutter `bottomNavigation.dart`
+ * (`extendBody: true`, horizontal margin, `BorderRadius.circular(40)`).
+ * Only the pill is white; page background shows through around it.
+ */
 export function BottomNav({ className }: BottomNavProps) {
   const pathname = usePathname();
 
   return (
     <nav
+      aria-label="Main"
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 pb-safe lg:hidden",
+        "pointer-events-none fixed inset-x-0 bottom-0 z-50 bg-transparent lg:hidden",
+        HOME_LAYOUT.floatingNavInsetX,
+        HOME_LAYOUT.floatingNavBottom,
         className
       )}
     >
       <div
         className={cn(
-          HOME_LAYOUT.maxWidth,
-          HOME_LAYOUT.gutterX,
-          "mx-auto border border-black/[0.06] bg-white shadow-[0_8px_32px_rgba(0,0,0,0.08)]",
+          "pointer-events-auto mx-auto w-full max-w-lg",
           HOME_LAYOUT.pillStrip,
+          HOME_LAYOUT.bottomNavPillSurface,
+          HOME_LAYOUT.floatingNavShadow,
           HOME_LAYOUT.bottomNavPadding
         )}
       >

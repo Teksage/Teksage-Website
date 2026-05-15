@@ -56,6 +56,12 @@ export const COLORS = {
   // Panchang
   panchangHeading: "#229716",
   horoscopeLightBg: "#BAE8B5",
+  /** North-chart placeholder (`comingSoon.dart` base #97D492). */
+  horoscopeNorthWatermark: "#97D492",
+  /** `blackColor.withOpacity(0.3)` row dividers (`panchangPage.dart` + `dashedLine.dart`). */
+  panchangRowDivider: "rgb(0 0 0 / 0.3)",
+  /** `blackColor.withOpacity(0.6)` for Bala / sunrise labels (`panchangPage.dart`). */
+  panchangCardMutedText: "rgb(0 0 0 / 0.6)",
 
   // Match making accents
   matchGradient1: "#F78C8C",

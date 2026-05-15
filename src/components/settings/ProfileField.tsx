@@ -1,22 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-
-interface ProfileFieldProps {
-  label: string;
-  value?: string;
-  onChange?: (value: string) => void;
-  type?: "text" | "email" | "tel" | "date" | "time";
-  placeholder?: string;
-  isEditable?: boolean;
-  isReadOnly?: boolean;
-  required?: boolean;
-  /** Flutter-style grey tiles + sentence-case labels. */
-  appearance?: "default" | "profile";
-  hasError?: boolean;
-  errorMessage?: string;
-  className?: string;
-}
+import type { ProfileFieldProps } from "@/types";
 
 export function ProfileField({
   label,

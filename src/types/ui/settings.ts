@@ -1,0 +1,82 @@
+import type { UserProfile } from "../user-profile";
+
+export type ProfileDetailsFormState = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobile: string;
+  countryCode: string;
+  chatLanguages: string;
+  dateOfBirth: string;
+  timeOfBirth: string;
+  placeOfBirth: string;
+  preferredLocation: string;
+  rashi: string;
+  nakshatra: string;
+};
+
+export interface ProfileDetailsFieldsProps {
+  form: ProfileDetailsFormState;
+  setField: <K extends keyof ProfileDetailsFormState>(
+    key: K,
+    value: ProfileDetailsFormState[K]
+  ) => void;
+  user: UserProfile;
+  isEditing: boolean;
+  isSaving: boolean;
+  onSave: () => void;
+  onProfileRefresh?: () => void | Promise<void>;
+}
+
+export interface ProfileDetailsFormProps {
+  user: UserProfile;
+  isEditing: boolean;
+  onSave: (updates: Partial<UserProfile>) => Promise<boolean>;
+  isSaving: boolean;
+  onDoneEditing: () => void;
+  onProfileRefresh?: () => void | Promise<void>;
+  className?: string;
+}
+
+export interface ProfileAvatarProps {
+  name?: string;
+  avatarUrl?: string;
+  isPremium?: boolean;
+  className?: string;
+}
+
+export interface ProfileFieldProps {
+  label: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  type?: "text" | "email" | "tel" | "date" | "time";
+  placeholder?: string;
+  isEditable?: boolean;
+  isReadOnly?: boolean;
+  required?: boolean;
+  /** Flutter-style grey tiles + sentence-case labels. */
+  appearance?: "default" | "profile";
+  hasError?: boolean;
+  errorMessage?: string;
+  className?: string;
+}
+
+export interface ProfilePhoneRowProps {
+  countryCode: string;
+  mobile: string;
+  onMobileChange: (value: string) => void;
+  isMobileVerified?: boolean;
+  isEditing: boolean;
+  onVerificationSuccess?: () => void | Promise<void>;
+}
+
+export type SettingsRowVariant = "default" | "logout";
+
+export interface SettingsRowProps {
+  label: string;
+  iconSrc: string;
+  variant?: SettingsRowVariant;
+  href?: string;
+  onClick?: () => void;
+  className?: string;
+}

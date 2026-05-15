@@ -23,4 +23,6 @@ export const HOME_DASHBOARD = {
   loadingEllipsis: "Loading …",
   aiVoiceChatTitle: "AI Voice Astro Chat",
   chatNow: "Chat Now",
+  notificationsLinkAria: "Notifications",
+  notificationCountOverflow: "9+",
 } as const;

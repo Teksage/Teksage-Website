@@ -8,7 +8,8 @@ import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
-import { HOME_LAYOUT } from "@/lib/constants";
+import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
+import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
 import { cn, isAstrologerHomeSession } from "@/lib/utils";
 
 export default function HomePage() {
@@ -25,8 +26,10 @@ export default function HomePage() {
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[var(--color-home-screen-mint)]">
+    <div className={PAGE_SHELL.homeRoot}>
+      <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.home} />
       <HomeDashboardHeader
+        className={PAGE_SHELL.contentLayer}
         greeting={greeting}
         isAuthenticated={isAuthenticated}
         unreadCount={unreadCount}
@@ -34,12 +37,12 @@ export default function HomePage() {
 
       <main
         className={cn(
+          PAGE_SHELL.contentLayer,
           HOME_LAYOUT.maxWidth,
           HOME_LAYOUT.gutterX,
           HOME_LAYOUT.mainTopPad,
           HOME_LAYOUT.mainBottomPad,
-          HOME_LAYOUT.sectionStack,
-          "flex-1"
+          HOME_LAYOUT.sectionStack
         )}
       >
         <ConsultationBanner

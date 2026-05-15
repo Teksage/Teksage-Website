@@ -3,13 +3,7 @@
 import { useRef, KeyboardEvent, ClipboardEvent } from "react";
 import { cn } from "@/lib/utils";
 import { OTP_LENGTH } from "@/lib/constants";
-
-interface OtpInputProps {
-  value: string[];
-  onChange: (value: string[]) => void;
-  hasError?: boolean;
-  className?: string;
-}
+import type { OtpInputProps } from "@/types";
 
 export function OtpInput({ value, onChange, hasError, className }: OtpInputProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);

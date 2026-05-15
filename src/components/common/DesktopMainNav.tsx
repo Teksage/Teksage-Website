@@ -5,10 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { APP_NAME, MAIN_NAV_ITEMS, PUBLIC_ASSETS } from "@/lib/constants";
-
-interface DesktopMainNavProps {
-  className?: string;
-}
+import type { DesktopMainNavProps } from "@/types";
 
 /**
  * Left rail for `lg+` — replaces the fixed bottom bar on wide viewports.

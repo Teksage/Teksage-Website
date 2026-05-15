@@ -1,16 +1,9 @@
 // Shared TypeScript interfaces — mirrors Flutter Model/ DTOs
 
+export type { UserProfile } from "./user-profile";
+import type { UserProfile } from "./user-profile";
+
 // --- Auth ---
-export interface LoginEmailPayload {
-  email: string;
-  password: string;
-}
-
-export interface LoginMobilePayload {
-  mobile: string;
-  countryCode: string;
-}
-
 export type OtpPayload =
   | { mobile: string; otp: string }
   | { email: string; otp: string };
@@ -21,36 +14,8 @@ export interface AuthResponse {
   user: UserProfile;
 }
 
-// --- User ---
-export interface UserProfile {
-  id: string;
-  name: string;
-  /** When present, from API `first_name` / `last_name` (Flutter separate fields). */
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  mobile?: string;
-  countryCode?: string;
-  isMobileVerified?: boolean;
-  dateOfBirth?: string;
-  placeOfBirth?: string;
-  timeOfBirth?: string;
-  /** Maps API `chat_languages`. */
-  chatLanguages?: string;
-  /** Maps API `preferred_location`. */
-  preferredLocation?: string;
-  rashi?: string;
-  nakshatra?: string;
-  gender?: "male" | "female" | "other";
-  language?: string;
-  avatarUrl?: string;
-  isPremium: boolean;
-  /**
-   * Backend `user_type` (e.g. `customer`, `astrologer`). When missing, web treats user as customer for home chrome.
-   * Mirrors Flutter `saveUserType(result['user_type'] == 'customer')` used for consultation banner vs astrologer flow.
-   */
-  userType?: string;
-}
+export type { LoginStep, OtpContactType } from "./login-flow";
+export { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "./login-flow";
 
 // --- Prediction ---
 export interface Prediction {
@@ -62,30 +27,14 @@ export interface Prediction {
   isPositive?: boolean;
 }
 
-// --- Panchang ---
-export interface PanchangData {
-  date: string;
-  tithi: string;
-  nakshatra: string;
-  yoga: string;
-  karana: string;
-  sunrise: string;
-  sunset: string;
-  moonrise?: string;
-  moonset?: string;
-}
-
-// --- Horoscope ---
-export interface HoroscopeData {
-  sign: string;
-  date: string;
-  prediction: string;
-  lucky: {
-    color?: string;
-    number?: string;
-    day?: string;
-  };
-}
+export type {
+  PanchangDetail,
+  PanchangKarna,
+  PanchangKarnaArm,
+  PanchangPayload,
+  PanchangSegment,
+  HoroscopePayload,
+} from "./astrology";
 
 // --- Notification ---
 export interface Notification {
@@ -108,3 +57,59 @@ export interface PaginatedResponse<T> {
   page: number;
   pageSize: number;
 }
+
+// --- UI component props (always `.ts`, never co-located in `.tsx`) ---
+export type {
+  BottomNavProps,
+  MainTabViewportBackdropProps,
+  AppHeaderProps,
+  EmptyStateProps,
+  BrandLoginLogoProps,
+  DesktopMainNavProps,
+} from "./ui/common";
+
+export type {
+  ChatBannerProps,
+  ConsultationBannerProps,
+  MatchMakingCardProps,
+  PredictionCirclesProps,
+  DailyPredictionData,
+  DailyPredictionCardProps,
+  HomeDashboardHeaderProps,
+} from "./ui/home";
+
+export type {
+  EmailLoginFormProps,
+  MobileLoginFormProps,
+  OtpInputProps,
+  OtpVerifyViewProps,
+  LoginBackButtonProps,
+} from "./ui/auth";
+
+export type {
+  ProfileDetailsFormState,
+  ProfileDetailsFieldsProps,
+  ProfileDetailsFormProps,
+  ProfileAvatarProps,
+  ProfileFieldProps,
+  ProfilePhoneRowProps,
+  SettingsRowVariant,
+  SettingsRowProps,
+} from "./ui/settings";
+
+export type {
+  HoroscopeChartFrameProps,
+  PanchangDetailViewProps,
+  PanchangDottedRowProps,
+  PanchangPersonalizedSectionsProps,
+  PanchangDateRibbonProps,
+  PanchangBalaPairProps,
+  PanchangSunTimeGridProps,
+  PanchangExtendedTimingCardProps,
+  HoroscopeProfileCardProps,
+  HoroscopeChartVariant,
+  HoroscopeChartToggleProps,
+  HoroscopeLoadedViewProps,
+} from "./ui/panchang-horoscope";
+
+export type { LoaderVariant, LoaderSize, LoaderProps } from "./ui/loader-display";

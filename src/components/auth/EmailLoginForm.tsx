@@ -6,27 +6,23 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import { LOGIN_EMAIL_FORM, LOGIN_EMAIL_REGEX } from "@/lib/constants";
 import { http } from "@/lib/services/http";
-
-const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-
-interface EmailLoginFormProps {
-  onOtpSent: (email: string) => void;
-}
+import type { EmailLoginFormProps } from "@/types";
 
 export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isValid = EMAIL_REGEX.test(email.trim());
+  const isValid = LOGIN_EMAIL_REGEX.test(email.trim());
   const canSubmit = isValid && !isLoading;
 
   function handleChange(value: string) {
     const lower = value.toLowerCase().replace(/\s/g, "");
     setEmail(lower);
-    if (lower && !EMAIL_REGEX.test(lower)) {
-      setError("Enter a valid email address");
+    if (lower && !LOGIN_EMAIL_REGEX.test(lower)) {
+      setError(LOGIN_EMAIL_FORM.invalidEmail);
     } else {
       setError(null);
     }
@@ -41,7 +37,7 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
       await http.post(API_ENDPOINTS.sendOtp, { email: email.trim() });
       onOtpSent(email.trim());
     } catch {
-      setError("Failed to send OTP. Please try again.");
+      setError(LOGIN_EMAIL_FORM.sendOtpError);
     } finally {
       setIsLoading(false);
     }
@@ -52,11 +48,11 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
       <div className="flex flex-col gap-1">
         <Input
           type="email"
-          placeholder="Enter Email"
+          placeholder={LOGIN_EMAIL_FORM.placeholder}
           value={email}
           onChange={(e) => handleChange(e.target.value)}
           autoComplete="email"
-          maxLength={50}
+          maxLength={LOGIN_EMAIL_FORM.maxLength}
           className={cn(
             "h-14 rounded-[14px] border-0 bg-white px-4 text-base font-semibold shadow-sm",
             "ring-1 ring-inset ring-neutral-300 focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]",
@@ -75,16 +71,15 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
         type="submit"
         disabled={!canSubmit}
         className={cn(
-          "h-14 w-full rounded-full text-lg font-medium transition-all",
-          canSubmit
-            ? "bg-[#10B100] text-white hover:bg-[#0ea000]"
-            : "cursor-not-allowed bg-[#E4F0E2] text-[#4a9c45]"
+          "h-14 w-full rounded-full text-lg font-medium",
+          canSubmit && "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
+          !canSubmit && "cursor-not-allowed bg-[var(--login-email-cta-disabled-bg)] text-[var(--login-email-cta-disabled-text)]"
         )}
       >
         {isLoading ? (
           <Loader variant="spinner" size="sm" className="border-t-white" />
         ) : (
-          "Continue"
+          LOGIN_EMAIL_FORM.submitCta
         )}
       </Button>
     </form>

@@ -23,6 +23,16 @@ export const PROFILE_DETAILS = {
   otpLabel: "OTP",
   confirmOtp: "Confirm",
   resentPrompt: "Did not receive a code? Tap Verify again.",
+  notFoundTitle: "Profile not found",
+  notFoundDescription: "Please log in to view your profile.",
+} as const;
+
+export const PROFILE_LAYOUT = {
+  main: "relative z-10 mx-auto w-full max-w-lg px-5 pb-4 pt-5",
+  editButton:
+    "mr-1 px-2 py-2 text-lg font-semibold text-[var(--color-brand-primary)]",
+  errorBanner:
+    "mb-4 text-center text-sm font-semibold text-[var(--color-brand-error)]",
 } as const;
 
 /** Default chat options — align with backend `VALID_LANGUAGES` / Flutter. */

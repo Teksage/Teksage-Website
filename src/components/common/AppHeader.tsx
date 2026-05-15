@@ -1,21 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { APP_NAME } from "@/lib/constants";
-
-interface AppHeaderProps {
-  title?: string;
-  showNotification?: boolean;
-  showBack?: boolean;
-  onBackClick?: () => void;
-  /** Match Flutter settings AppBar: translucent bar over gradient (no solid white strip). */
-  blend?: boolean;
-  /** e.g. Flutter profile AppBar trailing `Edit`. */
-  action?: ReactNode;
-  className?: string;
-}
+import type { AppHeaderProps } from "@/types";
 
 function BellIcon() {
   return (

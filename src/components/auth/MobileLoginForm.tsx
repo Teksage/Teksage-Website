@@ -13,26 +13,30 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import {
+  DEFAULT_COUNTRY_CALLING_CODE,
+  LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS,
+  LOGIN_MOBILE_DIGITS_REGEX,
+  LOGIN_MOBILE_FORM,
+  MOBILE_INPUT_MAX_DIGITS,
+} from "@/lib/constants";
 import { http } from "@/lib/services/http";
-
-interface MobileLoginFormProps {
-  onOtpSent: (mobile: string) => void;
-}
+import type { MobileLoginFormProps } from "@/types";
 
 export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
-  const [countryCode, setCountryCode] = useState("+91");
+  const [countryCode, setCountryCode] = useState<string>(DEFAULT_COUNTRY_CALLING_CODE);
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isValid = /^[1-9]\d{9}$/.test(mobile);
+  const isValid = LOGIN_MOBILE_DIGITS_REGEX.test(mobile);
   const canSubmit = isValid && !isLoading;
 
   function handleMobileChange(value: string) {
-    const digits = value.replace(/\D/g, "").slice(0, 10);
+    const digits = value.replace(/\D/g, "").slice(0, MOBILE_INPUT_MAX_DIGITS);
     setMobile(digits);
-    if (digits && !/^[1-9]\d{9}$/.test(digits)) {
-      setError("Enter a valid 10-digit mobile number");
+    if (digits && !LOGIN_MOBILE_DIGITS_REGEX.test(digits)) {
+      setError(LOGIN_MOBILE_FORM.invalidMobile);
     } else {
       setError(null);
     }
@@ -50,7 +54,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
       });
       onOtpSent(mobile);
     } catch {
-      setError("Failed to send OTP. Please try again.");
+      setError(LOGIN_MOBILE_FORM.sendOtpError);
     } finally {
       setIsLoading(false);
     }
@@ -69,18 +73,21 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
               className="w-full border-none bg-transparent text-sm font-bold outline-none"
-              aria-label="Country code"
+              aria-label={LOGIN_MOBILE_FORM.countryCodeAria}
             >
-              <option value="+91">+91</option>
-              <option value="+1">+1</option>
+              {LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.map((o) => (
+                <option key={o.dial} value={o.dial}>
+                  {o.label}
+                </option>
+              ))}
             </select>
           </div>
           <Input
             type="tel"
-            placeholder="Enter Mobile Number"
+            placeholder={LOGIN_MOBILE_FORM.placeholder}
             value={mobile}
             onChange={(e) => handleMobileChange(e.target.value)}
-            maxLength={10}
+            maxLength={MOBILE_INPUT_MAX_DIGITS}
             inputMode="numeric"
             className={cn(
               "h-14 flex-1 rounded-[14px] border-neutral-300 bg-white px-4 text-base font-semibold shadow-sm ring-1 ring-inset ring-neutral-300 focus-visible:ring-0",
@@ -101,16 +108,16 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
         type="submit"
         disabled={!canSubmit}
         className={cn(
-          "h-14 w-full rounded-full text-lg font-medium transition-all",
-          canSubmit
-            ? "bg-[#10B100] text-white hover:bg-[#0ea000]"
-            : "cursor-not-allowed bg-[#E4F0E2] text-[#4a9c45]"
+          "h-14 w-full rounded-full text-lg font-medium",
+          canSubmit && "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
+          !canSubmit &&
+            "cursor-not-allowed bg-[var(--login-email-cta-disabled-bg)] text-[var(--login-email-cta-disabled-text)]"
         )}
       >
         {isLoading ? (
           <Loader variant="spinner" size="sm" className="border-t-white" />
         ) : (
-          "Continue"
+          LOGIN_MOBILE_FORM.submitCta
         )}
       </Button>
     </form>

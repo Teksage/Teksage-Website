@@ -40,6 +40,18 @@
   --color-brand-weekly: #61CC95;
   --color-brand-panchang: #229716;
   --color-brand-horoscope-bg: #BAE8B5;
+  --color-horoscope-north-watermark: #97d492;
+  --color-panchang-hero-top: #0b121a;
+  --color-panchang-hero-bottom: #7ca2b9;
+  /* Panchang white cards — mirrors `colorConstant.dart` + `panchangPage.dart` (see `COLORS.panchangRowDivider`, `COLORS.panchangCardMutedText`). */
+  --color-panchang-row-divider: rgb(0 0 0 / 0.3);
+  --color-panchang-card-muted-text: rgb(0 0 0 / 0.6);
+  --horoscope-chart-iframe-min-h: 260px;
+  /** Top green band — Flutter `horoscopePage.dart` `responsiveHeight(0.4226)` (viewport, not document %). */
+  --horoscope-green-band-height: 42.26vh;
+  --brand-login-max-display: 280px;
+  --login-email-cta-disabled-bg: #e4f0e2;
+  --login-email-cta-disabled-text: #4a9c45;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -154,7 +166,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[var(--color-brand-bg)] text-foreground;
   }
 
   html {
@@ -173,5 +185,28 @@
         color-mix(in srgb, var(--color-home-screen-mint) 88%, white) 0%,
         color-mix(in srgb, var(--color-home-screen-mint) 45%, white) 42%,
         rgb(255 255 255) 88%);
+  }
+
+  /**
+   * Horoscope tab — `horoscopePage.dart`: green band ~42% viewport (`responsiveHeight(0.4226)`),
+   * then `horoscopeLightBg` (#BAE8B5). Shell height follows content (no `min-h-dvh` stretch).
+   */
+  .horoscope-split-shell-bg {
+    background-color: var(--color-brand-horoscope-bg);
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-brand-panchang) 0,
+      var(--color-brand-panchang) var(--horoscope-green-band-height),
+      var(--color-brand-horoscope-bg) var(--horoscope-green-band-height),
+      var(--color-brand-horoscope-bg) 100%
+    );
+  }
+}
+
+/** Desktop: shorter hero band + taller charts (mobile keeps viewport-based band). */
+@media (min-width: 1024px) {
+  :root {
+    --horoscope-green-band-height: 10.5rem;
+    --horoscope-chart-iframe-min-h: 300px;
   }
 }
