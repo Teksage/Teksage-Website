@@ -13,7 +13,12 @@ export const PAGE_SHELL = {
   contentLayer: "relative z-10",
   contentBottomPad: "pb-4",
   loadingCenter: "flex items-center justify-center py-24",
+  /** Flutter prediction / match screens — edge-to-edge in the main pane (no `max-w-lg` letterboxing). */
+  flutterFullBleed: "w-full min-w-0 max-w-none px-0 py-0",
 } as const;
+
+/** Life tab — opaque gradient (`colorConstant.dart` lifeTopGradient / lifeBottomGradient). */
+export const LIFE_SHELL_GRADIENT_CLASS = "bg-gradient-to-b from-[#9754f6] to-[#abaedb]";
 
 /** Fixed viewport fills — tab backgrounds under floating bottom nav (`extendBody`). */
 export const MAIN_TAB_VIEWPORT_BACKDROP = {
@@ -25,4 +30,7 @@ export const MAIN_TAB_VIEWPORT_BACKDROP = {
   horoscopeSplit: "horoscope-split-shell-bg",
   settings: SETTINGS_SHELL_GRADIENT_CLASS,
   profile: "bg-background",
+  yearly: "yearly-shell-gradient",
+  life: LIFE_SHELL_GRADIENT_CLASS,
+  matchMaking: "match-details-body-gradient",
 } as const;

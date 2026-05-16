@@ -91,6 +91,16 @@ export const COLORS = {
   tooltipYellow: "#FEDF30",
   tooltipDark: "#1E1E1E",
   weeklyLoader: "#00B17F",
+
+  // Daily prediction screen — `predictionContainer.dart` header strips
+  dailyDesktopCareerHeader: "#E2EAFB",
+  dailyDesktopRelationshipHeader: "#FFEAF8",
+  dailyDesktopWealthHeader: "#FBEEE2",
+  dailyDesktopHealthHeader: "#E6E2FB",
+  dailyDesktopConsultBannerMid: "#7CB342",
+  /** Flutter `balaContainer.dart` Chandra 8. */
+  dailyChandrashtama: "#FF3232",
+  dailyChandrashtamaBg: "#FFE0E0",
 } as const;
 
 export type ColorKey = keyof typeof COLORS;

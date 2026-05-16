@@ -7,6 +7,7 @@ import {
   fetchNotifications,
   type DailyPredictionSummary,
 } from "@/lib/services/home";
+import { checkMatchMakingExists } from "@/lib/services/match-making";
 import type { Notification } from "@/types";
 
 export function useDashboard() {
@@ -15,6 +16,7 @@ export function useDashboard() {
     useState<DailyPredictionSummary | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isFetched, setIsFetched] = useState(false);
+  const [hasExistingMatch, setHasExistingMatch] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Derive loading: authenticated but haven't fetched yet
@@ -24,11 +26,16 @@ export function useDashboard() {
   useEffect(() => {
     if (!isAuthenticated) return;
     let cancelled = false;
-    Promise.all([fetchDailyPredictionSummary(), fetchNotifications()])
-      .then(([prediction, notifs]) => {
+    Promise.all([
+      fetchDailyPredictionSummary(),
+      fetchNotifications(),
+      checkMatchMakingExists().catch(() => false),
+    ])
+      .then(([prediction, notifs, hasMatch]) => {
         if (!cancelled) {
           setDailyPrediction(prediction);
           setNotifications(notifs);
+          setHasExistingMatch(hasMatch);
           setIsFetched(true);
         }
       })
@@ -49,5 +56,6 @@ export function useDashboard() {
     unreadCount,
     isLoading,
     error,
+    hasExistingMatch,
   };
 }

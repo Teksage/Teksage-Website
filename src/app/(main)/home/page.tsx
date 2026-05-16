@@ -20,6 +20,7 @@ export default function HomePage() {
     unreadCount,
     isLoading,
     error: dashboardError,
+    hasExistingMatch,
   } = useDashboard();
 
   const greeting = user?.name ? `Good day ${user.name}!` : "Good day!";
@@ -69,7 +70,10 @@ export default function HomePage() {
               "lg:items-stretch"
             )}
           >
-            <MatchMakingCard isLoggedIn={isAuthenticated} />
+            <MatchMakingCard
+              isLoggedIn={isAuthenticated}
+              hasExistingMatch={hasExistingMatch}
+            />
             <DailyPredictionCard
               data={dailyPrediction ?? undefined}
               isLoading={isLoading}

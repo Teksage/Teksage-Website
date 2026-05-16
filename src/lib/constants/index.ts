@@ -21,6 +21,12 @@ export * from "./login-email-form";
 export * from "./login-mobile-form";
 export * from "./login-screen";
 export * from "./otp-verify-screen";
+export * from "./prediction-detail-screen";
+export * from "./prediction-assets";
+export * from "./prediction-screen-copy";
+export * from "./weekly-prediction-layout";
+export * from "./yearly-prediction-screen";
+export * from "./match-making-screen";
 export * from "./page-shell";
 
 // App-wide string/number constants

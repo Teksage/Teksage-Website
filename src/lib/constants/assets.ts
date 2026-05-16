@@ -45,6 +45,20 @@ export const DASHBOARD_ASSETS = {
   navSettingsOff: flutterSvg("unSelectSetting.svg"),
 } as const;
 
+/** Daily prediction — `dailyPrediction.dart`, `predictionContainer.dart`, `imageConstant.dart`. */
+export const DAILY_PREDICTION_ASSETS = {
+  /** Green hero + arc ellipses (`predictionTopBg.svg`). */
+  topBg: flutterSvg("predictionTopBg.svg"),
+  appBarBack: flutterSvg("appBarBackButton.svg"),
+  toolTip: flutterSvg("toolTip.svg"),
+  career: flutterSvg("career.svg"),
+  relationship: flutterSvg("relationship.svg"),
+  wealth: flutterSvg("wealth.svg"),
+  health: flutterSvg("health.svg"),
+  /** Bala column separator (`divider_daily.svg`). */
+  balaDivider: flutterSvg("divider_daily.svg"),
+} as const;
+
 /** Premium Personalized Panchang — `panchangPage.dart` + `imageConstant.dart`. */
 export const PANCHANG_ASSETS = {
   /**

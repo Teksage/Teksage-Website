@@ -26,12 +26,48 @@
   --color-home-dashboard-rule: rgb(0 0 0 / 0.30);
   --color-daily-green-from: #0da602;
   --color-daily-green-to: rgb(16 177 0 / 0.75);
+  /* Daily prediction — desktop category headers (see `COLORS.dailyDesktop*` in `colors.ts`) */
+  --color-daily-desktop-career-header: #e2eafb;
+  --color-daily-desktop-relationship-header: #ffeaf8;
+  --color-daily-desktop-wealth-header: #fbeee2;
+  --color-daily-desktop-health-header: #e6e2fb;
+  --color-daily-desktop-consult-mid: #7cb342;
+  --color-daily-chandrashtama: #ff3232;
+  --color-daily-chandrashtama-bg: #ffe0e0;
+  /* Weekly — `weeklyPrediction.dart` + `colorConstant.dart` */
+  --color-weekly-hero-from: #00b17f;
+  --color-weekly-hero-to: rgb(0 177 94 / 0);
+  --color-weekly-card-header: #61cc95;
+  --color-weekly-badge-positive: #30569f;
+  /* Match making — `matchMakingPage.dart` */
+  --color-match-top: #f78c8c;
+  --color-match-bottom: #ffe1d4;
+  --color-match-head: #ffebeb;
+  --color-match-button-text: #fc5d59;
+  --color-match-fab: #fc9c96;
+  /* Life detail card — `colorConstant.dart` */
+  --color-life-container: #d9cbf6;
+  --color-life-title-text: #4933bd;
   --color-brand-match-card-peach: #ffe1d4;
   --color-brand-match-pink-soft: #ffb3c0;
   --color-brand-match-orange-soft: #ff8b84;
   --color-brand-match-red: #fc5d59;
   --color-yearly-top: #ef8b8b;
   --color-yearly-bottom: #e8da8c;
+  --color-yearly-prediction-button-text: #ca5b5b;
+  --color-yearly-card-bg: #fff7c8;
+  --yearly-landing-deco-w: 72.27vw;
+  --yearly-landing-deco-max: 18.125rem;
+  --yearly-landing-logo: 4.5rem;
+  --yearly-landing-back-top: 6.41%;
+  --yearly-landing-hero-top: 13.31%;
+  --yearly-landing-title-top: 47.42%;
+  --yearly-landing-description-top: 53.21%;
+  --yearly-landing-button-top: 75%;
+  --yearly-landing-inset-x: 1.25rem;
+  /** Matches `HOME_LAYOUT.bottomNavClearance` — floating nav + safe area. */
+  --main-bottom-nav-clearance: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+  --color-life-prediction-button-text: #54469d;
   --color-life-top: #9754f6;
   --color-life-bottom: #abaedb;
   --color-brand-banner-dark: #100C0D;
@@ -200,6 +236,88 @@
       var(--color-brand-horoscope-bg) var(--horoscope-green-band-height),
       var(--color-brand-horoscope-bg) 100%
     );
+  }
+
+  /** Yearly / life prediction tabs — gradient under floating bottom nav. */
+  .match-details-body-gradient {
+    background: linear-gradient(
+      180deg,
+      #faaba6 0%,
+      var(--color-brand-match-red) 100%
+    );
+  }
+
+  .match-details-hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgb(247 140 140 / 0.5) 0%,
+      rgb(255 225 212 / 0.5) 100%
+    );
+  }
+
+  .match-ring-pulse {
+    animation: match-ring-pulse 1s ease-in-out infinite alternate;
+  }
+
+  .yearly-shell-gradient {
+    background: linear-gradient(
+      180deg,
+      var(--color-yearly-top) 15.98%,
+      var(--color-yearly-bottom) 76.85%
+    );
+  }
+
+  .life-shell-gradient {
+    background: linear-gradient(180deg, #9754f6 15.98%, #abaedb 76.85%);
+  }
+
+  .prediction-rotate-slow {
+    animation: prediction-rotate 8s linear infinite;
+  }
+
+  .prediction-rotate-landing {
+    animation: prediction-rotate 15s linear infinite;
+  }
+
+  .prediction-slide-up {
+    animation: prediction-slide-up 0.8s ease-out both;
+  }
+
+  .prediction-slide-up-delay {
+    animation: prediction-slide-up 0.8s ease-out 0.1s both;
+  }
+
+  .prediction-slide-up-btn {
+    animation: prediction-slide-up 0.8s ease-out 0.2s both;
+  }
+}
+
+@keyframes match-ring-pulse {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes prediction-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prediction-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

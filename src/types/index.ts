@@ -113,3 +113,22 @@ export type {
 } from "./ui/panchang-horoscope";
 
 export type { LoaderVariant, LoaderSize, LoaderProps } from "./ui/loader-display";
+
+export type {
+  PredictionDetailKind,
+  PredictionDetailViewModel,
+  DailyPredictionDetail,
+  DailyPredictionBodyProps,
+  WeeklyPredictionDetail,
+  StructuredPredictionDetail,
+  WeeklyDayPrediction,
+} from "./prediction-detail";
+
+export type {
+  CompatibilityFormValues,
+  MatchMakingExisting,
+  MatchMakingResult,
+  MatchMakingKutaRow,
+  RashiOption,
+  NakshatraOption,
+} from "./match-making";
