@@ -24,7 +24,7 @@ export function MatchMakingDetailsFab({
           onClick={() => setOpen(false)}
         />
       ) : null}
-      <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-5 z-50 flex flex-col items-end gap-3 lg:bottom-8">
+      <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-5 z-50 flex flex-col items-end gap-3 lg:hidden">
         {open ? (
           <div className="rounded-2xl bg-white/95 p-4 shadow-lg backdrop-blur-sm">
             <button

@@ -1,5 +1,6 @@
 import { YEARLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
-import { YEARLY_LAYOUT } from "@/lib/constants/yearly-prediction-screen";
+import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
+import { cn } from "@/lib/utils";
 import type { YearlyCategorizedPrediction } from "@/types/prediction-yearly";
 
 const ICONS: Record<keyof YearlyCategorizedPrediction, string> = {
@@ -20,8 +21,10 @@ export function YearlyOverviewCard({
 }) {
   return (
     <article
-      className="flex shrink-0 flex-col items-center rounded-[1.125rem] bg-[var(--color-yearly-card-bg)] px-6 py-8 text-center"
-      style={{ width: YEARLY_LAYOUT.horizontalCardWidth }}
+      className={cn(
+        "flex shrink-0 flex-col items-center rounded-[1.125rem] bg-[var(--color-yearly-card-bg)] px-6 py-8 text-center",
+        PREDICTION_DESKTOP_LAYOUT.horizontalCardWidth
+      )}
     >
       <img src={ICONS[field]} alt="" className="h-14 w-14" />
       <h3 className="mt-5 text-[1.375rem] font-bold leading-tight text-[var(--color-brand-black)]">

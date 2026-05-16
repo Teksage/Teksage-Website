@@ -30,7 +30,7 @@ export function MatchMakingPartnerColumn({
       };
 
   return (
-    <div className="flex flex-1 flex-col items-center gap-3">
+    <div className="flex w-[46%] max-w-[9.5rem] shrink-0 flex-col items-center gap-3 lg:w-[9.5rem]">
       <img src={labels.icon} alt="" className="h-12 w-12" />
       <MatchMakingDashedLine />
       <DetailBlock label={labels.name} value={name} />

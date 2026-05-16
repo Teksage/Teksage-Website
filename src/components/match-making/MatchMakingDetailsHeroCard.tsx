@@ -13,15 +13,15 @@ export function MatchMakingDetailsHeroCard({ data }: { data: MatchMakingExisting
       <img
         src={MATCH_MAKING_ASSETS.matchTopDeco}
         alt=""
-        className="pointer-events-none absolute left-1/3 right-0 top-0 w-half "
+        className="pointer-events-none absolute left-1/2 top-0 w-[min(12rem,42%)] -translate-x-1/2"
       />
       <img
         src={MATCH_MAKING_ASSETS.bigRing}
         alt=""
-        className="match-ring-pulse pointer-events-none absolute left-1/2 top-2 w-[55%] max-w-[2rem] -translate-x-1/2"
+        className="match-ring-pulse pointer-events-none absolute left-1/2 top-2 w-[min(4.5rem,24%)] max-w-[4.5rem] -translate-x-1/2"
       />
-      <div className="relative z-10 px-4 pt-20">
-        <div className="flex gap-3">
+      <div className="relative z-10 px-4 pt-20 lg:px-6">
+        <div className="mx-auto flex w-full max-w-[22rem] justify-between gap-4 sm:max-w-md lg:max-w-lg lg:justify-center lg:gap-14">
           <MatchMakingPartnerColumn
             variant="boy"
             name={data.boyName}
@@ -35,7 +35,7 @@ export function MatchMakingDetailsHeroCard({ data }: { data: MatchMakingExisting
             nakshatra={data.girlNakshatra}
           />
         </div>
-        <MatchMakingDashedLine className="my-4" />
+        <MatchMakingDashedLine className="mx-auto my-4 max-w-md" />
         <p className="text-center text-[clamp(1.75rem,6vw,2.25rem)] font-semibold text-[var(--color-brand-black)]">
           {gained}/{maxScore}
         </p>

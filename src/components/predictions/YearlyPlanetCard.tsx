@@ -1,9 +1,10 @@
 import { YEARLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
+import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
 import {
   YEARLY_DETAIL_SCREEN,
-  YEARLY_LAYOUT,
   type YearlyPlanetKey,
 } from "@/lib/constants/yearly-prediction-screen";
+import { cn } from "@/lib/utils";
 import type { YearlyPlanetDetails } from "@/types/prediction-yearly";
 
 export function YearlyPlanetCard({
@@ -20,8 +21,10 @@ export function YearlyPlanetCard({
 
   return (
     <article
-      className="relative shrink-0 overflow-hidden rounded-[1.125rem] bg-[var(--color-yearly-card-bg)]"
-      style={{ width: YEARLY_LAYOUT.horizontalCardWidth }}
+      className={cn(
+        "relative shrink-0 overflow-hidden rounded-[1.125rem] bg-[var(--color-yearly-card-bg)]",
+        PREDICTION_DESKTOP_LAYOUT.horizontalCardWidth
+      )}
     >
       <img
         src={YEARLY_PREDICTION_ASSETS.cardDeco}

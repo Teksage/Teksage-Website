@@ -14,6 +14,7 @@ export function YearlyHorizontalTrack({
         "flex gap-2.5 overflow-x-auto pb-1",
         YEARLY_LAYOUT.horizontalTrackInset,
         "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "lg:grid lg:grid-cols-2 lg:gap-4 lg:overflow-visible lg:pl-0 xl:grid-cols-3",
         className
       )}
     >

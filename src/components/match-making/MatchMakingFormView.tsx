@@ -9,6 +9,7 @@ import { MatchMakingPartnerSection } from "@/components/match-making/MatchMaking
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
+import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
 import { buildLoginRedirectPath } from "@/lib/login-redirect";
 import { cn } from "@/lib/utils";
 import {
@@ -106,7 +107,13 @@ export function MatchMakingFormView() {
         "min-h-dvh bg-[linear-gradient(180deg,var(--color-match-top)_0%,var(--color-match-bottom)_100%)]"
       )}
     >
-      <header className="relative px-5 pb-2 pt-10 text-center text-white">
+      <header
+        className={cn(
+          "relative pb-2 pt-10 text-center text-white",
+          PREDICTION_DESKTOP_LAYOUT.contentColumn,
+          PREDICTION_DESKTOP_LAYOUT.contentGutter
+        )}
+      >
         <button
           type="button"
           onClick={() => router.back()}
@@ -119,10 +126,18 @@ export function MatchMakingFormView() {
         <p className="mt-2 text-sm font-medium">{MATCH_MAKING_SCREEN.subtitle}</p>
       </header>
 
-      <form onSubmit={(e) => void onSubmit(e)} className="flex flex-col gap-4 px-5 pb-12 pt-6">
+      <form
+        onSubmit={(e) => void onSubmit(e)}
+        className={cn(
+          "flex flex-col gap-4 pb-12 pt-6",
+          PREDICTION_DESKTOP_LAYOUT.contentColumn,
+          PREDICTION_DESKTOP_LAYOUT.contentGutter
+        )}
+      >
         {err ? (
           <p className="text-center text-sm font-semibold text-white">{err}</p>
         ) : null}
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
         <MatchMakingPartnerSection
           variant="boy"
           name={boyName}
@@ -151,6 +166,7 @@ export function MatchMakingFormView() {
           rashiList={rashi}
           nakshatraList={girlNaks}
         />
+        </div>
         <button
           type="submit"
           disabled={busy}

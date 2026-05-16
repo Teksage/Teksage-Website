@@ -5,9 +5,9 @@ import { YearlyCategorizedRow } from "@/components/predictions/YearlyCategorized
 import { YearlyDashedDivider } from "@/components/predictions/YearlyDashedDivider";
 import { YearlyPlanetTransitsRow } from "@/components/predictions/YearlyPlanetTransitsRow";
 import { YearlyRemediesRow } from "@/components/predictions/YearlyRemediesRow";
-import { HOME_DASHBOARD } from "@/lib/constants/home-dashboard";
 import { ROUTES } from "@/lib/constants/routes";
 import { YEARLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
+import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
 import { YEARLY_DETAIL_SCREEN } from "@/lib/constants/yearly-prediction-screen";
 import { cn } from "@/lib/utils";
 import type { YearlyPredictionDetail } from "@/types/prediction-yearly";
@@ -33,13 +33,22 @@ export function YearlyPredictionLayout({
 
   return (
     <div className="min-h-dvh w-full min-w-0 pb-[var(--main-bottom-nav-clearance)] lg:pb-14">
-      <div className="mx-auto w-full max-w-none pb-14">
-        <div className="relative px-3 pt-6">
-          <button type="button" onClick={onBackClick} className="p-2" aria-label="Go back">
-            <img src={YEARLY_PREDICTION_ASSETS.appBarBack} alt="" className="h-5 w-5" />
-          </button>
-          <div className="pointer-events-none flex justify-center">
-            <img src={YEARLY_PREDICTION_ASSETS.decoLogo} alt="" className="size-14" />
+      <div
+        className={cn(
+          PREDICTION_DESKTOP_LAYOUT.contentColumn,
+          PREDICTION_DESKTOP_LAYOUT.contentGutter,
+          "pb-14"
+        )}
+      >
+        <div className="relative pt-6 lg:pt-8">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center px-1">
+            <button type="button" onClick={onBackClick} className="p-2" aria-label="Go back">
+              <img src={YEARLY_PREDICTION_ASSETS.appBarBack} alt="" className="h-5 w-5" />
+            </button>
+            <div className="pointer-events-none flex justify-center">
+              <img src={YEARLY_PREDICTION_ASSETS.decoLogo} alt="" className="size-14 lg:size-16" />
+            </div>
+            <span className="size-9" aria-hidden />
           </div>
         </div>
 
@@ -83,13 +92,13 @@ export function YearlyPredictionLayout({
           <YearlyRemediesRow remedies={data.remedies} />
         </section>
 
-        <div className="mt-10 space-y-4 px-5">
+        <div className={cn("mt-10", PREDICTION_DESKTOP_LAYOUT.stackedCtaColumn)}>
           <button
             type="button"
             disabled={regenerating}
             onClick={onRegenerate}
             className={cn(
-              "w-full rounded-[1.25rem] bg-white py-3 text-lg font-semibold",
+              PREDICTION_DESKTOP_LAYOUT.detailCtaButton,
               "text-[var(--color-yearly-prediction-button-text)] disabled:opacity-70"
             )}
           >
@@ -97,9 +106,12 @@ export function YearlyPredictionLayout({
           </button>
           <Link
             href={ROUTES.consultation}
-            className="block w-full rounded-[1.25rem] bg-white py-3 text-center text-lg font-semibold text-[var(--color-yearly-prediction-button-text)]"
+            className={cn(
+              PREDICTION_DESKTOP_LAYOUT.detailCtaButton,
+              "text-[var(--color-yearly-prediction-button-text)]"
+            )}
           >
-            {HOME_DASHBOARD.astrologerConsultation}
+            {YEARLY_DETAIL_SCREEN.consultCta}
           </Link>
         </div>
       </div>

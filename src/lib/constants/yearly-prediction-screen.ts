@@ -20,6 +20,7 @@ export const YEARLY_DETAIL_SCREEN = {
   remedies: "Remedies",
   regenerateCta: "Regenerate",
   regenerating: "Regenerating…",
+  consultCta: "Astrology Consultation",
   infoTooltip:
     "Insights reflect information you've provided in your profile.",
   firstHalfPrefix: "First Half of",
