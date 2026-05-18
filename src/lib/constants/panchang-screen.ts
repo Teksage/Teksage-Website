@@ -95,7 +95,7 @@ export const PANCHANG_LAYOUT = {
   infoDialogClose: "rounded-full",
   /** Non‑premium gate — Flutter `emptyPanchangPage.dart` starfield + centered upsell. */
   premiumGateRoot:
-    "relative flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden",
+    "relative flex min-h-dvh w-full flex-col overflow-hidden lg:min-h-dvh",
   premiumGateBackdrop: "pointer-events-none absolute inset-0",
   premiumGateDesktopMint:
     "absolute inset-0 hidden bg-[var(--color-brand-horoscope-bg)] lg:block",

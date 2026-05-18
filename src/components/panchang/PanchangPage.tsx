@@ -31,7 +31,7 @@ export function PanchangPage() {
       className={cn(
         PAGE_SHELL.column,
         showPremiumGate
-          ? "relative flex h-full min-h-0 flex-1 flex-col"
+          ? "relative flex min-h-dvh flex-col"
           : cn(PAGE_SHELL.root, !showPersonalizedShell && "flex flex-col")
       )}
     >
@@ -69,7 +69,7 @@ export function PanchangPage() {
               }
             />
           ) : showPremiumGate ? (
-            <PanchangPremiumGate className="min-h-0 flex-1" />
+            <PanchangPremiumGate />
           ) : isLoading ? (
             <div className={PAGE_SHELL.loadingCenter}>
               <Loader variant="dots" size="lg" />
