@@ -21,6 +21,15 @@
   --color-brand-consultation-heading: #3a3b00;
   --color-home-screen-mint: #c6e7b9;
   --color-ai-chat-icon: #2e8b1e;
+  --color-chat-shell: #ffffff;
+  --color-chat-composer-bg: #e3f8e1;
+  --color-chat-user-bubble: #f5f5f5;
+  --color-chat-user-text: var(--color-brand-black);
+  --color-chat-user-avatar-bg: #e8f5e6;
+  --color-chat-bot-bubble: var(--color-brand-primary);
+  --color-chat-bot-text: #ffffff;
+  /** Flutter `chatBG.png` — use via `.chat-shell-bg` (do not use dynamic Tailwind `bg-[url(...)]`). */
+  --chat-shell-bg-image: url("/flutter-assets/images/chatBG.png");
   --color-brand-black: #000000;
   --color-home-dashboard-heading: var(--color-brand-black);
   --color-home-dashboard-rule: rgb(0 0 0 / 0.30);
@@ -318,6 +327,28 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .chat-shell-bg {
+    background-image: var(--chat-shell-bg-image);
+  }
+
+  .chat-avatar-sheet-seeker {
+    background: linear-gradient(180deg, #10b100 0%, #ffffff 55%);
+  }
+
+  .chat-avatar-sheet-luminary {
+    background: linear-gradient(180deg, #93b100 0%, #ffffff 55%);
+  }
+
+  .chat-avatar-sheet-guardian {
+    background: linear-gradient(180deg, #0085b1 0%, #ffffff 55%);
+  }
+
+  .chat-avatar-sheet-pathfinder {
+    background: linear-gradient(180deg, #00b18e 0%, #ffffff 55%);
   }
 }
 

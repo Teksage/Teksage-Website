@@ -125,6 +125,14 @@ export type {
 } from "./prediction-detail";
 
 export type {
+  ChatMessage,
+  ChatUserMessage,
+  ChatAssistantMessage,
+  ChatHistoryRecord,
+  ChatPreferencePayload,
+} from "./chat";
+
+export type {
   CompatibilityFormValues,
   MatchMakingExisting,
   MatchMakingResult,

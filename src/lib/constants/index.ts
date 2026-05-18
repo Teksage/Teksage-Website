@@ -29,6 +29,8 @@ export * from "./yearly-prediction-screen";
 export * from "./match-making-screen";
 export * from "./page-shell";
 export * from "./prediction-desktop-layout";
+export * from "./chat-screen";
+export * from "./chat-assets";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";

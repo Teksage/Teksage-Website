@@ -1,0 +1,57 @@
+import Image from "next/image";
+import Link from "next/link";
+import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
+import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+
+/** Flutter `ChatBanner(fromChat: true)` — full-bleed strip under green app bar. */
+export function ChatConsultBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
+  const href = isLoggedIn ? ROUTES.consultation : ROUTES.login;
+
+  return (
+    <div
+      className={cn(
+        "relative isolate w-full min-w-0 overflow-hidden",
+        HOME_LAYOUT.homeBannerStripMinH,
+        "border-y-2 border-[var(--color-brand-banner-border)]",
+        "bg-[var(--color-brand-banner)]"
+      )}
+    >
+      <Image
+        src={DASHBOARD_ASSETS.bannerDeco}
+        alt=""
+        width={800}
+        height={400}
+        sizes="100vw"
+        unoptimized
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-contain object-left opacity-[0.55]"
+      />
+      <div
+        className={cn(
+          "relative z-10 flex w-full items-center justify-evenly gap-2 px-3 py-2",
+          HOME_LAYOUT.homeBannerStripMinH
+        )}
+      >
+        <div className="relative flex shrink-0 self-end pt-2 pl-2">
+          <Image
+            src={DASHBOARD_ASSETS.consultationAstrologer}
+            alt=""
+            width={88}
+            height={112}
+            unoptimized
+            className="h-auto max-h-[4.75rem] w-auto max-w-[4.5rem] object-contain object-bottom"
+          />
+        </div>
+        <p className="min-w-0 flex-1 text-center text-sm font-bold leading-snug text-[var(--color-brand-consultation-heading)] sm:text-base">
+          {CHAT_SCREEN.consultBannerTitle}
+        </p>
+        <Link
+          href={href}
+          className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[var(--color-brand-banner-dark)] shadow-sm"
+        >
+          {HOME_DASHBOARD.bookNow}
+        </Link>
+      </div>
+    </div>
+  );
+}

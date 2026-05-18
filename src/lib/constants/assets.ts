@@ -32,6 +32,12 @@ export const DASHBOARD_ASSETS = {
   chatBannerElement: flutterSvg("bannerElement.svg"),
   /** Flutter `rightArrow.svg` inside white “Chat Now” pill. */
   chatStripArrow: flutterSvg("rightArrow.svg"),
+  chatBackground: flutterImage("chatBG.png"),
+  chatBotLogo: flutterSvg("botLogo.svg"),
+  chatSend: flutterSvg("send.svg"),
+  chatMic: flutterSvg("mic.svg"),
+  chatStyleIcon: flutterSvg("chatStyle.svg"),
+  chatAvatarIcon: flutterSvg("chatAvatar.svg"),
   /** Flutter `panchangBG` — non‑premium Panchang tab hero (`emptyPanchangPage.dart`). */
   panchangHero: flutterImage("panchangBG.png"),
   notification: flutterSvg("notification.svg"),
