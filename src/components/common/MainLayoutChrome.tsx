@@ -10,9 +10,7 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
-  const isPanchangRoute =
-    pathname === ROUTES.panchang || pathname.startsWith(`${ROUTES.panchang}/`);
-  const isFullHeightPane = isChatRoute || isHomeRoute || isPanchangRoute;
+  const isFullHeightPane = isChatRoute || isHomeRoute;
 
   return (
     <div className="flex min-h-screen bg-transparent">
