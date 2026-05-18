@@ -3,34 +3,61 @@
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import {
+  PANCHANG_ASSETS,
+  PANCHANG_LAYOUT,
+  PANCHANG_SCREEN,
+  ROUTES,
+} from "@/lib/constants";
 import { DASHBOARD_ASSETS } from "@/lib/constants/assets";
-import { PANCHANG_SCREEN, ROUTES } from "@/lib/constants";
+import type { PanchangPremiumGateProps } from "@/types";
 import { cn } from "@/lib/utils";
 
-export function PanchangPremiumGate() {
+/** Non‑premium Panchang — starfield backdrop + centered upgrade card (Flutter `emptyPanchangPage.dart`). */
+export function PanchangPremiumGate({ className }: PanchangPremiumGateProps) {
+  const L = PANCHANG_LAYOUT;
+
   return (
-    <div className="flex flex-col">
-      <div className="relative min-h-[50vh] w-full overflow-hidden rounded-b-3xl bg-gradient-to-b from-[var(--color-panchang-hero-top)] to-[var(--color-panchang-hero-bottom)]">
-        <Image
-          src={DASHBOARD_ASSETS.panchangHero}
-          alt=""
-          width={PANCHANG_SCREEN.heroImageWidthPx}
-          height={PANCHANG_SCREEN.heroImageHeightPx}
-          className="h-auto w-full object-cover object-top opacity-90"
-          priority
-        />
+    <div className={cn(L.premiumGateRoot, className)}>
+      <div aria-hidden className={L.premiumGateBackdrop}>
+        <div className={L.premiumGateDesktopMint} />
+        <div className={cn(L.fillLayer, "lg:hidden")}>
+          <div className={L.premiumGateGradient} />
+          <Image
+            src={PANCHANG_ASSETS.personalizedBackground}
+            alt=""
+            fill
+            className={L.imageCover}
+            sizes={L.imageSizes}
+            priority
+          />
+        </div>
+        <div className={L.premiumGateScrim} />
       </div>
-      <div className="flex flex-col gap-3 px-5 py-8 text-center">
-        <h2 className="text-lg font-semibold text-[var(--color-brand-black)]">
-          {PANCHANG_SCREEN.premiumTitle}
-        </h2>
-        <p className="text-sm text-neutral-600">{PANCHANG_SCREEN.premiumDescription}</p>
-        <Link
-          href={ROUTES.settingsSubscriptions}
-          className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
-        >
-          {PANCHANG_SCREEN.subscriptionsCta}
-        </Link>
+
+      <div className={L.premiumGateContent}>
+        <article className={L.premiumGateCard}>
+          <div className={L.premiumGateIconWrap}>
+            <Image
+              src={DASHBOARD_ASSETS.sidebarPremiumCrown}
+              alt=""
+              width={32}
+              height={32}
+              unoptimized
+              className="size-8"
+            />
+          </div>
+          <h2 className={L.premiumGateTitle}>{PANCHANG_SCREEN.premiumTitle}</h2>
+          <p className={L.premiumGateDescription}>{PANCHANG_SCREEN.premiumDescription}</p>
+          <div className={L.premiumGateCtaWrap}>
+            <Link
+              href={ROUTES.settingsSubscriptions}
+              className={cn(buttonVariants({ size: "lg" }), L.premiumGateCta)}
+            >
+              {PANCHANG_SCREEN.upgradeCta}
+            </Link>
+          </div>
+        </article>
       </div>
     </div>
   );

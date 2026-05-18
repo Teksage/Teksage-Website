@@ -24,10 +24,18 @@ export function PanchangPage() {
 
   const showPersonalizedShell =
     isAuthenticated && isPremium && Boolean(data) && !isLoading && !error;
+  const showPremiumGate = isAuthenticated && !isPremium;
 
   return (
-    <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
-      {!showPersonalizedShell ? (
+    <div
+      className={cn(
+        PAGE_SHELL.column,
+        showPremiumGate
+          ? "relative flex h-full min-h-0 flex-1 flex-col"
+          : cn(PAGE_SHELL.root, !showPersonalizedShell && "flex flex-col")
+      )}
+    >
+      {!showPersonalizedShell && !showPremiumGate ? (
         <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.brandGray} />
       ) : null}
       {!showPersonalizedShell ? (
@@ -41,7 +49,12 @@ export function PanchangPage() {
       {showPersonalizedShell && data ? (
         <PanchangDetailView panchang={data.panchang} />
       ) : (
-        <div className={PAGE_SHELL.contentLayer}>
+        <div
+          className={cn(
+            PAGE_SHELL.contentLayer,
+            showPremiumGate && "flex min-h-0 flex-1 flex-col p-0"
+          )}
+        >
           {!isAuthenticated ? (
             <EmptyState
               title={PANCHANG_SCREEN.loginTitle}
@@ -55,8 +68,8 @@ export function PanchangPage() {
                 </Link>
               }
             />
-          ) : !isPremium ? (
-            <PanchangPremiumGate />
+          ) : showPremiumGate ? (
+            <PanchangPremiumGate className="min-h-0 flex-1" />
           ) : isLoading ? (
             <div className={PAGE_SHELL.loadingCenter}>
               <Loader variant="dots" size="lg" />

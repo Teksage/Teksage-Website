@@ -10,6 +10,7 @@ export const PANCHANG_SCREEN = {
   premiumDescription:
     "Subscribe to unlock daily Panchang, auspicious timings, and PDF sharing — same as the Teksage app.",
   subscriptionsCta: "View subscriptions",
+  upgradeCta: "Upgrade Now",
   loadErrorTitle: "Could not load Panchang",
   loadErrorFallback: "Failed to load Panchang.",
   tryAgainCta: "Try again",
@@ -75,7 +76,8 @@ export const PANCHANG_LAYOUT = {
   heroGradient:
     "absolute inset-0 bg-gradient-to-b from-[var(--color-panchang-hero-top)] to-[var(--color-panchang-hero-bottom)]",
   imageCover: "object-cover object-center",
-  imageSizes: "(max-width: 1023px) 100vw, calc(100vw - 13.5rem)",
+  imageSizes:
+    "(max-width: 1023px) 100vw, calc(100vw - var(--desktop-sidebar-width))",
   heroHeader:
     "relative z-10 flex items-center justify-center px-10 pb-2 pt-[min(7.4vh,52px)] text-white lg:px-12 lg:pb-4 lg:pt-10 lg:text-[var(--color-brand-black)]",
   heroTitle:
@@ -91,6 +93,25 @@ export const PANCHANG_LAYOUT = {
   infoDialogBody: "mt-2 text-sm text-neutral-600",
   infoDialogActions: "mt-4 flex justify-end",
   infoDialogClose: "rounded-full",
+  /** Non‑premium gate — Flutter `emptyPanchangPage.dart` starfield + centered upsell. */
+  premiumGateRoot:
+    "relative flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden",
+  premiumGateBackdrop: "pointer-events-none absolute inset-0",
+  premiumGateDesktopMint:
+    "absolute inset-0 hidden bg-[var(--color-brand-horoscope-bg)] lg:block",
+  premiumGateGradient:
+    "absolute inset-0 bg-gradient-to-b from-[var(--color-panchang-hero-top)]/95 to-[var(--color-panchang-hero-bottom)]/90",
+  premiumGateScrim: "absolute inset-0 bg-black/25 lg:bg-black/10",
+  premiumGateContent:
+    "relative z-10 flex flex-1 items-center justify-center px-5 py-8 sm:px-8",
+  premiumGateCard:
+    "w-full max-w-md rounded-3xl border border-white/30 bg-white p-6 text-center shadow-2xl sm:p-8 lg:border-neutral-200/80 lg:shadow-xl",
+  premiumGateIconWrap:
+    "mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-[var(--color-home-screen-mint)]",
+  premiumGateTitle: "text-xl font-bold text-[var(--color-brand-black)] sm:text-2xl",
+  premiumGateDescription: "mt-2 text-sm leading-relaxed text-neutral-600",
+  premiumGateCtaWrap: "mt-6 flex justify-center",
+  premiumGateCta: "min-w-[12rem] rounded-full px-8",
 } as const;
 
 const panchangCardBorder =

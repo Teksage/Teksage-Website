@@ -101,6 +101,7 @@ export type {
 export type {
   HoroscopeChartFrameProps,
   PanchangDetailViewProps,
+  PanchangPremiumGateProps,
   PanchangDottedRowProps,
   PanchangPersonalizedSectionsProps,
   PanchangDateRibbonProps,

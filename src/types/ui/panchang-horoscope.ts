@@ -12,6 +12,10 @@ export interface PanchangDetailViewProps {
   panchang: PanchangDetail;
 }
 
+export interface PanchangPremiumGateProps {
+  className?: string;
+}
+
 export interface PanchangDottedRowProps {
   label: string;
   value?: string;
