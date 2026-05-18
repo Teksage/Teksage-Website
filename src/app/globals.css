@@ -239,30 +239,24 @@
    */
   .horoscope-split-shell-bg {
     background-color: var(--color-brand-horoscope-bg);
-    background-image: linear-gradient(
-      to bottom,
-      var(--color-brand-panchang) 0,
-      var(--color-brand-panchang) var(--horoscope-green-band-height),
-      var(--color-brand-horoscope-bg) var(--horoscope-green-band-height),
-      var(--color-brand-horoscope-bg) 100%
-    );
+    background-image: linear-gradient(to bottom,
+        var(--color-brand-panchang) 0,
+        var(--color-brand-panchang) var(--horoscope-green-band-height),
+        var(--color-brand-horoscope-bg) var(--horoscope-green-band-height),
+        var(--color-brand-horoscope-bg) 100%);
   }
 
   /** Yearly / life prediction tabs — gradient under floating bottom nav. */
   .match-details-body-gradient {
-    background: linear-gradient(
-      180deg,
-      #faaba6 0%,
-      var(--color-brand-match-red) 100%
-    );
+    background: linear-gradient(180deg,
+        #faaba6 0%,
+        var(--color-brand-match-red) 100%);
   }
 
   .match-details-hero-overlay {
-    background: linear-gradient(
-      180deg,
-      rgb(247 140 140 / 0.5) 0%,
-      rgb(255 225 212 / 0.5) 100%
-    );
+    background: linear-gradient(180deg,
+        rgb(247 140 140 / 0.5) 0%,
+        rgb(255 225 212 / 0.5) 100%);
   }
 
   .match-ring-pulse {
@@ -270,11 +264,9 @@
   }
 
   .yearly-shell-gradient {
-    background: linear-gradient(
-      180deg,
-      var(--color-yearly-top) 15.98%,
-      var(--color-yearly-bottom) 76.85%
-    );
+    background: linear-gradient(180deg,
+        var(--color-yearly-top) 15.98%,
+        var(--color-yearly-bottom) 76.85%);
   }
 
   .life-shell-gradient {
@@ -306,6 +298,7 @@
   from {
     transform: scale(0.9);
   }
+
   to {
     transform: scale(1);
   }
@@ -315,6 +308,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -325,6 +319,7 @@
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
