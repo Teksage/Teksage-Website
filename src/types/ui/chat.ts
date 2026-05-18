@@ -10,6 +10,7 @@ export interface ChatComposerProps {
   placeholder: string;
   onMicPress?: () => void;
   preferenceBar?: ReactNode;
+  embedded?: boolean;
 }
 
 export interface ChatMessageListProps {
@@ -67,6 +68,11 @@ export interface ChatAvatarSheetProps {
   initialIndex: number;
   onClose: () => void;
   onConfirm: (index: number) => void;
+}
+
+export interface ChatPageViewProps {
+  /** Home dashboard right panel — hides full-page chrome. */
+  embedded?: boolean;
 }
 
 export interface ChatPreferenceBarProps {

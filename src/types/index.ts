@@ -76,6 +76,7 @@ export type {
   DailyPredictionData,
   DailyPredictionCardProps,
   HomeDashboardHeaderProps,
+  HomeChatPanelProps,
 } from "./ui/home";
 
 export type {

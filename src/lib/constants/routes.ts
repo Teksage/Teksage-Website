@@ -16,6 +16,7 @@ export const ROUTES = {
   chat: "/chat",
   consultation: "/consultation",
   consultationAstrologer: "/consultation/astrologer",
+  predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",
   predictionsYearly: "/predictions/yearly",

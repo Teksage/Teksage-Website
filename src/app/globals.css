@@ -20,6 +20,7 @@
   --color-brand-banner-border: #C8EF54;
   --color-brand-consultation-heading: #3a3b00;
   --color-home-screen-mint: #c6e7b9;
+  --desktop-sidebar-width: 17.5rem;
   --color-ai-chat-icon: #2e8b1e;
   --color-chat-shell: #ffffff;
   --color-chat-composer-bg: #e3f8e1;
@@ -331,6 +332,19 @@
 }
 
 @layer utilities {
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .desktop-sidebar-width {
+    width: var(--desktop-sidebar-width);
+  }
+
   .chat-shell-bg {
     background-image: var(--chat-shell-bg-image);
   }

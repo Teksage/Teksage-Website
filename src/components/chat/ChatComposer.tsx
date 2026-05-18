@@ -13,6 +13,7 @@ export function ChatComposer({
   placeholder,
   onMicPress,
   preferenceBar,
+  embedded = false,
 }: ChatComposerProps) {
   const canSend = Boolean(value.trim()) && !disabled;
 
@@ -21,7 +22,9 @@ export function ChatComposer({
       className={cn(
         CHAT_LAYOUT.composerShell,
         "mt-auto shrink-0 px-5 pt-3",
-        "pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]"
+        embedded
+          ? "pb-2 lg:pb-2"
+          : "pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]"
       )}
     >
       <form

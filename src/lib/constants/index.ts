@@ -6,6 +6,8 @@ export * from "./assets";
 export * from "./home-dashboard";
 export * from "./home-layout";
 export * from "./main-nav";
+export * from "./home-dashboard-sidebar";
+export * from "./desktop-sidebar-nav";
 export * from "./settings-screen";
 export * from "./routes";
 export * from "./default-region";

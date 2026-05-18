@@ -49,6 +49,12 @@ export const DASHBOARD_ASSETS = {
   navHoroscopeOff: flutterSvg("unSelectHoroscope.svg"),
   navSettingsOn: flutterSvg("selectSetting.svg"),
   navSettingsOff: flutterSvg("unSelectSetting.svg"),
+  /** Desktop dashboard sidebar — outline icons (design ref). */
+  sidebarCalendar: flutterSvg("sidebar-calendar.svg"),
+  sidebarFolder: flutterSvg("sidebar-folder.svg"),
+  sidebarMarriage: flutterSvg("sidebar-marriage.svg"),
+  sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
+  sidebarPremiumCrown: flutterSvg("subscription.svg"),
 } as const;
 
 /** Daily prediction — `dailyPrediction.dart`, `predictionContainer.dart`, `imageConstant.dart`. */

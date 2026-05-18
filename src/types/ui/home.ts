@@ -41,3 +41,8 @@ export interface HomeDashboardHeaderProps {
   unreadCount: number;
   className?: string;
 }
+
+export interface HomeChatPanelProps {
+  isLoggedIn: boolean;
+  className?: string;
+}

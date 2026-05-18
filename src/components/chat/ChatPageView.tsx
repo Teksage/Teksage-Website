@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChatAppBar } from "@/components/chat/ChatAppBar";
+import { ChatEmbedHeader } from "@/components/chat/ChatEmbedHeader";
 import { ChatAvatarOnboarding } from "@/components/chat/ChatAvatarOnboarding";
 import { ChatComposer } from "@/components/chat/ChatComposer";
 import { ChatConsultStrip } from "@/components/chat/ChatConsultStrip";
@@ -14,8 +15,9 @@ import { Loader } from "@/components/common/Loader";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { useChat } from "@/hooks/useChat";
 import { useChatPreferences } from "@/hooks/useChatPreferences";
+import type { ChatPageViewProps } from "@/types/ui/chat";
 
-export function ChatPageView() {
+export function ChatPageView({ embedded = false }: ChatPageViewProps) {
   const listEndRef = useRef<HTMLDivElement>(null);
   const [composerPlaceholder, setComposerPlaceholder] = useState<string>(
     CHAT_SCREEN.composerPlaceholder
@@ -71,6 +73,10 @@ export function ChatPageView() {
 
   const showMicNotice = () => showToast(CHAT_SCREEN.micComingSoon);
 
+  const shellClass = embedded
+    ? "relative flex h-full min-h-0 w-full flex-col bg-[var(--color-chat-shell)]"
+    : CHAT_LAYOUT.pageRoot;
+
   const preferenceBar = (
     <ChatPreferenceBar
       styleFormat={prefs.styleFormat}
@@ -94,7 +100,7 @@ export function ChatPageView() {
 
   if (!prefs.hydrated) {
     return (
-      <div className={CHAT_LAYOUT.pageRoot}>
+      <div className={shellClass}>
         <div className="flex flex-1 items-center justify-center py-16">
           <Loader />
         </div>
@@ -117,14 +123,14 @@ export function ChatPageView() {
   }
 
   return (
-    <div className={CHAT_LAYOUT.pageRoot}>
+    <div className={shellClass}>
       <div
         className="chat-shell-bg pointer-events-none absolute inset-0 bg-cover bg-center opacity-40"
         aria-hidden
       />
 
-      <ChatAppBar />
-      <ChatConsultStrip />
+      {embedded ? <ChatEmbedHeader /> : <ChatAppBar />}
+      {embedded ? null : <ChatConsultStrip />}
 
       {toast ? (
         <p className="relative z-10 mx-4 mt-1 shrink-0 rounded-lg bg-[var(--color-brand-error)]/10 px-3 py-2 text-sm text-[var(--color-brand-error)]">
@@ -178,6 +184,7 @@ export function ChatPageView() {
           placeholder={composerPlaceholder}
           onMicPress={showMicNotice}
           preferenceBar={preferenceBar}
+          embedded={embedded}
         />
       </div>
     </div>

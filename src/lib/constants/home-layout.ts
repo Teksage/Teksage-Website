@@ -5,9 +5,9 @@
 export const HOME_LAYOUT = {
   /** Mobile stays phone-width; desktop uses a readable content column. */
   maxWidth: "mx-auto w-full max-w-lg lg:max-w-5xl xl:max-w-6xl",
-  /** `DesktopMainNav` width — backdrops align to the main pane on `lg+`. */
-  desktopAsideWidth: "13.5rem",
-  desktopBackdropInset: "lg:left-[13.5rem]",
+  /** `DesktopMainNav` width — token in `globals.css` (`--desktop-sidebar-width`). */
+  desktopAsideWidth: "desktop-sidebar-width",
+  desktopBackdropInset: "lg:left-[length:var(--desktop-sidebar-width)]",
   /** Panchang-style readable column (narrower than home dashboard). */
   panchangContentColumn: "mx-auto w-full max-w-md lg:max-w-3xl xl:max-w-4xl",
   /** Header, main scroll, bottom nav share the same horizontal inset. */

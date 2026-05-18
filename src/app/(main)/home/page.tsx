@@ -7,6 +7,7 @@ import { PredictionCircles } from "@/components/home/PredictionCircles";
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
+import { HomeChatPanel } from "@/components/home/HomeChatPanel";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
@@ -27,65 +28,68 @@ export default function HomePage() {
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
 
   return (
-    <div className={PAGE_SHELL.homeRoot}>
+    <div className={cn(PAGE_SHELL.homeRoot, "lg:h-dvh lg:overflow-hidden lg:flex-col")}>
       <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.home} />
       <HomeDashboardHeader
-        className={PAGE_SHELL.contentLayer}
+        className={cn(PAGE_SHELL.contentLayer, "lg:hidden")}
         greeting={greeting}
         isAuthenticated={isAuthenticated}
         unreadCount={unreadCount}
       />
 
-      <main
-        className={cn(
-          PAGE_SHELL.contentLayer,
-          HOME_LAYOUT.maxWidth,
-          HOME_LAYOUT.gutterX,
-          HOME_LAYOUT.mainTopPad,
-          HOME_LAYOUT.mainBottomPad,
-          HOME_LAYOUT.sectionStack
-        )}
-      >
-        <ConsultationBanner
-          isLoggedIn={isAuthenticated}
-          isAstrologer={isAuthenticated && isAstrologer}
-        />
-
-        <div
+      <div className={cn("relative z-10 flex min-h-0 flex-1 flex-col lg:h-full lg:flex-row")}>
+        <main
           className={cn(
-            "flex flex-col",
-            HOME_LAYOUT.exploreFeatureStackGap,
-            "lg:grid lg:grid-cols-2 lg:items-stretch"
+            PAGE_SHELL.contentLayer,
+            "min-w-0 flex-1 overflow-y-auto lg:hidden",
+            HOME_LAYOUT.maxWidth,
+            HOME_LAYOUT.gutterX,
+            HOME_LAYOUT.mainTopPad,
+            HOME_LAYOUT.mainBottomPad,
+            HOME_LAYOUT.sectionStack
           )}
         >
-          <PredictionCircles
+          <ConsultationBanner
             isLoggedIn={isAuthenticated}
-            className="lg:max-w-none"
+            isAstrologer={isAuthenticated && isAstrologer}
           />
 
           <div
             className={cn(
-              "flex min-h-0 min-w-0",
-              HOME_LAYOUT.featureGridGap,
-              "lg:items-stretch"
+              "flex flex-col",
+              HOME_LAYOUT.exploreFeatureStackGap,
             )}
           >
-            <MatchMakingCard
-              isLoggedIn={isAuthenticated}
-              hasExistingMatch={hasExistingMatch}
-            />
-            <DailyPredictionCard
-              data={dailyPrediction ?? undefined}
-              isLoading={isLoading}
-              isLoggedIn={isAuthenticated}
-              fetchError={dashboardError}
-              currentDate={formatHomeDashboardDate()}
-            />
-          </div>
-        </div>
+            <PredictionCircles isLoggedIn={isAuthenticated} />
 
-        <ChatBanner isLoggedIn={isAuthenticated} />
-      </main>
+            <div
+              className={cn(
+                "flex min-h-0 min-w-0",
+                HOME_LAYOUT.featureGridGap,
+              )}
+            >
+              <MatchMakingCard
+                isLoggedIn={isAuthenticated}
+                hasExistingMatch={hasExistingMatch}
+              />
+              <DailyPredictionCard
+                data={dailyPrediction ?? undefined}
+                isLoading={isLoading}
+                isLoggedIn={isAuthenticated}
+                fetchError={dashboardError}
+                currentDate={formatHomeDashboardDate()}
+              />
+            </div>
+          </div>
+
+          <ChatBanner isLoggedIn={isAuthenticated} />
+        </main>
+
+        <HomeChatPanel
+          isLoggedIn={isAuthenticated}
+          className="sticky top-0 h-dvh shrink-0 lg:static lg:h-full lg:min-h-0 lg:flex-1"
+        />
+      </div>
     </div>
   );
 }

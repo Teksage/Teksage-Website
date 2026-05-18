@@ -1,14 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { APP_NAME, MAIN_NAV_ITEMS, PUBLIC_ASSETS } from "@/lib/constants";
+import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
+import { DesktopNavItem } from "@/components/common/DesktopNavItem";
+import { DesktopNavPredictionsMenu } from "@/components/common/DesktopNavPredictionsMenu";
+import { DesktopNavUnlockPremium } from "@/components/common/DesktopNavUnlockPremium";
+import {
+  DESKTOP_SIDEBAR_BOOK_LINK,
+  DESKTOP_SIDEBAR_MARRIAGE_LINK,
+  DESKTOP_SIDEBAR_UTILITY_LINKS,
+} from "@/lib/constants/desktop-sidebar-nav";
+import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
+import { HOME_LAYOUT } from "@/lib/constants/home-layout";
+import { APP_NAME, PUBLIC_ASSETS } from "@/lib/constants";
 import type { DesktopMainNavProps } from "@/types";
+import { cn } from "@/lib/utils";
+
+const UTILITY_LABELS: Record<
+  (typeof DESKTOP_SIDEBAR_UTILITY_LINKS)[number]["labelKey"],
+  string
+> = {
+  panchang: HOME_DASHBOARD_SIDEBAR.panchang,
+  horoscope: HOME_DASHBOARD_SIDEBAR.horoscope,
+  settings: HOME_DASHBOARD_SIDEBAR.settings,
+};
 
 /**
- * Left rail for `lg+` — replaces the fixed bottom bar on wide viewports.
+ * Desktop left rail — design ref dashboard sidebar (`lg+`).
  */
 export function DesktopMainNav({ className }: DesktopMainNavProps) {
   const pathname = usePathname();
@@ -16,7 +35,8 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
   return (
     <aside
       className={cn(
-        "sticky top-0 z-30 hidden h-dvh w-[13.5rem] shrink-0 flex-col border-r border-neutral-200/90 bg-white lg:flex",
+        "sticky top-0 z-30 hidden h-dvh shrink-0 flex-col border-r border-neutral-200/90 bg-white lg:flex",
+        HOME_LAYOUT.desktopAsideWidth,
         className
       )}
       aria-label="Main navigation"
@@ -35,32 +55,42 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
         </span>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 px-3 py-4">
-        {MAIN_NAV_ITEMS.map((tab) => {
-          const active = pathname.startsWith(tab.href);
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors",
-                active
-                  ? "bg-[var(--color-home-screen-mint)] text-[var(--color-brand-primary)]"
-                  : "text-neutral-600 hover:bg-neutral-50"
-              )}
-            >
-              <Image
-                src={active ? tab.iconOn : tab.iconOff}
-                alt=""
-                width={32}
-                height={33}
-                unoptimized
-                className="size-8 shrink-0"
-              />
-              <span className="text-sm font-semibold">{tab.label}</span>
-            </Link>
-          );
-        })}
+      <nav className="scrollbar-hidden flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-4">
+        <DesktopNavAiChatCard />
+
+        <DesktopNavItem
+          href={DESKTOP_SIDEBAR_BOOK_LINK.href}
+          iconSrc={DESKTOP_SIDEBAR_BOOK_LINK.icon}
+          labelLines={{
+            primary: HOME_DASHBOARD_SIDEBAR.bookConsultationLine1,
+            secondary: HOME_DASHBOARD_SIDEBAR.bookConsultationLine2,
+          }}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_BOOK_LINK.href)}
+        />
+
+        <DesktopNavPredictionsMenu />
+
+        <DesktopNavItem
+          href={DESKTOP_SIDEBAR_MARRIAGE_LINK.href}
+          iconSrc={DESKTOP_SIDEBAR_MARRIAGE_LINK.icon}
+          labelLines={{
+            primary: HOME_DASHBOARD_SIDEBAR.marriageLine1,
+            secondary: HOME_DASHBOARD_SIDEBAR.marriageLine2,
+          }}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_MARRIAGE_LINK.href)}
+        />
+
+        {DESKTOP_SIDEBAR_UTILITY_LINKS.map((item) => (
+          <DesktopNavItem
+            key={item.href}
+            href={item.href}
+            iconSrc={item.icon}
+            label={UTILITY_LABELS[item.labelKey]}
+            active={pathname.startsWith(item.href)}
+          />
+        ))}
+
+        <DesktopNavUnlockPremium />
       </nav>
     </aside>
   );
