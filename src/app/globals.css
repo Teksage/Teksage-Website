@@ -20,6 +20,10 @@
   --color-brand-banner-border: #C8EF54;
   --color-brand-consultation-heading: #3a3b00;
   --color-home-screen-mint: #c6e7b9;
+  --color-consult-user-bg: #94c10d;
+  --color-consult-user-text: #87b303;
+  --color-consult-filter-chip: #7fa900;
+  --color-consult-match-track: #d9d9d9;
   --desktop-sidebar-width: 17.5rem;
   --color-ai-chat-icon: #2e8b1e;
   --color-chat-shell: #ffffff;
@@ -334,6 +338,10 @@
 
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
+  }
+
+  .consult-match-fill {
+    width: calc(var(--consult-match-pct, 0) * 1%);
   }
 
   .desktop-sidebar-width {

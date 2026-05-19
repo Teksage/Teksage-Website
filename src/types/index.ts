@@ -1,6 +1,16 @@
 // Shared TypeScript interfaces — mirrors Flutter Model/ DTOs
 
 export type { UserProfile } from "./user-profile";
+export type {
+  ConsultationAstrologer,
+  ConsultationAstrologerDetail,
+  ConsultationBookingDraft,
+  ConsultationCouponResult,
+  ConsultationFilter,
+  ConsultationRazorpayOrder,
+  ConsultationReviewEvent,
+  ConsultationSlot,
+} from "./consultation";
 import type { UserProfile } from "./user-profile";
 
 // --- Auth ---
@@ -142,3 +152,11 @@ export type {
   RashiOption,
   NakshatraOption,
 } from "./match-making";
+
+export type {
+  ConsultationShellProps,
+  ConsultationAstrologerCardProps,
+  ConsultationAuthGateProps,
+  ConsultationLanguageFieldProps,
+  ConsultationCategoryChipsProps,
+} from "./ui/consultation";
