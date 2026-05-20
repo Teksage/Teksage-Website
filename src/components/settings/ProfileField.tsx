@@ -16,6 +16,7 @@ export function ProfileField({
   hasError = false,
   errorMessage,
   className,
+  onBlurCommit,
 }: ProfileFieldProps) {
   const disabled = isReadOnly || !isEditable;
   const isProfile = appearance === "profile";
@@ -39,6 +40,7 @@ export function ProfileField({
         type={type}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        onBlur={() => onBlurCommit?.()}
         placeholder={placeholder ?? label}
         disabled={disabled}
         readOnly={disabled}

@@ -10,8 +10,9 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
-        destination: `${backendOrigin}/api/:path*`,
+        // Next.js route handlers under `app/api/places/*` — do not proxy to FastAPI.
+        source: "/api/:path((?!places/).*)",
+        destination: `${backendOrigin}/api/:path`,
       },
     ];
   },

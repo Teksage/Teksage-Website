@@ -53,7 +53,7 @@ export const API_ENDPOINTS = {
 
   // --- Astrologer / consultation — `astrologer.py`, `events.py` ---
   astrologerFilter: "/api/astrologer/filter",
-  /** Append `/{astrologer_id}` */
+  /** Append `/{user_id}` — backend matches `Astrologer.user_id`, not PK `astrologer_id`. */
   astrologerDetail: "/api/astrologer/astrologer",
   astrologerRashi: "/api/astrologer/rashi",
   astrologerNakshatra: "/api/astrologer/nakshatra",

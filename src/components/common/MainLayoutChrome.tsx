@@ -4,12 +4,18 @@ import { usePathname } from "next/navigation";
 import { BottomNav } from "@/components/common/BottomNav";
 import { DesktopMainNav } from "@/components/common/DesktopMainNav";
 import { HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  isConsultationCheckoutPath,
+  isConsultationGreenFullBleedPath,
+} from "@/lib/constants/consultation-routes";
 import { cn } from "@/lib/utils";
 
 export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
+  const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
+  const isConsultCheckout = isConsultationCheckoutPath(pathname);
   const isFullHeightPane = isChatRoute || isHomeRoute;
 
   return (
@@ -22,7 +28,9 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
           className={cn(
             isFullHeightPane
               ? "min-h-dvh p-0 lg:h-dvh lg:overflow-hidden lg:pb-0"
-              : HOME_LAYOUT.bottomNavClearance
+              : HOME_LAYOUT.bottomNavClearance,
+            isConsultGreen && "bg-[var(--color-consult-user-bg)]",
+            isConsultCheckout && "bg-white"
           )}
         >
           {children}

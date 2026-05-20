@@ -5,9 +5,12 @@ import { ChatAvatarPicker } from "@/components/chat/ChatAvatarPicker";
 import { ChatOnboardingHeader } from "@/components/chat/ChatOnboardingHeader";
 import { Button } from "@/components/ui/button";
 import { CHAT_PREFERENCES } from "@/lib/constants/chat-preferences";
+import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
+import { cn } from "@/lib/utils";
 import type { ChatAvatarOnboardingProps } from "@/types/ui/chat";
 
 export function ChatAvatarOnboarding({
+  embedded = false,
   initialIndex,
   onContinue,
   onBack,
@@ -15,15 +18,19 @@ export function ChatAvatarOnboarding({
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+    <div
+      className={cn(
+        embedded ? CHAT_LAYOUT.onboardingRootEmbedded : CHAT_LAYOUT.onboardingRootStandalone
+      )}
+    >
       <ChatOnboardingHeader onBack={onBack} />
 
-      <div className="flex flex-1 flex-col justify-between pb-10 pt-6">
+      <div className={CHAT_LAYOUT.onboardingContent}>
         <div>
-          <h1 className="px-5 text-center text-2xl font-semibold">
+          <h1 className={CHAT_LAYOUT.onboardingTitle}>
             {CHAT_PREFERENCES.avatarOnboardingTitle}
           </h1>
-          <div className="mt-8">
+          <div className="mt-8 lg:mt-10">
             <ChatAvatarPicker
               selectedIndex={selectedIndex}
               onSelectIndex={setSelectedIndex}
@@ -32,15 +39,13 @@ export function ChatAvatarOnboarding({
           </div>
         </div>
 
-        <div className="px-5">
-          <Button
-            type="button"
-            onClick={() => onContinue(selectedIndex)}
-            className="h-auto w-full rounded-full py-3.5 text-lg font-semibold"
-          >
-            {CHAT_PREFERENCES.continueCta}
-          </Button>
-        </div>
+        <Button
+          type="button"
+          onClick={() => onContinue(selectedIndex)}
+          className="h-auto w-full rounded-full py-3.5 text-lg font-semibold lg:max-w-sm lg:self-center"
+        >
+          {CHAT_PREFERENCES.continueCta}
+        </Button>
       </div>
     </div>
   );

@@ -15,6 +15,10 @@ export const ROUTES = {
   notifications: "/notifications",
   chat: "/chat",
   consultation: "/consultation",
+  consultationLanguage: "/consultation/language",
+  consultationAstrologers: "/consultation/astrologers",
+  consultationSummary: "/consultation/summary",
+  /** Astrologer-facing hub (logged-in astrologer). */
   consultationAstrologer: "/consultation/astrologer",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",

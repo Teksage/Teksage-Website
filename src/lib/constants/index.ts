@@ -8,6 +8,15 @@ export * from "./home-layout";
 export * from "./main-nav";
 export * from "./home-dashboard-sidebar";
 export * from "./desktop-sidebar-nav";
+export * from "./consultation-screen";
+export * from "./consultation-languages";
+export * from "./consultation-listing";
+export * from "./consultation-detail";
+export * from "./consultation-slots";
+export * from "./consultation-checkout";
+export * from "./consultation-booking";
+export * from "./consultation-currency";
+export * from "./consultation-routes";
 export * from "./settings-screen";
 export * from "./routes";
 export * from "./default-region";
@@ -53,6 +62,8 @@ export const STORAGE_KEYS = {
   userId: "teksage_user_id",
   userProfile: "teksage_user_profile",
   language: "teksage_language",
+  consultationDraft: "teksage_consultation_draft",
+  consultationSummary: "teksage_consultation_summary",
 } as const;
 
 // Pagination
