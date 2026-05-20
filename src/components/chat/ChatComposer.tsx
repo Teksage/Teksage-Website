@@ -13,11 +13,15 @@ export function ChatComposer({
   disabled,
   placeholder,
   onMicPress,
+  isRecording = false,
+  isTranscribing = false,
+  micDisabled = false,
   preferenceBar,
   embedded = false,
 }: ChatComposerProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
-  const canSend = Boolean(value.trim()) && !disabled;
+  const canSend = Boolean(value.trim()) && !disabled && !isTranscribing;
+  const micBusy = disabled || micDisabled || isTranscribing;
 
   return (
     <div
@@ -74,15 +78,23 @@ export function ChatComposer({
         </div>
         <button
           type="button"
-          disabled={disabled}
+          disabled={micBusy}
           onClick={onMicPress}
           className={cn(
             "mb-0.5 flex size-12 shrink-0 items-center justify-center rounded-full border-[1.5px]",
-            "border-[var(--color-brand-primary)] bg-transparent disabled:opacity-50"
+            "border-[var(--color-brand-primary)] disabled:opacity-50",
+            isRecording
+              ? "bg-[color-mix(in_srgb,var(--color-brand-primary)_20%,white)]"
+              : "bg-transparent"
           )}
           aria-label={CS.composerPlaceholder}
+          aria-pressed={isRecording}
         >
-          <img src={CHAT_ASSETS.mic} alt="" className="size-6" />
+          <img
+            src={CHAT_ASSETS.mic}
+            alt=""
+            className={cn("size-6", isRecording && "animate-pulse")}
+          />
         </button>
       </form>
       {preferenceBar}

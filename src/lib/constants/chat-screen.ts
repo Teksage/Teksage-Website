@@ -25,7 +25,6 @@ export const CHAT_SCREEN = {
   consultBannerTitle: "Consult Astrologer",
   styleLabel: "Explanatory",
   avatarLabel: "The Seeker",
-  micComingSoon: "Voice input is coming soon on web.",
 } as const;
 
 /** Chat page layout — Flutter `chatAppBar.dart` + `chat.dart`. */

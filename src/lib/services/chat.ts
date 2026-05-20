@@ -44,7 +44,9 @@ export async function fetchRelatedQueries(query: string): Promise<string[]> {
   );
   const payload = data?.data;
   if (!payload || typeof payload === "string") return [];
-  return Array.isArray(payload.queries) ? payload.queries : [];
+  const list = payload.queries;
+  if (!Array.isArray(list)) return [];
+  return list.map((q) => String(q).trim()).filter(Boolean);
 }
 
 export async function downloadChatPdf(maintainHistory: boolean): Promise<Blob> {

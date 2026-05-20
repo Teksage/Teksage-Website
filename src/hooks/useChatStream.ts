@@ -7,8 +7,8 @@ import {
   CHAT_RESPONSE_TIMEOUT_MS,
   CHAT_SCREEN,
 } from "@/lib/constants/chat-screen";
-import { fetchRelatedQueries } from "@/lib/services/chat";
-import { newChatMessageId } from "@/lib/chat-helpers";
+import { fetchChatHistory, fetchRelatedQueries } from "@/lib/services/chat";
+import { lastUserQuestionFromMessages, newChatMessageId } from "@/lib/chat-helpers";
 import type { ChatMessage, ChatOutboundPayload } from "@/types/chat";
 import type { Dispatch, RefObject, SetStateAction } from "react";
 
@@ -27,7 +27,8 @@ export function useChatStream(
   setMessages: Dispatch<SetStateAction<ChatMessage[]>>,
   setters: ChatStreamSetters,
   chatLanguage: string,
-  outboundPrefsRef: RefObject<OutboundPrefs>
+  outboundPrefsRef: RefObject<OutboundPrefs>,
+  messagesRef: RefObject<ChatMessage[]>
 ) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const bufferRef = useRef("");
@@ -61,18 +62,70 @@ export function useChatStream(
     });
   }, [setMessages]);
 
-  const onStreamEnd = useCallback(() => {
+  const appendLatestReplyFromHistory = useCallback(async () => {
+    const rows = await fetchChatHistory();
+    const latest = rows[0];
+    if (!latest?.apiResponse?.trim()) return;
+
+    setMessages((prev) => {
+      const next = [...prev];
+      const hasAssistant = next.some(
+        (m) => m.role === "assistant" && m.text === latest.apiResponse
+      );
+      if (hasAssistant) return next;
+
+      let pendingIdx = -1;
+      for (let i = next.length - 1; i >= 0; i--) {
+        const row = next[i];
+        if (row.role === "user" && row.status === "pending") {
+          pendingIdx = i;
+          break;
+        }
+      }
+      if (pendingIdx >= 0) {
+        const row = next[pendingIdx];
+        if (row.role === "user") {
+          next[pendingIdx] = { ...row, status: "answered" };
+        }
+      }
+      next.push({
+        id: newChatMessageId(),
+        role: "assistant",
+        text: latest.apiResponse,
+        isStreaming: false,
+      });
+      return next;
+    });
+  }, [setMessages]);
+
+  const loadRelatedQueries = useCallback((query: string) => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    const s = settersRef.current;
+    s.setRelatedLoading(true);
+    void fetchRelatedQueries(trimmed)
+      .then((queries) => s.setRelatedQueries(queries))
+      .finally(() => s.setRelatedLoading(false));
+  }, []);
+
+  const onStreamEnd = useCallback(async () => {
     clearResponseTimeout();
+    const hadStreamedText = bufferRef.current.length > 0;
+    const assistantId = assistantIdRef.current;
+    const queryForRelated = lastUserQuestionFromMessages(messagesRef.current);
     isStreamingRef.current = false;
+    bufferRef.current = "";
+    assistantIdRef.current = null;
+
     const s = settersRef.current;
     s.setIsStreaming(false);
     s.setShowTyping(false);
     s.setEnableInput(true);
-    let lastUserText = "";
+
     setMessages((prev) => {
       const next = [...prev];
-      if (assistantIdRef.current) {
-        const idx = next.findIndex((m) => m.id === assistantIdRef.current);
+      if (assistantId) {
+        const idx = next.findIndex((m) => m.id === assistantId);
         if (idx >= 0 && next[idx].role === "assistant") {
           next[idx] = { ...next[idx], isStreaming: false };
         }
@@ -84,17 +137,24 @@ export function useChatStream(
           break;
         }
       }
-      const lastUser = [...next].reverse().find((m) => m.role === "user");
-      if (lastUser?.role === "user") lastUserText = lastUser.text;
       return next;
     });
-    if (lastUserText) {
-      s.setRelatedLoading(true);
-      void fetchRelatedQueries(lastUserText)
-        .then((queries) => s.setRelatedQueries(queries))
-        .finally(() => s.setRelatedLoading(false));
+
+    if (!hadStreamedText) {
+      try {
+        await appendLatestReplyFromHistory();
+      } catch {
+        /* history sync is best-effort */
+      }
     }
-  }, [clearResponseTimeout, setMessages]);
+
+    loadRelatedQueries(queryForRelated);
+  }, [appendLatestReplyFromHistory, clearResponseTimeout, loadRelatedQueries, messagesRef, setMessages]);
+
+  const isStreamingActive = useCallback(
+    () => isStreamingRef.current || assistantIdRef.current !== null,
+    []
+  );
 
   const onTextChunk = useCallback(
     (chunk: string) => {
@@ -118,6 +178,10 @@ export function useChatStream(
         const idx = next.findIndex((m) => m.id === id);
         if (idx >= 0 && next[idx].role === "assistant") {
           next[idx] = { ...next[idx], text, isStreaming: true };
+        } else {
+          const newAssistantId = newChatMessageId();
+          assistantIdRef.current = newAssistantId;
+          next.push({ id: newAssistantId, role: "assistant", text, isStreaming: true });
         }
         return next;
       });
@@ -160,5 +224,6 @@ export function useChatStream(
     buildPayload,
     startResponseTimeout,
     resetStreamRefs,
+    isStreamingActive,
   };
 }

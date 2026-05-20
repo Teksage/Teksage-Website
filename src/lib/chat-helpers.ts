@@ -13,6 +13,18 @@ export function userInitialsFromProfile(first?: string, last?: string, name?: st
   return (parts[0]?.slice(0, 2) ?? "AP").toUpperCase();
 }
 
+/** Last user question in the thread — used for related-queries API (Flutter `lastUserMessage`). */
+export function lastUserQuestionFromMessages(messages: ChatMessage[]): string {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const row = messages[i];
+    if (row.role === "user") {
+      const text = row.text.trim();
+      if (text) return text;
+    }
+  }
+  return "";
+}
+
 export function historyToChatMessages(history: ChatHistoryRecord[]): ChatMessage[] {
   const restored: ChatMessage[] = [];
   for (const row of history) {
