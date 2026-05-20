@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, type RefObject } from "react";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { ChatAvatarSheet } from "@/components/chat/ChatAvatarSheet";
 import { ChatStyleMenu } from "@/components/chat/ChatStyleMenu";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
@@ -50,6 +51,7 @@ export function ChatPreferenceBar({
   onAvatarSheetClose,
   onSelectAvatar,
 }: ChatPreferenceBarProps) {
+  const { t } = useAppLanguage();
   const styleChipRef = useRef<HTMLButtonElement>(null);
   const avatarIcon =
     CHAT_AVATAR_OPTIONS[avatarIndex]?.image ?? CHAT_ASSETS.avatarIcon;
@@ -61,7 +63,7 @@ export function ChatPreferenceBar({
           <PreferenceChip
             chipRef={styleChipRef}
             iconSrc={styleFormatToIcon(styleFormat)}
-            label={styleFormatToLabel(styleFormat)}
+            label={styleFormatToLabel(styleFormat, t)}
             onClick={onStyleChipPress}
           />
           <ChatStyleMenu
@@ -74,7 +76,7 @@ export function ChatPreferenceBar({
         </div>
         <PreferenceChip
           iconSrc={avatarIcon}
-          label={avatarIndexToTitle(avatarIndex)}
+          label={avatarIndexToTitle(avatarIndex, t)}
           onClick={onAvatarChipPress}
         />
       </div>

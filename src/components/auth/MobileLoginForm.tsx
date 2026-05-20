@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 /**
  * Mobile number login — not used while the web login matches the email-only
  * Flutter `LoginPageMobile` reference. Kept for a future tabbed login.
@@ -24,6 +25,7 @@ import { http } from "@/lib/services/http";
 import type { MobileLoginFormProps } from "@/types";
 
 export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
+  const LOG = useI18nConstants(LOGIN_MOBILE_FORM);
   const [countryCode, setCountryCode] = useState<string>(DEFAULT_COUNTRY_CALLING_CODE);
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState<string | null>(null);

@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -12,6 +15,7 @@ export function ConsultationAstrologerCard({
   currency,
   href,
 }: ConsultationAstrologerCardProps) {
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const name = [astrologer.user?.first_name, astrologer.user?.last_name]
     .filter(Boolean)
     .join(" ");
@@ -42,13 +46,13 @@ export function ConsultationAstrologerCard({
           </p>
           {astrologer.match_percentage != null ? (
             <span className={CONSULTATION_LAYOUT.matchBadge}>
-              {astrologer.match_percentage}% {CONSULTATION_SCREEN.matchLabel}
+              {astrologer.match_percentage}% {C.matchLabel}
             </span>
           ) : null}
         </div>
         {astrologer.experience != null ? (
           <p className="text-xs text-neutral-600">
-            {astrologer.experience} {CONSULTATION_SCREEN.experienceYears}
+            {astrologer.experience} {C.experienceYears}
           </p>
         ) : null}
         <p className="mt-1 text-sm font-semibold text-[var(--color-brand-primary)]">

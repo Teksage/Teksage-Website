@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import {
   CONSULTATION_DETAIL_ASSETS,
@@ -22,6 +23,7 @@ export function ConsultationDetailProfileCard({
   astrologer,
   currency,
 }: ConsultationDetailProfileCardProps) {
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
   const fee = consultationFeeForAstrologer(astrologer, currency);
   const unit = currency === "INR" ? "₹" : "$";
   const amount =
@@ -80,7 +82,7 @@ export function ConsultationDetailProfileCard({
           {amount}
         </span>
         <span className={CONSULTATION_DETAIL_LAYOUT.priceSuffix}>
-          {CONSULTATION_DETAIL_SCREEN.perSession}
+          {CD.perSession}
         </span>
       </p>
       <Image
@@ -103,8 +105,8 @@ export function ConsultationDetailProfileCard({
             aria-hidden
           />
           <span className={CONSULTATION_DETAIL_LAYOUT.expText}>
-            {CONSULTATION_DETAIL_SCREEN.experienceLabel} - {astrologer.experience}{" "}
-            {CONSULTATION_DETAIL_SCREEN.experienceYears}
+            {CD.experienceLabel} - {astrologer.experience}{" "}
+            {CD.experienceYears}
           </span>
         </div>
       ) : null}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/hooks/useT";
 import { Loader } from "@/components/common/Loader";
 import { YearlyPredictionLandingLayout } from "@/components/predictions/YearlyPredictionLandingLayout";
 import { YearlyPredictionLayout } from "@/components/predictions/YearlyPredictionLayout";
@@ -14,6 +15,7 @@ import type { YearlyPredictionDetail } from "@/types/prediction-yearly";
 type YearlyView = "loading" | "landing" | "detail";
 
 export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void }) {
+  const { languageVersion } = useT();
   const [view, setView] = useState<YearlyView>("loading");
   const [data, setData] = useState<YearlyPredictionDetail | null>(null);
   const [generating, setGenerating] = useState(false);
@@ -34,7 +36,7 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
         setView("landing");
       });
     return () => controller.abort();
-  }, []);
+  }, [languageVersion]);
 
   async function runGenerate() {
     setGenerating(true);

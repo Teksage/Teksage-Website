@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { Loader } from "@/components/common/Loader";
 import {
@@ -17,6 +18,7 @@ export function ConsultationSlotsAvailability({
   selected,
   onSelect,
 }: ConsultationSlotsAvailabilityProps) {
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
   if (loading) {
     return (
       <div className={CONSULTATION_SLOTS_LAYOUT.loaderBox}>
@@ -35,7 +37,7 @@ export function ConsultationSlotsAvailability({
   if (upcoming.length === 0) {
     return (
       <p className={CONSULTATION_SLOTS_LAYOUT.emptyOnGreen}>
-        {CONSULTATION_SLOTS_SCREEN.slotsEmpty}
+        {CS.slotsEmpty}
       </p>
     );
   }
@@ -46,10 +48,10 @@ export function ConsultationSlotsAvailability({
     <article className={CONSULTATION_SLOTS_LAYOUT.availabilityCard}>
       <div className={CONSULTATION_SLOTS_LAYOUT.availabilityHeader}>
         <p className={CONSULTATION_SLOTS_LAYOUT.availabilityTitle}>
-          {CONSULTATION_SLOTS_SCREEN.availabilityTitle}
+          {CS.availabilityTitle}
         </p>
         <p className={CONSULTATION_SLOTS_LAYOUT.availabilityMeta}>
-          {slotCount} {CONSULTATION_SLOTS_SCREEN.slotsMetaSuffix}
+          {slotCount} {CS.slotsMetaSuffix}
         </p>
       </div>
       <Image

@@ -11,10 +11,15 @@ export function avatarStorageToWsName(storageTitle: string): string {
   return storageTitle.replace(/\bthe\b/gi, "").trim();
 }
 
-export function styleFormatToLabel(format: ChatStyleFormat): string {
-  return format === "long"
-    ? CHAT_PREFERENCES.styleLongLabel
-    : CHAT_PREFERENCES.styleShortLabel;
+export function styleFormatToLabel(
+  format: ChatStyleFormat,
+  t?: (key: string) => string
+): string {
+  const key =
+    format === "long"
+      ? CHAT_PREFERENCES.styleLongLabel
+      : CHAT_PREFERENCES.styleShortLabel;
+  return t ? t(key) : key;
 }
 
 export function styleFormatToIcon(format: ChatStyleFormat): string {
@@ -34,6 +39,7 @@ export function avatarIndexToStorage(index: number): string {
   return CHAT_AVATAR_OPTIONS[index]?.storageTitle ?? CHAT_AVATAR_OPTIONS[0].storageTitle;
 }
 
-export function avatarIndexToTitle(index: number): string {
-  return CHAT_AVATAR_OPTIONS[index]?.title ?? CHAT_AVATAR_OPTIONS[0].title;
+export function avatarIndexToTitle(index: number, t?: (key: string) => string): string {
+  const key = CHAT_AVATAR_OPTIONS[index]?.title ?? CHAT_AVATAR_OPTIONS[0].title;
+  return t ? t(key) : key;
 }

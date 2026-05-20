@@ -1,5 +1,7 @@
 "use client";
 
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
+import { useI18nConstants } from "@/hooks/useT";
 import { DailyPredictionBalaPanel } from "@/components/predictions/DailyPredictionBalaPanel";
 import { DailyPredictionConsultStrip } from "@/components/predictions/DailyPredictionConsultStrip";
 // import { DailyPredictionPdfRow } from "@/components/predictions/DailyPredictionConsultStrip";
@@ -18,7 +20,9 @@ export function DailyPredictionDesktopLayout({
   pageTitle: string;
   onBackClick: () => void;
 }) {
-  const dateLine = formatHomeDashboardDate();
+  const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
+  const { locale } = useAppLanguage();
+  const dateLine = formatHomeDashboardDate(new Date(), locale);
   const showBala = data.tharaBala || data.chandraBala;
   const summary = data.quote?.trim();
 
@@ -54,8 +58,8 @@ export function DailyPredictionDesktopLayout({
               <button
                 type="button"
                 className="shrink-0 rounded-full p-0.5 hover:bg-white/10"
-                title={PREDICTION_DETAIL_SCREEN.dailyInfoTooltip}
-                aria-label={PREDICTION_DETAIL_SCREEN.dailyInfoTooltip}
+                title={PD.dailyInfoTooltip}
+                aria-label={PD.dailyInfoTooltip}
               >
                 <img
                   src={DAILY_PREDICTION_ASSETS.toolTip}
@@ -70,7 +74,7 @@ export function DailyPredictionDesktopLayout({
           </div>
           <div className="mx-auto mt-4 max-w-xl rounded-xl border border-white/60 px-3 py-2.5 sm:mt-5 sm:px-5 sm:py-2.5">
             <p className="text-center text-xs font-semibold text-white sm:text-sm sm:leading-snug">
-              {PREDICTION_DETAIL_SCREEN.dailyScheduledPill}
+              {PD.dailyScheduledPill}
             </p>
           </div>
           <p className="mt-3 text-center text-base font-semibold text-white sm:mt-4 sm:text-lg">
@@ -101,22 +105,22 @@ export function DailyPredictionDesktopLayout({
         <div className="mt-6 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 xl:grid-cols-4">
           <DailyPredictionDesktopCategoryCard
             variant="career"
-            title={PREDICTION_DETAIL_SCREEN.sectionCareer}
+            title={PD.sectionCareer}
             items={data.career}
           />
           <DailyPredictionDesktopCategoryCard
             variant="relationship"
-            title={PREDICTION_DETAIL_SCREEN.sectionRelationship}
+            title={PD.sectionRelationship}
             items={data.relationship}
           />
           <DailyPredictionDesktopCategoryCard
             variant="wealth"
-            title={PREDICTION_DETAIL_SCREEN.sectionWealth}
+            title={PD.sectionWealth}
             items={data.wealth}
           />
           <DailyPredictionDesktopCategoryCard
             variant="health"
-            title={PREDICTION_DETAIL_SCREEN.sectionHealth}
+            title={PD.sectionHealth}
             items={data.health}
           />
         </div>

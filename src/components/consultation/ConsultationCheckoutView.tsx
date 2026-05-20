@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
@@ -55,15 +56,18 @@ type ConsultationCheckoutViewProps = {
   astrologerId: number;
 };
 
-function bookErrorMessage(err: unknown): string {
+function bookErrorMessage(err: unknown, fallback: string): string {
   if (isAxiosError(err)) {
     const detail = err.response?.data as { detail?: string } | undefined;
     if (typeof detail?.detail === "string") return detail.detail;
   }
-  return CONSULTATION_SCREEN.loadError;
+  return fallback;
 }
 
 export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutViewProps) {
+  const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const currency = useConsultationCurrency();
@@ -117,7 +121,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
 
   if (!draft || !pricing) {
     return (
-      <ConsultationCheckoutShell title={CONSULTATION_BOOKING_SCREEN.title} onBack={() => router.back()}>
+      <ConsultationCheckoutShell title={CB.title} onBack={() => router.back()}>
         <div className="flex justify-center py-16">
           <Loader />
         </div>
@@ -142,7 +146,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
       setPricing(result);
       setAppliedCouponId(result.coupon_id && result.coupon_id > 0 ? result.coupon_id : null);
     } catch {
-      setError(CONSULTATION_SCREEN.loadError);
+      setError(C.loadError);
     } finally {
       setBusy(false);
     }
@@ -150,7 +154,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
 
   async function onPay() {
     if (!shareHoroscope) {
-      setError(CONSULTATION_SCREEN.shareHoroscopeRequired);
+      setError(C.shareHoroscopeRequired);
       return;
     }
     setBusy(true);
@@ -199,13 +203,13 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         onDismiss: () => setBusy(false),
         onFailure: (message) => {
           const hint =
-            currency === "USD" ? ` ${CONSULTATION_CHECKOUT_SCREEN.paymentUsdHint}` : "";
-          setError(`${message || CONSULTATION_CHECKOUT_SCREEN.paymentFailed}${hint}`);
+            currency === "USD" ? ` ${CC.paymentUsdHint}` : "";
+          setError(`${message || CC.paymentFailed}${hint}`);
           setBusy(false);
         },
       });
     } catch (err) {
-      setError(bookErrorMessage(err));
+      setError(bookErrorMessage(err, C.loadError));
       setBusy(false);
     }
   }
@@ -215,7 +219,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
 
   return (
     <ConsultationCheckoutShell
-      title={CONSULTATION_BOOKING_SCREEN.title}
+      title={CB.title}
       onBack={() => router.back()}
       footer={
         <>
@@ -226,7 +230,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
             className={CONSULTATION_BOOKING_LAYOUT.payBtn}
             onClick={() => void onPay()}
           >
-            {busy ? CONSULTATION_CHECKOUT_SCREEN.processingCta : CONSULTATION_BOOKING_SCREEN.payCta}
+            {busy ? CC.processingCta : CB.payCta}
           </button>
         </>
       }
@@ -235,49 +239,49 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         name={booking.astrologerName}
         picture={booking.astrologerPicture}
       />
-      <ConsultationBookingSectionDivider title={CONSULTATION_BOOKING_SCREEN.consultationSection} />
+      <ConsultationBookingSectionDivider title={CB.consultationSection} />
       <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.date}
+          label={CB.date}
           value={formatConsultationBookingDate(booking.slotStart)}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.time}
+          label={CB.time}
           value={formatConsultationBookingTimeRange(booking.slotStart, booking.slotEnd)}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.consultingOn}
+          label={CB.consultingOn}
           value={categoriesLabel}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.language}
+          label={CB.language}
           value={languagesLabel}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.consultationFee}
+          label={CB.consultationFee}
           value={formatFeeSlash(totals.final_price, currency)}
         />
       </div>
-      <ConsultationBookingSectionDivider title={CONSULTATION_BOOKING_SCREEN.personalSection} />
+      <ConsultationBookingSectionDivider title={CB.personalSection} />
       <div className={CONSULTATION_BOOKING_LAYOUT.grayCard}>
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.dob}
+          label={CB.dob}
           value={formatProfileDateOfBirth(profile?.dateOfBirth)}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.tob}
+          label={CB.tob}
           value={formatProfileTimeOfBirth(profile?.timeOfBirth)}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.pob}
+          label={CB.pob}
           value={profile?.placeOfBirth?.trim() || "—"}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.rasi}
+          label={CB.rasi}
           value={profile?.rashi?.trim() || "—"}
         />
         <ConsultationBookingDetailRow
-          label={CONSULTATION_BOOKING_SCREEN.nakshatram}
+          label={CB.nakshatram}
           value={profile?.nakshatra?.trim() || "—"}
         />
         <label className="mt-4 flex items-start gap-2 border-t border-black/10 pt-4 text-sm">
@@ -291,7 +295,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
             className="mt-1 accent-[#A2C14D]"
           />
           <span className="text-[var(--color-brand-black)]/70">
-            {CONSULTATION_BOOKING_SCREEN.shareHoroscope}
+            {CB.shareHoroscope}
           </span>
         </label>
       </div>

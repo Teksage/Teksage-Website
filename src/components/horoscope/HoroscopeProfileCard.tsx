@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_LAYOUT, HOROSCOPE_SCREEN } from "@/lib/constants";
 import { formatHoroscopeDob, formatHoroscopeTimeOfBirth } from "@/lib/horoscope-display-format";
@@ -31,7 +34,7 @@ function ProfileRow({
 }
 
 export function HoroscopeProfileCard({ data }: HoroscopeProfileCardProps) {
-  const H = HOROSCOPE_SCREEN;
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const fullName = [data.first_name, data.last_name].filter(Boolean).join(" ").trim();
   const displayName = fullName || H.fallbackName;
   const place =
@@ -46,16 +49,15 @@ export function HoroscopeProfileCard({ data }: HoroscopeProfileCardProps) {
     { label: H.profileNakshatramLabel, value: data.nakshatra },
     { label: H.profileLagnaLabel, value: data.lagna },
   ].filter((r) => r.value?.trim());
-  const n = rows.length;
 
   return (
     <div className={HOROSCOPE_LAYOUT.profileCard}>
-      {rows.map((row, i) => (
+      {rows.map((row, index) => (
         <ProfileRow
           key={row.label}
           label={row.label}
           value={row.value}
-          isLast={i === n - 1}
+          isLast={index === rows.length - 1}
         />
       ))}
     </div>

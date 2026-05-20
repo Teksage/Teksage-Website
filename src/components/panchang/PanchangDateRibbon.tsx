@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { Fragment } from "react";
 import { PANCHANG_ASSETS, PANCHANG_SCREEN, PANCHANG_SECTIONS } from "@/lib/constants";
@@ -7,7 +8,8 @@ import { shortWeekdayLabel } from "@/lib/panchang-time-format";
 import type { PanchangDateRibbonProps } from "@/types";
 
 export function PanchangDateRibbon({ panchang }: PanchangDateRibbonProps) {
-  const sep = PANCHANG_SCREEN.dateRibbonPieceSeparator;
+  const P = useI18nConstants(PANCHANG_SCREEN);
+  const sep = P.dateRibbonPieceSeparator;
   const short = shortWeekdayLabel(panchang.eng_weekday, panchang.weekday);
   const parts = [short, panchang.date, panchang.time].filter((x) => x?.trim());
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 /** Non‑premium Panchang — starfield backdrop + centered upgrade card (Flutter `emptyPanchangPage.dart`). */
 export function PanchangPremiumGate({ className }: PanchangPremiumGateProps) {
+  const P = useI18nConstants(PANCHANG_SCREEN);
   const L = PANCHANG_LAYOUT;
 
   return (
@@ -47,14 +49,14 @@ export function PanchangPremiumGate({ className }: PanchangPremiumGateProps) {
               className="size-8"
             />
           </div>
-          <h2 className={L.premiumGateTitle}>{PANCHANG_SCREEN.premiumTitle}</h2>
-          <p className={L.premiumGateDescription}>{PANCHANG_SCREEN.premiumDescription}</p>
+          <h2 className={L.premiumGateTitle}>{P.premiumTitle}</h2>
+          <p className={L.premiumGateDescription}>{P.premiumDescription}</p>
           <div className={L.premiumGateCtaWrap}>
             <Link
               href={ROUTES.settingsSubscriptions}
               className={cn(buttonVariants({ size: "lg" }), L.premiumGateCta)}
             >
-              {PANCHANG_SCREEN.upgradeCta}
+              {P.upgradeCta}
             </Link>
           </div>
         </article>

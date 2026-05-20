@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { http } from "@/lib/services/http";
 import type { EmailLoginFormProps } from "@/types";
 
 export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
+  const LOG = useI18nConstants(LOGIN_EMAIL_FORM);
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);

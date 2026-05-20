@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { DOWNLOAD_FILENAMES } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth.store";
 import {
@@ -24,6 +25,7 @@ function horoscopeErrorMessage(err: unknown): string {
 }
 
 export function useHoroscope() {
+  const { version: languageVersion } = useAppLanguage();
   const { isAuthenticated } = useAuthStore();
   const [data, setData] = useState<HoroscopePayload | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +54,7 @@ export function useHoroscope() {
     queueMicrotask(() => {
       load();
     });
-  }, [isAuthenticated, load]);
+  }, [isAuthenticated, load, languageVersion]);
 
   async function downloadPdf(): Promise<void> {
     const blob = await fetchHoroscopePdf();

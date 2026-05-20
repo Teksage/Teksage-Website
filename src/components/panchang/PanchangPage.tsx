@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
@@ -20,6 +21,7 @@ import { usePanchang } from "@/hooks/usePanchang";
 
 /** Mirrors Flutter `PanchangPage` + `PanchangSubscriptionCheckPage` (premium gate). */
 export function PanchangPage() {
+  const P = useI18nConstants(PANCHANG_SCREEN);
   const { isAuthenticated, isPremium, data, isLoading, error, reload } = usePanchang();
 
   const showPersonalizedShell =
@@ -40,7 +42,7 @@ export function PanchangPage() {
       ) : null}
       {!showPersonalizedShell ? (
         <AppHeader
-          title={PANCHANG_SCREEN.headerTitle}
+          title={P.headerTitle}
           showNotification
           className={PAGE_SHELL.contentLayer}
         />
@@ -57,14 +59,14 @@ export function PanchangPage() {
         >
           {!isAuthenticated ? (
             <EmptyState
-              title={PANCHANG_SCREEN.loginTitle}
-              description={PANCHANG_SCREEN.loginDescription}
+              title={P.loginTitle}
+              description={P.loginDescription}
               action={
                 <Link
                   href={buildLoginRedirectPath(ROUTES.panchang)}
                   className={cn(buttonVariants(), "rounded-full")}
                 >
-                  {PANCHANG_SCREEN.loginCta}
+                  {P.loginCta}
                 </Link>
               }
             />
@@ -76,11 +78,11 @@ export function PanchangPage() {
             </div>
           ) : error ? (
             <EmptyState
-              title={PANCHANG_SCREEN.loadErrorTitle}
+              title={P.loadErrorTitle}
               description={error}
               action={
                 <Button type="button" onClick={() => reload()} className="rounded-full">
-                  {PANCHANG_SCREEN.tryAgainCta}
+                  {P.tryAgainCta}
                 </Button>
               }
             />

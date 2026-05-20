@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useT } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import {
@@ -15,6 +16,7 @@ import {
 import type { ConsultationAstrologer } from "@/types/consultation";
 
 export function useConsultationListing() {
+  const { languageVersion } = useT();
   const router = useRouter();
   const [categories, setCategories] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
@@ -51,7 +53,7 @@ export function useConsultationListing() {
     setLanguages(filter.languages);
     writeConsultationFilter({ ...filter, categories: filter.categories, languages: filter.languages });
     void load(filter.categories, filter.languages);
-  }, [load, router]);
+  }, [load, router, languageVersion]);
 
   function removeCategory(category: string) {
     if (categories.length <= 1) return;

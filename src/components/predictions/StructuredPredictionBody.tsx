@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 // import { useState } from "react";
 // import { Button } from "@/components/ui/button";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
@@ -14,6 +15,7 @@ export function StructuredPredictionBody({
   data: StructuredPredictionDetail;
   shareKind: Exclude<PredictionDetailKind, "daily" | "weekly">;
 }) {
+  const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   void shareKind;
   // Download PDF — disabled for now; re-enable when share flow is ready.
   // const [busy, setBusy] = useState(false);
@@ -22,7 +24,7 @@ export function StructuredPredictionBody({
   if (!data.sections.length) {
     return (
       <p className="text-center text-neutral-600">
-        {PREDICTION_DETAIL_SCREEN.emptyDescription}
+        {PD.emptyDescription}
       </p>
     );
   }
@@ -43,7 +45,7 @@ export function StructuredPredictionBody({
       {/* Download PDF — disabled for now; re-enable when share flow is ready.
       {pid != null ? (
         <Button type="button" className="rounded-full" disabled={busy} onClick={() => void onPdf()}>
-          {busy ? "…" : PREDICTION_DETAIL_SCREEN.downloadPdfCta}
+          {busy ? "…" : PD.downloadPdfCta}
         </Button>
       ) : null}
       */}

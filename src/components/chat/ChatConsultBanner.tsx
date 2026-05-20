@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
@@ -6,6 +9,8 @@ import { cn } from "@/lib/utils";
 
 /** Flutter `ChatBanner(fromChat: true)` — full-bleed strip under green app bar. */
 export function ChatConsultBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
+  const CS = useI18nConstants(CHAT_SCREEN);
+  const HD = useI18nConstants(HOME_DASHBOARD);
   const href = isLoggedIn ? ROUTES.consultation : ROUTES.login;
 
   return (
@@ -43,13 +48,13 @@ export function ChatConsultBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
           />
         </div>
         <p className="min-w-0 flex-1 text-center text-sm font-bold leading-snug text-[var(--color-brand-consultation-heading)] sm:text-base">
-          {CHAT_SCREEN.consultBannerTitle}
+          {CS.consultBannerTitle}
         </p>
         <Link
           href={href}
           className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[var(--color-brand-banner-dark)] shadow-sm"
         >
-          {HOME_DASHBOARD.bookNow}
+          {HD.bookNow}
         </Link>
       </div>
     </div>

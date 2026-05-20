@@ -1,19 +1,26 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { SettingsRateDialog } from "@/components/settings/SettingsRateDialog";
 import { ROUTES } from "@/lib/constants";
 import { SETTINGS_ASSETS } from "@/lib/constants/assets";
 import {
   SETTINGS_PRIMARY_LINKS,
   SETTINGS_SCREEN,
 } from "@/lib/constants/settings-screen";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { buildLoginRedirectPath } from "@/lib/login-redirect";
 import { SettingsRow } from "@/components/settings/SettingsRow";
 
 export function SettingsMenu() {
+  const SS = useI18nConstants(SETTINGS_SCREEN);
+  const { t } = useAppLanguage();
   const router = useRouter();
   const { isAuthenticated, logout } = useAuth();
+  const [rateOpen, setRateOpen] = useState(false);
 
   function resolveHref(href: string, gateLogin?: boolean): string {
     if (gateLogin && !isAuthenticated) return buildLoginRedirectPath(href);
@@ -21,7 +28,7 @@ export function SettingsMenu() {
   }
 
   function handleLogout() {
-    if (!window.confirm(SETTINGS_SCREEN.logoutConfirm)) return;
+    if (!window.confirm(SS.logoutConfirm)) return;
     void logout();
   }
 
@@ -30,45 +37,55 @@ export function SettingsMenu() {
       router.push(buildLoginRedirectPath(ROUTES.settings));
       return;
     }
-    window.alert(SETTINGS_SCREEN.rateThanks);
+    setRateOpen(true);
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {SETTINGS_PRIMARY_LINKS.map((item) => (
+    <>
+      <div className="flex flex-col gap-3">
+        {SETTINGS_PRIMARY_LINKS.map((item) => (
+          <SettingsRow
+            key={item.id}
+            label={t(item.label)}
+            iconSrc={SETTINGS_ASSETS[item.iconKey]}
+            href={resolveHref(item.href, item.gateLogin)}
+          />
+        ))}
+
         <SettingsRow
-          key={item.id}
-          label={item.label}
-          iconSrc={SETTINGS_ASSETS[item.iconKey]}
-          href={resolveHref(item.href, item.gateLogin)}
+          label={t(SS.rateUsLabel)}
+          iconSrc={SETTINGS_ASSETS.rating}
+          onClick={handleRateUs}
         />
-      ))}
 
-      <SettingsRow
-        label={SETTINGS_SCREEN.rateUsLabel}
-        iconSrc={SETTINGS_ASSETS.rating}
-        onClick={handleRateUs}
+        {isAuthenticated && (
+          <>
+            <div
+              className="my-2 h-px bg-[color-mix(in_srgb,var(--color-brand-black)_8%,transparent)]"
+              aria-hidden
+            />
+            <SettingsRow
+              label={t(SS.deleteAccountLabel)}
+              iconSrc={SETTINGS_ASSETS.deleteAccount}
+              href={`${ROUTES.settings}/delete-account`}
+            />
+            <SettingsRow
+              label={t(SS.logoutLabel)}
+              iconSrc={SETTINGS_ASSETS.logout}
+              variant="logout"
+              onClick={handleLogout}
+            />
+          </>
+        )}
+      </div>
+      <SettingsRateDialog
+        open={rateOpen}
+        onClose={() => setRateOpen(false)}
+        onRateNow={() => {
+          setRateOpen(false);
+          window.open(SS.playStoreUrl, "_blank", "noopener,noreferrer");
+        }}
       />
-
-      {isAuthenticated && (
-        <>
-          <div
-            className="my-2 h-px bg-[color-mix(in_srgb,var(--color-brand-black)_8%,transparent)]"
-            aria-hidden
-          />
-          <SettingsRow
-            label={SETTINGS_SCREEN.deleteAccountLabel}
-            iconSrc={SETTINGS_ASSETS.deleteAccount}
-            href={`${ROUTES.settings}/delete-account`}
-          />
-          <SettingsRow
-            label={SETTINGS_SCREEN.logoutLabel}
-            iconSrc={SETTINGS_ASSETS.logout}
-            variant="logout"
-            onClick={handleLogout}
-          />
-        </>
-      )}
-    </div>
+    </>
   );
 }

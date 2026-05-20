@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -10,10 +13,14 @@ import type { ChatBannerProps } from "@/types";
  * (`Chat Now` + `rightArrow`).
  */
 export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
+  const HD = useI18nConstants(HOME_DASHBOARD);
   const href = isLoggedIn ? ROUTES.chat : ROUTES.login;
 
   return (
-    <Link href={href} className={cn("group block", className)}>
+    <Link
+      href={href}
+      className={cn("group block", HOME_LAYOUT.chatBannerNavGap, className)}
+    >
       <div
         className={cn(
           "relative isolate w-full min-w-0 overflow-hidden",
@@ -37,7 +44,7 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
         <div
           className={cn(
             "relative z-10 flex w-full items-center justify-evenly gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-3",
-            HOME_LAYOUT.homeBannerStripMinH,
+            HOME_LAYOUT.homeBannerStripMinH
           )}
         >
           <p
@@ -45,7 +52,7 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
               "min-w-0 shrink whitespace-pre-line text-left text-sm font-bold leading-snug text-white sm:text-base lg:text-lg"
             )}
           >
-            {HOME_DASHBOARD.aiVoiceChatTitle}
+            {HD.aiVoiceChatTitle}
           </p>
 
           <Image
@@ -65,7 +72,7 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
             )}
           >
             <span className="text-[11px] font-semibold leading-none text-[var(--color-brand-banner-font)] sm:text-xs">
-              {HOME_DASHBOARD.chatNow}
+              {HD.chatNow}
             </span>
             <Image
               src={DASHBOARD_ASSETS.chatStripArrow}

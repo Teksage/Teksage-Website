@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { Loader } from "@/components/common/Loader";
 import { PredictionGenerateLandingDesktop } from "@/components/predictions/PredictionGenerateLandingDesktop";
 import { PredictionLandingHero } from "@/components/predictions/PredictionLandingHero";
@@ -17,6 +18,7 @@ export function YearlyPredictionLandingLayout({
   onGenerate: () => void;
   generating: boolean;
 }) {
+  const YL = useI18nConstants(YEARLY_LANDING_SCREEN);
   return (
     <div className={PREDICTION_DESKTOP_LAYOUT.landingRoot}>
       <div className={PREDICTION_DESKTOP_LAYOUT.landingMobile}>
@@ -42,11 +44,11 @@ export function YearlyPredictionLandingLayout({
         </div>
 
         <h1 className="prediction-slide-up absolute inset-x-0 top-[var(--yearly-landing-title-top)] z-10 px-5 text-center text-[1.8125rem] font-bold leading-none text-white">
-          {YEARLY_LANDING_SCREEN.title}
+          {YL.title}
         </h1>
 
         <p className="prediction-slide-up-delay absolute inset-x-0 top-[var(--yearly-landing-description-top)] z-10 px-5 text-center text-lg font-medium leading-6 text-white">
-          {YEARLY_LANDING_SCREEN.description}
+          {YL.description}
         </p>
 
         <button
@@ -64,7 +66,7 @@ export function YearlyPredictionLandingLayout({
               <Loader variant="dots" size="sm" />
             </span>
           ) : (
-            YEARLY_LANDING_SCREEN.generateCta
+            YL.generateCta
           )}
         </button>
       </div>
@@ -73,9 +75,9 @@ export function YearlyPredictionLandingLayout({
         backSrc={YEARLY_PREDICTION_ASSETS.appBarBack}
         decoSrc={YEARLY_PREDICTION_ASSETS.landingDeco}
         logoSrc={YEARLY_PREDICTION_ASSETS.decoLogo}
-        title={YEARLY_LANDING_SCREEN.title}
-        description={YEARLY_LANDING_SCREEN.description}
-        generateCta={YEARLY_LANDING_SCREEN.generateCta}
+        title={YL.title}
+        description={YL.description}
+        generateCta={YL.generateCta}
         generating={generating}
         buttonTextClass="text-[var(--color-yearly-prediction-button-text)]"
         onBackClick={onBackClick}

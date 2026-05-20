@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_AVATAR_OPTIONS, CHAT_PREFERENCES } from "@/lib/constants/chat-preferences";
 import { cn } from "@/lib/utils";
 import type { ChatAvatarPickerProps } from "@/types/ui/chat";
@@ -8,9 +9,12 @@ import type { ChatAvatarPickerProps } from "@/types/ui/chat";
 export function ChatAvatarPicker({
   selectedIndex,
   onSelectIndex,
-  chooseLabel = CHAT_PREFERENCES.avatarSheetChooseLabel,
+  chooseLabel,
 }: ChatAvatarPickerProps) {
-  const active = CHAT_AVATAR_OPTIONS[selectedIndex] ?? CHAT_AVATAR_OPTIONS[0];
+  const CP = useI18nConstants(CHAT_PREFERENCES);
+  const avatars = useI18nConstants(CHAT_AVATAR_OPTIONS);
+  const label = chooseLabel ?? CP.avatarSheetChooseLabel;
+  const active = avatars[selectedIndex] ?? avatars[0];
 
   return (
     <div className="w-full px-5">
@@ -27,9 +31,9 @@ export function ChatAvatarPicker({
           </div>
         </div>
 
-        <p className="mt-8 text-center text-base font-medium text-black/60">{chooseLabel}</p>
+        <p className="mt-8 text-center text-base font-medium text-black/60">{label}</p>
         <div className="mt-3 flex justify-center gap-3.5">
-          {CHAT_AVATAR_OPTIONS.map((avatar, index) => {
+          {avatars.map((avatar, index) => {
             const isSelected = index === selectedIndex;
             return (
               <button

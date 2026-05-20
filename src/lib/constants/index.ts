@@ -64,6 +64,7 @@ export const STORAGE_KEYS = {
   language: "teksage_language",
   consultationDraft: "teksage_consultation_draft",
   consultationSummary: "teksage_consultation_summary",
+  subscriptionCheckout: "teksage_subscription_checkout",
 } as const;
 
 // Pagination

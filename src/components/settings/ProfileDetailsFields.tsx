@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/common/Loader";
 import { ProfileField } from "@/components/settings/ProfileField";
@@ -20,6 +21,7 @@ export function ProfileDetailsFields({
   onProfileRefresh,
   onRashiResolved,
 }: ProfileDetailsFieldsProps) {
+  const PD = useI18nConstants(PROFILE_DETAILS);
   const birthLocationForApi =
     form.birthLocationFull.trim() || form.placeOfBirth.trim();
 
@@ -36,7 +38,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.firstName}
+        label={PD.firstName}
         value={form.firstName}
         onChange={(v) => setField("firstName", v)}
         isEditable={isEditing}
@@ -45,7 +47,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.lastName}
+        label={PD.lastName}
         value={form.lastName}
         onChange={(v) => setField("lastName", v)}
         isEditable={isEditing}
@@ -54,7 +56,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.email}
+        label={PD.email}
         type="email"
         value={form.email}
         onChange={(v) => setField("email", v)}
@@ -73,7 +75,7 @@ export function ProfileDetailsFields({
 
       <div className="flex flex-col gap-1.5">
         <span className="text-sm font-medium text-[var(--color-brand-black)]">
-          {PROFILE_DETAILS.chatLanguage}
+          {PD.chatLanguage}
           <span className="text-[var(--color-brand-error)]">*</span>
         </span>
         <select
@@ -98,7 +100,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.dateOfBirth}
+        label={PD.dateOfBirth}
         type="date"
         value={form.dateOfBirth}
         onChange={(v) => setField("dateOfBirth", v)}
@@ -108,7 +110,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.timeOfBirth}
+        label={PD.timeOfBirth}
         type="time"
         value={form.timeOfBirth}
         onChange={(v) => setField("timeOfBirth", v)}
@@ -117,7 +119,7 @@ export function ProfileDetailsFields({
       />
 
       <ProfileLocationField
-        label={PROFILE_DETAILS.placeOfBirth}
+        label={PD.placeOfBirth}
         required
         value={form.placeOfBirth}
         fullLocation={form.birthLocationFull}
@@ -130,7 +132,7 @@ export function ProfileDetailsFields({
         onBlurCommit={() => void refreshRashi()}
       />
       <ProfileLocationField
-        label={PROFILE_DETAILS.currentLocation}
+        label={PD.currentLocation}
         value={form.preferredLocation}
         fullLocation={form.preferredLocationFull}
         isEditable={isEditing}
@@ -144,7 +146,7 @@ export function ProfileDetailsFields({
       {rashiBusy ? (
         <p className="flex items-center gap-2 text-xs font-medium text-black/55">
           <Loader variant="spinner" size="sm" />
-          {PROFILE_DETAILS.rashiResolving}
+          {PD.rashiResolving}
         </p>
       ) : null}
       {rashiError ? (
@@ -154,7 +156,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.rasi}
+        label={PD.rasi}
         value={form.rashi}
         onChange={(v) => setField("rashi", v)}
         isEditable={false}
@@ -163,7 +165,7 @@ export function ProfileDetailsFields({
       <ProfileField
         appearance="profile"
         required
-        label={PROFILE_DETAILS.nakshatram}
+        label={PD.nakshatram}
         value={form.nakshatra}
         onChange={(v) => setField("nakshatra", v)}
         isEditable={false}
@@ -183,10 +185,11 @@ export function ProfileDetailsFields({
           {isSaving ? (
             <Loader variant="spinner" size="sm" className="border-t-white" />
           ) : (
-            PROFILE_DETAILS.save
+            PD.save
           )}
         </Button>
       ) : null}
     </div>
   );
 }
+

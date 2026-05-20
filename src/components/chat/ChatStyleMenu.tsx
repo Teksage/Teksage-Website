@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -28,6 +29,7 @@ export function ChatStyleMenu({
   onSelect,
   onClose,
 }: ChatStyleMenuProps) {
+  const CP = useI18nConstants(CHAT_PREFERENCES);
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<MenuPosition | null>(null);
 
@@ -64,12 +66,12 @@ export function ChatStyleMenu({
   const items: { format: ChatStyleFormat; label: string; icon: string }[] = [
     {
       format: "long",
-      label: CHAT_PREFERENCES.styleLongLabel,
+      label: CP.styleLongLabel,
       icon: CHAT_PREFERENCE_ASSETS.styleExplain,
     },
     {
       format: "short",
-      label: CHAT_PREFERENCES.styleShortLabel,
+      label: CP.styleShortLabel,
       icon: CHAT_PREFERENCE_ASSETS.styleConcise,
     },
   ];

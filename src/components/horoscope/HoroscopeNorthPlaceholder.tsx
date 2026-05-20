@@ -1,10 +1,12 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
 
 /** Mirrors Flutter `ComingSoonContainer` (`comingSoon.dart`) — no marquee on web. */
 export function HoroscopeNorthPlaceholder() {
-  const lines = HOROSCOPE_SCREEN.northChartLines;
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
+  const lines = H.northChartLines;
 
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">

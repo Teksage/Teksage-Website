@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -19,6 +20,7 @@ export function ConsultationLanguageField({
   error,
   onChange,
 }: ConsultationLanguageFieldProps) {
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const [open, setOpen] = useState(false);
   const filled = Boolean(value);
   const displayLabel = filled ? consultationLanguageLabel(value) : "";
@@ -61,7 +63,7 @@ export function ConsultationLanguageField({
                 : CONSULTATION_LAYOUT.langFieldPlaceholder
             )}
           >
-            {filled ? displayLabel : CONSULTATION_SCREEN.languagePlaceholder}
+            {filled ? displayLabel : C.languagePlaceholder}
           </span>
         </span>
         <Image

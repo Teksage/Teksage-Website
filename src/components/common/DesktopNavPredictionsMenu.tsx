@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,6 +33,8 @@ function PredictionsChevron({ open }: { open: boolean }) {
 }
 
 export function DesktopNavPredictionsMenu() {
+  const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
+  const predictionLinks = useI18nConstants(HOME_DASHBOARD_PREDICTION_LINKS);
   const pathname = usePathname();
   const predictionsActive = pathname.startsWith(ROUTES.predictions);
   const [open, setOpen] = useState(predictionsActive);
@@ -40,7 +43,7 @@ export function DesktopNavPredictionsMenu() {
     <div className="flex flex-col">
       <DesktopNavItem
         iconSrc={HOME_DASHBOARD_SIDEBAR_ASSETS.predictions}
-        label={HOME_DASHBOARD_SIDEBAR.predictions}
+        label={HDS.predictions}
         active={predictionsActive}
         trailing={<PredictionsChevron open={open} />}
         onClick={() => setOpen((value) => !value)}
@@ -49,7 +52,7 @@ export function DesktopNavPredictionsMenu() {
 
       {open ? (
         <ul className={cn("mt-0.5 space-y-0.5 pb-1 pr-1", HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT)}>
-          {HOME_DASHBOARD_PREDICTION_LINKS.map((item) => {
+          {predictionLinks.map((item) => {
             const active = pathname === item.href;
             return (
               <li key={item.href}>

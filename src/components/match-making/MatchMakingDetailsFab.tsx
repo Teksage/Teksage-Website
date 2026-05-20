@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
@@ -12,6 +13,7 @@ export function MatchMakingDetailsFab({
   onRegenerate: () => void;
   onExpertConnect: () => void;
 }) {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,7 +38,7 @@ export function MatchMakingDetailsFab({
               className="flex w-full items-center gap-2.5 py-1.5 text-base font-medium text-[var(--color-brand-black)]"
             >
               <img src={MATCH_MAKING_ASSETS.expert} alt="" className="size-5" />
-              {MATCH_MAKING_SCREEN.expertConnectCta}
+              {MM.expertConnectCta}
             </button>
             <button
               type="button"
@@ -47,7 +49,7 @@ export function MatchMakingDetailsFab({
               className="mt-3 flex w-full items-center gap-2.5 py-1.5 text-base font-medium text-[var(--color-brand-black)]"
             >
               <img src={MATCH_MAKING_ASSETS.regenerate} alt="" className="size-5" />
-              {MATCH_MAKING_SCREEN.regenerateCta}
+              {MM.regenerateCta}
             </button>
           </div>
         ) : null}

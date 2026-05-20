@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { cn } from "@/lib/utils";
 import { HOME_LAYOUT, MAIN_NAV_ITEMS } from "@/lib/constants";
 import type { BottomNavProps } from "@/types";
@@ -13,6 +14,7 @@ import type { BottomNavProps } from "@/types";
  * Only the pill is white; page background shows through around it.
  */
 export function BottomNav({ className }: BottomNavProps) {
+  const { t } = useAppLanguage();
   const pathname = usePathname();
 
   return (
@@ -62,7 +64,7 @@ export function BottomNav({ className }: BottomNavProps) {
                       : "text-neutral-500"
                   )}
                 >
-                  {tab.label}
+                  {t(tab.label)}
                 </span>
               </Link>
             );

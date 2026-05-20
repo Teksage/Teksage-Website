@@ -38,7 +38,7 @@ export function DailyPredictionConsultStrip() {
 //         disabled={pdfBusy}
 //         onClick={() => void onPdfClick()}
 //       >
-//         {pdfBusy ? "…" : PREDICTION_DETAIL_SCREEN.downloadPdfCta}
+//         {pdfBusy ? "…" : PD.downloadPdfCta}
 //       </Button>
 //     </div>
 //   );

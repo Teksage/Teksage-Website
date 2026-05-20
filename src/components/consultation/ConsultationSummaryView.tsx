@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
@@ -25,6 +26,7 @@ import { fetchConsultationQuestions } from "@/lib/services/consultation";
 import type { ConsultationCompletedBooking, ConsultationQuestion } from "@/types/consultation";
 
 export function ConsultationSummaryView() {
+  const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const router = useRouter();
   const [summary, setSummary] = useState<ConsultationCompletedBooking | null>(null);
   const [questions, setQuestions] = useState<ConsultationQuestion[]>([]);
@@ -58,7 +60,7 @@ export function ConsultationSummaryView() {
 
   if (!summary) {
     return (
-      <ConsultationCheckoutShell title={CONSULTATION_BOOKING_SCREEN.title} onBack={() => router.push(ROUTES.home)}>
+      <ConsultationCheckoutShell title={CB.title} onBack={() => router.push(ROUTES.home)}>
         <div className="flex justify-center py-16">
           <Loader />
         </div>
@@ -73,7 +75,7 @@ export function ConsultationSummaryView() {
   return (
     <>
       <ConsultationCheckoutShell
-        title={CONSULTATION_BOOKING_SCREEN.title}
+        title={CB.title}
         onBack={() => router.push(ROUTES.home)}
       >
         <ConsultationBookingProfileHeader
@@ -87,36 +89,36 @@ export function ConsultationSummaryView() {
             rel="noopener noreferrer"
             className={`${CONSULTATION_BOOKING_LAYOUT.meetingBtn} mx-auto mt-2 block w-fit`}
           >
-            {CONSULTATION_BOOKING_SCREEN.meetingLink}
+            {CB.meetingLink}
           </a>
         ) : null}
-        <ConsultationBookingSectionDivider title={CONSULTATION_BOOKING_SCREEN.consultationSection} />
+        <ConsultationBookingSectionDivider title={CB.consultationSection} />
         <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>
           <ConsultationBookingDetailRow
-            label={CONSULTATION_BOOKING_SCREEN.date}
+            label={CB.date}
             value={formatConsultationBookingDate(summary.startDatetime)}
           />
           <ConsultationBookingDetailRow
-            label={CONSULTATION_BOOKING_SCREEN.time}
+            label={CB.time}
             value={formatConsultationBookingTimeRange(
               summary.startDatetime,
               summary.endDatetime
             )}
           />
           <ConsultationBookingDetailRow
-            label={CONSULTATION_BOOKING_SCREEN.consultingOn}
+            label={CB.consultingOn}
             value={categoriesLabel}
           />
           <ConsultationBookingDetailRow
-            label={CONSULTATION_BOOKING_SCREEN.language}
+            label={CB.language}
             value={languagesLabel}
           />
           <ConsultationBookingDetailRow
-            label={CONSULTATION_BOOKING_SCREEN.consultationFee}
+            label={CB.consultationFee}
             value={formatFeeSlash(summary.consultationFee, summary.currency)}
           />
         </div>
-        <ConsultationBookingSectionDivider title={CONSULTATION_BOOKING_SCREEN.queriesTitle} />
+        <ConsultationBookingSectionDivider title={CB.queriesTitle} />
         {loading ? (
           <div className="flex justify-center py-6">
             <Loader />
@@ -132,7 +134,7 @@ export function ConsultationSummaryView() {
                   setShowQuery(true);
                 }}
               >
-                {CONSULTATION_BOOKING_SCREEN.addQueryCta}
+                {CB.addQueryCta}
               </button>
             ) : null}
             <ul className="mt-4 space-y-4">
@@ -143,7 +145,7 @@ export function ConsultationSummaryView() {
               ))}
               {questions.length === 0 ? (
                 <p className="text-center text-sm text-[var(--color-brand-black)]/50">
-                  {CONSULTATION_BOOKING_SCREEN.noQueries}
+                  {CB.noQueries}
                 </p>
               ) : null}
             </ul>

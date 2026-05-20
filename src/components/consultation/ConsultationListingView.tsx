@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
@@ -17,6 +18,8 @@ import { useConsultationListing } from "@/hooks/useConsultationListing";
 import { cn } from "@/lib/utils";
 
 export function ConsultationListingView() {
+  const CL = useI18nConstants(CONSULTATION_LISTING_SCREEN);
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const [dotIndex, setDotIndex] = useState(0);
   const {
@@ -37,7 +40,7 @@ export function ConsultationListingView() {
   return (
     <div className={CONSULTATION_LISTING_LAYOUT.page}>
       <AppHeader
-        title={CONSULTATION_LISTING_SCREEN.appBarTitle}
+        title={CL.appBarTitle}
         showBack
         onBackClick={() => router.back()}
         className={cn(
@@ -53,7 +56,7 @@ export function ConsultationListingView() {
         <section className={CONSULTATION_LISTING_LAYOUT.hero}>
           <div className={CONSULTATION_LISTING_LAYOUT.heroBorder} />
           <h1 className={CONSULTATION_LISTING_LAYOUT.heroTitle}>
-            {CONSULTATION_LISTING_SCREEN.topHeading}
+            {CL.topHeading}
           </h1>
           <ConsultationFilterChips
             categories={categories}
@@ -67,7 +70,7 @@ export function ConsultationListingView() {
             </div>
           ) : error ? (
             <p className="mt-6 text-center text-sm text-white">
-              {CONSULTATION_SCREEN.loadError}
+              {C.loadError}
             </p>
           ) : (
             <>
@@ -124,7 +127,7 @@ export function ConsultationListingView() {
         {!loading && more.length > 0 ? (
           <section className={CONSULTATION_LISTING_LAYOUT.body}>
             <h2 className={CONSULTATION_LISTING_LAYOUT.otherTitle}>
-              {CONSULTATION_LISTING_SCREEN.otherHeading}
+              {CL.otherHeading}
             </h2>
             <div className={CONSULTATION_LISTING_LAYOUT.grid}>
               {more.map((a) => (

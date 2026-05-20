@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useAuthStore } from "@/store/auth.store";
 import {
   fetchDailyPredictionSummary,
@@ -11,6 +12,7 @@ import { checkMatchMakingExists } from "@/lib/services/match-making";
 import type { Notification } from "@/types";
 
 export function useDashboard() {
+  const { version: languageVersion } = useAppLanguage();
   const { user, isAuthenticated } = useAuthStore();
   const [dailyPrediction, setDailyPrediction] =
     useState<DailyPredictionSummary | null>(null);
@@ -46,7 +48,7 @@ export function useDashboard() {
         }
       });
     return () => { cancelled = true; };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, languageVersion]);
 
   return {
     user,

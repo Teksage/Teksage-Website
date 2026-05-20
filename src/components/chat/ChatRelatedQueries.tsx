@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
 import type { ChatRelatedQueriesProps } from "@/types/ui/chat";
@@ -8,12 +11,13 @@ export function ChatRelatedQueries({
   visible,
   onSelect,
 }: ChatRelatedQueriesProps) {
+  const CS = useI18nConstants(CHAT_SCREEN);
   if (!visible || (!loading && queries.length === 0)) return null;
 
   return (
     <section className="border-t border-black/10 bg-white/60 px-4 py-3 backdrop-blur-sm">
       <p className="mb-2 text-center text-sm font-medium text-black/60">
-        {CHAT_SCREEN.relatedTitle}
+        {CS.relatedTitle}
       </p>
       {loading ? (
         <div className="mx-auto flex max-w-md flex-col gap-2">

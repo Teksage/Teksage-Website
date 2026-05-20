@@ -1,14 +1,16 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { PANCHANG_SCREEN, PANCHANG_SECTIONS } from "@/lib/constants";
 import { formatPanchangSegmentValue } from "@/lib/panchang-detail-format";
 import type { PanchangExtendedTimingCardProps } from "@/types";
 
 export function PanchangExtendedTimingCard({ panchang }: PanchangExtendedTimingCardProps) {
-  const R = PANCHANG_SCREEN.rowLabels;
+  const P = useI18nConstants(PANCHANG_SCREEN);
+  const R = P.rowLabels;
   const auspicious = panchang.auspiciousTime?.filter((t) => t?.trim()) ?? [];
   const auspiciousBody = auspicious.length ? auspicious.join("\n") : undefined;
-  const amirthathi = formatPanchangSegmentValue(panchang.amirthathiYoga);
+  const amirthathi = formatPanchangSegmentValue(panchang.amirthathiYoga, P);
 
   const rows = [
     { label: R.rahuKala, value: panchang.rahuKala },

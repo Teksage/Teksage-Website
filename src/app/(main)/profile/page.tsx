@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
@@ -19,6 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
+  const PD = useI18nConstants(PROFILE_DETAILS);
   const router = useRouter();
   const { user, isLoading, isSaving, error, saveProfile, refetchProfile } =
     useProfile();
@@ -31,14 +33,14 @@ export default function ProfilePage() {
       <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
         <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.profile} />
         <AppHeader
-          title={PROFILE_DETAILS.title}
+          title={PD.title}
           showBack
           onBackClick={() => router.back()}
           className={PAGE_SHELL.contentLayer}
         />
         <EmptyState
-          title={PROFILE_DETAILS.notFoundTitle}
-          description={PROFILE_DETAILS.notFoundDescription}
+          title={PD.notFoundTitle}
+          description={PD.notFoundDescription}
         />
       </div>
     );
@@ -48,7 +50,7 @@ export default function ProfilePage() {
     <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
       <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.profile} />
       <AppHeader
-        title={PROFILE_DETAILS.title}
+        title={PD.title}
         showBack
         onBackClick={() => router.back()}
         className={PAGE_SHELL.contentLayer}
@@ -59,7 +61,7 @@ export default function ProfilePage() {
               onClick={() => setIsEditing(true)}
               className={PROFILE_LAYOUT.editButton}
             >
-              {PROFILE_DETAILS.edit}
+              {PD.edit}
             </button>
           ) : null
         }

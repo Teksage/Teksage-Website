@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChatOnboardingHeader } from "@/components/chat/ChatOnboardingHeader";
@@ -18,6 +19,8 @@ export function ChatStyleOnboarding({
   embedded = false,
   onContinue,
 }: ChatStyleOnboardingProps) {
+  const CP = useI18nConstants(CHAT_PREFERENCES);
+  const styleOptions = useI18nConstants(CHAT_STYLE_OPTIONS);
   const router = useRouter();
   const [selected, setSelected] = useState<ChatStyleFormat | null>(null);
 
@@ -32,10 +35,10 @@ export function ChatStyleOnboarding({
       <div className={CHAT_LAYOUT.onboardingContent}>
         <div>
           <h1 className={CHAT_LAYOUT.onboardingTitle}>
-            {CHAT_PREFERENCES.styleOnboardingTitle}
+            {CP.styleOnboardingTitle}
           </h1>
           <div className={CHAT_LAYOUT.onboardingOptionsStack}>
-            {CHAT_STYLE_OPTIONS.map((option) => (
+            {styleOptions.map((option) => (
               <ChatStyleOptionCard
                 key={option.format}
                 label={option.label}
@@ -56,7 +59,7 @@ export function ChatStyleOnboarding({
             !selected && "bg-black/20 text-white hover:bg-black/20"
           )}
         >
-          {CHAT_PREFERENCES.continueCta}
+          {CP.continueCta}
         </Button>
       </div>
     </div>

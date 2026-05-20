@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { ChatPageView } from "@/components/chat/ChatPageView";
 import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 
 /** Desktop home main pane — embedded AI chat (`lg+` only). */
 export function HomeChatPanel({ isLoggedIn, className }: HomeChatPanelProps) {
+  const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
   if (!isLoggedIn) {
     return (
       <aside
@@ -20,14 +22,14 @@ export function HomeChatPanel({ isLoggedIn, className }: HomeChatPanelProps) {
       >
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
           <p className="text-lg font-bold text-[var(--color-brand-primary)]">
-            {HOME_DASHBOARD_SIDEBAR.chatLoginTitle}
+            {HDS.chatLoginTitle}
           </p>
-          <p className="text-sm text-neutral-600">{HOME_DASHBOARD_SIDEBAR.chatLoginHint}</p>
+          <p className="text-sm text-neutral-600">{HDS.chatLoginHint}</p>
           <Link
             href={buildLoginRedirectPath(ROUTES.home)}
             className="inline-flex rounded-full bg-[var(--color-brand-primary)] px-8 py-2.5 text-sm font-semibold text-white"
           >
-            {HOME_DASHBOARD_SIDEBAR.chatLoginCta}
+            {HDS.chatLoginCta}
           </Link>
         </div>
       </aside>

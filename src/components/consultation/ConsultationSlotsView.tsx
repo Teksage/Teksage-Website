@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ConsultationSlotsAvailability } from "@/components/consultation/ConsultationSlotsAvailability";
@@ -21,6 +22,8 @@ type ConsultationSlotsViewProps = {
 };
 
 export function ConsultationSlotsView({ astrologerId }: ConsultationSlotsViewProps) {
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const today = useMemo(() => new Date(), []);
   const [title, setTitle] = useState("");
@@ -49,7 +52,7 @@ export function ConsultationSlotsView({ astrologerId }: ConsultationSlotsViewPro
           setTitle(consultationAstrologerName(detail.astrologer.user));
         }
       } catch {
-        if (!cancelled) setTitle(CONSULTATION_SCREEN.slotsTitle);
+        if (!cancelled) setTitle(C.slotsTitle);
       }
     })();
     return () => {
@@ -102,13 +105,13 @@ export function ConsultationSlotsView({ astrologerId }: ConsultationSlotsViewPro
 
   return (
     <ConsultationSlotsShell
-      title={title || CONSULTATION_SCREEN.slotsTitle}
+      title={title || C.slotsTitle}
       onBack={() => router.back()}
       footer={
         <>
           {showPickError ? (
             <p className={CONSULTATION_SLOTS_LAYOUT.pickError}>
-              * {CONSULTATION_SLOTS_SCREEN.slotPickError}
+              * {CS.slotPickError}
             </p>
           ) : null}
           <button
@@ -116,7 +119,7 @@ export function ConsultationSlotsView({ astrologerId }: ConsultationSlotsViewPro
             className={CONSULTATION_SLOTS_LAYOUT.footerBtn}
             onClick={() => void onBook()}
           >
-            {CONSULTATION_SLOTS_SCREEN.bookCta}
+            {CS.bookCta}
           </button>
         </>
       }

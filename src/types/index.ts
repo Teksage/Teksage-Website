@@ -144,6 +144,17 @@ export type {
   ChatPreferencePayload,
 } from "./chat";
 
+export type { LegalBlock } from "./settings-legal";
+
+export type {
+  FaqItem,
+  NotificationPrefs,
+  SubscriptionPlan,
+  ProfileSettingsPayload,
+  AppLanguageCode,
+  AppLanguageOption,
+} from "./settings";
+
 export type {
   CompatibilityFormValues,
   MatchMakingExisting,

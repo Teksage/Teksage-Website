@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ export function ChatComposer({
   preferenceBar,
   embedded = false,
 }: ChatComposerProps) {
+  const CS = useI18nConstants(CHAT_SCREEN);
   const canSend = Boolean(value.trim()) && !disabled;
 
   return (
@@ -65,7 +67,7 @@ export function ChatComposer({
               "mb-1.5 flex size-10 shrink-0 items-center justify-center rounded-full",
               "bg-[var(--color-brand-primary)] disabled:bg-black/20"
             )}
-            aria-label={CHAT_SCREEN.sendAria}
+            aria-label={CS.sendAria}
           >
             <img src={CHAT_ASSETS.send} alt="" className="size-5 brightness-0 invert" />
           </button>
@@ -78,7 +80,7 @@ export function ChatComposer({
             "mb-0.5 flex size-12 shrink-0 items-center justify-center rounded-full border-[1.5px]",
             "border-[var(--color-brand-primary)] bg-transparent disabled:opacity-50"
           )}
-          aria-label={CHAT_SCREEN.composerPlaceholder}
+          aria-label={CS.composerPlaceholder}
         >
           <img src={CHAT_ASSETS.mic} alt="" className="size-6" />
         </button>

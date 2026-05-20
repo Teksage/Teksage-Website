@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -17,6 +20,8 @@ function ExploreRuleLine() {
 }
 
 export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesProps) {
+  const HD = useI18nConstants(HOME_DASHBOARD);
+  const predictionLinks = useI18nConstants(PREDICTION_CIRCLE_LINKS);
   return (
     <div className={cn("flex flex-col", HOME_LAYOUT.exploreSectionGap, className)}>
       <div className="flex items-center gap-2 sm:gap-3">
@@ -27,7 +32,7 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
             "text-[color:var(--color-home-dashboard-heading)]"
           )}
         >
-          {HOME_DASHBOARD.explorePredictionsTitle}
+          {HD.explorePredictionsTitle}
         </span>
         <ExploreRuleLine />
       </div>
@@ -38,7 +43,7 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
           "lg:mx-auto lg:max-w-md lg:justify-center lg:gap-8 lg:px-0"
         )}
       >
-        {PREDICTION_CIRCLE_LINKS.map((item) => (
+        {predictionLinks.map((item) => (
           <Link
             key={item.label}
             href={isLoggedIn ? item.href : ROUTES.login}

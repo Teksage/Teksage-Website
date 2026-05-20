@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -35,11 +36,12 @@ export function MatchMakingPartnerSection({
   rashiList: RashiOption[];
   nakshatraList: { id: number; name: string }[];
 }) {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const isBoy = variant === "boy";
-  const title = isBoy ? MATCH_MAKING_SCREEN.boySection : MATCH_MAKING_SCREEN.girlSection;
+  const title = isBoy ? MM.boySection : MM.girlSection;
   const placeholder = isBoy
-    ? MATCH_MAKING_SCREEN.boyNamePlaceholder
-    : MATCH_MAKING_SCREEN.girlNamePlaceholder;
+    ? MM.boyNamePlaceholder
+    : MM.girlNamePlaceholder;
 
   return (
     <section className="overflow-hidden rounded-xl bg-white shadow-sm">
@@ -54,7 +56,7 @@ export function MatchMakingPartnerSection({
         <p className="text-base font-semibold text-[var(--color-brand-black)]">{title}</p>
       </div>
       <div className="space-y-2 p-5">
-        <FieldLabel>{MATCH_MAKING_SCREEN.nameLabel}*</FieldLabel>
+        <FieldLabel>{MM.nameLabel}*</FieldLabel>
         <Input
           value={name}
           onChange={(e) => onNameChange(e.target.value)}
@@ -62,23 +64,23 @@ export function MatchMakingPartnerSection({
           className="rounded-xl border-neutral-200"
           required
         />
-        <FieldLabel>{MATCH_MAKING_SCREEN.rashiFormLabel}*</FieldLabel>
+        <FieldLabel>{MM.rashiFormLabel}*</FieldLabel>
         <select className={selectClass} required value={rashi} onChange={(e) => onRashiChange(e.target.value)}>
-          <option value="">{MATCH_MAKING_SCREEN.selectPlaceholder}</option>
+          <option value="">{MM.selectPlaceholder}</option>
           {rashiList.map((r) => (
             <option key={r.id} value={r.name}>
               {r.name}
             </option>
           ))}
         </select>
-        <FieldLabel>{MATCH_MAKING_SCREEN.nakshatraFormLabel}*</FieldLabel>
+        <FieldLabel>{MM.nakshatraFormLabel}*</FieldLabel>
         <select
           className={selectClass}
           required
           value={nakshatra}
           onChange={(e) => onNakshatraChange(e.target.value)}
         >
-          <option value="">{MATCH_MAKING_SCREEN.selectPlaceholder}</option>
+          <option value="">{MM.selectPlaceholder}</option>
           {nakshatraList.map((n) => (
             <option key={n.id} value={n.name}>
               {n.name}

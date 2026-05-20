@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ export function DailyPredictionCard({
   currentDate,
   className,
 }: DailyPredictionCardProps) {
+  const HD = useI18nConstants(HOME_DASHBOARD);
   const href = isLoggedIn ? ROUTES.predictionsDaily : ROUTES.login;
 
   return (
@@ -38,7 +40,7 @@ export function DailyPredictionCard({
 
         <div className="relative flex flex-col items-center gap-1 px-3 pb-2 pt-5">
           <p className="text-center text-lg font-bold text-white">
-            {HOME_DASHBOARD.dailyPrediction}
+            {HD.dailyPrediction}
           </p>
           <p className="text-sm font-semibold text-white/75">{currentDate}</p>
 
@@ -51,16 +53,16 @@ export function DailyPredictionCard({
                   label="Loading daily prediction"
                 />
                 <p className="text-center text-xs text-neutral-400">
-                  {HOME_DASHBOARD.loadingEllipsis}
+                  {HD.loadingEllipsis}
                 </p>
               </div>
             ) : !isLoggedIn ? (
               <p className="py-1 text-center text-xs font-semibold text-[var(--color-brand-primary)]">
-                {HOME_DASHBOARD.clickToView}
+                {HD.clickToView}
               </p>
             ) : fetchError ? (
               <p className="py-1 text-center text-xs font-semibold text-neutral-600">
-                {HOME_DASHBOARD.dailyPredictionUnavailable}
+                {HD.dailyPredictionUnavailable}
               </p>
             ) : data ? (
               <div className="flex items-stretch justify-around">
@@ -69,7 +71,7 @@ export function DailyPredictionCard({
                     {data.tharaBala ?? "N/A"}
                   </p>
                   <p className="text-[8px] font-semibold leading-tight text-[var(--color-brand-primary)]">
-                    {HOME_DASHBOARD.tharaBala}
+                    {HD.tharaBala}
                   </p>
                 </div>
                 <div className="w-px self-stretch bg-neutral-200" />
@@ -78,13 +80,13 @@ export function DailyPredictionCard({
                     {data.chandraBala ?? "N/A"}
                   </p>
                   <p className="text-[8px] font-semibold leading-tight text-[var(--color-brand-primary)]">
-                    {HOME_DASHBOARD.chandraBala}
+                    {HD.chandraBala}
                   </p>
                 </div>
               </div>
             ) : (
               <p className="py-1 text-center text-xs font-semibold text-[var(--color-brand-primary)]">
-                {HOME_DASHBOARD.clickToView}
+                {HD.clickToView}
               </p>
             )}
           </div>

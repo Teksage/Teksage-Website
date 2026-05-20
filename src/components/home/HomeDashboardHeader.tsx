@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -12,6 +13,7 @@ export function HomeDashboardHeader({
   unreadCount,
   className,
 }: HomeDashboardHeaderProps) {
+  const HD = useI18nConstants(HOME_DASHBOARD);
   return (
     <header
       className={cn(
@@ -32,7 +34,7 @@ export function HomeDashboardHeader({
           <Link
             href={isAuthenticated ? ROUTES.notifications : ROUTES.login}
             className="relative rounded-full p-1.5 transition-colors hover:bg-black/5"
-            aria-label={HOME_DASHBOARD.notificationsLinkAria}
+            aria-label={HD.notificationsLinkAria}
           >
             <Image
               src={DASHBOARD_ASSETS.notification}
@@ -44,7 +46,7 @@ export function HomeDashboardHeader({
             />
             {unreadCount > 0 && (
               <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-brand-error)] px-1 text-[10px] font-bold text-white">
-                {unreadCount > 9 ? HOME_DASHBOARD.notificationCountOverflow : unreadCount}
+                {unreadCount > 9 ? HD.notificationCountOverflow : unreadCount}
               </span>
             )}
           </Link>

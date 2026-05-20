@@ -101,4 +101,21 @@ export const SETTINGS_ASSETS = {
   logout: flutterSvg("logout.svg"),
 } as const;
 
+/** Settings sub-pages — Flutter `imageConstant.dart` (FAQ, subscription, nav). */
+export const SETTINGS_PAGE_ASSETS = {
+  /** Black arrow on white settings sub-pages (Flutter `backButton.svg`). */
+  back: flutterSvg("backButton.svg"),
+  /** White arrow on dark / colored headers (Flutter `appBarBackButton.svg`). */
+  backOnDark: flutterSvg("appBarBackButton.svg"),
+  search: flutterSvg("search.svg"),
+  dropDownArrow: flutterSvg("dropDownArrow.svg"),
+  faqExpand: flutterSvg("add_faq.svg"),
+  faqCollapse: flutterSvg("cross_faq.svg"),
+  subscriptionBg: flutterImage("subscriptionBG.png"),
+  subscriptionPro: flutterSvg("subscriptionProIcon.svg"),
+  planSelected: flutterSvg("subSelect.svg"),
+  planCheck: flutterSvg("selectCheckBox.svg"),
+  dialogClose: flutterSvg("close.svg"),
+} as const;
+
 export type SettingsAssetKey = keyof typeof SETTINGS_ASSETS;

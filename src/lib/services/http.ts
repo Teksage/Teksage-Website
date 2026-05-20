@@ -3,6 +3,7 @@ import { API_ENDPOINTS } from "@/lib/constants/api";
 import { STORAGE_KEYS } from "@/lib/constants";
 import { clearAuthCookie, setAuthCookie } from "@/lib/auth-cookie";
 import { getPublicApiBaseUrl } from "@/lib/env";
+import { getStoredAppLanguageName } from "@/lib/settings-language-storage";
 
 const http = axios.create({
   timeout: 30000,
@@ -22,6 +23,7 @@ http.interceptors.request.use((config) => {
     if (tz) {
       config.headers["X-Timezone"] = tz;
     }
+    config.headers.response_language = getStoredAppLanguageName();
   }
   return config;
 });

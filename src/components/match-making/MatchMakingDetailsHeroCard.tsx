@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { MatchMakingDashedLine } from "@/components/match-making/MatchMakingDashedLine";
 import { MatchMakingPartnerColumn } from "@/components/match-making/MatchMakingPartnerColumn";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
@@ -5,6 +8,7 @@ import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import type { MatchMakingExisting } from "@/types/match-making";
 
 export function MatchMakingDetailsHeroCard({ data }: { data: MatchMakingExisting }) {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const gained = data.result.gained ?? 0;
   const maxScore = data.result.max_score ?? 40;
 
@@ -40,7 +44,7 @@ export function MatchMakingDetailsHeroCard({ data }: { data: MatchMakingExisting
           {gained}/{maxScore}
         </p>
         <p className="mt-1 text-center text-base font-medium text-[var(--color-match-button-text)]">
-          {MATCH_MAKING_SCREEN.totalCompatibilityScore}
+          {MM.totalCompatibilityScore}
         </p>
       </div>
     </article>

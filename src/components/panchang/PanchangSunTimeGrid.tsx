@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { PANCHANG_ASSETS, PANCHANG_SCREEN, PANCHANG_SECTIONS } from "@/lib/constants";
 import type { PanchangSunTimeGridProps } from "@/types";
@@ -39,9 +40,10 @@ function SunCell({
 }
 
 export function PanchangSunTimeGrid({ sunrise, sunset }: PanchangSunTimeGridProps) {
+  const P = useI18nConstants(PANCHANG_SCREEN);
   if (!sunrise?.trim() && !sunset?.trim()) return null;
 
-  const R = PANCHANG_SCREEN.rowLabels;
+  const R = P.rowLabels;
 
   return (
     <div className={PANCHANG_SECTIONS.pairRow}>

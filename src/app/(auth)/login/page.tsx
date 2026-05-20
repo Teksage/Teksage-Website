@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 /**
  * Login — email-only UI (matches Flutter `LoginPageEmail` / design reference).
  *
@@ -17,6 +18,7 @@ import type { LoginStep } from "@/types";
 import { OTP_CONTACT_TYPE_EMAIL } from "@/types";
 
 export default function LoginPage() {
+  const LS = useI18nConstants(LOGIN_SCREEN);
   const [step, setStep] = useState<LoginStep>("form");
   const [contact, setContact] = useState("");
 
@@ -36,13 +38,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={LOGIN_SCREEN.shellClassName}>
+    <div className={LS.shellClassName}>
       {/* Status bar / native chrome is not rendered — web only (per design reference). */}
       <LoginBackButton />
 
       <div className="relative mx-auto flex w-full max-w-md flex-col px-6 pb-10 pt-16">
         <div className="mb-10 flex flex-col items-center">
-          <BrandLoginLogo widthPx={LOGIN_SCREEN.brandLogoWidthPx} />
+          <BrandLoginLogo widthPx={LS.brandLogoWidthPx} />
         </div>
 
         <LoginOrSignupHeading />
@@ -61,7 +63,7 @@ export default function LoginPage() {
         */}
 
         <p className="mt-10 text-center text-xs text-neutral-400">
-          {LOGIN_SCREEN.legalFootnote}
+          {LS.legalFootnote}
         </p>
       </div>
     </div>
