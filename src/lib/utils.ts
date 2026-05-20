@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { bcp47FromAppLocale, DEFAULT_APP_LOCALE, type AppLocale } from "@/lib/i18n/locale"
 import type { UserProfile } from "@/types"
 
 export function cn(...inputs: ClassValue[]) {
@@ -7,13 +8,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /** Date line on daily prediction card — mirrors Flutter `getCurrentTime()` (day rolls before 6:00). */
-export function formatHomeDashboardDate(now = new Date()): string {
+export function formatHomeDashboardDate(
+  now = new Date(),
+  appLocale: AppLocale = DEFAULT_APP_LOCALE
+): string {
   const sixAM = new Date(now)
   sixAM.setHours(6, 0, 0, 0)
   const display =
     now < sixAM ? new Date(now.getTime() - 86400000) : now
-  const weekday = display.toLocaleDateString("en-US", { weekday: "short" })
-  const month = display.toLocaleDateString("en-US", { month: "short" })
+  const bcp47 = bcp47FromAppLocale(appLocale)
+  const weekday = display.toLocaleDateString(bcp47, { weekday: "short" })
+  const month = display.toLocaleDateString(bcp47, { month: "short" })
   const day = display.getDate()
   const year = display.getFullYear()
   return `${weekday} - ${month} ${day}, ${year}`

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/hooks/useT";
 import { Loader } from "@/components/common/Loader";
 import { LifePredictionLandingLayout } from "@/components/predictions/LifePredictionLandingLayout";
 import { LifePredictionLayout } from "@/components/predictions/LifePredictionLayout";
@@ -14,6 +15,7 @@ import type { StructuredPredictionDetail } from "@/types/prediction-detail";
 type LifeView = "loading" | "landing" | "detail";
 
 export function LifePredictionBody({ onBackClick }: { onBackClick: () => void }) {
+  const { languageVersion } = useT();
   const [view, setView] = useState<LifeView>("loading");
   const [data, setData] = useState<StructuredPredictionDetail | null>(null);
   const [generating, setGenerating] = useState(false);
@@ -34,7 +36,7 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
         setView("landing");
       });
     return () => controller.abort();
-  }, []);
+  }, [languageVersion]);
 
   async function runGenerate() {
     setGenerating(true);

@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { MatchMakingDashedLine } from "@/components/match-making/MatchMakingDashedLine";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
@@ -5,6 +8,7 @@ import { cn } from "@/lib/utils";
 import type { MatchMakingKutaRow } from "@/types/match-making";
 
 function KutaBadge({ present }: { present: boolean }) {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   return (
     <span
       className={cn(
@@ -12,7 +16,7 @@ function KutaBadge({ present }: { present: boolean }) {
         present ? "bg-[var(--color-brand-primary)]" : "bg-[var(--color-brand-error)]"
       )}
     >
-      {present ? MATCH_MAKING_SCREEN.presentBadge : MATCH_MAKING_SCREEN.absentBadge}
+      {present ? MM.presentBadge : MM.absentBadge}
       <img
         src={present ? MATCH_MAKING_ASSETS.present : MATCH_MAKING_ASSETS.absent}
         alt=""

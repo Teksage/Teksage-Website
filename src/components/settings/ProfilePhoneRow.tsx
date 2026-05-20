@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ export function ProfilePhoneRow({
   isEditing,
   onVerificationSuccess,
 }: ProfilePhoneRowProps) {
+  const PD = useI18nConstants(PROFILE_DETAILS);
   const [otpPhase, setOtpPhase] = useState(false);
   const [otp, setOtp] = useState("");
   const [sendBusy, setSendBusy] = useState(false);
@@ -85,7 +87,7 @@ export function ProfilePhoneRow({
   return (
     <div className="flex flex-col gap-1.5">
       <span className="text-sm font-medium text-[var(--color-brand-black)]">
-        {PROFILE_DETAILS.phone}
+        {PD.phone}
       </span>
       <div
         className={cn(
@@ -131,7 +133,7 @@ export function ProfilePhoneRow({
               {sendBusy ? (
                 <Loader variant="spinner" size="sm" className="border-t-[var(--color-brand-primary)]" />
               ) : null}
-              {PROFILE_DETAILS.verify}
+              {PD.verify}
             </button>
           </>
         ) : null}
@@ -139,7 +141,7 @@ export function ProfilePhoneRow({
 
       {!isMobileVerified && otpPhase ? (
         <div className="flex flex-col gap-2 rounded-xl border border-black/15 bg-neutral-50 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-700">{PROFILE_DETAILS.otpHint}</p>
+          <p className="text-xs font-medium text-neutral-700">{PD.otpHint}</p>
           <Input
             inputMode="numeric"
             autoComplete="one-time-code"
@@ -148,7 +150,7 @@ export function ProfilePhoneRow({
             onChange={(e) =>
               setOtp(e.target.value.replace(/\D/g, "").slice(0, OTP_LENGTH))
             }
-            placeholder={PROFILE_DETAILS.otpLabel}
+            placeholder={PD.otpLabel}
             disabled={verifyBusy}
             className={cn(
               "h-11 rounded-xl border border-black/15 bg-white px-3 text-center text-base font-semibold tracking-widest",
@@ -164,10 +166,10 @@ export function ProfilePhoneRow({
             {verifyBusy ? (
               <Loader variant="spinner" size="sm" className="border-t-white" />
             ) : (
-              PROFILE_DETAILS.confirmOtp
+              PD.confirmOtp
             )}
           </Button>
-          <p className="text-xs text-neutral-500">{PROFILE_DETAILS.resentPrompt}</p>
+          <p className="text-xs text-neutral-500">{PD.resentPrompt}</p>
         </div>
       ) : null}
 
@@ -177,3 +179,4 @@ export function ProfilePhoneRow({
     </div>
   );
 }
+

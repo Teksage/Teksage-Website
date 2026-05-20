@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
+import { useI18nConstants } from "@/hooks/useT";
 import {
   CHAT_DEFAULTS,
   CHAT_RESPONSE_TIMEOUT_MS,
@@ -28,6 +29,7 @@ export function useChatStream(
   chatLanguage: string,
   outboundPrefsRef: RefObject<OutboundPrefs>
 ) {
+  const CS = useI18nConstants(CHAT_SCREEN);
   const bufferRef = useRef("");
   const assistantIdRef = useRef<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -142,9 +144,9 @@ export function useChatStream(
       s.setShowTyping(false);
       s.setEnableInput(true);
       markLastUserFailed();
-      s.setToast(CHAT_SCREEN.responseTimeout);
+      s.setToast(CS.responseTimeout);
     }, CHAT_RESPONSE_TIMEOUT_MS);
-  }, [clearResponseTimeout, markLastUserFailed]);
+  }, [CS.responseTimeout, clearResponseTimeout, markLastUserFailed]);
 
   const resetStreamRefs = useCallback(() => {
     assistantIdRef.current = null;

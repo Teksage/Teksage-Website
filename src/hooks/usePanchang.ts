@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
+import { useI18nConstants } from "@/hooks/useT";
 import { DOWNLOAD_FILENAMES, PANCHANG_SCREEN } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth.store";
 import {
@@ -10,6 +12,8 @@ import {
 import type { PanchangPayload } from "@/types";
 
 export function usePanchang() {
+  const P = useI18nConstants(PANCHANG_SCREEN);
+  const { version: languageVersion } = useAppLanguage();
   const { user, isAuthenticated } = useAuthStore();
   const isPremium = Boolean(user?.isPremium);
   const mayFetch = isAuthenticated && isPremium;
@@ -25,10 +29,10 @@ export function usePanchang() {
     fetchPanchang()
       .then(setData)
       .catch((e: Error) => {
-        setError(e.message || PANCHANG_SCREEN.loadErrorFallback);
+        setError(e.message || P.loadErrorFallback);
       })
       .finally(() => setIsLoading(false));
-  }, [mayFetch]);
+  }, [P.loadErrorFallback, mayFetch]);
 
   useEffect(() => {
     if (!mayFetch) {
@@ -41,7 +45,7 @@ export function usePanchang() {
     queueMicrotask(() => {
       load();
     });
-  }, [mayFetch, load]);
+  }, [mayFetch, load, languageVersion]);
 
   async function sharePdf(): Promise<void> {
     if (!data?.panchangId) return;

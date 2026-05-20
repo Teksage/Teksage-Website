@@ -237,6 +237,18 @@
         rgb(255 255 255) 88%);
   }
 
+  /** Flutter `AppLanguagePage` Android gradient. */
+  .settings-language-gradient {
+    background: linear-gradient(to top,
+        color-mix(in srgb, var(--color-brand-primary) 10%, white) 0%,
+        color-mix(in srgb, white 50%, white) 90%);
+  }
+
+  /** Flutter `TermsAndConditionsPage` / `PrivacyPage` green header. */
+  .settings-legal-hero {
+    background-color: var(--color-brand-primary);
+  }
+
   /**
    * Horoscope tab — `horoscopePage.dart`: green band ~42% viewport (`responsiveHeight(0.4226)`),
    * then `horoscopeLightBg` (#BAE8B5). Shell height follows content (no `min-h-dvh` stretch).

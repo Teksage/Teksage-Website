@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { DailyPredictionBody } from "@/components/predictions/DailyPredictionBod
 import { WeeklyPredictionBody } from "@/components/predictions/WeeklyPredictionBody";
 import { YearlyPredictionBody } from "@/components/predictions/YearlyPredictionBody";
 import { LifePredictionBody } from "@/components/predictions/LifePredictionBody";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useAuthStore } from "@/store/auth.store";
 import { fetchPredictionDetail, isPredictionError } from "@/lib/services/predictions";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
@@ -48,12 +50,14 @@ function usesFlutterShell(kind: PredictionDetailKind, loading: boolean, err: str
 }
 
 export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) {
+  const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   const router = useRouter();
+  const { t, version: languageVersion } = useAppLanguage();
   const { isAuthenticated } = useAuthStore();
   const [vm, setVm] = useState<PredictionDetailViewModel | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const title = TITLES[kind];
+  const title = t(TITLES[kind]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -84,7 +88,7 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
     return () => {
       cancelled = true;
     };
-  }, [kind, isAuthenticated]);
+  }, [kind, isAuthenticated, languageVersion]);
 
   if (!isAuthenticated) {
     return (
@@ -92,16 +96,16 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
         <AppHeader title={title} showBack onBackClick={() => router.back()} />
         <div className="mx-auto max-w-lg px-5 py-10 text-center">
           <p className="font-semibold text-[var(--color-brand-black)]">
-            {PREDICTION_DETAIL_SCREEN.loginTitle}
+            {PD.loginTitle}
           </p>
           <p className="mt-2 text-sm text-neutral-600">
-            {PREDICTION_DETAIL_SCREEN.loginDescription}
+            {PD.loginDescription}
           </p>
           <Link
             href={buildLoginRedirectPath(redirectForKind(kind))}
             className={cn(buttonVariants(), "mt-6 inline-flex rounded-full")}
           >
-            {PREDICTION_DETAIL_SCREEN.loginCta}
+            {PD.loginCta}
           </Link>
         </div>
       </div>
@@ -163,7 +167,7 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
           <div className="text-center">
             <p className="font-semibold text-[var(--color-brand-error)]">{err}</p>
             <Button type="button" className="mt-4 rounded-full" onClick={() => window.location.reload()}>
-              {PREDICTION_DETAIL_SCREEN.tryAgainCta}
+              {PD.tryAgainCta}
             </Button>
           </div>
         ) : vm?.kind === "daily" ? (
@@ -171,7 +175,7 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
         ) : vm?.kind === "weekly" ? (
           <WeeklyPredictionBody data={vm} onBackClick={() => router.back()} />
         ) : (
-          <p className="text-center text-neutral-600">{PREDICTION_DETAIL_SCREEN.emptyDescription}</p>
+          <p className="text-center text-neutral-600">{PD.emptyDescription}</p>
         )}
       </div>
     </div>

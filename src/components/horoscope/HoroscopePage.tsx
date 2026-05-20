@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
@@ -21,11 +22,11 @@ import type { HoroscopeChartVariant } from "@/types";
 
 /** Mirrors Flutter `HoroscopePage` (login gate + `horoscopePage.dart` split shell + charts). */
 export function HoroscopePage() {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const { isAuthenticated, data, isLoading, error, profileIncomplete, reload } =
     useHoroscope();
   const [chartVariant, setChartVariant] = useState<HoroscopeChartVariant>("south");
 
-  const H = HOROSCOPE_SCREEN;
   const showChartShell =
     isAuthenticated && Boolean(data) && !isLoading && !error && !profileIncomplete;
 

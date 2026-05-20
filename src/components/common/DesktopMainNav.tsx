@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
@@ -17,19 +18,19 @@ import { APP_NAME, PUBLIC_ASSETS } from "@/lib/constants";
 import type { DesktopMainNavProps } from "@/types";
 import { cn } from "@/lib/utils";
 
-const UTILITY_LABELS: Record<
-  (typeof DESKTOP_SIDEBAR_UTILITY_LINKS)[number]["labelKey"],
-  string
-> = {
-  panchang: HOME_DASHBOARD_SIDEBAR.panchang,
-  horoscope: HOME_DASHBOARD_SIDEBAR.horoscope,
-  settings: HOME_DASHBOARD_SIDEBAR.settings,
-};
-
 /**
  * Desktop left rail — design ref dashboard sidebar (`lg+`).
  */
 export function DesktopMainNav({ className }: DesktopMainNavProps) {
+  const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
+  const utilityLabels: Record<
+    (typeof DESKTOP_SIDEBAR_UTILITY_LINKS)[number]["labelKey"],
+    string
+  > = {
+    panchang: HDS.panchang,
+    horoscope: HDS.horoscope,
+    settings: HDS.settings,
+  };
   const pathname = usePathname();
 
   return (
@@ -62,8 +63,8 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           href={DESKTOP_SIDEBAR_BOOK_LINK.href}
           iconSrc={DESKTOP_SIDEBAR_BOOK_LINK.icon}
           labelLines={{
-            primary: HOME_DASHBOARD_SIDEBAR.bookConsultationLine1,
-            secondary: HOME_DASHBOARD_SIDEBAR.bookConsultationLine2,
+            primary: HDS.bookConsultationLine1,
+            secondary: HDS.bookConsultationLine2,
           }}
           active={pathname.startsWith(DESKTOP_SIDEBAR_BOOK_LINK.href)}
         />
@@ -74,8 +75,8 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           href={DESKTOP_SIDEBAR_MARRIAGE_LINK.href}
           iconSrc={DESKTOP_SIDEBAR_MARRIAGE_LINK.icon}
           labelLines={{
-            primary: HOME_DASHBOARD_SIDEBAR.marriageLine1,
-            secondary: HOME_DASHBOARD_SIDEBAR.marriageLine2,
+            primary: HDS.marriageLine1,
+            secondary: HDS.marriageLine2,
           }}
           active={pathname.startsWith(DESKTOP_SIDEBAR_MARRIAGE_LINK.href)}
         />
@@ -85,7 +86,7 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
             key={item.href}
             href={item.href}
             iconSrc={item.icon}
-            label={UTILITY_LABELS[item.labelKey]}
+            label={utilityLabels[item.labelKey]}
             active={pathname.startsWith(item.href)}
           />
         ))}

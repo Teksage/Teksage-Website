@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,6 +19,7 @@ import { useAuthStore } from "@/store/auth.store";
 import type { MatchMakingExisting } from "@/types/match-making";
 
 export function MatchMakingDetailsView() {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [existing, setExisting] = useState<MatchMakingExisting | null>(null);
@@ -48,12 +50,12 @@ export function MatchMakingDetailsView() {
     return (
       <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root, PAGE_SHELL.flutterFullBleed)}>
         <MatchMakingShell className="flex min-h-dvh flex-col items-center justify-center px-5">
-          <p className="text-center font-semibold text-white">{MATCH_MAKING_SCREEN.loginTitle}</p>
+          <p className="text-center font-semibold text-white">{MM.loginTitle}</p>
           <Link
             href={buildLoginRedirectPath(ROUTES.matchmakingDetails)}
             className={cn(buttonVariants(), "mt-6 inline-flex rounded-full")}
           >
-            {MATCH_MAKING_SCREEN.loginCta}
+            {MM.loginCta}
           </Link>
         </MatchMakingShell>
       </div>
@@ -71,12 +73,12 @@ export function MatchMakingDetailsView() {
   if (!existing) {
     return (
       <MatchMakingShell className="flex min-h-dvh flex-col items-center justify-center px-5 text-center text-white">
-        <p className="text-sm">{MATCH_MAKING_SCREEN.noMatchYet}</p>
+        <p className="text-sm">{MM.noMatchYet}</p>
         <Link
           href={ROUTES.matchmaking}
           className={cn(buttonVariants(), "mt-4 inline-flex rounded-full")}
         >
-          {MATCH_MAKING_SCREEN.newMatchCta}
+          {MM.newMatchCta}
         </Link>
       </MatchMakingShell>
     );

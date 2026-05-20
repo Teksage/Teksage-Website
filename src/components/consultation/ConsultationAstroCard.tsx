@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
@@ -22,6 +23,8 @@ export function ConsultationAstroCard({
   href,
   variant,
 }: ConsultationAstroCardProps) {
+  const CLS = useI18nConstants(CONSULTATION_LISTING_SCREEN);
+  const CL = useI18nConstants(CONSULTATION_LISTING_SCREEN);
   const fee = consultationFeeForAstrologer(astrologer, currency);
   const unit = currency === "INR" ? "₹" : "$";
   const amount = Math.round(fee).toString();
@@ -44,7 +47,7 @@ export function ConsultationAstroCard({
             />
           </div>
           <span className={CONSULTATION_ASTRO_CARD.matchText}>
-            {match}% {CONSULTATION_LISTING_SCREEN.matchSuffix}
+            {match}% {CLS.matchSuffix}
           </span>
         </div>
       ) : (
@@ -80,11 +83,11 @@ export function ConsultationAstroCard({
         <span className={CONSULTATION_ASTRO_CARD.priceUnit}>{unit}</span>
         <span className={CONSULTATION_ASTRO_CARD.priceMain}>{amount}</span>
         <span className={CONSULTATION_ASTRO_CARD.priceSuffix}>
-          {CONSULTATION_LISTING_SCREEN.perSession}
+          {CLS.perSession}
         </span>
       </div>
       <Link href={href} className={cn(CONSULTATION_ASTRO_CARD.bookBtn, "mt-2 block")}>
-        {CONSULTATION_LISTING_SCREEN.bookNow}
+        {CLS.bookNow}
       </Link>
     </article>
   );

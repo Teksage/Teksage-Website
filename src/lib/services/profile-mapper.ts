@@ -18,6 +18,7 @@ export interface RawProfileResponse {
   nakshatra?: string | null;
   subscription?: { plan_status?: string | null } | null;
   user_type?: string | null;
+  app_language?: string | null;
 }
 
 export function mapRawProfileToUserProfile(raw: RawProfileResponse): UserProfile {
@@ -65,6 +66,7 @@ export function mapRawProfileToUserProfile(raw: RawProfileResponse): UserProfile
     nakshatra: raw.nakshatra ?? undefined,
     isPremium,
     userType: raw.user_type?.trim() || undefined,
+    language: raw.app_language?.trim().toLowerCase() || undefined,
   };
 }
 

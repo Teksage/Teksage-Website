@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,7 @@ function PanchangInfoIcon() {
  * **`public/flutter-assets/images/panchangBG.png`** (`PANCHANG_ASSETS.personalizedBackground`, `BoxFit.cover`).
  */
 export function PanchangDetailView({ panchang }: PanchangDetailViewProps) {
+  const P = useI18nConstants(PANCHANG_SCREEN);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const L = PANCHANG_LAYOUT;
 
@@ -63,13 +65,13 @@ export function PanchangDetailView({ panchang }: PanchangDetailViewProps) {
       </div>
 
       <header className={L.heroHeader}>
-        <h1 className={L.heroTitle}>{PANCHANG_SCREEN.personalizedTitle}</h1>
+        <h1 className={L.heroTitle}>{P.personalizedTitle}</h1>
         <Button
           type="button"
           variant="ghost"
           size="icon-sm"
           className={L.infoButton}
-          aria-label={PANCHANG_SCREEN.infoButtonAria}
+          aria-label={P.infoButtonAria}
           onClick={() => dialogRef.current?.showModal()}
         >
           <PanchangInfoIcon />
@@ -77,11 +79,11 @@ export function PanchangDetailView({ panchang }: PanchangDetailViewProps) {
       </header>
 
       <dialog ref={dialogRef} className={L.infoDialog}>
-        <p className={L.infoDialogTitle}>{PANCHANG_SCREEN.infoDialogTitle}</p>
-        <p className={L.infoDialogBody}>{PANCHANG_SCREEN.infoDialogBody}</p>
+        <p className={L.infoDialogTitle}>{P.infoDialogTitle}</p>
+        <p className={L.infoDialogBody}>{P.infoDialogBody}</p>
         <form method="dialog" className={L.infoDialogActions}>
           <Button type="submit" className={L.infoDialogClose}>
-            {PANCHANG_SCREEN.infoDialogCloseCta}
+            {P.infoDialogCloseCta}
           </Button>
         </form>
       </dialog>

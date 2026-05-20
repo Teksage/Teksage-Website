@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -9,6 +12,7 @@ export function MatchMakingCard({
   hasExistingMatch = false,
   className,
 }: MatchMakingCardProps) {
+  const HD = useI18nConstants(HOME_DASHBOARD);
   const href = isLoggedIn
     ? hasExistingMatch
       ? ROUTES.matchmakingDetails
@@ -27,7 +31,7 @@ export function MatchMakingCard({
       >
         <div className="relative z-10 flex shrink-0 justify-center px-2 pt-5">
           <p className="whitespace-pre-line text-center text-base font-bold leading-tight text-[var(--color-brand-marriage)]">
-            {HOME_DASHBOARD.marriageMatchMakingLines}
+            {HD.marriageMatchMakingLines}
           </p>
         </div>
 

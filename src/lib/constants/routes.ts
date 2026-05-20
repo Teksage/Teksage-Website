@@ -10,6 +10,7 @@ export const ROUTES = {
   horoscope: "/horoscope",
   settings: "/settings",
   settingsSubscriptions: "/settings/subscriptions",
+  settingsSubscriptionPayment: "/settings/subscriptions/payment",
   profile: "/profile",
   login: "/login",
   notifications: "/notifications",

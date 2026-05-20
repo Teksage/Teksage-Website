@@ -11,6 +11,7 @@ import { HomeChatPanel } from "@/components/home/HomeChatPanel";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { cn, isAstrologerHomeSession } from "@/lib/utils";
 
 export default function HomePage() {
@@ -23,8 +24,11 @@ export default function HomePage() {
     error: dashboardError,
     hasExistingMatch,
   } = useDashboard();
+  const { t, locale } = useAppLanguage();
 
-  const greeting = user?.name ? `Good day ${user.name}!` : "Good day!";
+  const greeting = user?.name
+    ? t("Hi (name)!").replace("(name)", user.name)
+    : t("Good day");
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
 
   return (
@@ -45,7 +49,7 @@ export default function HomePage() {
             HOME_LAYOUT.maxWidth,
             HOME_LAYOUT.gutterX,
             HOME_LAYOUT.mainTopPad,
-            HOME_LAYOUT.mainBottomPad,
+            HOME_LAYOUT.bottomNavClearance,
             HOME_LAYOUT.sectionStack
           )}
         >
@@ -77,7 +81,7 @@ export default function HomePage() {
                 isLoading={isLoading}
                 isLoggedIn={isAuthenticated}
                 fetchError={dashboardError}
-                currentDate={formatHomeDashboardDate()}
+                currentDate={formatHomeDashboardDate(new Date(), locale)}
               />
             </div>
           </div>

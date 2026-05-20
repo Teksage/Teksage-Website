@@ -23,7 +23,3 @@ export async function updateProfile(
   await http.post(API_ENDPOINTS.updateProfile, body);
   return fetchProfile();
 }
-
-export async function deleteAccount(): Promise<void> {
-  await http.get(API_ENDPOINTS.deleteAccountRequest);
-}

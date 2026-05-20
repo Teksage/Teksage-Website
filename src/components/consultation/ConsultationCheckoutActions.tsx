@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import {
   CONSULTATION_CHECKOUT_LAYOUT,
   CONSULTATION_CHECKOUT_SCREEN,
@@ -17,6 +18,8 @@ export function ConsultationCheckoutActions({
   onShareChange,
   onPay,
 }: ConsultationCheckoutActionsProps) {
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   return (
     <>
       <div className={CONSULTATION_CHECKOUT_LAYOUT.couponRow}>
@@ -24,7 +27,7 @@ export function ConsultationCheckoutActions({
           type="text"
           value={couponCode}
           onChange={(e) => onCouponChange(e.target.value)}
-          placeholder={CONSULTATION_SCREEN.couponPlaceholder}
+          placeholder={C.couponPlaceholder}
           className={CONSULTATION_CHECKOUT_LAYOUT.couponInput}
         />
         <button
@@ -33,7 +36,7 @@ export function ConsultationCheckoutActions({
           onClick={onApplyCoupon}
           className={CONSULTATION_CHECKOUT_LAYOUT.couponBtn}
         >
-          {CONSULTATION_SCREEN.applyCoupon}
+          {C.applyCoupon}
         </button>
       </div>
       <label className={CONSULTATION_CHECKOUT_LAYOUT.horoscopeLabel}>
@@ -43,7 +46,7 @@ export function ConsultationCheckoutActions({
           onChange={(e) => onShareChange(e.target.checked)}
           className="mt-1"
         />
-        <span>{CONSULTATION_SCREEN.shareHoroscope}</span>
+        <span>{C.shareHoroscope}</span>
       </label>
       {error ? <p className={CONSULTATION_CHECKOUT_LAYOUT.error}>{error}</p> : null}
       <button
@@ -52,7 +55,7 @@ export function ConsultationCheckoutActions({
         className={CONSULTATION_CHECKOUT_LAYOUT.payBtn}
         onClick={onPay}
       >
-        {busy ? CONSULTATION_CHECKOUT_SCREEN.processingCta : CONSULTATION_SCREEN.payCta}
+        {busy ? CC.processingCta : C.payCta}
       </button>
     </>
   );

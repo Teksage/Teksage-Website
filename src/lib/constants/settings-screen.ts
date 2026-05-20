@@ -6,12 +6,14 @@ import type { SettingsAssetKey } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
 export const SETTINGS_SCREEN = {
   title: "Settings",
-  placeholderLead: "Coming soon",
-  placeholderHint:
-    "This screen will match the Teksage mobile app. Connect APIs here when ready.",
   logoutConfirm: "Are you sure you want to log out?",
   rateThanks: "Thanks for your support!",
   rateUsLabel: "Rate us",
+  rateDialogLead:
+    "Your stars guide you, and your feedback guides us ⭐\nRate Teksage today!",
+  rateNowLabel: "Rate Now",
+  playStoreUrl:
+    "https://play.google.com/store/apps/details?id=com.venzo.astroPrompt",
   deleteAccountLabel: "Delete Account",
   logoutLabel: "Logout",
 } as const;
@@ -81,8 +83,8 @@ export const SETTINGS_PRIMARY_LINKS: readonly SettingsPrimaryLink[] = [
   },
 ] as const;
 
-/** Sub-pages implemented as placeholders (`settings/[section]`). */
-export const SETTINGS_PLACEHOLDER_SLUGS = [
+/** Sub-pages under `settings/[section]`. */
+export const SETTINGS_SECTION_SLUGS = [
   "push-notifications",
   "language",
   "subscriptions",
@@ -93,11 +95,10 @@ export const SETTINGS_PLACEHOLDER_SLUGS = [
   "delete-account",
 ] as const;
 
-export type SettingsPlaceholderSlug =
-  (typeof SETTINGS_PLACEHOLDER_SLUGS)[number];
+export type SettingsSectionSlug = (typeof SETTINGS_SECTION_SLUGS)[number];
 
-/** Titles for `settings/[section]` placeholders — aligned with Flutter screen names. */
-export const SETTINGS_SECTION_TITLE: Record<SettingsPlaceholderSlug, string> = {
+/** Titles for `settings/[section]` — aligned with Flutter screen names. */
+export const SETTINGS_SECTION_TITLE: Record<SettingsSectionSlug, string> = {
   "push-notifications": "Push Notifications",
   language: "Language",
   subscriptions: "Subscriptions",
@@ -113,9 +114,4 @@ export const SETTINGS_SHELL_GRADIENT_CLASS = "settings-shell-gradient";
 
 export const SETTINGS_LAYOUT = {
   menuContent: "relative z-10 mx-auto w-full max-w-lg px-5 pb-4 pt-6",
-  sectionContent: "relative z-10 mx-auto w-full max-w-lg px-5 pb-4 pt-8",
-  placeholderCard:
-    "rounded-2xl border border-black/[0.06] bg-white/90 px-5 py-8 shadow-sm",
-  placeholderTitle: "text-lg font-semibold text-neutral-900",
-  placeholderHint: "mt-3 text-sm leading-relaxed text-neutral-600",
 } as const;

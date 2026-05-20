@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -24,6 +25,7 @@ export function ConsultationQueryDialog({
   onClose,
   onSaved,
 }: ConsultationQueryDialogProps) {
+  const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const [index, setIndex] = useState(initialIndex);
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +34,7 @@ export function ConsultationQueryDialog({
   async function persist(advance: boolean) {
     const question = text.trim();
     if (!question) {
-      setError(CONSULTATION_BOOKING_SCREEN.queryEmpty);
+      setError(CB.queryEmpty);
       return;
     }
     setBusy(true);
@@ -52,7 +54,7 @@ export function ConsultationQueryDialog({
       const isServerError = isAxiosError(err) && err.response?.status === 500;
       if (isServerError) {
         onSaved();
-        setError(CONSULTATION_BOOKING_SCREEN.querySavedMailFailed);
+        setError(CB.querySavedMailFailed);
         if (advance && index >= CONSULTATION_QUERY_LIMIT - 1) {
           onClose();
         } else if (advance) {
@@ -61,7 +63,7 @@ export function ConsultationQueryDialog({
         }
         return;
       }
-      setError(CONSULTATION_BOOKING_SCREEN.queryEmpty);
+      setError(CB.queryEmpty);
     } finally {
       setBusy(false);
     }
@@ -88,14 +90,14 @@ export function ConsultationQueryDialog({
         </div>
         <div className="rounded-[18px] bg-white px-5 pb-5 pt-14">
           <h3 className="text-xl font-bold text-[var(--color-brand-black)]/80">
-            {CONSULTATION_BOOKING_SCREEN.queryDialogTitle}
+            {CB.queryDialogTitle}
           </h3>
           <textarea
             value={text}
             maxLength={250}
             rows={5}
             onChange={(e) => setText(e.target.value)}
-            placeholder={CONSULTATION_BOOKING_SCREEN.queryPlaceholder}
+            placeholder={CB.queryPlaceholder}
             className="mt-3 w-full resize-none rounded-lg border border-[var(--color-consult-user-bg)] px-3 py-2.5 text-base outline-none"
           />
           {error ? <p className="mt-2 text-sm text-[var(--color-brand-error)]">{error}</p> : null}
@@ -103,7 +105,7 @@ export function ConsultationQueryDialog({
             {index + 1}/{CONSULTATION_QUERY_LIMIT}
           </p>
           <p className="mt-2 text-center text-xs text-[var(--color-brand-black)]/60">
-            {CONSULTATION_BOOKING_SCREEN.queryMaxHint}
+            {CB.queryMaxHint}
           </p>
           <div className="mt-4 flex gap-2.5">
             <button
@@ -115,7 +117,7 @@ export function ConsultationQueryDialog({
                 busy && "opacity-50"
               )}
             >
-              {CONSULTATION_BOOKING_SCREEN.querySave}
+              {CB.querySave}
             </button>
             <button
               type="button"
@@ -127,12 +129,12 @@ export function ConsultationQueryDialog({
               )}
             >
               {index >= CONSULTATION_QUERY_LIMIT - 1
-                ? CONSULTATION_BOOKING_SCREEN.querySubmit
-                : CONSULTATION_BOOKING_SCREEN.queryAddNext}
+                ? CB.querySubmit
+                : CB.queryAddNext}
             </button>
           </div>
           <p className="mt-4 text-center text-xs font-semibold text-[var(--color-brand-error)]">
-            {CONSULTATION_BOOKING_SCREEN.queryRequiredNote}
+            {CB.queryRequiredNote}
           </p>
         </div>
       </div>

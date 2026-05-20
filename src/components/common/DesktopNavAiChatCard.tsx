@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +13,8 @@ import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
 
 export function DesktopNavAiChatCard() {
+  const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
+  const HOM = useI18nConstants(HOME_DASHBOARD_SIDEBAR_ASSETS);
   const pathname = usePathname();
   const active =
     pathname === ROUTES.home ||
@@ -47,7 +50,7 @@ export function DesktopNavAiChatCard() {
             active ? "text-black" : "text-black/80"
           )}
         >
-          {HOME_DASHBOARD_SIDEBAR.aiChatLine1}
+          {HDS.aiChatLine1}
         </span>
         <span
           className={cn(
@@ -55,7 +58,7 @@ export function DesktopNavAiChatCard() {
             active ? "text-[var(--color-brand-primary)]" : "text-black/70"
           )}
         >
-          {HOME_DASHBOARD_SIDEBAR.aiChatLine2}
+          {HDS.aiChatLine2}
         </span>
       </span>
     </Link>

@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { YEARLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
 import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
 import {
@@ -16,6 +19,7 @@ export function YearlyPlanetCard({
   label: string;
   details: YearlyPlanetDetails;
 }) {
+  const YD = useI18nConstants(YEARLY_DETAIL_SCREEN);
   const year = details.year || new Date().getFullYear().toString();
   const icon = YEARLY_PREDICTION_ASSETS.planets[planetKey];
 
@@ -39,13 +43,13 @@ export function YearlyPlanetCard({
           <img src={icon} alt="" className="size-10 shrink-0" />
         </div>
         <p className="mt-3 text-base leading-snug text-black/80">
-          {YEARLY_DETAIL_SCREEN.firstHalfPrefix} {year}:
+          {YD.firstHalfPrefix} {year}:
           <br />
           {details.beforeDetails}
         </p>
         {details.afterDetails ? (
           <p className="mt-6 text-base leading-snug text-black/80">
-            {YEARLY_DETAIL_SCREEN.secondHalfPrefix} {year}:
+            {YD.secondHalfPrefix} {year}:
             <br />
             {details.afterDetails}
           </p>

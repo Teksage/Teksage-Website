@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { YearlyCategorizedRow } from "@/components/predictions/YearlyCategorizedRow";
 import { YearlyDashedDivider } from "@/components/predictions/YearlyDashedDivider";
@@ -29,6 +30,7 @@ export function YearlyPredictionLayout({
   onRegenerate: () => void;
   regenerating: boolean;
 }) {
+  const YD = useI18nConstants(YEARLY_DETAIL_SCREEN);
   const showInfo = Boolean(data.general.trim());
 
   return (
@@ -54,12 +56,12 @@ export function YearlyPredictionLayout({
 
         <div className="px-5 pt-2 text-center text-white">
           <h1 className="flex items-center justify-center gap-2 text-xl font-bold">
-            {YEARLY_DETAIL_SCREEN.title}
+            {YD.title}
             {showInfo ? (
               <button
                 type="button"
-                title={YEARLY_DETAIL_SCREEN.infoTooltip}
-                aria-label={YEARLY_DETAIL_SCREEN.infoTooltip}
+                title={YD.infoTooltip}
+                aria-label={YD.infoTooltip}
               >
                 <img
                   src={YEARLY_PREDICTION_ASSETS.toolTip}
@@ -76,19 +78,19 @@ export function YearlyPredictionLayout({
         </div>
 
         <section className="mt-8 space-y-6">
-          <YearlySectionTitle>{YEARLY_DETAIL_SCREEN.planetaryTransits}</YearlySectionTitle>
+          <YearlySectionTitle>{YD.planetaryTransits}</YearlySectionTitle>
           <YearlyPlanetTransitsRow transits={data.planetTransits} />
         </section>
 
         <section className="mt-10 space-y-6 px-5">
           <YearlyDashedDivider />
-          <YearlySectionTitle>{YEARLY_DETAIL_SCREEN.categorizedPredictions}</YearlySectionTitle>
+          <YearlySectionTitle>{YD.categorizedPredictions}</YearlySectionTitle>
           <YearlyCategorizedRow prediction={data.prediction} />
         </section>
 
         <section className="mt-10 space-y-6 px-5">
           <YearlyDashedDivider />
-          <YearlySectionTitle>{YEARLY_DETAIL_SCREEN.remedies}</YearlySectionTitle>
+          <YearlySectionTitle>{YD.remedies}</YearlySectionTitle>
           <YearlyRemediesRow remedies={data.remedies} />
         </section>
 
@@ -102,7 +104,7 @@ export function YearlyPredictionLayout({
               "text-[var(--color-yearly-prediction-button-text)] disabled:opacity-70"
             )}
           >
-            {regenerating ? YEARLY_DETAIL_SCREEN.regenerating : YEARLY_DETAIL_SCREEN.regenerateCta}
+            {regenerating ? YD.regenerating : YD.regenerateCta}
           </button>
           <Link
             href={ROUTES.consultation}
@@ -111,7 +113,7 @@ export function YearlyPredictionLayout({
               "text-[var(--color-yearly-prediction-button-text)]"
             )}
           >
-            {YEARLY_DETAIL_SCREEN.consultCta}
+            {YD.consultCta}
           </Link>
         </div>
       </div>

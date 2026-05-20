@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { PANCHANG_ASSETS, PANCHANG_SCREEN, PANCHANG_SECTIONS } from "@/lib/constants";
 import type { PanchangBalaPairProps } from "@/types";
@@ -8,15 +9,17 @@ function BalaCell({
   label,
   value,
   isPositive,
+  altPositive,
+  altNegative,
 }: {
   label: string;
   value: number;
   isPositive?: boolean;
+  altPositive: string;
+  altNegative: string;
 }) {
   const src = isPositive ? PANCHANG_ASSETS.balaPositive : PANCHANG_ASSETS.balaNegative;
-  const alt = isPositive
-    ? PANCHANG_SCREEN.balaPositiveAlt
-    : PANCHANG_SCREEN.balaNegativeAlt;
+  const alt = isPositive ? altPositive : altNegative;
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center rounded-xl bg-white py-3.5">
@@ -32,9 +35,10 @@ function BalaCell({
 }
 
 export function PanchangBalaPair({ panchang }: PanchangBalaPairProps) {
+  const P = useI18nConstants(PANCHANG_SCREEN);
   if (panchang.thara_bala == null || panchang.chandra_bala == null) return null;
 
-  const R = PANCHANG_SCREEN.rowLabels;
+  const R = P.rowLabels;
   const thara = panchang.thara_bala === 0 ? 9 : panchang.thara_bala;
 
   return (
@@ -43,11 +47,15 @@ export function PanchangBalaPair({ panchang }: PanchangBalaPairProps) {
         label={R.tharaBalaShort}
         value={thara}
         isPositive={panchang.thara_bala_is_positive ?? false}
+        altPositive={P.balaPositiveAlt}
+        altNegative={P.balaNegativeAlt}
       />
       <BalaCell
         label={R.chandraBalaShort}
         value={panchang.chandra_bala}
         isPositive={panchang.chandra_bala_is_positive ?? false}
+        altPositive={P.balaPositiveAlt}
+        altNegative={P.balaNegativeAlt}
       />
     </div>
   );

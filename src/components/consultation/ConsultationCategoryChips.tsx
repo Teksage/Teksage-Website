@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { CONSULTATION_CATEGORIES, CONSULTATION_LAYOUT } from "@/lib/constants";
 import { toggleCategorySelection } from "@/lib/consultation-categories";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ export function ConsultationCategoryChips({
   selected,
   onChange,
 }: ConsultationCategoryChipsProps) {
+  const { t } = useAppLanguage();
   return (
     <div className={CONSULTATION_LAYOUT.chipWrap}>
       {CONSULTATION_CATEGORIES.map((cat) => {
@@ -33,7 +35,7 @@ export function ConsultationCategoryChips({
               className={CONSULTATION_LAYOUT.chipIcon}
               aria-hidden
             />
-            <span>{cat.label}</span>
+            <span>{t(cat.label)}</span>
           </button>
         );
       })}

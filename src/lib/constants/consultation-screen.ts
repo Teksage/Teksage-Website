@@ -6,7 +6,7 @@ const flutterImage = (file: string) => `/flutter-assets/images/${file}` as const
 /** Consultation flow — Flutter `userCategory.dart`, `userSelectLanguage.dart`. */
 export const CONSULTATION_SCREEN = {
   appBarTitle: "Astrology Consultation",
-  categoryHeading: "What do you need\nguidance on?",
+  categoryHeading: "What do you\nneed guidance on?",
   categorySubtitle: "Select the categories and continue",
   categoryCta: "Continue",
   categoryError: "Kindly select one or more categories",

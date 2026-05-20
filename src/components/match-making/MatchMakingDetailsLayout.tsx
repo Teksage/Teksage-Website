@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { MatchMakingDetailsFab } from "@/components/match-making/MatchMakingDetailsFab";
 import { MatchMakingDetailsHeroCard } from "@/components/match-making/MatchMakingDetailsHeroCard";
@@ -19,6 +20,7 @@ export function MatchMakingDetailsLayout({
   onRegenerate,
   onExpertConnect,
 }: MatchMakingDetailsLayoutProps) {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const kutas = data.result.kutas ?? [];
 
   return (
@@ -48,7 +50,7 @@ export function MatchMakingDetailsLayout({
             />
           </button>
           <h1 className="text-center text-xl font-bold text-white lg:text-2xl">
-            {MATCH_MAKING_SCREEN.pageTitle}
+            {MM.pageTitle}
           </h1>
           <span className="size-9" aria-hidden />
         </header>
@@ -75,7 +77,7 @@ export function MatchMakingDetailsLayout({
               className="flex flex-1 items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)]"
             >
               <img src={MATCH_MAKING_ASSETS.regenerate} alt="" className="size-5" />
-              {MATCH_MAKING_SCREEN.regenerateCta}
+              {MM.regenerateCta}
             </button>
             <Link
               href={ROUTES.consultation}
@@ -83,7 +85,7 @@ export function MatchMakingDetailsLayout({
               className="flex flex-1 items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)]"
             >
               <img src={MATCH_MAKING_ASSETS.expert} alt="" className="size-5" />
-              {MATCH_MAKING_SCREEN.expertConnectCta}
+              {MM.expertConnectCta}
             </Link>
           </div>
         </div>

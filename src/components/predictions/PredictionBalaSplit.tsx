@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { DAILY_PREDICTION_ASSETS } from "@/lib/constants";
 import { HOME_DASHBOARD } from "@/lib/constants/home-dashboard";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
@@ -12,13 +15,15 @@ export function PredictionBalaSplit({
   chandraBala?: string;
   className?: string;
 }) {
+  const HD = useI18nConstants(HOME_DASHBOARD);
+  const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   const isChandra8 = chandraBala === "8";
   return (
     <div className={cn("flex items-stretch justify-center px-4 py-4", className)}>
       <div className="flex flex-1 flex-col items-center gap-1 text-center">
         <p className="text-lg font-semibold text-[var(--color-brand-black)]">{tharaBala ?? "—"}</p>
         <p className="text-xs font-semibold text-[var(--color-brand-primary)]">
-          {HOME_DASHBOARD.tharaBala}
+          {HD.tharaBala}
         </p>
       </div>
       <div className="flex shrink-0 items-center px-2">
@@ -27,7 +32,7 @@ export function PredictionBalaSplit({
       <div className="flex flex-1 flex-col items-center gap-1 text-center">
         {isChandra8 ? (
           <span className="rounded bg-[var(--color-daily-chandrashtama-bg)] px-2 py-0.5 text-[10px] font-semibold text-[var(--color-daily-chandrashtama)]">
-            {PREDICTION_DETAIL_SCREEN.chandrashtamaLabel}
+            {PD.chandrashtamaLabel}
           </span>
         ) : null}
         <p
@@ -39,7 +44,7 @@ export function PredictionBalaSplit({
           {chandraBala ?? "—"}
         </p>
         <p className="text-xs font-semibold text-[var(--color-brand-primary)]">
-          {HOME_DASHBOARD.chandraBala}
+          {HD.chandraBala}
         </p>
       </div>
     </div>

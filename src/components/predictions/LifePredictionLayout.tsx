@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { LifePredictionCardSwiper } from "@/components/predictions/LifePredictionCardSwiper";
 import { LifePredictionDesktopGrid } from "@/components/predictions/LifePredictionDesktopGrid";
@@ -17,6 +18,7 @@ export function LifePredictionLayout({
   data: StructuredPredictionDetail;
   onBackClick: () => void;
 }) {
+  const LD = useI18nConstants(LIFE_DETAIL_SCREEN);
   return (
     <div className="min-h-dvh pb-[var(--main-bottom-nav-clearance)] lg:pb-14">
       <div className={cn(PREDICTION_DESKTOP_LAYOUT.contentColumn, PREDICTION_DESKTOP_LAYOUT.contentGutter)}>
@@ -40,8 +42,8 @@ export function LifePredictionLayout({
             Life Predictions
             <button
               type="button"
-              title={LIFE_DETAIL_SCREEN.infoTooltip}
-              aria-label={LIFE_DETAIL_SCREEN.infoTooltip}
+              title={LD.infoTooltip}
+              aria-label={LD.infoTooltip}
             >
               <img
                 src={LIFE_PREDICTION_ASSETS.toolTip}
@@ -51,7 +53,7 @@ export function LifePredictionLayout({
             </button>
           </h1>
           <p className="mt-3 text-base leading-relaxed lg:mx-auto lg:max-w-2xl lg:text-lg">
-            {LIFE_DETAIL_SCREEN.intro}
+            {LD.intro}
           </p>
         </div>
         <div className="mt-6 lg:hidden">
@@ -68,7 +70,7 @@ export function LifePredictionLayout({
               "bg-white/30 text-[var(--color-life-prediction-button-text)]"
             )}
           >
-            {LIFE_DETAIL_SCREEN.consultCta}
+            {LD.consultCta}
           </Link>
         </div>
       </div>

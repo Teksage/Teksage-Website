@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
 import { HoroscopeChartToggle } from "@/components/horoscope/HoroscopeChartToggle";
 import { HoroscopeNorthPlaceholder } from "@/components/horoscope/HoroscopeNorthPlaceholder";
@@ -20,7 +21,7 @@ export function HoroscopeLoadedView({
   chartVariant,
   onChartVariantChange,
 }: HoroscopeLoadedViewProps) {
-  const H = HOROSCOPE_SCREEN;
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const L = HOROSCOPE_LAYOUT;
 
   return (

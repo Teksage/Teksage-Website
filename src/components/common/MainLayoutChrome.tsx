@@ -16,7 +16,10 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
   const isConsultCheckout = isConsultationCheckoutPath(pathname);
-  const isFullHeightPane = isChatRoute || isHomeRoute;
+  const isSubscriptionFlow = pathname.startsWith(ROUTES.settingsSubscriptions);
+  const isFullHeightPane =
+    isChatRoute || isHomeRoute || isSubscriptionFlow;
+  const hideBottomNav = isChatRoute || isSubscriptionFlow;
 
   return (
     <div className="flex min-h-screen bg-transparent">
@@ -30,12 +33,14 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
               ? "min-h-dvh p-0 lg:h-dvh lg:overflow-hidden lg:pb-0"
               : HOME_LAYOUT.bottomNavClearance,
             isConsultGreen && "bg-[var(--color-consult-user-bg)]",
-            isConsultCheckout && "bg-white"
+            isConsultCheckout && "bg-white",
+            isSubscriptionFlow &&
+              "flex min-h-dvh flex-col bg-black lg:h-dvh lg:overflow-hidden lg:pb-0"
           )}
         >
           {children}
         </main>
-        {isChatRoute ? null : <BottomNav />}
+        {hideBottomNav ? null : <BottomNav />}
       </div>
     </div>
   );

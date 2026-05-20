@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import {
   CONSULTATION_DETAIL_ASSETS,
@@ -36,15 +37,16 @@ function StarRow({ rating }: { rating: number }) {
 }
 
 export function ConsultationDetailReviews({ events }: ConsultationDetailReviewsProps) {
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
   return (
     <>
       <h3 className={CONSULTATION_DETAIL_LAYOUT.reviewsHeading}>
-        {CONSULTATION_DETAIL_SCREEN.reviewsTitle}
+        {CD.reviewsTitle}
       </h3>
       <div className={CONSULTATION_DETAIL_LAYOUT.reviewsCard}>
         {events.length === 0 ? (
           <p className="text-center text-sm font-semibold text-[var(--color-brand-black)]/50">
-            {CONSULTATION_DETAIL_SCREEN.noReviews}
+            {CD.noReviews}
           </p>
         ) : (
           <ul>

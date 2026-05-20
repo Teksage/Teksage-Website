@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import {
   CONSULTATION_SLOTS_ASSETS,
@@ -24,6 +25,7 @@ export function ConsultationSlotsCalendar({
   onFocusedMonthChange,
   onSelectDate,
 }: ConsultationSlotsCalendarProps) {
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
   const year = focusedMonth.getFullYear();
   const month = focusedMonth.getMonth();
   const totalDays = daysInMonth(year, month);
@@ -96,7 +98,7 @@ export function ConsultationSlotsCalendar({
         aria-hidden
       />
       <div className={CONSULTATION_SLOTS_LAYOUT.weekdayRow}>
-        {CONSULTATION_SLOTS_SCREEN.weekdays.map((d) => (
+        {CS.weekdays.map((d) => (
           <span key={d} className={CONSULTATION_SLOTS_LAYOUT.weekday}>
             {d}
           </span>

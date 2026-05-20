@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ConsultationCategoryChips } from "@/components/consultation/ConsultationCategoryChips";
@@ -13,6 +14,7 @@ import { writeConsultationCategories } from "@/lib/consultation-session";
 import { CONSULTATION_LAYOUT, CONSULTATION_SCREEN, ROUTES } from "@/lib/constants";
 
 export function ConsultationCategoryView() {
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
   const [error, setError] = useState(false);
@@ -30,17 +32,17 @@ export function ConsultationCategoryView() {
 
   return (
     <ConsultationShell
-      title={CONSULTATION_SCREEN.appBarTitle}
+      title={C.appBarTitle}
       onBack={() => router.back()}
       footer={
         <>
           {error ? (
             <p className="text-[11px] font-medium text-[var(--color-brand-error)]">
-              {CONSULTATION_SCREEN.categoryError}
+              {C.categoryError}
             </p>
           ) : null}
           <ConsultationFlowCta
-            label={`${CONSULTATION_SCREEN.categoryCta} (${count})`}
+            label={`${C.categoryCta} (${count})`}
             active={count > 0}
             onClick={onContinue}
           />
@@ -48,10 +50,10 @@ export function ConsultationCategoryView() {
       }
     >
       <h1 className={CONSULTATION_LAYOUT.pageHeading}>
-        {CONSULTATION_SCREEN.categoryHeading}
+        {C.categoryHeading}
       </h1>
       <p className={CONSULTATION_LAYOUT.pageSubtitle}>
-        {CONSULTATION_SCREEN.categorySubtitle}
+        {C.categorySubtitle}
       </p>
       <ConsultationCategoryChips
         selected={selected}

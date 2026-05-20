@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useI18nConstants } from "@/hooks/useT";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { fetchRashiNakshatra } from "@/lib/services/profile-rashi";
 
@@ -19,6 +20,7 @@ export function useProfileRashiNakshatra({
   birthLocation,
   onResolved,
 }: UseProfileRashiNakshatraArgs) {
+  const PD = useI18nConstants(PROFILE_DETAILS);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const onResolvedRef = useRef(onResolved);
@@ -39,11 +41,11 @@ export function useProfileRashiNakshatra({
       });
       onResolvedRef.current(result.rashi, result.nakshatra);
     } catch {
-      setError(PROFILE_DETAILS.rashiResolveError);
+      setError(PD.rashiResolveError);
     } finally {
       setBusy(false);
     }
-  }, [enabled, dateOfBirth, timeOfBirth, birthLocation]);
+  }, [PD.rashiResolveError, enabled, dateOfBirth, timeOfBirth, birthLocation]);
 
   const prevEnabled = useRef(false);
   useEffect(() => {

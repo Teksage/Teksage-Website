@@ -52,3 +52,4 @@ export function ProfileAvatar({
     </div>
   );
 }
+

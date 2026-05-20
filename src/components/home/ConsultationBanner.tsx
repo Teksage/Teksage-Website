@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -13,12 +16,11 @@ export function ConsultationBanner({
   isAstrologer = false,
   className,
 }: ConsultationBannerProps) {
-  const buttonLabel = isAstrologer
-    ? HOME_DASHBOARD.myProfile
-    : HOME_DASHBOARD.bookNow;
+  const HD = useI18nConstants(HOME_DASHBOARD);
+  const buttonLabel = isAstrologer ? HD.myProfile : HD.bookNow;
   const titleLines = isAstrologer
-    ? HOME_DASHBOARD.astrologerShort
-    : HOME_DASHBOARD.astrologerConsultationLines;
+    ? HD.astrologerShort
+    : HD.astrologerConsultationLines;
   const href = isLoggedIn
     ? isAstrologer
       ? ROUTES.consultationAstrologer
@@ -52,29 +54,29 @@ export function ConsultationBanner({
 
       <div
         className={cn(
-          "relative z-10 flex w-full items-center justify-evenly gap-1 px-1 py-2 sm:gap-2 sm:px-2 sm:py-2.5",
-          HOME_LAYOUT.homeBannerStripMinH,
+          "relative z-10 flex w-full items-center justify-between gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-2.5",
+          HOME_LAYOUT.homeBannerStripMinH
         )}
       >
         <div
           className={cn(
-            "relative z-[1] flex shrink-0 justify-center self-end",
-            "pt-2.5 pl-2 pb-0.5 sm:pt-3 sm:pl-3 sm:pb-1"
+            "relative z-[1] flex w-[4.75rem] shrink-0 justify-center self-end sm:w-[5.25rem]",
+            "pt-2.5 pb-0.5 sm:pt-3 sm:pb-1"
           )}
         >
           <Image
             src={DASHBOARD_ASSETS.consultationAstrologer}
-            alt="Astrologer"
+            alt=""
             width={120}
             height={160}
             unoptimized
-            className="h-auto max-h-[5.25rem] w-auto max-w-[5.5rem] object-contain object-bottom sm:max-h-[5.5rem] sm:max-w-[6rem] lg:max-h-[6rem] lg:max-w-[6.75rem]"
+            className="h-auto max-h-[5.25rem] w-auto max-w-full object-contain object-bottom sm:max-h-[5.5rem] lg:max-h-[6rem]"
           />
         </div>
 
         <p
           className={cn(
-            "min-w-0 max-w-[11rem] flex-none whitespace-pre-line text-left text-[0.8125rem] font-bold leading-snug sm:max-w-none sm:flex-1 sm:text-[0.95rem] lg:text-base",
+            "min-w-0 flex-1 whitespace-pre-line text-center text-[0.8125rem] font-bold leading-snug sm:text-[0.95rem] lg:text-base",
             "text-[var(--color-brand-consultation-heading)]"
           )}
         >
@@ -84,8 +86,9 @@ export function ConsultationBanner({
         <Link
           href={href}
           className={cn(
-            "shrink-0 rounded-full bg-white px-4 py-2.5 text-center text-xs font-semibold sm:px-5 sm:py-3",
-            "text-[var(--color-brand-banner-dark)] shadow-sm transition-opacity hover:opacity-90"
+            "flex w-[4.75rem] shrink-0 items-center justify-center rounded-full bg-white px-2 py-2 text-center sm:w-[5rem] sm:px-2.5 sm:py-2.5",
+            "text-[10px] font-semibold leading-tight text-[var(--color-brand-banner-dark)] sm:text-[11px]",
+            "whitespace-pre-line shadow-sm transition-opacity hover:opacity-90"
           )}
         >
           {buttonLabel}

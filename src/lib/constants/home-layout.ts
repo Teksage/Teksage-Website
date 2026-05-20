@@ -25,9 +25,11 @@ export const HOME_LAYOUT = {
   floatingNavInsetX: "px-5",
   /** Bottom inset so pill floats above home indicator (Flutter bottom padding ~20). */
   floatingNavBottom: "pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]",
-  /** Main scroll clearance: pill height + float margin + safe area. */
+  /** Main scroll clearance: pill height + float margin + gap above nav (Flutter ~15vh spacer). */
   bottomNavClearance:
-    "pb-[calc(5.75rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
+    "pb-[calc(6.5rem+1.5rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
+  /** Visible gap between last home strip (AI chat) and floating bottom nav. */
+  chatBannerNavGap: "mb-5 sm:mb-6",
   floatingNavShadow: "shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
   featureGridGap: "gap-3 lg:gap-4",
   /** Shared min-height for consultation + AI chat strips. */

@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,7 @@ import { useAuthStore } from "@/store/auth.store";
 import type { RashiOption } from "@/types/match-making";
 
 export function MatchMakingFormView() {
+  const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [rashi, setRashi] = useState<RashiOption[]>([]);
@@ -71,13 +73,13 @@ export function MatchMakingFormView() {
         girl_nakshatra: girlNak,
       });
       if (!res) {
-        setErr(MATCH_MAKING_SCREEN.loadErrorTitle);
+        setErr(MM.loadErrorTitle);
         return;
       }
       router.push(ROUTES.matchmakingDetails);
       router.refresh();
     } catch {
-      setErr(MATCH_MAKING_SCREEN.loadErrorTitle);
+      setErr(MM.loadErrorTitle);
     } finally {
       setBusy(false);
     }
@@ -87,12 +89,12 @@ export function MatchMakingFormView() {
     return (
       <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root, "bg-[var(--color-brand-bg)]")}>
         <div className="mx-auto max-w-lg px-5 py-10 text-center">
-          <p className="font-semibold">{MATCH_MAKING_SCREEN.loginTitle}</p>
+          <p className="font-semibold">{MM.loginTitle}</p>
           <Link
             href={buildLoginRedirectPath(ROUTES.matchmaking)}
             className={cn(buttonVariants(), "mt-6 inline-flex rounded-full")}
           >
-            {MATCH_MAKING_SCREEN.loginCta}
+            {MM.loginCta}
           </Link>
         </div>
       </div>
@@ -122,8 +124,8 @@ export function MatchMakingFormView() {
         >
           <img src={MATCH_MAKING_ASSETS.appBarBack} alt="" className="h-5 w-5 brightness-0 invert" />
         </button>
-        <h1 className="text-xl font-bold">{MATCH_MAKING_SCREEN.pageTitle}</h1>
-        <p className="mt-2 text-sm font-medium">{MATCH_MAKING_SCREEN.subtitle}</p>
+        <h1 className="text-xl font-bold">{MM.pageTitle}</h1>
+        <p className="mt-2 text-sm font-medium">{MM.subtitle}</p>
       </header>
 
       <form
@@ -172,14 +174,14 @@ export function MatchMakingFormView() {
           disabled={busy}
           className="flex w-full items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)] disabled:opacity-70"
         >
-          {busy ? MATCH_MAKING_SCREEN.submitting : MATCH_MAKING_SCREEN.calculateCta}
+          {busy ? MM.submitting : MM.calculateCta}
           <Image src={MATCH_MAKING_ASSETS.ring} alt="" width={22} height={22} unoptimized />
         </button>
         <Link
           href={ROUTES.matchmakingDetails}
           className="text-center text-sm font-semibold text-white underline-offset-2 hover:underline"
         >
-          {MATCH_MAKING_SCREEN.viewSavedMatch}
+          {MM.viewSavedMatch}
         </Link>
       </form>
     </div>

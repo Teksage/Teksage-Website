@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useI18nConstants } from "@/hooks/useT";
 import { avatarIndexToStorage, avatarStorageToWsName } from "@/lib/chat-preference-helpers";
 import type { ChatStyleFormat } from "@/lib/constants/chat-preferences";
 import {
@@ -26,6 +27,7 @@ type UseChatOptions = {
 };
 
 export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
+  const CS = useI18nConstants(CHAT_SCREEN);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [relatedQueries, setRelatedQueries] = useState<string[]>([]);
@@ -97,18 +99,18 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     async (queryText: string) => {
       const trimmed = queryText.trim();
       if (!trimmed) {
-        setToast(CHAT_SCREEN.emptyInput);
+        setToast(CS.emptyInput);
         return;
       }
       if (!canSendMore) {
-        setToast(CHAT_SCREEN.subscribeLimit);
+        setToast(CS.subscribeLimit);
         return;
       }
       if (!isPrime) setMessageCount((c) => c + 1);
       setInput("");
       await transmitQuery(trimmed);
     },
-    [canSendMore, isPrime, transmitQuery]
+    [CS.emptyInput, CS.subscribeLimit, canSendMore, isPrime, transmitQuery]
   );
 
   const retryMessage = useCallback(
@@ -170,12 +172,12 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
           await connectSocket();
         } catch {
           if (!cancelled) {
-            setToast(CHAT_SCREEN.wsConnectError);
+            setToast(CS.wsConnectError);
           }
         }
       } catch {
         if (!cancelled) {
-          setToast(CHAT_SCREEN.bootError);
+          setToast(CS.bootError);
           setSessionReady(true);
         }
       }
@@ -186,7 +188,7 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
       cancelled = true;
       client.disconnect();
     };
-  }, [enabled]);
+  }, [CS.bootError, CS.wsConnectError, enabled]);
 
   return {
     messages,

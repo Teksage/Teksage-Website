@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useRef, useState } from "react";
 import { ChatAppBar } from "@/components/chat/ChatAppBar";
 import { ChatEmbedHeader } from "@/components/chat/ChatEmbedHeader";
@@ -18,9 +19,10 @@ import { useChatPreferences } from "@/hooks/useChatPreferences";
 import type { ChatPageViewProps } from "@/types/ui/chat";
 
 export function ChatPageView({ embedded = false }: ChatPageViewProps) {
+  const CS = useI18nConstants(CHAT_SCREEN);
   const listEndRef = useRef<HTMLDivElement>(null);
   const [composerPlaceholder, setComposerPlaceholder] = useState<string>(
-    CHAT_SCREEN.composerPlaceholder
+    CS.composerPlaceholder
   );
 
   const prefs = useChatPreferences();
@@ -54,12 +56,12 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
     const mq = window.matchMedia("(min-width: 1024px)");
     const apply = () =>
       setComposerPlaceholder(
-        mq.matches ? CHAT_SCREEN.composerPlaceholderDesktop : CHAT_SCREEN.composerPlaceholder
+        mq.matches ? CS.composerPlaceholderDesktop : CS.composerPlaceholder
       );
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
-  }, []);
+  }, [CS.composerPlaceholder, CS.composerPlaceholderDesktop]);
 
   useEffect(() => {
     listEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,7 +73,7 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
     return () => window.clearTimeout(t);
   }, [toast, clearToast]);
 
-  const showMicNotice = () => showToast(CHAT_SCREEN.micComingSoon);
+  const showMicNotice = () => showToast(CS.micComingSoon);
 
   const shellClass = embedded
     ? "relative flex h-full min-h-0 w-full flex-col bg-[var(--color-chat-shell)]"
@@ -163,7 +165,7 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
               )}
               {sessionReady && !wsConnected ? (
                 <p className="px-5 py-2 text-center text-sm text-black/50">
-                  {CHAT_SCREEN.connecting}
+                  {CS.connecting}
                 </p>
               ) : null}
             </>

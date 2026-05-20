@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { Loader } from "@/components/common/Loader";
 import { PredictionGenerateLandingDesktop } from "@/components/predictions/PredictionGenerateLandingDesktop";
 import { PredictionLandingHero } from "@/components/predictions/PredictionLandingHero";
@@ -18,6 +19,7 @@ export function LifePredictionLandingLayout({
   onGenerate: () => void;
   generating: boolean;
 }) {
+  const LL = useI18nConstants(LIFE_LANDING_SCREEN);
   return (
     <div
       className={cn(
@@ -49,11 +51,11 @@ export function LifePredictionLandingLayout({
         </div>
 
         <h1 className="prediction-slide-up absolute inset-x-0 top-[var(--yearly-landing-title-top)] z-10 px-5 text-center text-[1.8125rem] font-bold leading-none text-white">
-          {LIFE_LANDING_SCREEN.title}
+          {LL.title}
         </h1>
 
         <p className="prediction-slide-up-delay absolute inset-x-0 top-[var(--yearly-landing-description-top)] z-10 px-5 text-center text-lg font-medium leading-6 text-white">
-          {LIFE_LANDING_SCREEN.description}
+          {LL.description}
         </p>
 
         <button
@@ -71,7 +73,7 @@ export function LifePredictionLandingLayout({
               <Loader variant="dots" size="sm" />
             </span>
           ) : (
-            LIFE_LANDING_SCREEN.generateCta
+            LL.generateCta
           )}
         </button>
       </div>
@@ -81,9 +83,9 @@ export function LifePredictionLandingLayout({
         backInvert
         decoSrc={LIFE_PREDICTION_ASSETS.landingDeco}
         logoSrc={LIFE_PREDICTION_ASSETS.decoLogo}
-        title={LIFE_LANDING_SCREEN.title}
-        description={LIFE_LANDING_SCREEN.description}
-        generateCta={LIFE_LANDING_SCREEN.generateCta}
+        title={LL.title}
+        description={LL.description}
+        generateCta={LL.generateCta}
         generating={generating}
         buttonTextClass="text-[var(--color-life-prediction-button-text)]"
         onBackClick={onBackClick}

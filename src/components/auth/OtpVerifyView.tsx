@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,8 @@ function emptyOtpCells(): string[] {
 }
 
 export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewProps) {
+  const LS = useI18nConstants(LOGIN_SCREEN);
+  const OV = useI18nConstants(OTP_VERIFY_SCREEN);
   const router = useRouter();
   const { setAuth } = useAuthStore();
   const [otpCells, setOtpCells] = useState<string[]>(emptyOtpCells);
@@ -41,7 +44,7 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
       setAuth(response.user, response.token);
       router.push(ROUTES.home);
     } catch {
-      setError(OTP_VERIFY_SCREEN.invalidOtp);
+      setError(OV.invalidOtp);
       setOtpCells(emptyOtpCells());
     } finally {
       setIsLoading(false);
@@ -54,17 +57,17 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
       : contact.replace(/^(.{2}).*(@.*)$/, "$1****$2");
 
   return (
-    <div className={LOGIN_SCREEN.shellClassName}>
+    <div className={LS.shellClassName}>
       <LoginBackButton onNavigateBack={onBack} />
 
       <div className="relative mx-auto flex w-full max-w-md flex-col px-6 pb-10 pt-16">
         <div className="mb-10 flex flex-col items-center text-center">
-          <BrandLoginLogo widthPx={LOGIN_SCREEN.brandLogoWidthPx} className="mb-4" />
-          <h1 className="mb-2 text-2xl font-bold text-neutral-900">{OTP_VERIFY_SCREEN.heading}</h1>
+          <BrandLoginLogo widthPx={LS.brandLogoWidthPx} className="mb-4" />
+          <h1 className="mb-2 text-2xl font-bold text-neutral-900">{OV.heading}</h1>
           <p className="text-sm text-neutral-500">
-            {OTP_VERIFY_SCREEN.sentBeforeDigits}
+            {OV.sentBeforeDigits}
             {OTP_LENGTH}
-            {OTP_VERIFY_SCREEN.sentAfterDigits}{" "}
+            {OV.sentAfterDigits}{" "}
             <span className="font-semibold text-neutral-800">{maskedContact}</span>
           </p>
         </div>
@@ -98,7 +101,7 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
           {isLoading ? (
             <Loader variant="spinner" size="sm" className="border-t-white" />
           ) : (
-            OTP_VERIFY_SCREEN.verifyCta
+            OV.verifyCta
           )}
         </Button>
 
@@ -107,9 +110,9 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
           className="mt-6 text-center text-sm text-neutral-500 transition-colors hover:text-[var(--color-brand-primary)]"
           onClick={onBack}
         >
-          {OTP_VERIFY_SCREEN.resendQuestion}{" "}
+          {OV.resendQuestion}{" "}
           <span className="font-semibold text-[var(--color-brand-primary)]">
-            {OTP_VERIFY_SCREEN.resendCta}
+            {OV.resendCta}
           </span>
         </button>
       </div>

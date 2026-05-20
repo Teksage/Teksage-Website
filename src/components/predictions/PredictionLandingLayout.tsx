@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { RotatingImage } from "@/components/predictions/RotatingImage";
 import {
   LIFE_PREDICTION_ASSETS,

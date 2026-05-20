@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,6 +25,8 @@ type ConsultationDetailViewProps = {
 };
 
 export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewProps) {
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const [data, setData] = useState<ConsultationAstrologerDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +45,7 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
         const detail = await fetchAstrologerDetail(astrologerId);
         if (!cancelled) setData(detail);
       } catch {
-        if (!cancelled) setError(CONSULTATION_SCREEN.loadError);
+        if (!cancelled) setError(C.loadError);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -55,7 +58,7 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
   if (loading) {
     return (
       <ConsultationAstroShell
-        title={CONSULTATION_DETAIL_SCREEN.appBarTitle}
+        title={CD.appBarTitle}
         onBack={() => router.back()}
       >
         <div className={CONSULTATION_DETAIL_LAYOUT.loaderBox}>
@@ -68,11 +71,11 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
   if (error || !data) {
     return (
       <ConsultationAstroShell
-        title={CONSULTATION_DETAIL_SCREEN.appBarTitle}
+        title={CD.appBarTitle}
         onBack={() => router.back()}
       >
         <p className="mt-10 text-center text-sm text-white">
-          {error ?? CONSULTATION_SCREEN.loadError}
+          {error ?? C.loadError}
         </p>
       </ConsultationAstroShell>
     );
@@ -80,11 +83,11 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
 
   return (
     <ConsultationAstroShell
-      title={CONSULTATION_DETAIL_SCREEN.appBarTitle}
+      title={CD.appBarTitle}
       onBack={() => router.back()}
       footer={
         <Link href={consultationSlotsPath(astrologerId)} className={CONSULTATION_DETAIL_LAYOUT.footerBtn}>
-          {CONSULTATION_DETAIL_SCREEN.bookCta}
+          {CD.bookCta}
         </Link>
       }
     >

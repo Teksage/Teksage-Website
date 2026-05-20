@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { WEEKLY_PREDICTION_LAYOUT } from "@/lib/constants/weekly-prediction-layout";
 import { RotatingImage } from "@/components/predictions/RotatingImage";
@@ -19,6 +20,7 @@ export function WeeklyPredictionLayout({
   data: WeeklyPredictionDetail;
   onBackClick: () => void;
 }) {
+  const WS = useI18nConstants(WEEKLY_SCREEN);
   const user = useAuthStore((s) => s.user);
   const [selected, setSelected] = useState(0);
   const listRef = useRef<HTMLDivElement>(null);
@@ -103,11 +105,11 @@ export function WeeklyPredictionLayout({
             </button>
             <div className="mt-2 flex flex-col items-center gap-4 text-center text-white">
               <h1 className="flex items-center gap-2 text-xl font-bold lg:text-2xl">
-                {WEEKLY_SCREEN.title}
+                {WS.title}
                 <button
                   type="button"
-                  title={WEEKLY_SCREEN.infoTooltip}
-                  aria-label={WEEKLY_SCREEN.infoTooltip}
+                  title={WS.infoTooltip}
+                  aria-label={WS.infoTooltip}
                 >
                   <img
                     src={WEEKLY_PREDICTION_ASSETS.toolTip}
@@ -117,12 +119,12 @@ export function WeeklyPredictionLayout({
                 </button>
               </h1>
               <p className="text-lg font-medium leading-snug lg:max-w-xl">
-                {WEEKLY_SCREEN.greetingPrefix} {name}!<br />
-                {WEEKLY_SCREEN.greetingSuffix}
+                {WS.greetingPrefix} {name}!<br />
+                {WS.greetingSuffix}
               </p>
             </div>
             <div className="mt-6 flex justify-between gap-1 pb-5 lg:mx-auto lg:max-w-2xl lg:gap-2">
-              {WEEKLY_SCREEN.dayTabs.map((tab, i) => (
+              {WS.dayTabs.map((tab, i) => (
                 <button
                   key={tab}
                   type="button"

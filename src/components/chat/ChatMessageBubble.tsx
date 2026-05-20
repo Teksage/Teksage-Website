@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
@@ -12,6 +15,7 @@ export function ChatMessageBubble({
   userInitials: string;
   onRetry?: () => void;
 }) {
+  const CS = useI18nConstants(CHAT_SCREEN);
   const isUser = message.role === "user";
 
   return (
@@ -32,13 +36,13 @@ export function ChatMessageBubble({
         </div>
         {isUser && message.status === "failed" ? (
           <div className="flex items-center justify-end gap-2 text-xs">
-            <span className="text-[var(--color-brand-error)]">{CHAT_SCREEN.noResponseLabel}</span>
+            <span className="text-[var(--color-brand-error)]">{CS.noResponseLabel}</span>
             <button
               type="button"
               onClick={onRetry}
               className="font-medium text-[var(--color-brand-ios)]"
             >
-              {CHAT_SCREEN.retryLabel}
+              {CS.retryLabel}
             </button>
           </div>
         ) : null}

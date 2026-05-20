@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { ChatAvatarPicker } from "@/components/chat/ChatAvatarPicker";
 import { ChatOnboardingHeader } from "@/components/chat/ChatOnboardingHeader";
@@ -15,6 +16,7 @@ export function ChatAvatarOnboarding({
   onContinue,
   onBack,
 }: ChatAvatarOnboardingProps) {
+  const CP = useI18nConstants(CHAT_PREFERENCES);
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
   return (
@@ -28,13 +30,13 @@ export function ChatAvatarOnboarding({
       <div className={CHAT_LAYOUT.onboardingContent}>
         <div>
           <h1 className={CHAT_LAYOUT.onboardingTitle}>
-            {CHAT_PREFERENCES.avatarOnboardingTitle}
+            {CP.avatarOnboardingTitle}
           </h1>
           <div className="mt-8 lg:mt-10">
             <ChatAvatarPicker
               selectedIndex={selectedIndex}
               onSelectIndex={setSelectedIndex}
-              chooseLabel={CHAT_PREFERENCES.avatarSheetChooseLabel}
+              chooseLabel={CP.avatarSheetChooseLabel}
             />
           </div>
         </div>
@@ -44,7 +46,7 @@ export function ChatAvatarOnboarding({
           onClick={() => onContinue(selectedIndex)}
           className="h-auto w-full rounded-full py-3.5 text-lg font-semibold lg:max-w-sm lg:self-center"
         >
-          {CHAT_PREFERENCES.continueCta}
+          {CP.continueCta}
         </Button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ConsultationFlowCta } from "@/components/consultation/ConsultationFlowCta";
@@ -17,6 +18,7 @@ import {
 } from "@/lib/constants";
 
 export function ConsultationLanguageView() {
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const [primary, setPrimary] = useState("");
   const [secondary, setSecondary] = useState("");
@@ -39,13 +41,13 @@ export function ConsultationLanguageView() {
     const second = secondary.trim();
     if (!first && !second) {
       setShowError(true);
-      setFirstError(CONSULTATION_SCREEN.languageFieldError);
-      setSecondError(CONSULTATION_SCREEN.languageFieldError);
+      setFirstError(C.languageFieldError);
+      setSecondError(C.languageFieldError);
       return;
     }
     if (first && second && first === second) {
       setShowError(true);
-      setSecondError(CONSULTATION_SCREEN.languageDuplicateError);
+      setSecondError(C.languageDuplicateError);
       return;
     }
     if (!categories?.length) {
@@ -61,17 +63,17 @@ export function ConsultationLanguageView() {
 
   return (
     <ConsultationShell
-      title={CONSULTATION_SCREEN.appBarTitle}
+      title={C.appBarTitle}
       onBack={() => router.back()}
       footer={
         <>
           {showError && !firstError && !secondError ? (
             <p className="text-[11px] font-medium text-[var(--color-brand-error)]">
-              {CONSULTATION_SCREEN.languageError}
+              {C.languageError}
             </p>
           ) : null}
           <ConsultationFlowCta
-            label={CONSULTATION_SCREEN.languageSubmit}
+            label={C.languageSubmit}
             active={canSubmit}
             onClick={onSubmit}
           />
@@ -79,14 +81,14 @@ export function ConsultationLanguageView() {
       }
     >
       <h1 className={CONSULTATION_LAYOUT.pageHeading}>
-        {CONSULTATION_SCREEN.languageHeading}
+        {C.languageHeading}
       </h1>
       <p className={CONSULTATION_LAYOUT.pageSubtitle}>
-        {CONSULTATION_SCREEN.languageSubtitle}
+        {C.languageSubtitle}
       </p>
       <div className="mt-12 space-y-10">
       <ConsultationLanguageField
-        title={CONSULTATION_SCREEN.languageFirst}
+        title={C.languageFirst}
         value={primary}
         options={CONSULTATION_LANGUAGES}
         enabled
@@ -100,7 +102,7 @@ export function ConsultationLanguageView() {
         }}
       />
       <ConsultationLanguageField
-        title={CONSULTATION_SCREEN.languageSecond}
+        title={C.languageSecond}
         value={secondary}
         options={CONSULTATION_LANGUAGES.filter((l) => l.id !== primary)}
         enabled={Boolean(primary)}
@@ -108,7 +110,7 @@ export function ConsultationLanguageView() {
         onChange={(value) => {
           if (value && value === primary) {
             setSecondary("");
-            setSecondError(CONSULTATION_SCREEN.languageDuplicateError);
+            setSecondError(C.languageDuplicateError);
             return;
           }
           setSecondary(value);
