@@ -25,10 +25,12 @@ export const PROFILE_DETAILS = {
   resentPrompt: "Did not receive a code? Tap Verify again.",
   notFoundTitle: "Profile not found",
   notFoundDescription: "Please log in to view your profile.",
+  rashiResolving: "Updating Rasi & Nakshatram…",
+  rashiResolveError: "Could not update Rasi/Nakshatram. Check birth details.",
 } as const;
 
 export const PROFILE_LAYOUT = {
-  main: "relative z-10 mx-auto w-full max-w-lg px-5 pb-4 pt-5",
+  main: "relative z-10 mx-auto w-full max-w-lg overflow-visible px-5 pb-4 pt-5",
   editButton:
     "mr-1 px-2 py-2 text-lg font-semibold text-[var(--color-brand-primary)]",
   errorBanner:

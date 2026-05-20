@@ -46,10 +46,12 @@ export interface ChatStyleOptionCardProps {
 }
 
 export interface ChatStyleOnboardingProps {
+  embedded?: boolean;
   onContinue: (format: ChatStyleFormat) => void;
 }
 
 export interface ChatAvatarOnboardingProps {
+  embedded?: boolean;
   initialIndex: number;
   onContinue: (index: number) => void;
   onBack: () => void;

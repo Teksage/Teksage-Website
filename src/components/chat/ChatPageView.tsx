@@ -109,12 +109,15 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
   }
 
   if (prefs.onboardingStep === "style") {
-    return <ChatStyleOnboarding onContinue={prefs.completeStyleOnboarding} />;
+    return (
+      <ChatStyleOnboarding embedded={embedded} onContinue={prefs.completeStyleOnboarding} />
+    );
   }
 
   if (prefs.onboardingStep === "avatar") {
     return (
       <ChatAvatarOnboarding
+        embedded={embedded}
         initialIndex={prefs.avatarIndex}
         onContinue={prefs.completeAvatarOnboarding}
         onBack={prefs.backToStyleOnboarding}

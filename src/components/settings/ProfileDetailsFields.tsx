@@ -1,10 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ProfileField } from "@/components/settings/ProfileField";
-import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
 import { Loader } from "@/components/common/Loader";
+import { ProfileField } from "@/components/settings/ProfileField";
+import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
+import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
 import { CHAT_LANGUAGE_OPTIONS, PROFILE_DETAILS } from "@/lib/constants/profile-details";
+import { useProfileRashiNakshatra } from "@/hooks/useProfileRashiNakshatra";
 import { cn } from "@/lib/utils";
 import type { ProfileDetailsFieldsProps } from "@/types";
 
@@ -16,7 +18,19 @@ export function ProfileDetailsFields({
   isSaving,
   onSave,
   onProfileRefresh,
+  onRashiResolved,
 }: ProfileDetailsFieldsProps) {
+  const birthLocationForApi =
+    form.birthLocationFull.trim() || form.placeOfBirth.trim();
+
+  const { rashiBusy, rashiError, refreshRashi } = useProfileRashiNakshatra({
+    enabled: isEditing,
+    dateOfBirth: form.dateOfBirth,
+    timeOfBirth: form.timeOfBirth,
+    birthLocation: birthLocationForApi,
+    onResolved: (rashi, nakshatra) => onRashiResolved?.(rashi, nakshatra),
+  });
+
   return (
     <div className="flex flex-col gap-3.5">
       <ProfileField
@@ -89,6 +103,7 @@ export function ProfileDetailsFields({
         value={form.dateOfBirth}
         onChange={(v) => setField("dateOfBirth", v)}
         isEditable={isEditing}
+        onBlurCommit={() => void refreshRashi()}
       />
       <ProfileField
         appearance="profile"
@@ -98,24 +113,44 @@ export function ProfileDetailsFields({
         value={form.timeOfBirth}
         onChange={(v) => setField("timeOfBirth", v)}
         isEditable={isEditing}
+        onBlurCommit={() => void refreshRashi()}
       />
-      <ProfileField
-        appearance="profile"
-        required
+
+      <ProfileLocationField
         label={PROFILE_DETAILS.placeOfBirth}
+        required
         value={form.placeOfBirth}
-        onChange={(v) => setField("placeOfBirth", v)}
+        fullLocation={form.birthLocationFull}
         isEditable={isEditing}
         placeholder="Place of birth"
+        onChange={(city, full) => {
+          setField("placeOfBirth", city);
+          setField("birthLocationFull", full);
+        }}
+        onBlurCommit={() => void refreshRashi()}
       />
-      <ProfileField
-        appearance="profile"
+      <ProfileLocationField
         label={PROFILE_DETAILS.currentLocation}
         value={form.preferredLocation}
-        onChange={(v) => setField("preferredLocation", v)}
+        fullLocation={form.preferredLocationFull}
         isEditable={isEditing}
         placeholder="Current location"
+        onChange={(city, full) => {
+          setField("preferredLocation", city);
+          setField("preferredLocationFull", full);
+        }}
       />
+
+      {rashiBusy ? (
+        <p className="flex items-center gap-2 text-xs font-medium text-black/55">
+          <Loader variant="spinner" size="sm" />
+          {PROFILE_DETAILS.rashiResolving}
+        </p>
+      ) : null}
+      {rashiError ? (
+        <p className="text-xs font-semibold text-[var(--color-brand-error)]">{rashiError}</p>
+      ) : null}
+
       <ProfileField
         appearance="profile"
         required
@@ -135,7 +170,7 @@ export function ProfileDetailsFields({
         placeholder="Nakshatram"
       />
 
-      {isEditing && (
+      {isEditing ? (
         <Button
           type="button"
           onClick={onSave}
@@ -151,7 +186,7 @@ export function ProfileDetailsFields({
             PROFILE_DETAILS.save
           )}
         </Button>
-      )}
+      ) : null}
     </div>
   );
 }

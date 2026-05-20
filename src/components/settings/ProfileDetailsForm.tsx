@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ProfileDetailsFields } from "@/components/settings/ProfileDetailsFields";
+import { DEFAULT_CHAT_LANGUAGE, DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
+import { extractCityFromLocation } from "@/lib/profile-birth-normalize";
 import type {
   ProfileDetailsFormProps,
   ProfileDetailsFormState,
   UserProfile,
 } from "@/types";
-import { DEFAULT_CHAT_LANGUAGE, DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
 
 function splitNameForForm(u: UserProfile): { first: string; last: string } {
   if (u.firstName != null || u.lastName != null) {
@@ -21,6 +22,8 @@ function splitNameForForm(u: UserProfile): { first: string; last: string } {
 
 function userToFormState(user: UserProfile): ProfileDetailsFormState {
   const { first, last } = splitNameForForm(user);
+  const birthFull = user.placeOfBirth ?? "";
+  const prefFull = user.preferredLocation ?? "";
   return {
     firstName: first,
     lastName: last,
@@ -30,8 +33,10 @@ function userToFormState(user: UserProfile): ProfileDetailsFormState {
     chatLanguages: user.chatLanguages ?? DEFAULT_CHAT_LANGUAGE,
     dateOfBirth: user.dateOfBirth ?? "",
     timeOfBirth: user.timeOfBirth ?? "",
-    placeOfBirth: user.placeOfBirth ?? "",
-    preferredLocation: user.preferredLocation ?? "",
+    placeOfBirth: extractCityFromLocation(birthFull),
+    birthLocationFull: birthFull,
+    preferredLocation: extractCityFromLocation(prefFull),
+    preferredLocationFull: prefFull,
     rashi: user.rashi ?? "",
     nakshatra: user.nakshatra ?? "",
   };
@@ -57,6 +62,10 @@ export function ProfileDetailsForm({
     setForm((p) => ({ ...p, [key]: value }));
   }
 
+  const resolveRashi = useCallback((rashi: string, nakshatra: string) => {
+    setForm((p) => ({ ...p, rashi, nakshatra }));
+  }, []);
+
   async function handleSave() {
     const name = [form.firstName, form.lastName].filter(Boolean).join(" ").trim();
     const ok = await onSave({
@@ -69,8 +78,9 @@ export function ProfileDetailsForm({
       chatLanguages: form.chatLanguages,
       dateOfBirth: form.dateOfBirth,
       timeOfBirth: form.timeOfBirth,
-      placeOfBirth: form.placeOfBirth,
-      preferredLocation: form.preferredLocation,
+      placeOfBirth: form.birthLocationFull.trim() || form.placeOfBirth.trim(),
+      preferredLocation:
+        form.preferredLocationFull.trim() || form.preferredLocation.trim(),
     });
     if (ok) onDoneEditing();
   }
@@ -85,6 +95,7 @@ export function ProfileDetailsForm({
         isSaving={isSaving}
         onSave={handleSave}
         onProfileRefresh={onProfileRefresh}
+        onRashiResolved={resolveRashi}
       />
     </div>
   );

@@ -32,6 +32,13 @@ export const CHAT_SCREEN = {
 export const CHAT_LAYOUT = {
   pageRoot:
     "relative flex min-h-dvh w-full flex-col bg-[var(--color-chat-shell)] lg:mx-auto lg:my-4 lg:max-w-3xl lg:min-h-[calc(100dvh-2rem)] lg:overflow-hidden lg:rounded-3xl lg:border lg:border-black/10 lg:shadow-lg",
+  onboardingRootEmbedded:
+    "relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-white",
+  onboardingRootStandalone: "fixed inset-0 z-50 flex flex-col bg-white",
+  onboardingContent:
+    "mx-auto flex w-full max-w-md flex-1 flex-col justify-between px-5 pb-8 pt-4 lg:max-w-lg lg:px-8 lg:pb-10 lg:pt-6",
+  onboardingTitle: "text-center text-2xl font-semibold lg:text-3xl",
+  onboardingOptionsStack: "mt-8 space-y-4 lg:mt-10 lg:space-y-5",
   messageGutter: "px-5",
   headerBlock: "bg-[var(--color-brand-primary)] text-white",
   composerShell: "bg-[var(--color-chat-composer-bg)]",

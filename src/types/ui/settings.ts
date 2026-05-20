@@ -10,7 +10,9 @@ export type ProfileDetailsFormState = {
   dateOfBirth: string;
   timeOfBirth: string;
   placeOfBirth: string;
+  birthLocationFull: string;
   preferredLocation: string;
+  preferredLocationFull: string;
   rashi: string;
   nakshatra: string;
 };
@@ -26,6 +28,7 @@ export interface ProfileDetailsFieldsProps {
   isSaving: boolean;
   onSave: () => void;
   onProfileRefresh?: () => void | Promise<void>;
+  onRashiResolved?: (rashi: string, nakshatra: string) => void;
 }
 
 export interface ProfileDetailsFormProps {
@@ -59,6 +62,7 @@ export interface ProfileFieldProps {
   hasError?: boolean;
   errorMessage?: string;
   className?: string;
+  onBlurCommit?: () => void;
 }
 
 export interface ProfilePhoneRowProps {

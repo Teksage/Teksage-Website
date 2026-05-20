@@ -10,23 +10,31 @@ import {
   CHAT_STYLE_OPTIONS,
   type ChatStyleFormat,
 } from "@/lib/constants/chat-preferences";
+import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
 import type { ChatStyleOnboardingProps } from "@/types/ui/chat";
 
-export function ChatStyleOnboarding({ onContinue }: ChatStyleOnboardingProps) {
+export function ChatStyleOnboarding({
+  embedded = false,
+  onContinue,
+}: ChatStyleOnboardingProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<ChatStyleFormat | null>(null);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+    <div
+      className={cn(
+        embedded ? CHAT_LAYOUT.onboardingRootEmbedded : CHAT_LAYOUT.onboardingRootStandalone
+      )}
+    >
       <ChatOnboardingHeader onBack={() => router.back()} />
 
-      <div className="flex flex-1 flex-col justify-between px-5 pb-10 pt-6">
+      <div className={CHAT_LAYOUT.onboardingContent}>
         <div>
-          <h1 className="text-center text-2xl font-semibold">
+          <h1 className={CHAT_LAYOUT.onboardingTitle}>
             {CHAT_PREFERENCES.styleOnboardingTitle}
           </h1>
-          <div className="mt-10 space-y-5">
+          <div className={CHAT_LAYOUT.onboardingOptionsStack}>
             {CHAT_STYLE_OPTIONS.map((option) => (
               <ChatStyleOptionCard
                 key={option.format}
@@ -44,7 +52,7 @@ export function ChatStyleOnboarding({ onContinue }: ChatStyleOnboardingProps) {
           disabled={!selected}
           onClick={() => selected && onContinue(selected)}
           className={cn(
-            "h-auto w-full rounded-full py-3.5 text-lg font-semibold",
+            "h-auto w-full rounded-full py-3.5 text-lg font-semibold lg:max-w-sm lg:self-center",
             !selected && "bg-black/20 text-white hover:bg-black/20"
           )}
         >
