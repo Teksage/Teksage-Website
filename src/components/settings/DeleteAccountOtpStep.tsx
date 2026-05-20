@@ -28,7 +28,9 @@ export function DeleteAccountOtpStep({
   onResendError,
 }: DeleteAccountOtpStepProps) {
   const SD = useI18nConstants(SETTINGS_DELETE_COPY);
-  const [otp, setOtp] = useState("");
+  const [otpCells, setOtpCells] = useState<string[]>(
+    () => Array.from({ length: OTP_LENGTH }, () => "")
+  );
   const [timer, setTimer] = useState(RESEND_SECONDS);
   const [resendBusy, setResendBusy] = useState(false);
 
@@ -41,8 +43,8 @@ export function DeleteAccountOtpStep({
   }, [timer]);
 
   function onOtpChange(digits: string[]) {
+    setOtpCells(digits);
     const joined = digits.join("");
-    setOtp(joined);
     if (joined.length === OTP_LENGTH && !busy) {
       onOtpComplete(joined);
     }
@@ -53,6 +55,7 @@ export function DeleteAccountOtpStep({
     setResendBusy(true);
     try {
       await requestDeleteAccountOtp();
+      setOtpCells(Array.from({ length: OTP_LENGTH }, () => ""));
       setTimer(RESEND_SECONDS);
     } catch {
       onResendError(SD.failed);
@@ -72,7 +75,7 @@ export function DeleteAccountOtpStep({
       <p className={DELETE_ACCOUNT_LAYOUT.otpLead}>{SD.otpSentTo}</p>
       <p className={DELETE_ACCOUNT_LAYOUT.otpContact}>{contact}</p>
       <div className={DELETE_ACCOUNT_LAYOUT.otpInputWrap}>
-        <OtpInput value={otp} onChange={onOtpChange} hasError={Boolean(error)} />
+        <OtpInput value={otpCells} onChange={onOtpChange} hasError={Boolean(error)} />
       </div>
       {error ? <p className={DELETE_ACCOUNT_LAYOUT.otpError}>{error}</p> : null}
       {timer > 0 ? (
