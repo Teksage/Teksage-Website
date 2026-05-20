@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
-import {
-  GOOGLE_PLACES_AUTOCOMPLETE_URL,
-  GOOGLE_PLACES_FLUTTER_DEV_KEY,
-} from "@/lib/constants/google-places";
+import { GOOGLE_PLACES_AUTOCOMPLETE_URL } from "@/lib/constants/google-places";
 import { parsePlaceSuggestions } from "@/lib/places-suggestions";
 
-function getGooglePlacesApiKey(): string {
-  return process.env.GOOGLE_PLACES_API_KEY?.trim() || GOOGLE_PLACES_FLUTTER_DEV_KEY;
+function getGooglePlacesApiKey(): string | null {
+  const key = process.env.GOOGLE_PLACES_API_KEY?.trim();
+  return key || null;
 }
 
 export async function POST(request: Request) {
@@ -18,6 +16,15 @@ export async function POST(request: Request) {
     }
 
     const apiKey = getGooglePlacesApiKey();
+    if (!apiKey) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          "[places/suggestions] GOOGLE_PLACES_API_KEY is missing. Add it to .env.local (server-only, no NEXT_PUBLIC_ prefix)."
+        );
+      }
+      return NextResponse.json({ suggestions: [] });
+    }
+
     const url = `${GOOGLE_PLACES_AUTOCOMPLETE_URL}?input=${encodeURIComponent(input)}`;
     const response = await fetch(url, {
       method: "POST",
