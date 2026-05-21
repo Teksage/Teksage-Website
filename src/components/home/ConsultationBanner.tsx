@@ -2,7 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import type { ConsultationBannerProps } from "@/types";
@@ -12,7 +12,6 @@ import type { ConsultationBannerProps } from "@/types";
  * (design ref image 2); solid `homeBanner` + border like Flutter `homePage.dart` Stack.
  */
 export function ConsultationBanner({
-  isLoggedIn,
   isAstrologer = false,
   className,
 }: ConsultationBannerProps) {
@@ -21,11 +20,9 @@ export function ConsultationBanner({
   const titleLines = isAstrologer
     ? HD.astrologerShort
     : HD.astrologerConsultationLines;
-  const href = isLoggedIn
-    ? isAstrologer
-      ? ROUTES.consultationAstrologer
-      : ROUTES.consultation
-    : ROUTES.login;
+  const consultHref = isAstrologer
+    ? ROUTES.consultationAstrologer
+    : ROUTES.consultation;
 
   return (
     <div
@@ -83,8 +80,10 @@ export function ConsultationBanner({
           {titleLines}
         </p>
 
-        <Link
-          href={href}
+        <AuthGatedLink
+          href={consultHref}
+          returnPath={consultHref}
+          redirectHomeOnClose
           className={cn(
             "flex w-[4.75rem] shrink-0 items-center justify-center rounded-full bg-white px-2 py-2 text-center sm:w-[5rem] sm:px-2.5 sm:py-2.5",
             "text-[10px] font-semibold leading-tight text-[var(--color-brand-banner-dark)] sm:text-[11px]",
@@ -92,7 +91,7 @@ export function ConsultationBanner({
           )}
         >
           {buttonLabel}
-        </Link>
+        </AuthGatedLink>
       </div>
     </div>
   );

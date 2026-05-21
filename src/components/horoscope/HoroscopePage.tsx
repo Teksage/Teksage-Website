@@ -17,7 +17,7 @@ import {
   PAGE_SHELL,
   ROUTES,
 } from "@/lib/constants";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import type { HoroscopeChartVariant } from "@/types";
 
 /** Mirrors Flutter `HoroscopePage` (login gate + `horoscopePage.dart` split shell + charts). */
@@ -56,12 +56,13 @@ export function HoroscopePage() {
               title={H.loginTitle}
               description={H.loginDescription}
               action={
-                <Link
-                  href={buildLoginRedirectPath(ROUTES.horoscope)}
+                <LoginPromptButton
+                  returnPath={ROUTES.horoscope}
+                  redirectHomeOnClose
                   className={cn(buttonVariants(), "rounded-full")}
                 >
                   {H.loginCta}
-                </Link>
+                </LoginPromptButton>
               }
             />
           ) : isLoading ? (

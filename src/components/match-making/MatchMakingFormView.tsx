@@ -1,17 +1,17 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
+import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { MatchMakingPartnerSection } from "@/components/match-making/MatchMakingPartnerSection";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
 import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { cn } from "@/lib/utils";
 import {
   fetchNakshatraList,
@@ -90,12 +90,13 @@ export function MatchMakingFormView() {
       <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root, "bg-[var(--color-brand-bg)]")}>
         <div className="mx-auto max-w-lg px-5 py-10 text-center">
           <p className="font-semibold">{MM.loginTitle}</p>
-          <Link
-            href={buildLoginRedirectPath(ROUTES.matchmaking)}
+          <LoginPromptButton
+            returnPath={ROUTES.matchmaking}
+            redirectHomeOnClose
             className={cn(buttonVariants(), "mt-6 inline-flex rounded-full")}
           >
             {MM.loginCta}
-          </Link>
+          </LoginPromptButton>
         </div>
       </div>
     );

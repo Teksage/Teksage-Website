@@ -1,33 +1,27 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Loader } from "@/components/common/Loader";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { useLoginPrompt } from "@/contexts/LoginPromptContext";
 import { useAuthStore } from "@/store/auth.store";
 import type { ConsultationAuthGateProps } from "@/types/ui/consultation";
 
-/** Requires login before consultation booking (Flutter `handleConsultationNavigation`). */
+/** Requires login before consultation booking — Flutter `LoginPromptDialog`. */
 export function ConsultationAuthGate({
   children,
   redirectPath,
 }: ConsultationAuthGateProps) {
-  const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { openLoginPrompt } = useLoginPrompt();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.replace(buildLoginRedirectPath(redirectPath));
-    }
-  }, [isAuthenticated, redirectPath, router]);
+    if (isAuthenticated) return;
+    openLoginPrompt({
+      returnPath: redirectPath,
+      redirectHomeOnClose: true,
+    });
+  }, [isAuthenticated, openLoginPrompt, redirectPath]);
 
-  if (!isAuthenticated) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
+  if (!isAuthenticated) return null;
 
   return <>{children}</>;
 }

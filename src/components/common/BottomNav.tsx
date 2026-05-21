@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
+import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { cn } from "@/lib/utils";
 import { HOME_LAYOUT, MAIN_NAV_ITEMS } from "@/lib/constants";
 import type { BottomNavProps } from "@/types";
@@ -16,6 +17,7 @@ import type { BottomNavProps } from "@/types";
 export function BottomNav({ className }: BottomNavProps) {
   const { t } = useAppLanguage();
   const pathname = usePathname();
+  const { guardNavigation, shouldPromptLogin } = useAuthNavigation();
 
   return (
     <nav
@@ -39,6 +41,43 @@ export function BottomNav({ className }: BottomNavProps) {
         <div className="flex items-end justify-between gap-0.5 sm:justify-around sm:gap-1">
           {MAIN_NAV_ITEMS.map((tab) => {
             const active = pathname.startsWith(tab.href);
+            const needsLogin = shouldPromptLogin(tab.href);
+
+            if (needsLogin) {
+              return (
+                <button
+                  key={tab.href}
+                  type="button"
+                  onClick={() =>
+                    guardNavigation(tab.href, { redirectHomeOnClose: true })
+                  }
+                  className={cn(
+                    "flex min-w-0 flex-1 flex-col items-center gap-1.5 rounded-2xl px-1.5 py-1 sm:px-3 sm:py-1.5",
+                    "transition-colors hover:bg-neutral-50/80"
+                  )}
+                >
+                  <Image
+                    src={active ? tab.iconOn : tab.iconOff}
+                    alt=""
+                    width={32}
+                    height={33}
+                    unoptimized
+                    className="size-8"
+                  />
+                  <span
+                    className={cn(
+                      "text-center text-[0.6875rem] font-semibold leading-tight sm:text-xs",
+                      active
+                        ? "text-[var(--color-brand-primary)]"
+                        : "text-neutral-500"
+                    )}
+                  >
+                    {t(tab.label)}
+                  </span>
+                </button>
+              );
+            }
+
             return (
               <Link
                 key={tab.href}

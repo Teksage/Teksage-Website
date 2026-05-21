@@ -2,7 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/auth/OtpInput";
 import { Loader } from "@/components/common/Loader";
@@ -11,7 +11,14 @@ import { LoginBackButton } from "@/components/auth/LoginChrome";
 import { useAuthStore } from "@/store/auth.store";
 import { verifyOtp } from "@/lib/services/auth";
 import { cn } from "@/lib/utils";
-import { OTP_LENGTH, LOGIN_SCREEN, OTP_VERIFY_SCREEN, ROUTES } from "@/lib/constants";
+import {
+  DEFAULT_COUNTRY_CALLING_CODE,
+  OTP_LENGTH,
+  LOGIN_SCREEN,
+  OTP_VERIFY_SCREEN,
+} from "@/lib/constants";
+import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
+import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
 import type { OtpVerifyViewProps } from "@/types";
 import { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "@/types";
 
@@ -19,10 +26,16 @@ function emptyOtpCells(): string[] {
   return Array.from({ length: OTP_LENGTH }, () => "");
 }
 
-export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewProps) {
+export function OtpVerifyView({
+  contact,
+  contactType,
+  mobileCountryCode,
+  onBack,
+}: OtpVerifyViewProps) {
   const LS = useI18nConstants(LOGIN_SCREEN);
   const OV = useI18nConstants(OTP_VERIFY_SCREEN);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setAuth } = useAuthStore();
   const [otpCells, setOtpCells] = useState<string[]>(emptyOtpCells);
   const [error, setError] = useState<string | null>(null);
@@ -39,10 +52,15 @@ export function OtpVerifyView({ contact, contactType, onBack }: OtpVerifyViewPro
       const response = await verifyOtp(
         contactType === OTP_CONTACT_TYPE_EMAIL
           ? { email: contact, otp: otpDigits }
-          : { mobile: contact, otp: otpDigits }
+          : {
+              mobile: contact,
+              otp: otpDigits,
+              countryCode: mobileCountryCode ?? DEFAULT_COUNTRY_CALLING_CODE,
+            }
       );
       setAuth(response.user, response.token);
-      router.push(ROUTES.home);
+      const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
+      router.replace(dest);
     } catch {
       setError(OV.invalidOtp);
       setOtpCells(emptyOtpCells());

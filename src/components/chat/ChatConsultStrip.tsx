@@ -4,7 +4,7 @@ import { ChatConsultBanner } from "@/components/chat/ChatConsultBanner";
 export function ChatConsultStrip() {
   return (
     <div className="relative z-10 shrink-0">
-      <ChatConsultBanner isLoggedIn />
+      <ChatConsultBanner />
     </div>
   );
 }

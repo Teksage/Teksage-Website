@@ -2,7 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import type { HomeDashboardHeaderProps } from "@/types";
@@ -31,8 +31,10 @@ export function HomeDashboardHeader({
           >
             {greeting}
           </h1>
-          <Link
-            href={isAuthenticated ? ROUTES.notifications : ROUTES.login}
+          <AuthGatedLink
+            href={ROUTES.notifications}
+            returnPath={ROUTES.notifications}
+            inline
             className="relative rounded-full p-1.5 transition-colors hover:bg-black/5"
             aria-label={HD.notificationsLinkAria}
           >
@@ -49,7 +51,7 @@ export function HomeDashboardHeader({
                 {unreadCount > 9 ? HD.notificationCountOverflow : unreadCount}
               </span>
             )}
-          </Link>
+          </AuthGatedLink>
         </div>
         <div
           className="h-px min-h-px w-full shrink-0 bg-[var(--color-home-dashboard-rule)]"

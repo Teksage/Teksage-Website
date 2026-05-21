@@ -2,7 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import type { ChatBannerProps } from "@/types";
@@ -12,13 +12,14 @@ import type { ChatBannerProps } from "@/types";
  * (`BoxFit.cover`), then `Row` + `spaceEvenly`: title | `bannerElement` | white pill
  * (`Chat Now` + `rightArrow`).
  */
-export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
+export function ChatBanner({ className }: ChatBannerProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
-  const href = isLoggedIn ? ROUTES.chat : ROUTES.login;
 
   return (
-    <Link
-      href={href}
+    <AuthGatedLink
+      href={ROUTES.chat}
+      returnPath={ROUTES.chat}
+      redirectHomeOnClose
       className={cn("group block", HOME_LAYOUT.chatBannerNavGap, className)}
     >
       <div
@@ -86,6 +87,6 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </AuthGatedLink>
   );
 }

@@ -2,25 +2,27 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import type { MatchMakingCardProps } from "@/types";
 
 export function MatchMakingCard({
-  isLoggedIn,
   hasExistingMatch = false,
   className,
 }: MatchMakingCardProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
-  const href = isLoggedIn
-    ? hasExistingMatch
-      ? ROUTES.matchmakingDetails
-      : ROUTES.matchmaking
-    : ROUTES.login;
+  const matchHref = hasExistingMatch
+    ? ROUTES.matchmakingDetails
+    : ROUTES.matchmaking;
 
   return (
-    <Link href={href} className={cn("group block flex-1", className)}>
+    <AuthGatedLink
+      href={matchHref}
+      returnPath={matchHref}
+      redirectHomeOnClose
+      className={cn("group block flex-1", className)}
+    >
       <div
         className={cn(
           "relative flex flex-col overflow-hidden bg-white",
@@ -46,6 +48,6 @@ export function MatchMakingCard({
           />
         </div>
       </div>
-    </Link>
+    </AuthGatedLink>
   );
 }

@@ -2,10 +2,10 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
+import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import {
   HOME_DASHBOARD_PREDICTION_LINKS,
   HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT,
@@ -36,6 +36,7 @@ export function DesktopNavPredictionsMenu() {
   const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
   const predictionLinks = useI18nConstants(HOME_DASHBOARD_PREDICTION_LINKS);
   const pathname = usePathname();
+  const { guardNavigation } = useAuthNavigation();
   const predictionsActive = pathname.startsWith(ROUTES.predictions);
   const [open, setOpen] = useState(predictionsActive);
 
@@ -56,10 +57,13 @@ export function DesktopNavPredictionsMenu() {
             const active = pathname === item.href;
             return (
               <li key={item.href}>
-                <Link
-                  href={item.href}
+                <button
+                  type="button"
+                  onClick={() =>
+                    guardNavigation(item.href, { redirectHomeOnClose: true })
+                  }
                   className={cn(
-                    "flex items-center gap-2.5 rounded-lg py-2 text-sm font-medium transition-colors",
+                    "flex w-full items-center gap-2.5 rounded-lg py-2 text-left text-sm font-medium transition-colors",
                     active
                       ? "font-semibold text-black"
                       : "text-black/80 hover:text-black"
@@ -67,7 +71,7 @@ export function DesktopNavPredictionsMenu() {
                 >
                   <span className="size-1.5 shrink-0 rounded-[1px] bg-[var(--color-brand-primary)]" />
                   {item.label}
-                </Link>
+                </button>
               </li>
             );
           })}

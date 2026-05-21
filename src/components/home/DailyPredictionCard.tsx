@@ -2,7 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import { Loader } from "@/components/common/Loader";
@@ -17,10 +17,13 @@ export function DailyPredictionCard({
   className,
 }: DailyPredictionCardProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
-  const href = isLoggedIn ? ROUTES.predictionsDaily : ROUTES.login;
-
   return (
-    <Link href={href} className={cn("group block flex-1", className)}>
+    <AuthGatedLink
+      href={ROUTES.predictionsDaily}
+      returnPath={ROUTES.predictionsDaily}
+      redirectHomeOnClose
+      className={cn("group block flex-1", className)}
+    >
       <div
         className={cn(
           "relative overflow-hidden",
@@ -108,6 +111,6 @@ export function DailyPredictionCard({
           </div>
         </div>
       </div>
-    </Link>
+    </AuthGatedLink>
   );
 }
