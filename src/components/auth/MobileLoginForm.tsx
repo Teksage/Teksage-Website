@@ -1,12 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-/**
- * Mobile number login — not used while the web login matches the email-only
- * Flutter `LoginPageMobile` reference. Kept for a future tabbed login.
- *
- * To re-enable: import in `src/app/(auth)/login/page.tsx` and render from tab state.
- */
+/** Mobile number login — tab on `/login` (Flutter `LoginPageMobile`). */
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -54,7 +49,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
         mobile_number: mobile,
         country_code: countryCode.replace("+", ""),
       });
-      onOtpSent(mobile);
+      onOtpSent(mobile, countryCode);
     } catch {
       setError(LOGIN_MOBILE_FORM.sendOtpError);
     } finally {

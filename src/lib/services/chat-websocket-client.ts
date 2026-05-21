@@ -8,11 +8,14 @@ const RECONNECT_DELAYS_SEC = [1, 2, 4, 6, 8, 10] as const;
 export type ChatWebSocketHandlers = {
   onTextChunk: (chunk: string) => void;
   onStreamEnd: () => void;
+  onOpen?: () => void;
+  onClose?: (event: CloseEvent) => void;
   onError?: (error: unknown) => void;
 };
 
 export class ChatWebSocketClient {
   private socket: WebSocket | null = null;
+  private openPromise: Promise<void> | null = null;
   private reconnecting = false;
   private retryAttempt = 0;
   private pending: string[] = [];
@@ -53,6 +56,27 @@ export class ChatWebSocketClient {
 
   private async openSocket(): Promise<void> {
     if (this.connected) return;
+    if (this.openPromise) return this.openPromise;
+
+    this.openPromise = this.connectOnce().finally(() => {
+      this.openPromise = null;
+    });
+    return this.openPromise;
+  }
+
+  private closeStaleSocket(): void {
+    const stale = this.socket;
+    if (!stale || stale.readyState === WebSocket.CLOSED) return;
+    stale.onopen = null;
+    stale.onmessage = null;
+    stale.onerror = null;
+    stale.onclose = null;
+    stale.close();
+    this.socket = null;
+  }
+
+  private async connectOnce(): Promise<void> {
+    this.closeStaleSocket();
 
     let token = await this.getAccessToken();
     if (!token) throw new Error("Not authenticated");
@@ -61,22 +85,40 @@ export class ChatWebSocketClient {
       new Promise<void>((resolve, reject) => {
         const url = buildChatWebSocketUrl(accessToken);
         const ws = new WebSocket(url);
+        let settled = false;
+
+        const finish = (fn: () => void) => {
+          if (settled) return;
+          settled = true;
+          fn();
+        };
 
         ws.onopen = () => {
+          if (this.socket && this.socket !== ws) {
+            ws.close();
+            return;
+          }
           this.socket = ws;
           this.reconnecting = false;
           this.retryAttempt = 0;
-          resolve();
+          this.handlers?.onOpen?.();
+          finish(resolve);
         };
 
         ws.onmessage = (event) => this.handleMessage(String(event.data));
 
         ws.onerror = () => {
-          reject(new Error("WebSocket error"));
+          finish(() => reject(new Error("WebSocket error")));
         };
 
         ws.onclose = async (event) => {
-          this.socket = null;
+          if (this.socket === ws) this.socket = null;
+          this.handlers?.onClose?.(event);
+          if (!settled) {
+            finish(() =>
+              reject(new Error(`WebSocket closed before open (${event.code})`))
+            );
+          }
           if (this.intentionalClose) return;
           if (event.code === 1008 || event.code === 4003) {
             try {

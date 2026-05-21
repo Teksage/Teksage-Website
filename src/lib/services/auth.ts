@@ -45,9 +45,10 @@ function verifyOtpRequestBody(payload: OtpPayload) {
   if ("email" in payload) {
     return { email: payload.email.trim().toLowerCase(), otp: payload.otp };
   }
+  const dial = payload.countryCode.replace(/\D/g, "") || DEFAULT_COUNTRY_CODE_NUMERIC;
   return {
     mobile_number: payload.mobile,
-    country_code: DEFAULT_COUNTRY_CODE_NUMERIC,
+    country_code: dial,
     otp: payload.otp,
   };
 }

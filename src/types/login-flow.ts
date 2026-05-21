@@ -8,3 +8,5 @@ export type OtpContactType =
   | typeof OTP_CONTACT_TYPE_MOBILE;
 
 export type LoginStep = "form" | "otp";
+
+export type LoginMethodTab = "mobile" | "email";

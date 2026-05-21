@@ -54,7 +54,7 @@ export function PredictionGenerateLandingDesktop({
 
       <div className="flex w-full flex-col items-center text-center">
         <PredictionLandingHero decoSrc={decoSrc} logoSrc={logoSrc} variant="desktop" className="mt-2" />
-        <h1 className="prediction-slide-up mt-10 text-[2rem] font-bold leading-tight text-white">
+        <h1 className="prediction-slide-up mt-10 text-2xl-display font-bold leading-tight text-white">
           {title}
         </h1>
         <p className="prediction-slide-up-delay mt-4 max-w-md text-lg font-medium leading-relaxed text-white">

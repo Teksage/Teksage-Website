@@ -42,7 +42,7 @@ export const CONSULTATION_DETAIL_LAYOUT = {
   langRow: "mt-2.5 flex items-center justify-center gap-2.5",
   langText: "text-sm font-semibold text-[var(--color-brand-black)]/50",
   dashed: "mx-auto my-3 block h-px w-full max-w-[280px] opacity-80",
-  priceMain: "text-[2rem] font-semibold leading-none text-[var(--color-consult-user-text)]",
+  priceMain: "text-2xl-display font-semibold leading-none text-[var(--color-consult-user-text)]",
   priceSuffix: "text-sm font-semibold text-[var(--color-brand-black)]/30",
   expRow: "flex items-center justify-center gap-2.5",
   expText: "text-base font-semibold text-[var(--color-brand-black)]/40",

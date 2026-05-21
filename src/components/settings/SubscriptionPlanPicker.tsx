@@ -61,7 +61,7 @@ export function SubscriptionPlanPicker({
                 !showSelectedStyle && SETTINGS_UI.subscriptionPlanCardIdle
               )}
             >
-              <p className="text-[25px] font-semibold leading-none">
+              <p className="text-price font-semibold leading-none">
                 {symbol}
                 {Math.round(priceOf(plan))}
               </p>
@@ -69,7 +69,7 @@ export function SubscriptionPlanPicker({
                 {planDurationText(plan)}
               </p>
               {recommended ? (
-                <span className="mt-1.5 rounded-xl bg-white px-2.5 py-1 text-[9px] font-semibold leading-none text-[var(--color-brand-primary)]">
+                <span className="mt-1.5 rounded-xl bg-white px-2.5 py-1 text-2xs font-semibold leading-none text-[var(--color-brand-primary)]">
                   {SUB.recommended}
                 </span>
               ) : (

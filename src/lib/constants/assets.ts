@@ -8,6 +8,8 @@ const flutterSvg = (file: string) => `/flutter-assets/svg/${file}` as const;
 const flutterImage = (file: string) => `/flutter-assets/images/${file}` as const;
 
 export const PUBLIC_ASSETS = {
+  /** Flutter `dashLogin.svg` — login prompt dialog illustration */
+  dashLogin: flutterSvg("dashLogin.svg"),
   /** Flutter `loginLogo.svg` */
   loginLogo: flutterSvg("loginLogo_ios.svg"),
   /** Flutter `logo_ios.svg` */

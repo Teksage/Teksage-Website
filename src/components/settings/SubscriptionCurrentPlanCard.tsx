@@ -52,7 +52,7 @@ export function SubscriptionCurrentPlanCard({
             "shrink-0 rounded-md bg-white/10 px-[15px] py-5 text-center"
           )}
         >
-          <p className="text-[25px] font-semibold leading-none">
+          <p className="text-price font-semibold leading-none">
             {symbol}
             {Math.round(price)}
           </p>
@@ -65,7 +65,7 @@ export function SubscriptionCurrentPlanCard({
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <p className="mt-2.5 text-[10px] leading-none">
+          <p className="mt-2.5 text-micro leading-none">
             {daysLeft} {SUB.daysLeft}
           </p>
         </div>

@@ -60,7 +60,7 @@ export function PredictionLandingLayout({
         <img src={logo} alt="" className="absolute size-16 sm:size-20" />
       </div>
 
-      <h1 className="prediction-slide-up mt-10 text-center text-[1.8rem] font-bold text-white">
+      <h1 className="prediction-slide-up mt-10 text-center text-display font-bold text-white">
         {copy.title}
       </h1>
       <p className="prediction-slide-up-delay mx-auto mt-4 max-w-md text-center text-lg leading-relaxed text-white">

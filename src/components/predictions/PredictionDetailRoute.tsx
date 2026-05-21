@@ -3,7 +3,6 @@
 import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { AppHeader } from "@/components/common/AppHeader";
 import { Loader } from "@/components/common/Loader";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -16,7 +15,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { fetchPredictionDetail, isPredictionError } from "@/lib/services/predictions";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import { LIFE_SHELL_GRADIENT_CLASS, PAGE_SHELL, ROUTES } from "@/lib/constants";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { cn } from "@/lib/utils";
 import type { PredictionDetailKind, PredictionDetailViewModel } from "@/types/prediction-detail";
 
@@ -101,12 +100,13 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
           <p className="mt-2 text-sm text-neutral-600">
             {PD.loginDescription}
           </p>
-          <Link
-            href={buildLoginRedirectPath(redirectForKind(kind))}
+          <LoginPromptButton
+            returnPath={redirectForKind(kind)}
+            redirectHomeOnClose
             className={cn(buttonVariants(), "mt-6 inline-flex rounded-full")}
           >
             {PD.loginCta}
-          </Link>
+          </LoginPromptButton>
         </div>
       </div>
     );

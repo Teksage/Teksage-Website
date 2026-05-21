@@ -1,8 +1,8 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader } from "@/components/common/Loader";
 import { MatchMakingDetailsLayout } from "@/components/match-making/MatchMakingDetailsLayout";
@@ -10,7 +10,7 @@ import { MatchMakingShell } from "@/components/match-making/MatchMakingShell";
 import { buttonVariants } from "@/components/ui/button";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { cn } from "@/lib/utils";
 import { http } from "@/lib/services/http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
@@ -51,12 +51,13 @@ export function MatchMakingDetailsView() {
       <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root, PAGE_SHELL.flutterFullBleed)}>
         <MatchMakingShell className="flex min-h-dvh flex-col items-center justify-center px-5">
           <p className="text-center font-semibold text-white">{MM.loginTitle}</p>
-          <Link
-            href={buildLoginRedirectPath(ROUTES.matchmakingDetails)}
+          <LoginPromptButton
+            returnPath={ROUTES.matchmakingDetails}
+            redirectHomeOnClose
             className={cn(buttonVariants(), "mt-6 inline-flex rounded-full")}
           >
             {MM.loginCta}
-          </Link>
+          </LoginPromptButton>
         </MatchMakingShell>
       </div>
     );

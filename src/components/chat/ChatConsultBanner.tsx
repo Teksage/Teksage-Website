@@ -2,16 +2,15 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 /** Flutter `ChatBanner(fromChat: true)` — full-bleed strip under green app bar. */
-export function ChatConsultBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
+export function ChatConsultBanner() {
   const CS = useI18nConstants(CHAT_SCREEN);
   const HD = useI18nConstants(HOME_DASHBOARD);
-  const href = isLoggedIn ? ROUTES.consultation : ROUTES.login;
 
   return (
     <div
@@ -50,12 +49,14 @@ export function ChatConsultBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
         <p className="min-w-0 flex-1 text-center text-sm font-bold leading-snug text-[var(--color-brand-consultation-heading)] sm:text-base">
           {CS.consultBannerTitle}
         </p>
-        <Link
-          href={href}
+        <AuthGatedLink
+          href={ROUTES.consultation}
+          returnPath={ROUTES.consultation}
+          redirectHomeOnClose
           className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[var(--color-brand-banner-dark)] shadow-sm"
         >
           {HD.bookNow}
-        </Link>
+        </AuthGatedLink>
       </div>
     </div>
   );

@@ -2,9 +2,15 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import Link from "next/link";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import type { ChatBannerProps } from "@/types";
 
 /**
@@ -12,13 +18,14 @@ import type { ChatBannerProps } from "@/types";
  * (`BoxFit.cover`), then `Row` + `spaceEvenly`: title | `bannerElement` | white pill
  * (`Chat Now` + `rightArrow`).
  */
-export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
+export function ChatBanner({ className }: ChatBannerProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
-  const href = isLoggedIn ? ROUTES.chat : ROUTES.login;
 
   return (
-    <Link
-      href={href}
+    <AuthGatedLink
+      href={ROUTES.chat}
+      returnPath={ROUTES.chat}
+      redirectHomeOnClose
       className={cn("group block", HOME_LAYOUT.chatBannerNavGap, className)}
     >
       <div
@@ -47,13 +54,7 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
             HOME_LAYOUT.homeBannerStripMinH
           )}
         >
-          <p
-            className={cn(
-              "min-w-0 shrink whitespace-pre-line text-left text-sm font-bold leading-snug text-white sm:text-base lg:text-lg"
-            )}
-          >
-            {HD.aiVoiceChatTitle}
-          </p>
+          <p className={HOME_DASHBOARD_UI.chatBannerTitle}>{HD.aiVoiceChatTitle}</p>
 
           <Image
             src={DASHBOARD_ASSETS.chatBannerElement}
@@ -71,7 +72,7 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
               "transition-opacity group-hover:opacity-95"
             )}
           >
-            <span className="text-[11px] font-semibold leading-none text-[var(--color-brand-banner-font)] sm:text-xs">
+            <span className={HOME_DASHBOARD_UI.chatBannerCta}>
               {HD.chatNow}
             </span>
             <Image
@@ -86,6 +87,6 @@ export function ChatBanner({ isLoggedIn, className }: ChatBannerProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </AuthGatedLink>
   );
 }

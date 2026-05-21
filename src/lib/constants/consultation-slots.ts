@@ -38,7 +38,7 @@ export const CONSULTATION_SLOTS_LAYOUT = {
   availabilityHeader: "flex items-start justify-between gap-3",
   availabilityTitle: "text-base font-medium text-[var(--color-brand-black)]/70",
   availabilityMeta:
-    "shrink-0 text-right text-[0.8125rem] font-semibold text-[var(--color-consult-user-bg)]",
+    "shrink-0 text-right text-sm-plus font-semibold text-[var(--color-consult-user-bg)]",
   cardDivider: "my-5 block w-full opacity-20",
   slotGrid:
     "scrollbar-hidden grid max-h-52 grid-cols-3 gap-2 overflow-y-auto sm:grid-cols-3",

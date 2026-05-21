@@ -15,7 +15,7 @@ import type { UserProfile } from "./user-profile";
 
 // --- Auth ---
 export type OtpPayload =
-  | { mobile: string; otp: string }
+  | { mobile: string; otp: string; countryCode: string }
   | { email: string; otp: string };
 
 export interface AuthResponse {
@@ -24,7 +24,7 @@ export interface AuthResponse {
   user: UserProfile;
 }
 
-export type { LoginStep, OtpContactType } from "./login-flow";
+export type { LoginMethodTab, LoginStep, OtpContactType } from "./login-flow";
 export { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "./login-flow";
 
 // --- Prediction ---
@@ -77,6 +77,8 @@ export type {
   BrandLoginLogoProps,
   DesktopMainNavProps,
 } from "./ui/common";
+
+export type { AuthGatedLinkProps } from "./ui/auth-gated-link";
 
 export type {
   ChatBannerProps,

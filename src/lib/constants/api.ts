@@ -63,9 +63,9 @@ export const API_ENDPOINTS = {
   astrologerQuestions: "/api/astrologer/questions",
   astroEvents: "/api/astrologer/events",
 
-  // --- AI chat — `chat.py`; WebSocket handler (Flutter may use root `/chat`) ---
-  /** WebSocket URL: `ws(s)://<host>/api/chat` */
-  chatWebSocket: "/api/chat",
+  // --- AI chat — `main.py` registers `/chat`; router also exposes `/api/chat` (same handler) ---
+  /** WebSocket path — matches Flutter `ApiEndpoint.chatUrl` (`ws://<host>/chat`). */
+  chatWebSocket: "/chat",
   downloadChatPdf: "/api/download-chat-pdf",
   transcribeAudio: "/api/transcribe-audio",
 

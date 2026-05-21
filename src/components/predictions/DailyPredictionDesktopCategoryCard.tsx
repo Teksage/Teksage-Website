@@ -39,7 +39,7 @@ export function DailyPredictionDesktopCategoryCard({
           "rounded-t-[1.25rem] border-l border-r border-t border-black/[0.05]"
         )}
       >
-        <h2 className="pr-14 text-base font-semibold text-[var(--color-brand-black)] sm:text-[1.25rem] sm:leading-6">
+        <h2 className="pr-14 text-base font-semibold text-[var(--color-brand-black)] sm:text-lg sm:leading-6">
           {title}
         </h2>
         <img

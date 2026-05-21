@@ -44,6 +44,9 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
   const [toast, setToast] = useState<string | null>(null);
 
   const clientRef = useRef<ChatWebSocketClient | null>(null);
+  const messagesRef = useRef<ChatMessage[]>([]);
+  const awaitingResponseRef = useRef(false);
+  messagesRef.current = messages;
   const outboundPrefsRef = useRef<{ format: string; avator: string }>({
     format: CHAT_DEFAULTS.format,
     avator: CHAT_DEFAULTS.avatar,
@@ -66,21 +69,35 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
       setToast,
     },
     chatLanguage,
-    outboundPrefsRef
+    outboundPrefsRef,
+    messagesRef
   );
 
   const streamRef = useRef(stream);
   streamRef.current = stream;
 
+  const resetComposerAfterSendFailure = useCallback(() => {
+    awaitingResponseRef.current = false;
+    setShowTyping(false);
+    setEnableInput(true);
+    streamRef.current.markLastUserFailed();
+  }, []);
+
   const transmitQuery = useCallback(
-    async (trimmed: string, options?: { appendUser?: boolean }) => {
-      if (!clientRef.current || !wsConnected) return;
+    async (trimmed: string, options?: { appendUser?: boolean }): Promise<boolean> => {
+      const client = clientRef.current;
+      if (!client) {
+        setToast(CS.wsConnectError);
+        return false;
+      }
+
       const api = streamRef.current;
       api.resetStreamRefs();
       setShowBanner(false);
       setRelatedQueries([]);
       setShowTyping(true);
       setEnableInput(false);
+      awaitingResponseRef.current = true;
 
       if (options?.appendUser !== false) {
         setMessages((prev) => [
@@ -89,10 +106,17 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         ]);
       }
 
-      await clientRef.current.send(JSON.stringify(api.buildPayload(trimmed)));
-      api.startResponseTimeout();
+      try {
+        await client.send(JSON.stringify(api.buildPayload(trimmed)));
+        api.startResponseTimeout();
+        return true;
+      } catch {
+        resetComposerAfterSendFailure();
+        setToast(CS.wsConnectError);
+        return false;
+      }
     },
-    [wsConnected]
+    [CS.wsConnectError, resetComposerAfterSendFailure]
   );
 
   const sendQuery = useCallback(
@@ -106,11 +130,24 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         setToast(CS.subscribeLimit);
         return;
       }
-      if (!isPrime) setMessageCount((c) => c + 1);
+      if (!clientRef.current?.connected && !wsConnected) {
+        setToast(CS.wsConnectError);
+        return;
+      }
+      const sent = await transmitQuery(trimmed);
+      if (!sent) return;
       setInput("");
-      await transmitQuery(trimmed);
+      if (!isPrime) setMessageCount((c) => c + 1);
     },
-    [CS.emptyInput, CS.subscribeLimit, canSendMore, isPrime, transmitQuery]
+    [
+      CS.emptyInput,
+      CS.subscribeLimit,
+      CS.wsConnectError,
+      canSendMore,
+      isPrime,
+      transmitQuery,
+      wsConnected,
+    ]
   );
 
   const retryMessage = useCallback(
@@ -132,11 +169,36 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     clientRef.current = client;
 
     async function connectSocket() {
-      const api = streamRef.current;
       const handlers = {
-        onTextChunk: (chunk: string) => api.onTextChunk(chunk),
-        onStreamEnd: () => api.onStreamEnd(),
-        onError: () => api.markLastUserFailed(),
+        onTextChunk: (chunk: string) => streamRef.current.onTextChunk(chunk),
+        onStreamEnd: () => {
+          awaitingResponseRef.current = false;
+          void streamRef.current.onStreamEnd();
+        },
+        onOpen: () => {
+          if (!cancelled) setWsConnected(true);
+        },
+        onClose: (event: CloseEvent) => {
+          if (!cancelled) {
+            setWsConnected(false);
+            const stillStreaming = streamRef.current.isStreamingActive();
+            if (
+              awaitingResponseRef.current &&
+              !stillStreaming &&
+              event.code !== 1008 &&
+              event.code !== 4003
+            ) {
+              resetComposerAfterSendFailure();
+              setToast(CS.wsConnectError);
+            }
+          }
+        },
+        onError: () => {
+          if (!streamRef.current.isStreamingActive()) {
+            resetComposerAfterSendFailure();
+            setToast(CS.wsConnectError);
+          }
+        },
       };
 
       const timeout = new Promise<never>((_, reject) => {
@@ -144,7 +206,6 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
       });
 
       await Promise.race([client.connect(handlers), timeout]);
-      if (!cancelled) setWsConnected(true);
     }
 
     async function boot() {
@@ -186,9 +247,10 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     void boot();
     return () => {
       cancelled = true;
+      setWsConnected(false);
       client.disconnect();
     };
-  }, [CS.bootError, CS.wsConnectError, enabled]);
+  }, [CS.bootError, CS.wsConnectError, enabled, resetComposerAfterSendFailure]);
 
   return {
     messages,
@@ -208,5 +270,6 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     showToast: (message: string) => setToast(message),
     sendQuery,
     retryMessage,
+    chatLanguage,
   };
 }

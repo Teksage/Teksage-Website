@@ -3,6 +3,7 @@
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
 import { DesktopNavPredictionsMenu } from "@/components/common/DesktopNavPredictionsMenu";
@@ -32,6 +33,7 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
     settings: HDS.settings,
   };
   const pathname = usePathname();
+  const { guardNavigation } = useAuthNavigation();
 
   return (
     <aside
@@ -60,36 +62,48 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
         <DesktopNavAiChatCard />
 
         <DesktopNavItem
-          href={DESKTOP_SIDEBAR_BOOK_LINK.href}
           iconSrc={DESKTOP_SIDEBAR_BOOK_LINK.icon}
           labelLines={{
             primary: HDS.bookConsultationLine1,
             secondary: HDS.bookConsultationLine2,
           }}
           active={pathname.startsWith(DESKTOP_SIDEBAR_BOOK_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_BOOK_LINK.href, { redirectHomeOnClose: true })
+          }
         />
 
         <DesktopNavPredictionsMenu />
 
         <DesktopNavItem
-          href={DESKTOP_SIDEBAR_MARRIAGE_LINK.href}
           iconSrc={DESKTOP_SIDEBAR_MARRIAGE_LINK.icon}
           labelLines={{
             primary: HDS.marriageLine1,
             secondary: HDS.marriageLine2,
           }}
           active={pathname.startsWith(DESKTOP_SIDEBAR_MARRIAGE_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_MARRIAGE_LINK.href, { redirectHomeOnClose: true })
+          }
         />
 
-        {DESKTOP_SIDEBAR_UTILITY_LINKS.map((item) => (
-          <DesktopNavItem
-            key={item.href}
-            href={item.href}
-            iconSrc={item.icon}
-            label={utilityLabels[item.labelKey]}
-            active={pathname.startsWith(item.href)}
-          />
-        ))}
+        {DESKTOP_SIDEBAR_UTILITY_LINKS.map((item) => {
+          const isSettings = item.labelKey === "settings";
+          return (
+            <DesktopNavItem
+              key={item.href}
+              href={isSettings ? item.href : undefined}
+              iconSrc={item.icon}
+              label={utilityLabels[item.labelKey]}
+              active={pathname.startsWith(item.href)}
+              onClick={
+                isSettings
+                  ? undefined
+                  : () => guardNavigation(item.href, { redirectHomeOnClose: true })
+              }
+            />
+          );
+        })}
 
         <DesktopNavUnlockPremium />
       </nav>

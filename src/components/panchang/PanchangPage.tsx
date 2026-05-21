@@ -1,7 +1,6 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import Link from "next/link";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -14,7 +13,7 @@ import {
   PANCHANG_SCREEN,
   ROUTES,
 } from "@/lib/constants";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { PanchangPremiumGate } from "@/components/panchang/PanchangPremiumGate";
 import { PanchangDetailView } from "@/components/panchang/PanchangDetailView";
 import { usePanchang } from "@/hooks/usePanchang";
@@ -62,12 +61,13 @@ export function PanchangPage() {
               title={P.loginTitle}
               description={P.loginDescription}
               action={
-                <Link
-                  href={buildLoginRedirectPath(ROUTES.panchang)}
+                <LoginPromptButton
+                  returnPath={ROUTES.panchang}
+                  redirectHomeOnClose
                   className={cn(buttonVariants(), "rounded-full")}
                 >
                   {P.loginCta}
-                </Link>
+                </LoginPromptButton>
               }
             />
           ) : showPremiumGate ? (

@@ -11,21 +11,17 @@ import {
   SETTINGS_SCREEN,
 } from "@/lib/constants/settings-screen";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
+import { useLoginPrompt } from "@/contexts/LoginPromptContext";
 import { useAuth } from "@/hooks/useAuth";
-import { buildLoginRedirectPath } from "@/lib/login-redirect";
 import { SettingsRow } from "@/components/settings/SettingsRow";
 
 export function SettingsMenu() {
   const SS = useI18nConstants(SETTINGS_SCREEN);
   const { t } = useAppLanguage();
   const router = useRouter();
+  const { openLoginPrompt } = useLoginPrompt();
   const { isAuthenticated, logout } = useAuth();
   const [rateOpen, setRateOpen] = useState(false);
-
-  function resolveHref(href: string, gateLogin?: boolean): string {
-    if (gateLogin && !isAuthenticated) return buildLoginRedirectPath(href);
-    return href;
-  }
 
   function handleLogout() {
     if (!window.confirm(SS.logoutConfirm)) return;
@@ -34,10 +30,18 @@ export function SettingsMenu() {
 
   function handleRateUs() {
     if (!isAuthenticated) {
-      router.push(buildLoginRedirectPath(ROUTES.settings));
+      openLoginPrompt({ returnPath: ROUTES.settings, redirectHomeOnClose: false });
       return;
     }
     setRateOpen(true);
+  }
+
+  function handleRowPress(href: string, gateLogin?: boolean) {
+    if (gateLogin && !isAuthenticated) {
+      openLoginPrompt({ returnPath: href, redirectHomeOnClose: false });
+      return;
+    }
+    router.push(href);
   }
 
   return (
@@ -48,7 +52,12 @@ export function SettingsMenu() {
             key={item.id}
             label={t(item.label)}
             iconSrc={SETTINGS_ASSETS[item.iconKey]}
-            href={resolveHref(item.href, item.gateLogin)}
+            href={!item.gateLogin || isAuthenticated ? item.href : undefined}
+            onClick={
+              item.gateLogin && !isAuthenticated
+                ? () => handleRowPress(item.href, true)
+                : undefined
+            }
           />
         ))}
 

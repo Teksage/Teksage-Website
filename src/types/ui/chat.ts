@@ -9,6 +9,9 @@ export interface ChatComposerProps {
   disabled: boolean;
   placeholder: string;
   onMicPress?: () => void;
+  isRecording?: boolean;
+  isTranscribing?: boolean;
+  micDisabled?: boolean;
   preferenceBar?: ReactNode;
   embedded?: boolean;
 }

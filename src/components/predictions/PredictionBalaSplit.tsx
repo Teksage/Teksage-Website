@@ -31,7 +31,7 @@ export function PredictionBalaSplit({
       </div>
       <div className="flex flex-1 flex-col items-center gap-1 text-center">
         {isChandra8 ? (
-          <span className="rounded bg-[var(--color-daily-chandrashtama-bg)] px-2 py-0.5 text-[10px] font-semibold text-[var(--color-daily-chandrashtama)]">
+          <span className="rounded bg-[var(--color-daily-chandrashtama-bg)] px-2 py-0.5 text-micro font-semibold text-[var(--color-daily-chandrashtama)]">
             {PD.chandrashtamaLabel}
           </span>
         ) : null}

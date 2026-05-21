@@ -32,7 +32,7 @@ function SunCell({
           unoptimized
         />
       </div>
-      <p className="text-[22px] font-semibold leading-none text-[var(--color-brand-primary)]">
+      <p className="text-card-title font-semibold leading-none text-[var(--color-brand-primary)]">
         {time}
       </p>
     </div>

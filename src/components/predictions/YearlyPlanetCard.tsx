@@ -37,7 +37,7 @@ export function YearlyPlanetCard({
       />
       <div className="relative px-5 py-8">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-[1.375rem] font-bold leading-tight text-[var(--color-brand-black)]">
+          <h3 className="text-card-title font-bold leading-tight text-[var(--color-brand-black)]">
             {label}
           </h3>
           <img src={icon} alt="" className="size-10 shrink-0" />

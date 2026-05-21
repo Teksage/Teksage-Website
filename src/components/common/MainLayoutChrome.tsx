@@ -1,8 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { BottomNav } from "@/components/common/BottomNav";
 import { DesktopMainNav } from "@/components/common/DesktopMainNav";
+import { ProtectedRoutePrompt } from "@/components/common/ProtectedRoutePrompt";
+import { LoginPromptProvider } from "@/contexts/LoginPromptContext";
 import { HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import {
   isConsultationCheckoutPath,
@@ -22,26 +25,31 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const hideBottomNav = isChatRoute || isSubscriptionFlow;
 
   return (
-    <div className="flex min-h-screen bg-transparent">
-      <div className={cn(isChatRoute && "hidden lg:block")}>
-        <DesktopMainNav />
+    <LoginPromptProvider>
+      <Suspense fallback={null}>
+        <ProtectedRoutePrompt />
+      </Suspense>
+      <div className="flex min-h-screen bg-transparent">
+        <div className={cn(isChatRoute && "hidden lg:block")}>
+          <DesktopMainNav />
+        </div>
+        <div className="relative flex min-h-screen min-w-0 flex-1 flex-col">
+          <main
+            className={cn(
+              isFullHeightPane
+                ? "min-h-dvh p-0 lg:h-dvh lg:overflow-hidden lg:pb-0"
+                : HOME_LAYOUT.bottomNavClearance,
+              isConsultGreen && "bg-[var(--color-consult-user-bg)]",
+              isConsultCheckout && "bg-white",
+              isSubscriptionFlow &&
+                "flex min-h-dvh flex-col bg-black lg:h-dvh lg:overflow-hidden lg:pb-0"
+            )}
+          >
+            {children}
+          </main>
+          {hideBottomNav ? null : <BottomNav />}
+        </div>
       </div>
-      <div className="relative flex min-h-screen min-w-0 flex-1 flex-col">
-        <main
-          className={cn(
-            isFullHeightPane
-              ? "min-h-dvh p-0 lg:h-dvh lg:overflow-hidden lg:pb-0"
-              : HOME_LAYOUT.bottomNavClearance,
-            isConsultGreen && "bg-[var(--color-consult-user-bg)]",
-            isConsultCheckout && "bg-white",
-            isSubscriptionFlow &&
-              "flex min-h-dvh flex-col bg-black lg:h-dvh lg:overflow-hidden lg:pb-0"
-          )}
-        >
-          {children}
-        </main>
-        {hideBottomNav ? null : <BottomNav />}
-      </div>
-    </div>
+    </LoginPromptProvider>
   );
 }
