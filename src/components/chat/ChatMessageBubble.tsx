@@ -2,7 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
-import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
+import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
 import type { ChatMessage } from "@/types/chat";
 
@@ -26,7 +26,8 @@ export function ChatMessageBubble({
       <div className="flex max-w-[min(85%,22rem)] flex-col gap-1">
         <div
           className={cn(
-            "rounded-[0.9rem] px-3 py-2.5 text-[0.9375rem] leading-relaxed",
+            "rounded-[0.9rem] px-3 py-2.5",
+            CHAT_LAYOUT.messageBubble,
             isUser
               ? "border border-black/10 bg-[var(--color-chat-user-bubble)] text-[var(--color-chat-user-text)]"
               : "bg-[var(--color-chat-bot-bubble)] text-[var(--color-chat-bot-text)]"

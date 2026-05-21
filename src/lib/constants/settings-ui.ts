@@ -75,7 +75,7 @@ export const SETTINGS_UI = {
   subscriptionPlanCardSelected:
     "h-[106px] border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)]",
   subscriptionTryPremiumTitle:
-    "text-center text-[1.35rem] font-semibold leading-none text-white",
+    "text-center text-title-lg font-semibold leading-none text-white",
   rateOverlay: "fixed inset-0 z-50 flex items-center justify-center bg-black/10 p-6 backdrop-blur-sm",
   rateCard: "relative w-full max-w-sm rounded-xl bg-white p-4 shadow-xl",
 } as const;

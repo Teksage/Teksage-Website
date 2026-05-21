@@ -4,7 +4,13 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import type { MatchMakingCardProps } from "@/types";
 
 export function MatchMakingCard({
@@ -32,7 +38,7 @@ export function MatchMakingCard({
         )}
       >
         <div className="relative z-10 flex shrink-0 justify-center px-2 pt-5">
-          <p className="whitespace-pre-line text-center text-base font-bold leading-tight text-[var(--color-brand-marriage)]">
+          <p className={HOME_DASHBOARD_UI.matchCardTitle}>
             {HD.marriageMatchMakingLines}
           </p>
         </div>

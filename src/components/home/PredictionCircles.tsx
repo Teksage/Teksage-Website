@@ -5,7 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { cn } from "@/lib/utils";
-import { HOME_DASHBOARD, HOME_LAYOUT, PREDICTION_CIRCLE_LINKS } from "@/lib/constants";
+import {
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  PREDICTION_CIRCLE_LINKS,
+} from "@/lib/constants";
 import type { PredictionCirclesProps } from "@/types";
 
 function ExploreRuleLine() {
@@ -28,12 +33,7 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
     <div className={cn("flex flex-col", HOME_LAYOUT.exploreSectionGap, className)}>
       <div className="flex items-center gap-2 sm:gap-3">
         <ExploreRuleLine />
-        <span
-          className={cn(
-            "whitespace-nowrap text-sm font-semibold sm:text-[0.9375rem]",
-            "text-[color:var(--color-home-dashboard-heading)]"
-          )}
-        >
+        <span className={cn("whitespace-nowrap", HOME_DASHBOARD_UI.exploreSectionTitle)}>
           {HD.explorePredictionsTitle}
         </span>
         <ExploreRuleLine />
@@ -63,12 +63,7 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
                   className="h-[5.5rem] w-auto max-w-full object-contain"
                 />
               </div>
-              <span
-                className={cn(
-                  "text-center text-xs font-semibold leading-snug sm:text-[0.8125rem]",
-                  "text-[color:var(--color-home-dashboard-heading)]"
-                )}
-              >
+              <span className={HOME_DASHBOARD_UI.exploreCircleLabel}>
                 {item.label}
               </span>
             </>

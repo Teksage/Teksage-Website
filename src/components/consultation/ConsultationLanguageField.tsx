@@ -76,7 +76,7 @@ export function ConsultationLanguageField({
         />
       </button>
       {error ? (
-        <p className="mt-1 text-[11px] font-medium text-[var(--color-brand-error)]">
+        <p className="mt-1 text-nav font-medium text-[var(--color-brand-error)]">
           {error} *
         </p>
       ) : null}

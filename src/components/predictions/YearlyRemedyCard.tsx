@@ -28,7 +28,7 @@ export function YearlyRemedyCard({
         alt=""
         className="mt-2 h-2 w-24"
       />
-      <h3 className="mt-2 text-[1.375rem] font-bold leading-tight text-[var(--color-brand-black)]">
+      <h3 className="mt-2 text-card-title font-bold leading-tight text-[var(--color-brand-black)]">
         {label}
       </h3>
       <p className="mt-2 text-base leading-snug text-black/80">{description}</p>

@@ -43,7 +43,7 @@ export function YearlyPredictionLandingLayout({
           />
         </div>
 
-        <h1 className="prediction-slide-up absolute inset-x-0 top-[var(--yearly-landing-title-top)] z-10 px-5 text-center text-[1.8125rem] font-bold leading-none text-white">
+        <h1 className="prediction-slide-up absolute inset-x-0 top-[var(--yearly-landing-title-top)] z-10 px-5 text-center text-display-sm font-bold leading-none text-white">
           {YL.title}
         </h1>
 

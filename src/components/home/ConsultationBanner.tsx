@@ -4,7 +4,13 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import type { ConsultationBannerProps } from "@/types";
 
 /**
@@ -51,44 +57,28 @@ export function ConsultationBanner({
 
       <div
         className={cn(
-          "relative z-10 flex w-full items-center justify-between gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-2.5",
+          HOME_DASHBOARD_UI.consultBannerRow,
           HOME_LAYOUT.homeBannerStripMinH
         )}
       >
-        <div
-          className={cn(
-            "relative z-[1] flex w-[4.75rem] shrink-0 justify-center self-end sm:w-[5.25rem]",
-            "pt-2.5 pb-0.5 sm:pt-3 sm:pb-1"
-          )}
-        >
+        <div className={HOME_DASHBOARD_UI.consultBannerPortraitWrap}>
           <Image
             src={DASHBOARD_ASSETS.consultationAstrologer}
             alt=""
             width={120}
             height={160}
             unoptimized
-            className="h-auto max-h-[5.25rem] w-auto max-w-full object-contain object-bottom sm:max-h-[5.5rem] lg:max-h-[6rem]"
+            className="h-auto max-h-[5.25rem] w-auto max-w-[5.5rem] object-contain object-bottom sm:max-h-[5.5rem] sm:max-w-[6rem]"
           />
         </div>
 
-        <p
-          className={cn(
-            "min-w-0 flex-1 whitespace-pre-line text-center text-[0.8125rem] font-bold leading-snug sm:text-[0.95rem] lg:text-base",
-            "text-[var(--color-brand-consultation-heading)]"
-          )}
-        >
-          {titleLines}
-        </p>
+        <p className={HOME_DASHBOARD_UI.consultBannerTitle}>{titleLines}</p>
 
         <AuthGatedLink
           href={consultHref}
           returnPath={consultHref}
           redirectHomeOnClose
-          className={cn(
-            "flex w-[4.75rem] shrink-0 items-center justify-center rounded-full bg-white px-2 py-2 text-center sm:w-[5rem] sm:px-2.5 sm:py-2.5",
-            "text-[10px] font-semibold leading-tight text-[var(--color-brand-banner-dark)] sm:text-[11px]",
-            "whitespace-pre-line shadow-sm transition-opacity hover:opacity-90"
-          )}
+          className={HOME_DASHBOARD_UI.consultBannerCta}
         >
           {buttonLabel}
         </AuthGatedLink>

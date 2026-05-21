@@ -4,7 +4,13 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import { Loader } from "@/components/common/Loader";
 import type { DailyPredictionCardProps } from "@/types";
 
@@ -42,10 +48,8 @@ export function DailyPredictionCard({
         </div>
 
         <div className="relative flex flex-col items-center gap-1 px-3 pb-2 pt-5">
-          <p className="text-center text-lg font-bold text-white">
-            {HD.dailyPrediction}
-          </p>
-          <p className="text-sm font-semibold text-white/75">{currentDate}</p>
+          <p className={HOME_DASHBOARD_UI.dailyCardTitle}>{HD.dailyPrediction}</p>
+          <p className={HOME_DASHBOARD_UI.dailyCardDate}>{currentDate}</p>
 
           <div className="mt-2 w-full rounded-[1.05rem] bg-white px-2 py-2.5 shadow-sm">
             {isLoading ? (
@@ -60,9 +64,7 @@ export function DailyPredictionCard({
                 </p>
               </div>
             ) : !isLoggedIn ? (
-              <p className="py-1 text-center text-xs font-semibold text-[var(--color-brand-primary)]">
-                {HD.clickToView}
-              </p>
+              <p className={HOME_DASHBOARD_UI.dailyHint}>{HD.clickToView}</p>
             ) : fetchError ? (
               <p className="py-1 text-center text-xs font-semibold text-neutral-600">
                 {HD.dailyPredictionUnavailable}
@@ -70,25 +72,21 @@ export function DailyPredictionCard({
             ) : data ? (
               <div className="flex items-stretch justify-around">
                 <div className="flex flex-1 flex-col items-center justify-center text-center">
-                  <p className="text-[10px] font-semibold text-neutral-900">
+                  <p className={HOME_DASHBOARD_UI.dailyBalaValue}>
                     {data.tharaBala ?? "N/A"}
                   </p>
-                  <p className="text-[8px] font-semibold leading-tight text-[var(--color-brand-primary)]">
-                    {HD.tharaBala}
-                  </p>
+                  <p className={HOME_DASHBOARD_UI.dailyBalaLabel}>{HD.tharaBala}</p>
                 </div>
                 <div className="w-px self-stretch bg-neutral-200" />
                 <div className="flex flex-1 flex-col items-center justify-center text-center">
-                  <p className="text-[10px] font-semibold text-neutral-900">
+                  <p className={HOME_DASHBOARD_UI.dailyBalaValue}>
                     {data.chandraBala ?? "N/A"}
                   </p>
-                  <p className="text-[8px] font-semibold leading-tight text-[var(--color-brand-primary)]">
-                    {HD.chandraBala}
-                  </p>
+                  <p className={HOME_DASHBOARD_UI.dailyBalaLabel}>{HD.chandraBala}</p>
                 </div>
               </div>
             ) : (
-              <p className="py-1 text-center text-xs font-semibold text-[var(--color-brand-primary)]">
+              <p className={HOME_DASHBOARD_UI.dailyHint}>
                 {HD.clickToView}
               </p>
             )}

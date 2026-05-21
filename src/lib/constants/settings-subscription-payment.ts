@@ -24,13 +24,13 @@ export const SUBSCRIPTION_PAYMENT_LAYOUT = {
   footer:
     "flex w-full shrink-0 justify-center bg-black px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] lg:px-8 lg:pb-8",
   heroIcon: "mx-auto h-auto w-[4.5rem]",
-  productTitle: "text-center text-[1.35rem] font-semibold leading-none",
+  productTitle: "text-center text-title-lg font-semibold leading-none",
   membershipPill:
     "mx-auto mt-2.5 rounded-md border border-white/12 bg-[radial-gradient(circle,rgba(16,177,0,0.42)_0%,rgba(1,1,1,0.42)_100%)] px-5 py-2.5 text-center text-sm font-semibold leading-none",
   dashed: "my-5 border-t border-dashed border-white/50",
   feeRow: "flex items-center justify-between text-base text-white/50",
   feeTotalRow: "flex items-center justify-between text-white/50",
-  feeTotalValue: "text-[1.1rem] font-semibold text-white",
+  feeTotalValue: "text-title-md font-semibold text-white",
   promoWrap:
     "flex items-center gap-2 rounded-md border border-dashed border-white/80 bg-white/[0.08] px-3 py-2.5",
   promoInput:

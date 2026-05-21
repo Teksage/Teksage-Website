@@ -37,7 +37,7 @@ export function DailyPredictionBalaPanel({
         </div>
         <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
           {isChandra8 ? (
-            <span className="rounded bg-[var(--color-daily-chandrashtama-bg)] px-2 py-1 text-[10px] font-semibold leading-none text-[var(--color-daily-chandrashtama)] sm:text-xs">
+            <span className="rounded bg-[var(--color-daily-chandrashtama-bg)] px-2 py-1 text-micro font-semibold leading-none text-[var(--color-daily-chandrashtama)] sm:text-xs">
               {PD.chandrashtamaLabel}
             </span>
           ) : null}

@@ -109,7 +109,7 @@ export const CONSULTATION_LAYOUT = {
   scroll: "flex-1 overflow-y-auto px-5 pb-4 pt-1",
   footer: "relative z-10 shrink-0 space-y-2 px-5 pb-10 pt-2",
   pageHeading:
-    "whitespace-pre-line text-[1.75rem] font-semibold leading-tight text-[var(--color-brand-black)]",
+    "whitespace-pre-line text-page-title font-semibold leading-tight text-[var(--color-brand-black)]",
   pageSubtitle: "mt-3 text-base font-medium text-[var(--color-brand-black)]/60",
   chipWrap: "mt-12 flex flex-wrap gap-2.5",
   chip:

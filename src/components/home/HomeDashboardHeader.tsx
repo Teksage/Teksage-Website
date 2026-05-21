@@ -4,7 +4,13 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import type { HomeDashboardHeaderProps } from "@/types";
 
 export function HomeDashboardHeader({
@@ -23,12 +29,7 @@ export function HomeDashboardHeader({
     >
       <div className={cn(HOME_LAYOUT.maxWidth, HOME_LAYOUT.gutterX)}>
         <div className="flex items-center justify-between py-3.5 sm:py-4">
-          <h1
-            className={cn(
-              "truncate text-lg font-bold leading-tight lg:text-xl",
-              "text-[color:var(--color-home-dashboard-heading)]"
-            )}
-          >
+          <h1 className={HOME_DASHBOARD_UI.headerGreeting}>
             {greeting}
           </h1>
           <AuthGatedLink
@@ -47,7 +48,7 @@ export function HomeDashboardHeader({
               className="block size-8"
             />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-brand-error)] px-1 text-[10px] font-bold text-white">
+              <span className={HOME_DASHBOARD_UI.notificationBadge}>
                 {unreadCount > 9 ? HD.notificationCountOverflow : unreadCount}
               </span>
             )}

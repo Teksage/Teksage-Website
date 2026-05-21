@@ -4,7 +4,13 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import type { ChatBannerProps } from "@/types";
 
 /**
@@ -48,13 +54,7 @@ export function ChatBanner({ className }: ChatBannerProps) {
             HOME_LAYOUT.homeBannerStripMinH
           )}
         >
-          <p
-            className={cn(
-              "min-w-0 shrink whitespace-pre-line text-left text-sm font-bold leading-snug text-white sm:text-base lg:text-lg"
-            )}
-          >
-            {HD.aiVoiceChatTitle}
-          </p>
+          <p className={HOME_DASHBOARD_UI.chatBannerTitle}>{HD.aiVoiceChatTitle}</p>
 
           <Image
             src={DASHBOARD_ASSETS.chatBannerElement}
@@ -72,7 +72,7 @@ export function ChatBanner({ className }: ChatBannerProps) {
               "transition-opacity group-hover:opacity-95"
             )}
           >
-            <span className="text-[11px] font-semibold leading-none text-[var(--color-brand-banner-font)] sm:text-xs">
+            <span className={HOME_DASHBOARD_UI.chatBannerCta}>
               {HD.chatNow}
             </span>
             <Image

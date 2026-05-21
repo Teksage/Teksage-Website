@@ -37,7 +37,7 @@ export function ConsultationCategoryView() {
       footer={
         <>
           {error ? (
-            <p className="text-[11px] font-medium text-[var(--color-brand-error)]">
+            <p className="text-nav font-medium text-[var(--color-brand-error)]">
               {C.categoryError}
             </p>
           ) : null}

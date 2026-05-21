@@ -68,7 +68,7 @@ export function ConsultationLanguageView() {
       footer={
         <>
           {showError && !firstError && !secondError ? (
-            <p className="text-[11px] font-medium text-[var(--color-brand-error)]">
+            <p className="text-nav font-medium text-[var(--color-brand-error)]">
               {C.languageError}
             </p>
           ) : null}

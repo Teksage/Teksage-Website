@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { cn } from "@/lib/utils";
-import { HOME_LAYOUT, MAIN_NAV_ITEMS } from "@/lib/constants";
+import { HOME_LAYOUT, MAIN_NAV_ITEMS, NAV_UI } from "@/lib/constants";
 import type { BottomNavProps } from "@/types";
 
 /**
@@ -66,7 +66,7 @@ export function BottomNav({ className }: BottomNavProps) {
                   />
                   <span
                     className={cn(
-                      "text-center text-[0.6875rem] font-semibold leading-tight sm:text-xs",
+                      NAV_UI.bottomNavLabel,
                       active
                         ? "text-[var(--color-brand-primary)]"
                         : "text-neutral-500"
@@ -97,7 +97,7 @@ export function BottomNav({ className }: BottomNavProps) {
                 />
                 <span
                   className={cn(
-                    "text-center text-[0.6875rem] font-semibold leading-tight sm:text-xs",
+                    NAV_UI.bottomNavLabel,
                     active
                       ? "text-[var(--color-brand-primary)]"
                       : "text-neutral-500"
