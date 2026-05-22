@@ -55,7 +55,7 @@ export function DailyPredictionCard({
             {isLoading ? (
               <div className="flex flex-col items-center gap-1 py-0.5">
                 <Loader
-                  variant="dots"
+                  variant="inline"
                   size="sm"
                   label="Loading daily prediction"
                 />

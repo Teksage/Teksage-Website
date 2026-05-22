@@ -1,7 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { HalfTriangleDot } from "@/components/common/HalfTriangleDot";
+import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { LOADER_DEFAULT_ARIA_LABEL } from "@/lib/constants";
+import { LOADER_ICON_PX, LOADER_UI } from "@/lib/constants/loader-ui";
+import { cn } from "@/lib/utils";
 import type { LoaderSize, LoaderProps } from "@/types";
 
 export type { LoaderVariant, LoaderSize, LoaderProps } from "@/types";
@@ -12,66 +16,70 @@ const spinnerSizeClass: Record<LoaderSize, string> = {
   lg: "h-12 w-12 border-4",
 };
 
-const dotsFrameClass: Record<LoaderSize, string> = {
-  sm: "size-5",
-  md: "size-8",
-  lg: "size-11",
+const inlineShellClass: Record<LoaderSize, string> = {
+  sm: LOADER_UI.inlineBoxSm,
+  md: LOADER_UI.inlineBoxMd,
+  lg: LOADER_UI.inlineBoxLg,
 };
 
-const dotsDotClass: Record<LoaderSize, string> = {
-  sm: "size-1.5",
-  md: "size-2",
-  lg: "size-2.5",
-};
+function resolveVariant(variant: LoaderProps["variant"]) {
+  if (variant === "dots") return "brand";
+  return variant ?? "brand";
+}
 
-const dotsWrapperMinH: Record<LoaderSize, string> = {
-  sm: "min-h-8",
-  md: "min-h-11",
-  lg: "min-h-14",
-};
+function BrandLoaderMark({ size }: { size: LoaderSize }) {
+  const px = LOADER_ICON_PX[size];
+  return (
+    <Image
+      src={PUBLIC_ASSETS.appLogo}
+      alt=""
+      width={px}
+      height={px}
+      unoptimized
+      className="teksage-brand-logo-pulse object-contain"
+      aria-hidden
+    />
+  );
+}
 
 export function Loader({
-  variant = "spinner",
+  variant: rawVariant,
   size = "md",
   className,
   label = LOADER_DEFAULT_ARIA_LABEL,
 }: LoaderProps) {
-  if (variant === "dots") {
-    const dot =
-      "absolute rounded-full bg-[var(--color-brand-primary)] animate-pulse";
+  const variant = resolveVariant(rawVariant);
+
+  if (variant === "spinner") {
     return (
       <div
         className={cn(
-          "flex items-center justify-center",
-          dotsWrapperMinH[size],
+          "animate-spin rounded-full border-gray-200 border-t-[var(--color-brand-primary)]",
+          spinnerSizeClass[size],
           className
         )}
         role="status"
         aria-label={label}
+      />
+    );
+  }
+
+  if (variant === "halfTriangle") {
+    return (
+      <div className={cn("flex items-center justify-center", className)} role="status" aria-label={label}>
+        <HalfTriangleDot />
+      </div>
+    );
+  }
+
+  if (variant === "inline") {
+    return (
+      <div
+        className={cn(LOADER_UI.inlineShell, inlineShellClass[size], className)}
+        role="status"
+        aria-label={label}
       >
-        <div className={cn("relative", dotsFrameClass[size])}>
-          <span
-            className={cn(
-              dot,
-              dotsDotClass[size],
-              "left-1/2 top-0 -translate-x-1/2"
-            )}
-          />
-          <span
-            className={cn(
-              dot,
-              dotsDotClass[size],
-              "bottom-0 left-0 [animation-delay:160ms]"
-            )}
-          />
-          <span
-            className={cn(
-              dot,
-              dotsDotClass[size],
-              "bottom-0 right-0 [animation-delay:320ms]"
-            )}
-          />
-        </div>
+        <HalfTriangleDot className="scale-75" dotClassName="size-1.5" />
       </div>
     );
   }
@@ -79,20 +87,23 @@ export function Loader({
   return (
     <div
       className={cn(
-        "animate-spin rounded-full border-gray-200 border-t-[var(--color-brand-primary)]",
-        spinnerSizeClass[size],
+        LOADER_UI.modalShell,
+        LOADER_UI.modalBox,
         className
       )}
       role="status"
       aria-label={label}
-    />
+    >
+      <BrandLoaderMark size={size} />
+    </div>
   );
 }
 
+/** Centered full-viewport overlay — prefer `LoadingOverlay` for page-level loads. */
 export function FullPageLoader() {
   return (
-    <div className="flex items-center justify-center bg-[var(--color-brand-bg)] py-24">
-      <Loader variant="spinner" size="lg" />
+    <div className={LOADER_UI.overlay}>
+      <Loader variant="brand" size="lg" />
     </div>
   );
 }

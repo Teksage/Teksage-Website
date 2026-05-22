@@ -79,7 +79,7 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
         )}
       >
         {isLoading ? (
-          <Loader variant="spinner" size="sm" className="border-t-white" />
+          <Loader variant="inline" size="sm" />
         ) : (
           LOGIN_EMAIL_FORM.submitCta
         )}

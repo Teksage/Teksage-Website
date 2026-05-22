@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { LifePredictionLandingLayout } from "@/components/predictions/LifePredictionLandingLayout";
 import { LifePredictionLayout } from "@/components/predictions/LifePredictionLayout";
 import { LifePredictionShell } from "@/components/predictions/LifePredictionShell";
@@ -54,14 +54,6 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
     }
   }
 
-  if (view === "loading") {
-    return (
-      <LifePredictionShell className="flex h-dvh items-center justify-center">
-        <Loader variant="dots" size="lg" />
-      </LifePredictionShell>
-    );
-  }
-
   if (view === "detail" && data) {
     return (
       <LifePredictionShell>
@@ -71,17 +63,20 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
   }
 
   return (
-    <LifePredictionShell>
-      {err ? (
-        <p className="absolute inset-x-0 top-16 z-30 px-5 text-center text-sm text-[var(--color-brand-error)]">
-          {err}
-        </p>
-      ) : null}
-      <LifePredictionLandingLayout
-        onBackClick={onBackClick}
-        onGenerate={() => void runGenerate()}
-        generating={generating}
-      />
-    </LifePredictionShell>
+    <>
+      <LifePredictionShell>
+        {err ? (
+          <p className="absolute inset-x-0 top-16 z-30 px-5 text-center text-sm text-[var(--color-brand-error)]">
+            {err}
+          </p>
+        ) : null}
+        <LifePredictionLandingLayout
+          onBackClick={onBackClick}
+          onGenerate={() => void runGenerate()}
+          generating={generating}
+        />
+      </LifePredictionShell>
+      <LoadingOverlay open={view === "loading"} />
+    </>
   );
 }

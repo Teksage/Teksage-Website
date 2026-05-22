@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth.store";
+import { clearAuthSession } from "@/lib/auth-session";
+import { ROUTES } from "@/lib/constants/routes";
 import { sendOtp, verifyOtp, logout as logoutService } from "@/lib/services/auth";
 import type { OtpPayload } from "@/types";
 
 export function useAuth() {
   const router = useRouter();
-  const { user, isAuthenticated, setAuth, clearAuth } = useAuthStore();
+  const { user, isAuthenticated, setAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,8 +47,8 @@ export function useAuth() {
     try {
       await logoutService();
     } finally {
-      clearAuth();
-      router.push("/login");
+      clearAuthSession();
+      router.replace(ROUTES.home);
       setIsLoading(false);
     }
   }

@@ -3,9 +3,9 @@
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { pathRequiresAuth } from "@/lib/constants/auth-guard";
+import { isClientLoggedIn } from "@/lib/auth-session";
 import { ROUTES } from "@/lib/constants/routes";
 import { useLoginPrompt } from "@/contexts/LoginPromptContext";
-import { useAuthStore } from "@/store/auth.store";
 
 type GuardNavigationOptions = {
   redirectHomeOnClose?: boolean;
@@ -14,12 +14,12 @@ type GuardNavigationOptions = {
 /** Navigate or show Flutter-style login prompt when session is missing. */
 export function useAuthNavigation() {
   const router = useRouter();
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const loggedIn = isClientLoggedIn();
   const { openLoginPrompt } = useLoginPrompt();
 
   const guardNavigation = useCallback(
     (targetPath: string, options?: GuardNavigationOptions) => {
-      if (isAuthenticated) {
+      if (loggedIn) {
         router.push(targetPath);
         return;
       }
@@ -28,7 +28,7 @@ export function useAuthNavigation() {
         redirectHomeOnClose: options?.redirectHomeOnClose ?? false,
       });
     },
-    [isAuthenticated, openLoginPrompt, router]
+    [loggedIn, openLoginPrompt, router]
   );
 
   const shouldPromptLogin = useCallback(
@@ -44,5 +44,5 @@ export function useAuthNavigation() {
     []
   );
 
-  return { guardNavigation, shouldPromptLogin, isAuthenticated };
+  return { guardNavigation, shouldPromptLogin, isAuthenticated: loggedIn };
 }

@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { EmptyState } from "@/components/common/EmptyState";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -72,10 +72,6 @@ export function PanchangPage() {
             />
           ) : showPremiumGate ? (
             <PanchangPremiumGate />
-          ) : isLoading ? (
-            <div className={PAGE_SHELL.loadingCenter}>
-              <Loader variant="dots" size="lg" />
-            </div>
           ) : error ? (
             <EmptyState
               title={P.loadErrorTitle}
@@ -89,6 +85,9 @@ export function PanchangPage() {
           ) : null}
         </div>
       )}
+      <LoadingOverlay
+        open={Boolean(isAuthenticated && !showPremiumGate && isLoading)}
+      />
     </div>
   );
 }

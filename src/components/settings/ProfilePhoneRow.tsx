@@ -131,7 +131,7 @@ export function ProfilePhoneRow({
               onClick={handleSendOtp}
             >
               {sendBusy ? (
-                <Loader variant="spinner" size="sm" className="border-t-[var(--color-brand-primary)]" />
+                <Loader variant="inline" size="sm" />
               ) : null}
               {PD.verify}
             </button>
@@ -164,7 +164,7 @@ export function ProfilePhoneRow({
             className="h-11 rounded-full bg-[var(--color-brand-primary)] font-semibold text-white hover:bg-[var(--color-brand-primary)]/90"
           >
             {verifyBusy ? (
-              <Loader variant="spinner" size="sm" className="border-t-white" />
+              <Loader variant="inline" size="sm" />
             ) : (
               PD.confirmOtp
             )}

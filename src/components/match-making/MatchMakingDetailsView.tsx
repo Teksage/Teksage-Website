@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MatchMakingDetailsLayout } from "@/components/match-making/MatchMakingDetailsLayout";
 import { MatchMakingShell } from "@/components/match-making/MatchMakingShell";
 import { buttonVariants } from "@/components/ui/button";
@@ -63,15 +63,7 @@ export function MatchMakingDetailsView() {
     );
   }
 
-  if (loading) {
-    return (
-      <MatchMakingShell className="flex min-h-dvh items-center justify-center">
-        <Loader variant="dots" size="lg" />
-      </MatchMakingShell>
-    );
-  }
-
-  if (!existing) {
+  if (!existing && !loading) {
     return (
       <MatchMakingShell className="flex min-h-dvh flex-col items-center justify-center px-5 text-center text-white">
         <p className="text-sm">{MM.noMatchYet}</p>
@@ -87,12 +79,17 @@ export function MatchMakingDetailsView() {
 
   return (
     <div className={cn(PAGE_SHELL.flutterFullBleed)}>
-      <MatchMakingDetailsLayout
-        data={existing}
-        onBackClick={() => router.back()}
-        onRegenerate={() => router.push(ROUTES.matchmaking)}
-        onExpertConnect={() => router.push(ROUTES.consultation)}
-      />
+      {existing ? (
+        <MatchMakingDetailsLayout
+          data={existing}
+          onBackClick={() => router.back()}
+          onRegenerate={() => router.push(ROUTES.matchmaking)}
+          onExpertConnect={() => router.push(ROUTES.consultation)}
+        />
+      ) : (
+        <MatchMakingShell className="min-h-dvh">{null}</MatchMakingShell>
+      )}
+      <LoadingOverlay open={loading} />
     </div>
   );
 }

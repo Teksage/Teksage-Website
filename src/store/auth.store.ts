@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { UserProfile } from "@/types";
-import { clearAuthCookie } from "@/lib/auth-cookie";
 
 const ZUSTAND_AUTH_STORAGE_KEY = "teksage-auth-store";
 
@@ -24,10 +23,7 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (user, token) =>
         set({ user, token, isAuthenticated: true }),
 
-      clearAuth: () => {
-        clearAuthCookie();
-        set({ user: null, token: null, isAuthenticated: false });
-      },
+      clearAuth: () => set({ user: null, token: null, isAuthenticated: false }),
 
       updateUser: (updates) =>
         set((state) => ({

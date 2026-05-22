@@ -8,12 +8,12 @@ export const HOME_DASHBOARD_UI = {
   dailyBalaValue: `${TYPO.badgeMicro} text-neutral-900`,
   dailyBalaLabel: `${TYPO.badge3xs} text-[var(--color-brand-primary)]`,
   consultBannerRow:
-    "relative z-10 flex w-full items-center justify-evenly gap-1 px-1 py-2 sm:gap-2 sm:px-2 sm:py-2.5",
+    "relative z-10 flex w-full items-center gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-2.5",
   consultBannerPortraitWrap:
     "relative z-[1] flex shrink-0 justify-center self-end pt-2.5 pl-2 pb-0.5 sm:pt-3 sm:pl-3 sm:pb-1",
-  consultBannerTitle: `min-w-0 max-w-[11rem] flex-none whitespace-pre-line text-left ${TYPO.consultBannerBody} text-[var(--color-brand-consultation-heading)] sm:max-w-none sm:flex-1`,
-  /** Pill CTA — mirrors pre-auth home dashboard (`4f99f0b`), not a fixed-width circle. */
-  consultBannerCta: `shrink-0 rounded-full bg-white px-4 py-2.5 text-center ${TYPO.caption} text-[var(--color-brand-banner-dark)] shadow-sm transition-opacity hover:opacity-90 sm:px-5 sm:py-3`,
+  consultBannerTitle: `min-w-0 flex-1 whitespace-pre-line text-left ${TYPO.consultBannerBody} text-[var(--color-brand-consultation-heading)]`,
+  /** Pill CTA — far right, vertically centered (Flutter `homePage.dart` Row + design ref). */
+  consultBannerCta: `shrink-0 whitespace-nowrap rounded-full bg-white px-4 py-2.5 text-center ${TYPO.caption} text-[var(--color-brand-banner-dark)] shadow-sm transition-opacity hover:opacity-90 sm:px-5 sm:py-3`,
   exploreSectionTitle: `${TYPO.exploreTitle} text-[color:var(--color-home-dashboard-heading)]`,
   exploreCircleLabel: `${TYPO.exploreCircle} text-[color:var(--color-home-dashboard-heading)]`,
   headerGreeting: `truncate ${TYPO.h3Bold} ${TYPO.leadingTight} lg:text-xl text-[color:var(--color-home-dashboard-heading)]`,

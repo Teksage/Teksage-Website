@@ -63,7 +63,7 @@ export function YearlyPredictionLandingLayout({
         >
           {generating ? (
             <span className="flex justify-center py-0.5">
-              <Loader variant="dots" size="sm" />
+              <Loader variant="inline" size="sm" />
             </span>
           ) : (
             YL.generateCta
