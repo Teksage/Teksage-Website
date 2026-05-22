@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationAstroCard } from "@/components/consultation/ConsultationAstroCard";
 import { ConsultationFilterChips } from "@/components/consultation/ConsultationFilterChips";
 import { consultationAstrologerPath } from "@/lib/constants/consultation-routes";
@@ -64,11 +64,7 @@ export function ConsultationListingView() {
             onRemoveCategory={removeCategory}
             onRemoveLanguage={removeLanguage}
           />
-          {loading ? (
-            <div className="flex justify-center py-16">
-              <Loader />
-            </div>
-          ) : error ? (
+          {error ? (
             <p className="mt-6 text-center text-sm text-white">
               {C.loadError}
             </p>
@@ -143,6 +139,7 @@ export function ConsultationListingView() {
           </section>
         ) : null}
       </div>
+      <LoadingOverlay open={loading} />
     </div>
   );
 }

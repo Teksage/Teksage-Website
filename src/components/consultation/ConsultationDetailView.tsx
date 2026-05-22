@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationAstroShell } from "@/components/consultation/ConsultationAstroShell";
 import { ConsultationDetailExpertiseBar } from "@/components/consultation/ConsultationDetailExpertiseBar";
 import { ConsultationDetailProfileCard } from "@/components/consultation/ConsultationDetailProfileCard";
@@ -55,20 +55,7 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
     };
   }, [astrologerId, router]);
 
-  if (loading) {
-    return (
-      <ConsultationAstroShell
-        title={CD.appBarTitle}
-        onBack={() => router.back()}
-      >
-        <div className={CONSULTATION_DETAIL_LAYOUT.loaderBox}>
-          <Loader />
-        </div>
-      </ConsultationAstroShell>
-    );
-  }
-
-  if (error || !data) {
+  if (error || (!loading && !data)) {
     return (
       <ConsultationAstroShell
         title={CD.appBarTitle}
@@ -82,18 +69,33 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
   }
 
   return (
-    <ConsultationAstroShell
-      title={CD.appBarTitle}
-      onBack={() => router.back()}
-      footer={
-        <Link href={consultationSlotsPath(astrologerId)} className={CONSULTATION_DETAIL_LAYOUT.footerBtn}>
-          {CD.bookCta}
-        </Link>
-      }
-    >
-      <ConsultationDetailProfileCard astrologer={data.astrologer} currency={currency} />
-      <ConsultationDetailExpertiseBar expertise={data.astrologer.expertise} />
-      <ConsultationDetailReviews events={data.events} />
-    </ConsultationAstroShell>
+    <>
+      <ConsultationAstroShell
+        title={CD.appBarTitle}
+        onBack={() => router.back()}
+        footer={
+          data ? (
+            <Link
+              href={consultationSlotsPath(astrologerId)}
+              className={CONSULTATION_DETAIL_LAYOUT.footerBtn}
+            >
+              {CD.bookCta}
+            </Link>
+          ) : undefined
+        }
+      >
+        {data ? (
+          <>
+            <ConsultationDetailProfileCard
+              astrologer={data.astrologer}
+              currency={currency}
+            />
+            <ConsultationDetailExpertiseBar expertise={data.astrologer.expertise} />
+            <ConsultationDetailReviews events={data.events} />
+          </>
+        ) : null}
+      </ConsultationAstroShell>
+      <LoadingOverlay open={loading} />
+    </>
   );
 }

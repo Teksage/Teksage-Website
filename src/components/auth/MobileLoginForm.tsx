@@ -112,7 +112,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
         )}
       >
         {isLoading ? (
-          <Loader variant="spinner" size="sm" className="border-t-white" />
+          <Loader variant="inline" size="sm" />
         ) : (
           LOGIN_MOBILE_FORM.submitCta
         )}

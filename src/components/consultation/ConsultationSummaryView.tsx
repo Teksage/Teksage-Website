@@ -8,7 +8,7 @@ import { ConsultationBookingProfileHeader } from "@/components/consultation/Cons
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { ConsultationCheckoutShell } from "@/components/consultation/ConsultationCheckoutShell";
 import { ConsultationQueryDialog } from "@/components/consultation/ConsultationQueryDialog";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import {
   CONSULTATION_BOOKING_LAYOUT,
   CONSULTATION_BOOKING_SCREEN,
@@ -60,11 +60,12 @@ export function ConsultationSummaryView() {
 
   if (!summary) {
     return (
-      <ConsultationCheckoutShell title={CB.title} onBack={() => router.push(ROUTES.home)}>
-        <div className="flex justify-center py-16">
-          <Loader />
-        </div>
-      </ConsultationCheckoutShell>
+      <>
+        <ConsultationCheckoutShell title={CB.title} onBack={() => router.push(ROUTES.home)}>
+          {null}
+        </ConsultationCheckoutShell>
+        <LoadingOverlay open />
+      </>
     );
   }
 
@@ -119,11 +120,7 @@ export function ConsultationSummaryView() {
           />
         </div>
         <ConsultationBookingSectionDivider title={CB.queriesTitle} />
-        {loading ? (
-          <div className="flex justify-center py-6">
-            <Loader />
-          </div>
-        ) : (
+        {!loading ? (
           <>
             {canAddQuery ? (
               <button
@@ -150,8 +147,9 @@ export function ConsultationSummaryView() {
               ) : null}
             </ul>
           </>
-        )}
+        ) : null}
       </ConsultationCheckoutShell>
+      <LoadingOverlay open={loading} />
       {showQuery ? (
         <ConsultationQueryDialog
           eventId={summary.eventId}

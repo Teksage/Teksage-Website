@@ -1,7 +1,8 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { DEFAULT_COUNTRY_CODE_NUMERIC, STORAGE_KEYS } from "@/lib/constants";
-import { clearAuthCookie, setAuthCookie } from "@/lib/auth-cookie";
+import { clearAuthSession } from "@/lib/auth-session";
+import { setAuthCookie } from "@/lib/auth-cookie";
 import type { OtpPayload, AuthResponse } from "@/types";
 
 /** Flat JSON from `POST /api/auth/otp/login-verify` (backend `login_verify`). */
@@ -89,7 +90,5 @@ function persistAuthTokens(auth: AuthResponse): void {
 }
 
 function clearAuthTokens(): void {
-  if (typeof window === "undefined") return;
-  Object.values(STORAGE_KEYS).forEach((key) => localStorage.removeItem(key));
-  clearAuthCookie();
+  clearAuthSession();
 }

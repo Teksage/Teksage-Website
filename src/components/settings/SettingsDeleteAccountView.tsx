@@ -6,6 +6,7 @@ import { useState } from "react";
 import { DeleteAccountOtpStep } from "@/components/settings/DeleteAccountOtpStep";
 import { DeleteAccountReasonRow } from "@/components/settings/DeleteAccountReasonRow";
 import { OTP_LENGTH } from "@/lib/constants";
+import { ROUTES } from "@/lib/constants/routes";
 import {
   DELETE_ACCOUNT_LAYOUT,
   DELETE_ACCOUNT_REASONS,
@@ -70,7 +71,7 @@ export function SettingsDeleteAccountView() {
     try {
       await confirmDeleteAccount(otp, reason);
       await logout();
-      router.push("/login");
+      router.replace(ROUTES.home);
     } catch {
       setError(SD.failed);
     } finally {

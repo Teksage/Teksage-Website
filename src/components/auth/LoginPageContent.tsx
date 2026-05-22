@@ -11,6 +11,7 @@ import { BrandLoginLogo } from "@/components/common/BrandLoginLogo";
 import { LoginBackButton, LoginOrSignupHeading } from "@/components/auth/LoginChrome";
 import { DEFAULT_COUNTRY_CALLING_CODE, LOGIN_SCREEN } from "@/lib/constants";
 import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
+import { hasClientAuthToken } from "@/lib/auth-session";
 import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
 import { useAuthStore } from "@/store/auth.store";
 import type { LoginMethodTab, LoginStep } from "@/types";
@@ -32,7 +33,7 @@ function LoginPageInner() {
   );
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !hasClientAuthToken()) return;
     const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
     router.replace(dest);
   }, [isAuthenticated, router, searchParams]);
@@ -48,7 +49,7 @@ function LoginPageInner() {
     setStep("otp");
   }
 
-  if (isAuthenticated) return null;
+  if (isAuthenticated && hasClientAuthToken()) return null;
 
   if (step === "otp") {
     return (

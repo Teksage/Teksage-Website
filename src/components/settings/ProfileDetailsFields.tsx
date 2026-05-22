@@ -145,7 +145,7 @@ export function ProfileDetailsFields({
 
       {rashiBusy ? (
         <p className="flex items-center gap-2 text-xs font-medium text-black/55">
-          <Loader variant="spinner" size="sm" />
+          <Loader variant="inline" size="sm" />
           {PD.rashiResolving}
         </p>
       ) : null}
@@ -183,7 +183,7 @@ export function ProfileDetailsFields({
           )}
         >
           {isSaving ? (
-            <Loader variant="spinner" size="sm" className="border-t-white" />
+            <Loader variant="inline" size="sm" />
           ) : (
             PD.save
           )}

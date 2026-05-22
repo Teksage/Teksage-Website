@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { YearlyPredictionLandingLayout } from "@/components/predictions/YearlyPredictionLandingLayout";
 import { YearlyPredictionLayout } from "@/components/predictions/YearlyPredictionLayout";
 import { YearlyPredictionShell } from "@/components/predictions/YearlyPredictionShell";
@@ -54,14 +54,6 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
     }
   }
 
-  if (view === "loading") {
-    return (
-      <YearlyPredictionShell className="flex h-dvh items-center justify-center">
-        <Loader variant="dots" size="lg" />
-      </YearlyPredictionShell>
-    );
-  }
-
   if (view === "detail" && data) {
     return (
       <YearlyPredictionShell>
@@ -76,17 +68,20 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
   }
 
   return (
-    <YearlyPredictionShell>
-      {err ? (
-        <p className="absolute inset-x-0 top-16 z-30 px-5 text-center text-sm text-[var(--color-brand-error)]">
-          {err}
-        </p>
-      ) : null}
-      <YearlyPredictionLandingLayout
-        onBackClick={onBackClick}
-        onGenerate={() => void runGenerate()}
-        generating={generating}
-      />
-    </YearlyPredictionShell>
+    <>
+      <YearlyPredictionShell>
+        {err ? (
+          <p className="absolute inset-x-0 top-16 z-30 px-5 text-center text-sm text-[var(--color-brand-error)]">
+            {err}
+          </p>
+        ) : null}
+        <YearlyPredictionLandingLayout
+          onBackClick={onBackClick}
+          onGenerate={() => void runGenerate()}
+          generating={generating}
+        />
+      </YearlyPredictionShell>
+      <LoadingOverlay open={view === "loading"} />
+    </>
   );
 }

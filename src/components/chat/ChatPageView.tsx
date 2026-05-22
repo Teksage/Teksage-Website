@@ -12,7 +12,7 @@ import { ChatMessageList } from "@/components/chat/ChatMessageList";
 import { ChatPreferenceBar } from "@/components/chat/ChatPreferenceBar";
 import { ChatRelatedQueries } from "@/components/chat/ChatRelatedQueries";
 import { ChatStyleOnboarding } from "@/components/chat/ChatStyleOnboarding";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/useChat";
@@ -111,9 +111,7 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
   if (!prefs.hydrated) {
     return (
       <div className={shellClass}>
-        <div className="flex flex-1 items-center justify-center py-16">
-          <Loader />
-        </div>
+        <LoadingOverlay open />
       </div>
     );
   }
@@ -160,11 +158,7 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
 
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
         <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-          {!sessionReady ? (
-            <div className="flex flex-1 items-center justify-center py-16">
-              <Loader />
-            </div>
-          ) : (
+          {!sessionReady ? null : (
             <>
               {!hasMessages ? <ChatIntroText visible={showBanner} /> : null}
               {hasMessages ? (
@@ -215,6 +209,7 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
           embedded={embedded}
         />
       </div>
+      <LoadingOverlay open={!sessionReady} />
     </div>
   );
 }

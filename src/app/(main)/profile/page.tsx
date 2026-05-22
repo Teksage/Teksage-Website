@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { ProfileDetailsForm } from "@/components/settings/ProfileDetailsForm";
-import { FullPageLoader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { EmptyState } from "@/components/common/EmptyState";
 import { useProfile } from "@/hooks/useProfile";
 import { useRouter } from "next/navigation";
@@ -26,9 +26,7 @@ export default function ProfilePage() {
     useProfile();
   const [isEditing, setIsEditing] = useState(false);
 
-  if (isLoading) return <FullPageLoader />;
-
-  if (!user) {
+  if (!user && !isLoading) {
     return (
       <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
         <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.profile} />
@@ -55,7 +53,7 @@ export default function ProfilePage() {
         onBackClick={() => router.back()}
         className={PAGE_SHELL.contentLayer}
         action={
-          !isEditing ? (
+          user && !isEditing ? (
             <button
               type="button"
               onClick={() => setIsEditing(true)}
@@ -71,16 +69,19 @@ export default function ProfilePage() {
         {error ? (
           <p className={PROFILE_LAYOUT.errorBanner}>{error}</p>
         ) : null}
-        <ProfileDetailsForm
-          key={`${user.id}-${user.email ?? ""}-${user.mobile ?? ""}`}
-          user={user}
-          isEditing={isEditing}
-          onSave={saveProfile}
-          isSaving={isSaving}
-          onDoneEditing={() => setIsEditing(false)}
-          onProfileRefresh={refetchProfile}
-        />
+        {user ? (
+          <ProfileDetailsForm
+            key={`${user.id}-${user.email ?? ""}-${user.mobile ?? ""}`}
+            user={user}
+            isEditing={isEditing}
+            onSave={saveProfile}
+            isSaving={isSaving}
+            onDoneEditing={() => setIsEditing(false)}
+            onProfileRefresh={refetchProfile}
+          />
+        ) : null}
       </main>
+      <LoadingOverlay open={isLoading} />
     </div>
   );
 }

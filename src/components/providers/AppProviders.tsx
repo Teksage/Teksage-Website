@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { AppLoaderProvider } from "@/contexts/AppLoaderContext";
 import { AppLanguageProvider } from "@/contexts/AppLanguageProvider";
 import type { AppLocale } from "@/lib/i18n/locale";
 
@@ -13,7 +14,7 @@ export function AppProviders({
 }) {
   return (
     <AppLanguageProvider initialLocale={initialLocale}>
-      {children}
+      <AppLoaderProvider>{children}</AppLoaderProvider>
     </AppLanguageProvider>
   );
 }

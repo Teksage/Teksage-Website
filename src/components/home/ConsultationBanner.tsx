@@ -78,6 +78,7 @@ export function ConsultationBanner({
           href={consultHref}
           returnPath={consultHref}
           redirectHomeOnClose
+          inline
           className={HOME_DASHBOARD_UI.consultBannerCta}
         >
           {buttonLabel}

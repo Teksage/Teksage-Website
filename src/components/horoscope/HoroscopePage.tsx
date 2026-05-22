@@ -6,7 +6,7 @@ import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { EmptyState } from "@/components/common/EmptyState";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { HoroscopeLoadedView } from "@/components/horoscope/HoroscopeLoadedView";
 import { useHoroscope } from "@/hooks/useHoroscope";
@@ -65,10 +65,6 @@ export function HoroscopePage() {
                 </LoginPromptButton>
               }
             />
-          ) : isLoading ? (
-            <div className={PAGE_SHELL.loadingCenter}>
-              <Loader variant="dots" size="lg" />
-            </div>
           ) : profileIncomplete ? (
             <EmptyState
               title={H.profileIncompleteTitle}
@@ -92,6 +88,7 @@ export function HoroscopePage() {
           ) : null}
         </div>
       )}
+      <LoadingOverlay open={Boolean(isAuthenticated && isLoading)} />
     </div>
   );
 }

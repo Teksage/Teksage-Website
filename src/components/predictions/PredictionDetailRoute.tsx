@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { DailyPredictionBody } from "@/components/predictions/DailyPredictionBody";
 import { WeeklyPredictionBody } from "@/components/predictions/WeeklyPredictionBody";
@@ -159,11 +159,7 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
             : "mx-auto w-full max-w-lg px-4 py-6 lg:max-w-3xl"
         )}
       >
-        {loading ? (
-          <div className={PAGE_SHELL.loadingCenter}>
-            <Loader variant="dots" size="lg" />
-          </div>
-        ) : err ? (
+        {err ? (
           <div className="text-center">
             <p className="font-semibold text-[var(--color-brand-error)]">{err}</p>
             <Button type="button" className="mt-4 rounded-full" onClick={() => window.location.reload()}>
@@ -178,6 +174,7 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
           <p className="text-center text-neutral-600">{PD.emptyDescription}</p>
         )}
       </div>
+      <LoadingOverlay open={loading} />
     </div>
   );
 }

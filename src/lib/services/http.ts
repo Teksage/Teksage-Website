@@ -1,7 +1,11 @@
 import axios, { AxiosError } from "axios";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { STORAGE_KEYS } from "@/lib/constants";
-import { clearAuthCookie, setAuthCookie } from "@/lib/auth-cookie";
+import {
+  clearAuthSession,
+  redirectHomeFromProtectedIfNeeded,
+} from "@/lib/auth-session";
+import { setAuthCookie } from "@/lib/auth-cookie";
 import { getPublicApiBaseUrl } from "@/lib/env";
 import { getStoredAppLanguageName } from "@/lib/settings-language-storage";
 
@@ -32,11 +36,8 @@ http.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      Object.values(STORAGE_KEYS).forEach((key) =>
-        localStorage.removeItem(key)
-      );
-      clearAuthCookie();
-      window.location.href = "/login";
+      clearAuthSession();
+      redirectHomeFromProtectedIfNeeded();
     }
     return Promise.reject(error);
   }

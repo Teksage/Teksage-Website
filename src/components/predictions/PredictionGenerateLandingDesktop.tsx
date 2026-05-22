@@ -71,7 +71,7 @@ export function PredictionGenerateLandingDesktop({
         >
           {generating ? (
             <span className="flex justify-center py-0.5">
-              <Loader variant="dots" size="sm" />
+              <Loader variant="inline" size="sm" />
             </span>
           ) : (
             generateCta

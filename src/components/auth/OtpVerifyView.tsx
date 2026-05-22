@@ -117,7 +117,7 @@ export function OtpVerifyView({
           )}
         >
           {isLoading ? (
-            <Loader variant="spinner" size="sm" className="border-t-white" />
+            <Loader variant="inline" size="sm" />
           ) : (
             OV.verifyCta
           )}

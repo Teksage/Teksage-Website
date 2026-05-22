@@ -8,7 +8,7 @@ import { ConsultationBookingFeesBlock } from "@/components/consultation/Consulta
 import { ConsultationBookingProfileHeader } from "@/components/consultation/ConsultationBookingProfileHeader";
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { ConsultationCheckoutShell } from "@/components/consultation/ConsultationCheckoutShell";
-import { Loader } from "@/components/common/Loader";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { consultationSlotsPath } from "@/lib/constants/consultation-routes";
 import {
   CONSULTATION_BOOKING_LAYOUT,
@@ -119,13 +119,16 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
     };
   }, [astrologerId, currency, router]);
 
-  if (!draft || !pricing) {
+  const checkoutLoading = !draft || !pricing;
+
+  if (checkoutLoading) {
     return (
-      <ConsultationCheckoutShell title={CB.title} onBack={() => router.back()}>
-        <div className="flex justify-center py-16">
-          <Loader />
-        </div>
-      </ConsultationCheckoutShell>
+      <>
+        <ConsultationCheckoutShell title={CB.title} onBack={() => router.back()}>
+          {null}
+        </ConsultationCheckoutShell>
+        <LoadingOverlay open />
+      </>
     );
   }
 

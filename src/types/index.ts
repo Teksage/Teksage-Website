@@ -126,7 +126,12 @@ export type {
   HoroscopeLoadedViewProps,
 } from "./ui/panchang-horoscope";
 
-export type { LoaderVariant, LoaderSize, LoaderProps } from "./ui/loader-display";
+export type {
+  LoaderVariant,
+  LoaderSize,
+  LoaderProps,
+  LoadingOverlayProps,
+} from "./ui/loader-display";
 
 export type {
   PredictionDetailKind,
