@@ -23,11 +23,13 @@ export const HOME_LAYOUT = {
   bottomNavPillSurface: "bg-white",
   /** Horizontal inset for floating pill (Flutter `margin: EdgeInsets.symmetric(horizontal: 20)`). */
   floatingNavInsetX: "px-5",
-  /** Bottom inset so pill floats above home indicator (Flutter bottom padding ~20). */
-  floatingNavBottom: "pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]",
-  /** Main scroll clearance: pill height + float margin + gap above nav (Flutter ~15vh spacer). */
+  /** White strip behind pill — avoids `--color-brand-bg` (#F1F1F1) showing under the nav. */
+  floatingNavShell: "bg-white",
+  /** Safe-area only — no extra gap that exposed gray body background. */
+  floatingNavBottom: "pb-[env(safe-area-inset-bottom,0px)]",
+  /** Main scroll clearance: pill height + safe area (matches `--main-bottom-nav-clearance`). */
   bottomNavClearance:
-    "pb-[calc(6.5rem+1.5rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
+    "pb-[calc(5.75rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
   /** Visible gap between last home strip (AI chat) and floating bottom nav. */
   chatBannerNavGap: "mb-5 sm:mb-6",
   floatingNavShadow: "shadow-[0_8px_32px_rgba(0,0,0,0.12)]",

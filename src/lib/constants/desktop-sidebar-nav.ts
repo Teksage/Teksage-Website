@@ -1,11 +1,18 @@
 import { HOME_DASHBOARD_SIDEBAR_ASSETS } from "@/lib/constants/home-dashboard-sidebar";
 import { ROUTES } from "@/lib/constants/routes";
 
-/** Book consultation — directly under AI chat highlight. */
+/** Book consultation — directly under AI chat highlight (customers). */
 export const DESKTOP_SIDEBAR_BOOK_LINK = {
   href: ROUTES.consultation,
   labelKey: "bookConsultation" as const,
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.bookConsultation,
+} as const;
+
+/** Astrologer portal — replaces book link when `user_type` is not `customer`. */
+export const DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK = {
+  href: ROUTES.astrologer,
+  labelKey: "astrologerPortal" as const,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.astrologerPortal,
 } as const;
 
 /** Marriage match making — after predictions submenu. */

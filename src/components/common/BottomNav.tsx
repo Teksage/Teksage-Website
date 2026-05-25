@@ -23,7 +23,8 @@ export function BottomNav({ className }: BottomNavProps) {
     <nav
       aria-label="Main"
       className={cn(
-        "pointer-events-none fixed inset-x-0 bottom-0 z-50 bg-transparent lg:hidden",
+        "pointer-events-none fixed inset-x-0 bottom-0 z-50 lg:hidden",
+        HOME_LAYOUT.floatingNavShell,
         HOME_LAYOUT.floatingNavInsetX,
         HOME_LAYOUT.floatingNavBottom,
         className

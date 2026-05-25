@@ -4,8 +4,10 @@ export interface ChatBannerProps {
 }
 
 export interface ConsultationBannerProps {
-  isLoggedIn: boolean;
+  isLoggedIn?: boolean;
   isAstrologer?: boolean;
+  /** Portal page: banner only, no CTA pill. */
+  hideCta?: boolean;
   className?: string;
 }
 

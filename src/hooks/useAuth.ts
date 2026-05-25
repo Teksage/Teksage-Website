@@ -34,7 +34,7 @@ export function useAuth() {
     try {
       const response = await verifyOtp(payload);
       setAuth(response.user, response.token);
-      router.push("/home");
+      router.push(ROUTES.home);
     } catch {
       setError("Invalid OTP. Please try again.");
     } finally {

@@ -1,4 +1,4 @@
-import { DASHBOARD_ASSETS } from "@/lib/constants/assets";
+import { DASHBOARD_ASSETS, SETTINGS_ASSETS } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
 
 /** Desktop home dashboard left rail — design ref sidebar. */
@@ -7,6 +7,8 @@ export const HOME_DASHBOARD_SIDEBAR = {
   aiChatLine2: "Astro Chat",
   bookConsultationLine1: "Book Astrologer",
   bookConsultationLine2: "Consultation",
+  /** Astrologer desktop sidebar — mirrors mobile home `My Profile` → `/astrologer`. */
+  astrologerPortal: "My Profile",
   predictions: "Predictions",
   dailyPredictions: "Daily Predictions",
   weeklyPredictions: "Weekly Predictions",
@@ -28,6 +30,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
 export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
   aiChatIcon: DASHBOARD_ASSETS.chatBotLogo,
   bookConsultation: DASHBOARD_ASSETS.sidebarCalendar,
+  astrologerPortal: SETTINGS_ASSETS.profile,
   predictions: DASHBOARD_ASSETS.sidebarFolder,
   marriage: DASHBOARD_ASSETS.sidebarMarriage,
   panchang: DASHBOARD_ASSETS.navPanchangOff,

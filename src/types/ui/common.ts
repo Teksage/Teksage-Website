@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 
 export interface BottomNavProps {
   className?: string;
@@ -19,6 +19,10 @@ export interface AppHeaderProps {
   /** e.g. Flutter profile AppBar trailing `Edit`. */
   action?: ReactNode;
   className?: string;
+  /** Inline style override (e.g. coloured AppBar for astrologer meeting detail). */
+  style?: CSSProperties;
+  /** Override icon/text colour when AppBar has a non-white background. */
+  foregroundColor?: string;
 }
 
 export interface EmptyStateProps {
