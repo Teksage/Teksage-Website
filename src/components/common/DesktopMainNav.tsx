@@ -4,11 +4,13 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
+import { useAuthStore } from "@/store/auth.store";
 import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
 import { DesktopNavPredictionsMenu } from "@/components/common/DesktopNavPredictionsMenu";
 import { DesktopNavUnlockPremium } from "@/components/common/DesktopNavUnlockPremium";
 import {
+  DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK,
   DESKTOP_SIDEBAR_BOOK_LINK,
   DESKTOP_SIDEBAR_MARRIAGE_LINK,
   DESKTOP_SIDEBAR_UTILITY_LINKS,
@@ -17,7 +19,7 @@ import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
 import { HOME_LAYOUT } from "@/lib/constants/home-layout";
 import { APP_NAME, PUBLIC_ASSETS } from "@/lib/constants";
 import type { DesktopMainNavProps } from "@/types";
-import { cn } from "@/lib/utils";
+import { cn, isAstrologerHomeSession } from "@/lib/utils";
 
 /**
  * Desktop left rail — design ref dashboard sidebar (`lg+`).
@@ -34,6 +36,11 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
   };
   const pathname = usePathname();
   const { guardNavigation } = useAuthNavigation();
+  const user = useAuthStore((s) => s.user);
+  const isAstrologer = isAstrologerHomeSession(user ?? undefined);
+  const consultSidebarLink = isAstrologer
+    ? DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK
+    : DESKTOP_SIDEBAR_BOOK_LINK;
 
   return (
     <aside
@@ -61,17 +68,28 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
       <nav className="scrollbar-hidden flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-4">
         <DesktopNavAiChatCard />
 
-        <DesktopNavItem
-          iconSrc={DESKTOP_SIDEBAR_BOOK_LINK.icon}
-          labelLines={{
-            primary: HDS.bookConsultationLine1,
-            secondary: HDS.bookConsultationLine2,
-          }}
-          active={pathname.startsWith(DESKTOP_SIDEBAR_BOOK_LINK.href)}
-          onClick={() =>
-            guardNavigation(DESKTOP_SIDEBAR_BOOK_LINK.href, { redirectHomeOnClose: true })
-          }
-        />
+        {isAstrologer ? (
+          <DesktopNavItem
+            iconSrc={consultSidebarLink.icon}
+            label={HDS.astrologerPortal}
+            active={pathname.startsWith(consultSidebarLink.href)}
+            onClick={() =>
+              guardNavigation(consultSidebarLink.href, { redirectHomeOnClose: true })
+            }
+          />
+        ) : (
+          <DesktopNavItem
+            iconSrc={consultSidebarLink.icon}
+            labelLines={{
+              primary: HDS.bookConsultationLine1,
+              secondary: HDS.bookConsultationLine2,
+            }}
+            active={pathname.startsWith(consultSidebarLink.href)}
+            onClick={() =>
+              guardNavigation(consultSidebarLink.href, { redirectHomeOnClose: true })
+            }
+          />
+        )}
 
         <DesktopNavPredictionsMenu />
 

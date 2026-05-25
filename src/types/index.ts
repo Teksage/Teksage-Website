@@ -178,3 +178,18 @@ export type {
   ConsultationLanguageFieldProps,
   ConsultationCategoryChipsProps,
 } from "./ui/consultation";
+
+export type {
+  AstroEvent,
+  AstroEventDetail,
+  AstroHoroscope,
+  AstroQuestion,
+  AstroSlot,
+  SlotCreatePayload,
+} from "./astrologer-portal";
+
+export type {
+  AstrologerAvailabilityProps,
+  AstrologerAvailabilityState,
+  AstrologerMeetingDetailProps,
+} from "./ui/astrologer-portal";

@@ -19,8 +19,12 @@ export const ROUTES = {
   consultationLanguage: "/consultation/language",
   consultationAstrologers: "/consultation/astrologers",
   consultationSummary: "/consultation/summary",
-  /** Astrologer-facing hub (logged-in astrologer). */
+  /** Astrologer-facing hub (logged-in astrologer) — redirects to /astrologer. */
   consultationAstrologer: "/consultation/astrologer",
+  /** Astrologer portal root — dashboard with Meetings + Availability cards. */
+  astrologer: "/astrologer",
+  astrologerMeetings: "/astrologer/meetings",
+  astrologerAvailability: "/astrologer/availability",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",

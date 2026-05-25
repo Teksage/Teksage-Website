@@ -1,5 +1,7 @@
-import { ConsultationAstrologerHubView } from "@/components/consultation/ConsultationAstrologerHubView";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/lib/constants/routes";
 
+/** Legacy home-banner href — forwards to astrologer portal. */
 export default function ConsultationAstrologerHubPage() {
-  return <ConsultationAstrologerHubView />;
+  redirect(ROUTES.astrologer);
 }

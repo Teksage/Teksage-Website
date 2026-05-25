@@ -19,6 +19,7 @@ import type { ConsultationBannerProps } from "@/types";
  */
 export function ConsultationBanner({
   isAstrologer = false,
+  hideCta = false,
   className,
 }: ConsultationBannerProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
@@ -26,9 +27,7 @@ export function ConsultationBanner({
   const titleLines = isAstrologer
     ? HD.astrologerShort
     : HD.astrologerConsultationLines;
-  const consultHref = isAstrologer
-    ? ROUTES.consultationAstrologer
-    : ROUTES.consultation;
+  const consultHref = isAstrologer ? ROUTES.astrologer : ROUTES.consultation;
 
   return (
     <div
@@ -74,15 +73,17 @@ export function ConsultationBanner({
 
         <p className={HOME_DASHBOARD_UI.consultBannerTitle}>{titleLines}</p>
 
-        <AuthGatedLink
-          href={consultHref}
-          returnPath={consultHref}
-          redirectHomeOnClose
-          inline
-          className={HOME_DASHBOARD_UI.consultBannerCta}
-        >
-          {buttonLabel}
-        </AuthGatedLink>
+        {hideCta ? null : (
+          <AuthGatedLink
+            href={consultHref}
+            returnPath={consultHref}
+            redirectHomeOnClose
+            inline
+            className={HOME_DASHBOARD_UI.consultBannerCta}
+          >
+            {buttonLabel}
+          </AuthGatedLink>
+        )}
       </div>
     </div>
   );

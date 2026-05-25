@@ -32,11 +32,13 @@ function LoginPageInner() {
     DEFAULT_COUNTRY_CALLING_CODE
   );
 
+  const user = useAuthStore((s) => s.user);
+
   useEffect(() => {
     if (!isAuthenticated || !hasClientAuthToken()) return;
     const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
     router.replace(dest);
-  }, [isAuthenticated, router, searchParams]);
+  }, [isAuthenticated, user, router, searchParams]);
 
   function handleEmailOtpSent(email: string) {
     setContact(email);

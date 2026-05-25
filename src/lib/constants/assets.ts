@@ -7,6 +7,16 @@
 const flutterSvg = (file: string) => `/flutter-assets/svg/${file}` as const;
 const flutterImage = (file: string) => `/flutter-assets/images/${file}` as const;
 
+/** Astrologer portal — `Screens/Astrologer/*` + `Components/Astrologer/*`. */
+export const ASTROLOGER_ASSETS = {
+  dashLine: flutterSvg("astroHomeDashLine.svg"),
+  meetingIcon: flutterSvg("astroMeeting.svg"),
+  calendarIcon: flutterSvg("astroCalender.svg"),
+  calendarArrow: flutterSvg("astroCalenderArrow.svg"),
+  calendarLine: flutterSvg("astroCalenderLine.svg"),
+  dashedLine: flutterSvg("astroDashedLine.svg"),
+} as const;
+
 export const PUBLIC_ASSETS = {
   /** Flutter `dashLogin.svg` — login prompt dialog illustration */
   dashLogin: flutterSvg("dashLogin.svg"),

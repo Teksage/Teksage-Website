@@ -17,6 +17,7 @@ const AUTH_PATH_PREFIXES = [
   ROUTES.panchang,
   ROUTES.horoscope,
   ROUTES.settingsSubscriptions,
+  ROUTES.astrologer,
 ] as const;
 
 function settingsSectionRequiresAuth(pathname: string): boolean {

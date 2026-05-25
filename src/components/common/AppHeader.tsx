@@ -48,7 +48,10 @@ export function AppHeader({
   blend = false,
   action,
   className,
+  style,
+  foregroundColor,
 }: AppHeaderProps) {
+  const fg = foregroundColor ?? undefined;
   return (
     <header
       className={cn(
@@ -59,13 +62,15 @@ export function AppHeader({
           : "border-b border-gray-100 bg-white",
         className
       )}
+      style={style}
     >
       <div className="absolute left-4 top-1/2 z-10 flex -translate-y-1/2 items-center">
         {showBack ? (
           <button
             type="button"
             onClick={onBackClick}
-            className="rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-100"
+            className="rounded-full p-1 transition-colors hover:bg-black/10"
+            style={{ color: fg ?? undefined }}
             aria-label="Go back"
           >
             <BackIcon />
@@ -73,7 +78,10 @@ export function AppHeader({
         ) : null}
       </div>
 
-      <h1 className="max-w-[min(100%,18rem)] truncate px-10 text-center text-lg font-bold text-gray-900 sm:max-w-[min(100%,22rem)]">
+      <h1
+        className="max-w-[min(100%,18rem)] truncate px-10 text-center text-lg font-bold sm:max-w-[min(100%,22rem)]"
+        style={{ color: fg ?? undefined }}
+      >
         {title}
       </h1>
 
@@ -82,7 +90,8 @@ export function AppHeader({
         {showNotification ? (
           <Link
             href="/notifications"
-            className="rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100"
+            className="rounded-full p-2 transition-colors hover:bg-black/10"
+            style={{ color: fg ?? undefined }}
             aria-label="Notifications"
           >
             <BellIcon />
