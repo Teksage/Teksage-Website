@@ -23,8 +23,8 @@ export const HOME_LAYOUT = {
   bottomNavPillSurface: "bg-white",
   /** Horizontal inset for floating pill (Flutter `margin: EdgeInsets.symmetric(horizontal: 20)`). */
   floatingNavInsetX: "px-5",
-  /** White strip behind pill — avoids `--color-brand-bg` (#F1F1F1) showing under the nav. */
-  floatingNavShell: "bg-white",
+  /** Transparent shell — page/tab background shows around the pill (Flutter `extendBody`). */
+  floatingNavShell: "bg-transparent",
   /** Safe-area only — no extra gap that exposed gray body background. */
   floatingNavBottom: "pb-[env(safe-area-inset-bottom,0px)]",
   /** Main scroll clearance: pill height + safe area (matches `--main-bottom-nav-clearance`). */

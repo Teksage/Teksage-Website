@@ -22,6 +22,13 @@ export const DESKTOP_SIDEBAR_MARRIAGE_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.marriage,
 } as const;
 
+/** Notifications — after marriage, before panchang. */
+export const DESKTOP_SIDEBAR_NOTIFICATIONS_LINK = {
+  href: ROUTES.notifications,
+  labelKey: "notifications" as const,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.notification,
+} as const;
+
 /** Panchang, horoscope, settings — below primary dashboard actions. */
 export const DESKTOP_SIDEBAR_UTILITY_LINKS = [
   {

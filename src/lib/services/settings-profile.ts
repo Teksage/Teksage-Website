@@ -47,6 +47,13 @@ function mapSubscription(raw?: Record<string, unknown> | null): UserSubscription
         ? raw.subscription_end_date
         : undefined,
     planId: raw.plan_id != null ? Number(raw.plan_id) : undefined,
+    isAutoPay: Boolean(raw.is_auto_pay),
+    autoPayStatus:
+      raw.auto_pay_status != null ? String(raw.auto_pay_status) : null,
+    nextBillingDate:
+      typeof raw.next_billing_date === "string"
+        ? raw.next_billing_date
+        : undefined,
   };
 }
 

@@ -51,6 +51,7 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     format: CHAT_DEFAULTS.format,
     avator: CHAT_DEFAULTS.avatar,
   });
+  const messageModeRef = useRef<string>(CHAT_DEFAULTS.messageMode);
   const canSendMore = isPrime || messageCount < CHAT_FREE_MESSAGE_LIMIT;
 
   outboundPrefsRef.current = {
@@ -70,7 +71,8 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     },
     chatLanguage,
     outboundPrefsRef,
-    messagesRef
+    messagesRef,
+    messageModeRef
   );
 
   const streamRef = useRef(stream);
@@ -137,6 +139,7 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
       const sent = await transmitQuery(trimmed);
       if (!sent) return;
       setInput("");
+      messageModeRef.current = CHAT_DEFAULTS.messageMode;
       if (!isPrime) setMessageCount((c) => c + 1);
     },
     [
@@ -171,6 +174,7 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     async function connectSocket() {
       const handlers = {
         onTextChunk: (chunk: string) => streamRef.current.onTextChunk(chunk),
+        onAudioBase64: (audio: string) => streamRef.current.onAudioBase64(audio),
         onStreamEnd: () => {
           awaitingResponseRef.current = false;
           void streamRef.current.onStreamEnd();
@@ -271,5 +275,13 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     sendQuery,
     retryMessage,
     chatLanguage,
+    setVoiceMessageMode: () => {
+      messageModeRef.current = "audio";
+    },
+    noteVoiceHybridMode: () => {
+      if (messageModeRef.current === "audio") {
+        messageModeRef.current = "hybrid";
+      }
+    },
   };
 }

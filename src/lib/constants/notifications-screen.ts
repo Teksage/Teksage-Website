@@ -1,0 +1,57 @@
+/** Notifications page — mirrors Flutter `notificationPage.dart`. */
+
+export const NOTIFICATIONS_SCREEN = {
+  title: "Notifications",
+  tabGeneral: "General",
+  tabConsultation: "Consultation",
+  clearAll: "Clear All",
+  clearAllSuccess: "All notifications have been cleared.",
+  clearAllFailed: "Failed to update notification status.",
+  loadFailed: "Could not load notifications. Please try again.",
+  emptyGeneral:
+    "There are no recent general updates from your astrological guidance.",
+  emptyConsultation: "There are no Consultation updates.",
+  meetingLink: "Meeting Link",
+  customerAppointmentOn: "You have an appointment on",
+  astrologerAppointmentOn: "Astrologer appointment on",
+  backAria: "Go back",
+} as const;
+
+/** Backend push titles → user-facing labels (Flutter Android mapping). */
+export const NOTIFICATION_DISPLAY_TITLES = {
+  dailyWisdom: "Daily Wisdom",
+  dailyPrediction: "Daily Prediction",
+  dailyPredictionDesc: "Your Daily Prediction have been generated",
+  weeklyInsights: "Weekly Insights",
+  weeklyPrediction: "Weekly Prediction",
+  weeklyPredictionDesc: "Your Weekly Prediction have been generated",
+  yearlyInsights: "Yearly Insights",
+  yearlyPrediction: "Yearly Prediction",
+  yearlyPredictionDesc: "Your Yearly Prediction have been generated",
+} as const;
+
+export const NOTIFICATIONS_UI = {
+  page: "relative z-10 flex min-h-0 flex-1 flex-col bg-white",
+  content: "mx-auto flex w-full max-w-lg min-h-0 flex-1 flex-col",
+  tabBarWrap: "border-b border-neutral-200 px-5 pb-3 pt-2",
+  tabList:
+    "grid grid-cols-2 gap-1 rounded-full bg-neutral-100 p-1",
+  tabButton:
+    "rounded-full px-3 py-2 text-sm font-semibold transition-colors",
+  tabActive: "bg-[var(--color-brand-primary)] text-white",
+  tabIdle: "text-[var(--color-brand-black)]",
+  list: "flex-1 overflow-y-auto px-5 py-3",
+  item:
+    "mb-2.5 rounded-xl border border-black/10 p-3 text-left transition-colors",
+  itemUnread: "bg-[#f6f6f6]",
+  itemRead: "bg-white",
+  itemTitle: "text-sm font-semibold text-[var(--color-brand-black)]",
+  itemMessage: "mt-1 line-clamp-2 text-[13px] font-medium text-black/80",
+  itemDate: "mt-1 text-[11px] font-medium text-black/45",
+  consultationCard:
+    "mb-2.5 flex items-center justify-between gap-3 rounded-xl border border-black/[0.04] bg-[#f6f6f6] px-3 py-4",
+  consultationMeetBtn:
+    "shrink-0 rounded-full bg-[var(--color-brand-primary)] px-3 py-2 text-xs font-semibold text-white",
+  dialogTitle: "text-base font-semibold text-[var(--color-brand-black)]",
+  dialogBody: "text-sm font-medium text-black/85",
+} as const;

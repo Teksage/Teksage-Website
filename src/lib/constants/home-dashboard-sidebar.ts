@@ -1,4 +1,4 @@
-import { DASHBOARD_ASSETS, SETTINGS_ASSETS } from "@/lib/constants/assets";
+import { DASHBOARD_ASSETS } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
 
 /** Desktop home dashboard left rail — design ref sidebar. */
@@ -16,6 +16,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
   lifePredictions: "Life Predictions",
   marriageLine1: "Marriage",
   marriageLine2: "Match Making",
+  notifications: "Notifications",
   panchang: "Panchang",
   horoscope: "Horoscope",
   settings: "Settings",
@@ -30,9 +31,10 @@ export const HOME_DASHBOARD_SIDEBAR = {
 export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
   aiChatIcon: DASHBOARD_ASSETS.chatBotLogo,
   bookConsultation: DASHBOARD_ASSETS.sidebarCalendar,
-  astrologerPortal: SETTINGS_ASSETS.profile,
+  astrologerPortal: DASHBOARD_ASSETS.sidebarProfile,
   predictions: DASHBOARD_ASSETS.sidebarFolder,
   marriage: DASHBOARD_ASSETS.sidebarMarriage,
+  notification: DASHBOARD_ASSETS.sidebarNotification,
   panchang: DASHBOARD_ASSETS.navPanchangOff,
   horoscope: DASHBOARD_ASSETS.navHoroscopeOff,
   settings: DASHBOARD_ASSETS.navSettingsOff,

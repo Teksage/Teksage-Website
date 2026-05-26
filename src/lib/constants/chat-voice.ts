@@ -15,4 +15,7 @@ export const CHAT_VOICE_COPY = {
   transcribeFailed: "Could not transcribe audio. Please try again.",
   recording: "Recording… tap mic to stop",
   transcribing: "Converting speech to text…",
+  speechConverting: "Converting this into speech for you…",
+  playAria: "Play reply audio",
+  pauseAria: "Pause reply audio",
 } as const;

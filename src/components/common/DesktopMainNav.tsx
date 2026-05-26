@@ -13,6 +13,7 @@ import {
   DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK,
   DESKTOP_SIDEBAR_BOOK_LINK,
   DESKTOP_SIDEBAR_MARRIAGE_LINK,
+  DESKTOP_SIDEBAR_NOTIFICATIONS_LINK,
   DESKTOP_SIDEBAR_UTILITY_LINKS,
 } from "@/lib/constants/desktop-sidebar-nav";
 import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
@@ -102,6 +103,17 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           active={pathname.startsWith(DESKTOP_SIDEBAR_MARRIAGE_LINK.href)}
           onClick={() =>
             guardNavigation(DESKTOP_SIDEBAR_MARRIAGE_LINK.href, { redirectHomeOnClose: true })
+          }
+        />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_NOTIFICATIONS_LINK.icon}
+          label={HDS.notifications}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_NOTIFICATIONS_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_NOTIFICATIONS_LINK.href, {
+              redirectHomeOnClose: true,
+            })
           }
         />
 

@@ -48,6 +48,17 @@ export function useAstrologerEventDetail(eventId: string | number | undefined) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const reload = useCallback(async () => {
+    if (!eventId) return;
+    setError(null);
+    try {
+      const d = await fetchAstrologerEventDetail(eventId);
+      setEvent(d);
+    } catch {
+      setError("Failed to load meeting details.");
+    }
+  }, [eventId]);
+
   useEffect(() => {
     if (!eventId) return;
     let cancelled = false;
@@ -68,5 +79,5 @@ export function useAstrologerEventDetail(eventId: string | number | undefined) {
     };
   }, [eventId]);
 
-  return { event, loading, error };
+  return { event, loading, error, reload };
 }
