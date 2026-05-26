@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { AstroQuestion } from "@/types/astrologer-portal";
 import { AstrologerAnswerQuestionDialog } from "@/components/astrologer/AstrologerAnswerQuestionDialog";
 import {
   astrologerCanAnswerQuestions,
@@ -24,8 +25,21 @@ export function AstrologerMeetingQuestionsSection({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
+  const [displayQuestions, setDisplayQuestions] =
+    useState<AstroQuestion[]>(questions);
 
-  const hasAnswered = allQuestionsAnswered(questions);
+  useEffect(() => {
+    setDisplayQuestions(questions);
+  }, [questions]);
+
+  const hasAnswered = allQuestionsAnswered(displayQuestions);
+
+  function handleAnswerSaved(updated: AstroQuestion) {
+    setDisplayQuestions((prev) =>
+      prev.map((q) => (q.id === updated.id ? updated : q))
+    );
+    void onQuestionsUpdated();
+  }
 
   function openAnswer(index: number) {
     if (!astrologerCanAnswerQuestions(startDatetime, consultationDuration)) {
@@ -49,7 +63,7 @@ export function AstrologerMeetingQuestionsSection({
           </p>
         ) : null}
         <div className="divide-y divide-dashed divide-black/30 rounded-xl border border-black/[0.12] bg-white">
-          {questions.map((q, index) => {
+          {displayQuestions.map((q, index) => {
             const answered = (q.answer?.trim().length ?? 0) > 0;
             return (
               <div key={q.id} className="p-4">
@@ -86,10 +100,10 @@ export function AstrologerMeetingQuestionsSection({
 
       <AstrologerAnswerQuestionDialog
         open={dialogOpen}
-        questions={questions}
+        questions={displayQuestions}
         startIndex={startIndex}
         onClose={() => setDialogOpen(false)}
-        onComplete={onQuestionsUpdated}
+        onAnswerSaved={handleAnswerSaved}
       />
     </>
   );

@@ -34,5 +34,6 @@ export interface AstrologerAnswerQuestionDialogProps {
   questions: import("@/types/astrologer-portal").AstroQuestion[];
   startIndex: number;
   onClose: () => void;
-  onComplete: () => void | Promise<void>;
+  /** Called after each answer is persisted to the API. */
+  onAnswerSaved: (updated: import("@/types/astrologer-portal").AstroQuestion) => void;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   ASTRO_PORTAL_COLORS,
@@ -17,20 +17,23 @@ export function AstrologerAnswerQuestionDialog({
   questions,
   startIndex,
   onClose,
-  onComplete,
+  onAnswerSaved,
 }: AstrologerAnswerQuestionDialogProps) {
   const [localQuestions, setLocalQuestions] = useState<AstroQuestion[]>(questions);
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
-    if (!open) return;
-    setLocalQuestions(questions);
-    setCurrentIndex(startIndex);
-    setText(questions[startIndex]?.answer ?? "");
-    setError(null);
+    if (open && !wasOpenRef.current) {
+      setLocalQuestions(questions);
+      setCurrentIndex(startIndex);
+      setText(questions[startIndex]?.answer ?? "");
+      setError(null);
+    }
+    wasOpenRef.current = open;
   }, [open, questions, startIndex]);
 
   if (!open) return null;
@@ -57,6 +60,7 @@ export function AstrologerAnswerQuestionDialog({
           row.id === updated.id ? updated : row
         );
         setLocalQuestions(nextQuestions);
+        onAnswerSaved(updated);
       } catch {
         setError(Q.answerSaveFail);
         setBusy(false);
@@ -76,7 +80,6 @@ export function AstrologerAnswerQuestionDialog({
       setText(nextQuestions[next]?.answer ?? "");
       return;
     }
-    await onComplete();
     onClose();
   }
 
