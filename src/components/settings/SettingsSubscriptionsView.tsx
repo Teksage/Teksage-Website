@@ -1,15 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SettingsSubpageHeader } from "@/components/settings/SettingsSubpageHeader";
 import { SubscriptionCurrentPlanCard } from "@/components/settings/SubscriptionCurrentPlanCard";
+import { SubscriptionAutoPayManage } from "@/components/settings/SubscriptionAutoPayManage";
+import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
 import { SubscriptionPlanPicker } from "@/components/settings/SubscriptionPlanPicker";
 import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { useSubscriptionPage } from "@/hooks/useSubscriptionPage";
 import { ROUTES } from "@/lib/constants/routes";
+import { isAutoPayEligiblePlan } from "@/lib/subscription-auto-pay";
 import { writeSubscriptionCheckout } from "@/lib/subscription-checkout-session";
 import { cn } from "@/lib/utils";
 
@@ -35,13 +39,22 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
     loading,
     error,
     planPrice,
+    isAutoPayActive,
+    nextBillingDate,
+    cancelAutoPay,
+    activatingPremium,
   } = useSubscriptionPage(currency);
+  const [autoPayEnabled, setAutoPayEnabled] = useState(false);
+
+  const autoPayEligible =
+    selectedPlan != null && isAutoPayEligiblePlan(selectedPlan.planId, currency);
 
   function onUpgrade() {
     if (!selectedPlan) return;
     writeSubscriptionCheckout({
       planId: selectedPlan.planId,
       currency,
+      autoPay: autoPayEligible && autoPayEnabled,
     });
     router.push(ROUTES.settingsSubscriptionPayment);
   }
@@ -90,14 +103,22 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
             </div>
           ) : null}
           {isPremium ? (
-            <SubscriptionCurrentPlanCard
-              symbol={symbol}
-              price={currentPrice}
-              tenureValue={tenureValue}
-              tenureUnit={tenureUnit}
-              daysLeft={daysLeft}
-              progress={progress}
-            />
+            <>
+              <SubscriptionCurrentPlanCard
+                symbol={symbol}
+                price={currentPrice}
+                tenureValue={tenureValue}
+                tenureUnit={tenureUnit}
+                daysLeft={daysLeft}
+                progress={progress}
+              />
+              {isAutoPayActive ? (
+                <SubscriptionAutoPayManage
+                  nextBillingDate={nextBillingDate}
+                  onCancel={cancelAutoPay}
+                />
+              ) : null}
+            </>
           ) : null}
           <SubscriptionPlanPicker
             plans={pickerPlans}
@@ -107,6 +128,17 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
             priceOf={planPrice}
             onSelect={setSelectedId}
           />
+          {autoPayEligible && showUpgradeBtn ? (
+            <SubscriptionAutoPayToggle
+              enabled={autoPayEnabled}
+              onChange={setAutoPayEnabled}
+            />
+          ) : null}
+          {activatingPremium && !isPremium ? (
+            <p className="mt-3 rounded-lg bg-white/10 px-3 py-2 text-center text-sm text-white/90">
+              {SUB.activating}
+            </p>
+          ) : null}
           {error ? <p className="mt-3 text-sm text-red-400">{error}</p> : null}
         </div>
       </div>

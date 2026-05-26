@@ -47,6 +47,8 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
     sendQuery,
     retryMessage,
     chatLanguage,
+    setVoiceMessageMode,
+    noteVoiceHybridMode,
   } = useChat({
     enabled: prefs.chatUnlocked,
     styleFormat: prefs.styleFormat,
@@ -79,7 +81,10 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
   const voice = useChatVoiceInput({
     language: chatLanguage,
     disabled: !enableInput || !sessionReady,
-    onTranscript: (text) => setInput(text),
+    onTranscript: (text) => {
+      setVoiceMessageMode();
+      setInput(text);
+    },
     onError: showToast,
   });
 
@@ -197,7 +202,10 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
 
         <ChatComposer
           value={input}
-          onChange={setInput}
+          onChange={(value) => {
+            noteVoiceHybridMode();
+            setInput(value);
+          }}
           onSend={() => void sendQuery(input)}
           disabled={!enableInput || !sessionReady || voice.isTranscribing}
           placeholder={composerPlaceholder}

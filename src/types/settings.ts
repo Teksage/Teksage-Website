@@ -46,6 +46,20 @@ export interface UserSubscriptionSnapshot {
   subscriptionStartDate?: string;
   subscriptionEndDate?: string;
   planId?: number;
+  isAutoPay?: boolean;
+  autoPayStatus?: string | null;
+  nextBillingDate?: string;
+}
+
+export interface RazorpayAutoPayInitPayload {
+  subscriptionId: string;
+  key: string;
+}
+
+export interface RazorpayAutoPaySuccessPayload {
+  razorpay_payment_id: string;
+  razorpay_subscription_id: string;
+  razorpay_signature: string;
 }
 
 export interface PlanDetailsSnapshot {

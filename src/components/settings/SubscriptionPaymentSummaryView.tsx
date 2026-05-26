@@ -14,11 +14,21 @@ import {
   SUBSCRIPTION_PAYMENT_LAYOUT,
 } from "@/lib/constants/settings-subscription-payment";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
-import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
+import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
 import {
   clearSubscriptionCheckout,
+  markSubscriptionActivating,
   readSubscriptionCheckout,
 } from "@/lib/subscription-checkout-session";
+import {
+  refreshAuthProfileAfterSubscription,
+  waitForPremiumActivation,
+} from "@/lib/subscription-activation-wait";
+import { isAutoPayEligiblePlan } from "@/lib/subscription-auto-pay";
+import {
+  paySubscriptionAutoRenew,
+  paySubscriptionOneTime,
+} from "@/lib/subscription-payment-actions";
 import {
   totalsFromCoupon,
   totalsFromPlan,
@@ -27,8 +37,6 @@ import {
 import {
   applySubscriptionCoupon,
   fetchPremiumPlanById,
-  initiateSubscriptionPayment,
-  verifySubscriptionPayment,
 } from "@/lib/services/settings-subscription";
 import { useAuthStore } from "@/store/auth.store";
 import type { SubscriptionPlan } from "@/types/settings";
@@ -48,6 +56,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [autoPayEnabled, setAutoPayEnabled] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -59,6 +68,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
         return;
       }
       setCurrency(session.currency);
+      setAutoPayEnabled(Boolean(session.autoPay));
       try {
         const fetched = await fetchPremiumPlanById(session.planId);
         if (cancelled) return;
@@ -83,8 +93,16 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const symbol = currency === "INR" ? "\u20b9" : "$";
   const isInr = currency === "INR";
 
+  const autoPayEligible = plan != null && isAutoPayEligiblePlan(plan.planId, currency);
+
+  useEffect(() => {
+    if (!plan || !autoPayEnabled) return;
+    setTotals(totalsFromPlan(plan, currency));
+    setPromo("");
+  }, [autoPayEnabled, plan, currency]);
+
   const applyPromo = useCallback(async () => {
-    if (!plan || !promo.trim()) return;
+    if (!plan || !promo.trim() || autoPayEnabled) return;
     setBusy(true);
     setError(null);
     try {
@@ -102,45 +120,44 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     } finally {
       setBusy(false);
     }
-  }, [plan, promo, currency, isInr, P.paymentFailed]);
+  }, [plan, promo, currency, isInr, P.paymentFailed, autoPayEnabled]);
+
+  async function finishPayment() {
+    clearSubscriptionCheckout();
+    markSubscriptionActivating();
+    await waitForPremiumActivation();
+    await refreshAuthProfileAfterSubscription();
+    router.replace(ROUTES.settingsSubscriptions);
+  }
+
+  function onPayError(code: string) {
+    setError(code === "paymentFailed" ? P.paymentFailed : P.paymentFailed);
+  }
 
   async function onPay() {
     if (!plan || !totals) return;
-    setBusy(true);
     setError(null);
-    const baseAmount = totals.planCost - totals.discount;
-    try {
-      const order = await initiateSubscriptionPayment({
-        planId: plan.planId,
-        paymentAmount: baseAmount,
+    const prefill = { email: user?.email, contact: user?.mobile };
+    if (autoPayEnabled && autoPayEligible) {
+      await paySubscriptionAutoRenew({
+        plan,
         currency,
-        couponId: totals.couponId || null,
+        prefill,
+        onBusyChange: setBusy,
+        onError: onPayError,
+        onSuccess: finishPayment,
       });
-      await openRazorpayCheckout({
-        key: order.key,
-        currency: order.currency,
-        orderId: order.id,
-        description: plan.planName,
-        prefill: { email: user?.email, contact: user?.mobile },
-        onSuccess: async (response) => {
-          await verifySubscriptionPayment({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          });
-          clearSubscriptionCheckout();
-          router.replace(ROUTES.settingsSubscriptions);
-        },
-        onDismiss: () => setBusy(false),
-        onFailure: () => {
-          setError(P.paymentFailed);
-          setBusy(false);
-        },
-      });
-    } catch {
-      setError(P.paymentFailed);
-      setBusy(false);
+      return;
     }
+    await paySubscriptionOneTime({
+      plan,
+      totals,
+      currency,
+      prefill,
+      onBusyChange: setBusy,
+      onError: onPayError,
+      onSuccess: finishPayment,
+    });
   }
 
   if (loading) {
@@ -193,12 +210,19 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
           </p>
           <p className={SUBSCRIPTION_PAYMENT_LAYOUT.membershipPill}>{membershipLine}</p>
           <div className={SUBSCRIPTION_PAYMENT_LAYOUT.dashed} />
+          {autoPayEligible ? (
+            <SubscriptionAutoPayToggle
+              enabled={autoPayEnabled}
+              onChange={setAutoPayEnabled}
+              disabled={busy}
+            />
+          ) : null}
           <SubscriptionPaymentFees
             totals={totals}
             symbol={symbol}
             isInr={isInr}
             promo={promo}
-            busy={busy}
+            busy={busy || autoPayEnabled}
             onPromoChange={setPromo}
             onApplyPromo={() => void applyPromo()}
           />

@@ -14,6 +14,10 @@ export interface ChatAssistantMessage {
   role: "assistant";
   text: string;
   isStreaming: boolean;
+  /** Base64 MP3 from WebSocket `audio_base64` — Flutter `ChatAudioPlayer`. */
+  audioBase64?: string | null;
+  /** Waiting for TTS after voice-mode reply. */
+  audioPending?: boolean;
 }
 
 export type ChatMessage = ChatUserMessage | ChatAssistantMessage;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
+import { ChatAssistantAudioSlot } from "@/components/chat/ChatAssistantAudioSlot";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,12 @@ export function ChatMessageBubble({
           )}
         >
           <p className="whitespace-pre-wrap break-words">{message.text}</p>
+          {!isUser ? (
+            <ChatAssistantAudioSlot
+              audioBase64={message.audioBase64}
+              audioPending={message.audioPending}
+            />
+          ) : null}
         </div>
         {isUser && message.status === "failed" ? (
           <div className="flex items-center justify-end gap-2 text-xs">

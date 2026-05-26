@@ -8,6 +8,7 @@ const RECONNECT_DELAYS_SEC = [1, 2, 4, 6, 8, 10] as const;
 export type ChatWebSocketHandlers = {
   onTextChunk: (chunk: string) => void;
   onStreamEnd: () => void;
+  onAudioBase64?: (audioBase64: string) => void;
   onOpen?: () => void;
   onClose?: (event: CloseEvent) => void;
   onError?: (error: unknown) => void;
@@ -150,7 +151,11 @@ export class ChatWebSocketClient {
 
     try {
       const parsed = JSON.parse(trimmed) as { audio_base64?: string };
-      if (parsed.audio_base64) return;
+      const audio = parsed.audio_base64?.trim();
+      if (audio) {
+        this.handlers?.onAudioBase64?.(audio);
+        return;
+      }
     } catch {
       /* streaming text chunk */
     }

@@ -2,6 +2,8 @@ import { http } from "@/lib/services/http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { selectDisplayPremiumPlans } from "@/lib/subscription-plans";
 import type {
+  RazorpayAutoPayInitPayload,
+  RazorpayAutoPaySuccessPayload,
   RazorpayOrderPayload,
   SubscriptionCouponResult,
   SubscriptionPlan,
@@ -98,4 +100,53 @@ export async function verifySubscriptionPayment(body: {
     body
   );
   return data ?? {};
+}
+
+/** `POST /api/payment/subscribe-auto` — Razorpay recurring subscription. */
+export async function initiateAutoPaySubscription(body: {
+  planId: number;
+  currency: string;
+}): Promise<RazorpayAutoPayInitPayload> {
+  const { data } = await http.post<{
+    subscription_id?: string;
+    key?: string;
+  }>(API_ENDPOINTS.paymentSubscribeAuto, {
+    plan_id: body.planId,
+    currency: body.currency,
+  });
+  if (!data?.subscription_id || !data?.key) {
+    throw new Error("Could not start auto-renew subscription");
+  }
+  return { subscriptionId: data.subscription_id, key: data.key };
+}
+
+export async function verifyAutoPayPayment(
+  body: RazorpayAutoPaySuccessPayload
+): Promise<{ status?: string; message?: string }> {
+  const { data } = await http.post<{ status?: string; message?: string }>(
+    API_ENDPOINTS.paymentVerifyAutoPay,
+    {
+      razorpay_payment_id: body.razorpay_payment_id,
+      razorpay_subscription_id: body.razorpay_subscription_id,
+      razorpay_signature: body.razorpay_signature,
+    }
+  );
+  return data ?? {};
+}
+
+export async function cancelAutoPaySubscription(): Promise<{
+  status?: string;
+  message?: string;
+  accessTill?: string;
+}> {
+  const { data } = await http.post<{
+    status?: string;
+    message?: string;
+    access_till?: string;
+  }>(API_ENDPOINTS.paymentCancelAutoPay);
+  return {
+    status: data?.status,
+    message: data?.message,
+    accessTill: data?.access_till,
+  };
 }

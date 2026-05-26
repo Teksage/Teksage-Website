@@ -22,18 +22,28 @@ type ChatStreamSetters = {
 };
 
 type OutboundPrefs = { format: string; avator: string };
+type MessageModeRef = RefObject<string>;
+
+function expectsReplyAudio(mode: string): boolean {
+  const m = mode.toLowerCase();
+  return m === "audio" || m === "hybrid";
+}
 
 export function useChatStream(
   setMessages: Dispatch<SetStateAction<ChatMessage[]>>,
   setters: ChatStreamSetters,
   chatLanguage: string,
   outboundPrefsRef: RefObject<OutboundPrefs>,
-  messagesRef: RefObject<ChatMessage[]>
+  messagesRef: RefObject<ChatMessage[]>,
+  messageModeRef: MessageModeRef
 ) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const bufferRef = useRef("");
   const assistantIdRef = useRef<string | null>(null);
+  /** Persists after `[END]` until reply audio is attached (audio JSON follows END). */
+  const lastAssistantIdRef = useRef<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const audioTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isStreamingRef = useRef(false);
   const settersRef = useRef(setters);
   const chatLanguageRef = useRef(chatLanguage);
@@ -108,10 +118,16 @@ export function useChatStream(
       .finally(() => s.setRelatedLoading(false));
   }, []);
 
+  const wantsAudio = useCallback(
+    () => expectsReplyAudio(messageModeRef.current ?? ""),
+    [messageModeRef]
+  );
+
   const onStreamEnd = useCallback(async () => {
     clearResponseTimeout();
     const hadStreamedText = bufferRef.current.length > 0;
     const assistantId = assistantIdRef.current;
+    if (assistantId) lastAssistantIdRef.current = assistantId;
     const queryForRelated = lastUserQuestionFromMessages(messagesRef.current);
     isStreamingRef.current = false;
     bufferRef.current = "";
@@ -148,12 +164,59 @@ export function useChatStream(
       }
     }
 
+    const audioTargetId = lastAssistantIdRef.current;
+    if (wantsAudio() && audioTargetId) {
+      audioTimeoutRef.current = setTimeout(() => {
+        setMessages((prev) => {
+          const next = [...prev];
+          const idx = next.findIndex((m) => m.id === audioTargetId);
+          if (idx < 0 || next[idx].role !== "assistant") return next;
+          if (next[idx].audioBase64) return next;
+          next[idx] = { ...next[idx], audioPending: false };
+          return next;
+        });
+        lastAssistantIdRef.current = null;
+      }, 5000);
+    }
+
     loadRelatedQueries(queryForRelated);
-  }, [appendLatestReplyFromHistory, clearResponseTimeout, loadRelatedQueries, messagesRef, setMessages]);
+  }, [
+    appendLatestReplyFromHistory,
+    clearResponseTimeout,
+    loadRelatedQueries,
+    messagesRef,
+    setMessages,
+    wantsAudio,
+  ]);
 
   const isStreamingActive = useCallback(
     () => isStreamingRef.current || assistantIdRef.current !== null,
     []
+  );
+
+  const onAudioBase64 = useCallback(
+    (audioBase64: string) => {
+      if (audioTimeoutRef.current) {
+        clearTimeout(audioTimeoutRef.current);
+        audioTimeoutRef.current = null;
+      }
+      const id = lastAssistantIdRef.current ?? assistantIdRef.current;
+      if (!id) return;
+      lastAssistantIdRef.current = null;
+      setMessages((prev) => {
+        const next = [...prev];
+        const idx = next.findIndex((m) => m.id === id);
+        if (idx < 0 || next[idx].role !== "assistant") return next;
+        next[idx] = {
+          ...next[idx],
+          audioBase64,
+          audioPending: false,
+          isStreaming: false,
+        };
+        return next;
+      });
+    },
+    [setMessages]
   );
 
   const onTextChunk = useCallback(
@@ -166,27 +229,47 @@ export function useChatStream(
       const text = bufferRef.current;
       isStreamingRef.current = true;
       s.setIsStreaming(true);
+      const pendingAudio = wantsAudio();
       setMessages((prev) => {
         const next = [...prev];
         const id = assistantIdRef.current;
         if (!id) {
           const newAssistantId = newChatMessageId();
           assistantIdRef.current = newAssistantId;
-          next.push({ id: newAssistantId, role: "assistant", text, isStreaming: true });
+          next.push({
+            id: newAssistantId,
+            role: "assistant",
+            text,
+            isStreaming: true,
+            audioPending: pendingAudio,
+            audioBase64: null,
+          });
           return next;
         }
         const idx = next.findIndex((m) => m.id === id);
         if (idx >= 0 && next[idx].role === "assistant") {
-          next[idx] = { ...next[idx], text, isStreaming: true };
+          next[idx] = {
+            ...next[idx],
+            text,
+            isStreaming: true,
+            audioPending: pendingAudio ? true : next[idx].audioPending,
+          };
         } else {
           const newAssistantId = newChatMessageId();
           assistantIdRef.current = newAssistantId;
-          next.push({ id: newAssistantId, role: "assistant", text, isStreaming: true });
+          next.push({
+            id: newAssistantId,
+            role: "assistant",
+            text,
+            isStreaming: true,
+            audioPending: pendingAudio,
+            audioBase64: null,
+          });
         }
         return next;
       });
     },
-    [clearResponseTimeout, setMessages]
+    [clearResponseTimeout, setMessages, wantsAudio]
   );
 
   const buildPayload = useCallback((query: string): ChatOutboundPayload => {
@@ -195,10 +278,10 @@ export function useChatStream(
       query,
       format: prefs?.format ?? CHAT_DEFAULTS.format,
       avator: prefs?.avator ?? CHAT_DEFAULTS.avatar,
-      message_mode: CHAT_DEFAULTS.messageMode,
+      message_mode: messageModeRef.current?.trim() || CHAT_DEFAULTS.messageMode,
       chat_language: chatLanguageRef.current,
     };
-  }, [outboundPrefsRef]);
+  }, [messageModeRef, outboundPrefsRef]);
 
   const startResponseTimeout = useCallback(() => {
     clearResponseTimeout();
@@ -214,11 +297,13 @@ export function useChatStream(
 
   const resetStreamRefs = useCallback(() => {
     assistantIdRef.current = null;
+    lastAssistantIdRef.current = null;
     bufferRef.current = "";
   }, []);
 
   return {
     onTextChunk,
+    onAudioBase64,
     onStreamEnd,
     markLastUserFailed,
     buildPayload,

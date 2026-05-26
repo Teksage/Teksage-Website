@@ -1,8 +1,14 @@
 /** Load Razorpay checkout.js and open payment modal — web equivalent of Flutter `razorpay_flutter`. */
 
-type RazorpayHandlerResponse = {
+type RazorpayOrderHandlerResponse = {
   razorpay_payment_id: string;
   razorpay_order_id: string;
+  razorpay_signature: string;
+};
+
+type RazorpaySubscriptionHandlerResponse = {
+  razorpay_payment_id: string;
+  razorpay_subscription_id: string;
   razorpay_signature: string;
 };
 
@@ -16,11 +22,12 @@ type RazorpayFailureResponse = {
 
 type RazorpayOptions = {
   key: string;
-  currency: string;
+  currency?: string;
   name: string;
   description: string;
-  order_id: string;
-  handler: (response: RazorpayHandlerResponse) => void;
+  order_id?: string;
+  subscription_id?: string;
+  handler: (response: Record<string, string>) => void;
   prefill?: { email?: string; contact?: string };
   modal?: { ondismiss?: () => void };
   theme?: { color?: string };
@@ -66,7 +73,7 @@ export async function openRazorpayCheckout(options: {
   name?: string;
   description?: string;
   prefill?: { email?: string; contact?: string };
-  onSuccess: (response: RazorpayHandlerResponse) => void;
+  onSuccess: (response: RazorpayOrderHandlerResponse) => void;
   onDismiss?: () => void;
   onFailure?: (message: string) => void;
 }): Promise<void> {
@@ -87,7 +94,52 @@ export async function openRazorpayCheckout(options: {
     order_id: options.orderId,
     ...(Object.keys(prefill).length > 0 ? { prefill } : {}),
     theme: { color: "#10B100" },
-    handler: options.onSuccess,
+    handler: (response) => {
+      options.onSuccess(response as RazorpayOrderHandlerResponse);
+    },
+    modal: { ondismiss: options.onDismiss },
+  });
+
+  rzp.on("payment.failed", (response) => {
+    const message =
+      response.error?.description ??
+      response.error?.reason ??
+      "Payment failed";
+    options.onFailure?.(message);
+  });
+
+  rzp.open();
+}
+
+export async function openRazorpaySubscriptionCheckout(options: {
+  key: string;
+  subscriptionId: string;
+  name?: string;
+  description?: string;
+  prefill?: { email?: string; contact?: string };
+  onSuccess: (response: RazorpaySubscriptionHandlerResponse) => void;
+  onDismiss?: () => void;
+  onFailure?: (message: string) => void;
+}): Promise<void> {
+  await loadRazorpayScript();
+  if (!window.Razorpay) {
+    throw new Error("Razorpay unavailable");
+  }
+
+  const prefill: { email?: string; contact?: string } = {};
+  if (options.prefill?.email?.trim()) prefill.email = options.prefill.email.trim();
+  if (options.prefill?.contact?.trim()) prefill.contact = options.prefill.contact.trim();
+
+  const rzp = new window.Razorpay({
+    key: options.key,
+    name: options.name ?? "Teksage",
+    description: options.description ?? "Subscription",
+    subscription_id: options.subscriptionId,
+    ...(Object.keys(prefill).length > 0 ? { prefill } : {}),
+    theme: { color: "#10B100" },
+    handler: (response) => {
+      options.onSuccess(response as RazorpaySubscriptionHandlerResponse);
+    },
     modal: { ondismiss: options.onDismiss },
   });
 
