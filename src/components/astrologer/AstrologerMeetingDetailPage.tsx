@@ -22,7 +22,7 @@ export function AstrologerMeetingDetailPage({
 }: AstrologerMeetingDetailPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { event, loading, error } = useAstrologerEventDetail(eventId);
+  const { event, loading, error, reload } = useAstrologerEventDetail(eventId);
 
   const nameParam = searchParams.get(MEETING_DETAIL_QUERY.name);
   const initialsParam = searchParams.get(MEETING_DETAIL_QUERY.initials);
@@ -85,6 +85,7 @@ export function AstrologerMeetingDetailPage({
           fullName={fullName}
           queryString={queryString}
           meetingLinkFallback={linkParam}
+          onRefresh={reload}
         />
       )}
     </div>

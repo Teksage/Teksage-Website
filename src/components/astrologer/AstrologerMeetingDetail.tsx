@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AstrologerMeetingHoroscopeCard } from "@/components/astrologer/AstrologerMeetingHoroscopeCard";
+import { AstrologerMeetingQuestionsSection } from "@/components/astrologer/AstrologerMeetingQuestionsSection";
 import { hasAstrologerMeetingHoroscope } from "@/lib/astrologer-horoscope-display";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
 import { ROUTES } from "@/lib/constants/routes";
@@ -31,12 +32,10 @@ export function AstrologerMeetingDetail({
   fullName,
   queryString,
   meetingLinkFallback,
+  onRefresh,
 }: AstrologerMeetingDetailProps) {
   const router = useRouter();
   const isCompleted = event.status === "completed";
-  const hasAnswered =
-    event.questions.length > 0 &&
-    event.questions.every((q) => (q.answer?.trim().length ?? 0) > 0);
 
   let meetingDate = "";
   let startTime = "";
@@ -88,7 +87,7 @@ export function AstrologerMeetingDetail({
           />
           {event.category && event.category.length > 0 && (
             <LabelRow
-              label="Consulting On"
+              label={ASTRO_PORTAL_UI.detail.consultingOn}
               value={event.category
                 .map((c) => c.charAt(0).toUpperCase() + c.slice(1))
                 .join(", ")}
@@ -96,7 +95,7 @@ export function AstrologerMeetingDetail({
           )}
           {event.languages && event.languages.length > 0 && (
             <LabelRow
-              label="Language"
+              label={ASTRO_PORTAL_UI.detail.language}
               value={event.languages
                 .map((l) => l.charAt(0).toUpperCase() + l.slice(1))
                 .join(", ")}
@@ -104,7 +103,7 @@ export function AstrologerMeetingDetail({
           )}
           {event.consultation_fee != null && (
             <LabelRow
-              label="Fees Paid"
+              label={ASTRO_PORTAL_UI.detail.feesPaid}
               value={`${event.currency ?? "₹"} ${event.consultation_fee.toFixed(2)}/-`}
             />
           )}
@@ -118,7 +117,7 @@ export function AstrologerMeetingDetail({
                 )}
                 style={{ color: ASTRO_PORTAL_COLORS.brandGreen }}
               >
-                <span>Submitted</span>
+                <span>{ASTRO_PORTAL_UI.detail.submitted}</span>
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -155,33 +154,14 @@ export function AstrologerMeetingDetail({
           />
         ) : null}
 
-        {/* ─── Questions / Q&A ──────────────────────────────────────────── */}
-        {event.questions.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-center text-sm font-semibold text-white/80">
-              {hasAnswered
-                ? "Queries asked — You've already shared your thoughts!"
-                : "Queries asked — Time to share your thoughts!"}
-            </p>
-            <div className="divide-y divide-dashed divide-black/30 rounded-xl border border-black/[0.12] bg-white">
-              {event.questions.map((q) => (
-                <div key={q.id} className="p-4">
-                  <p className="text-sm font-semibold text-gray-900">{q.question}</p>
-                  {q.answer ? (
-                    <p className="mt-2 text-sm font-medium leading-snug text-gray-900/50">
-                      {q.answer.trim().charAt(0).toUpperCase() +
-                        q.answer.trim().slice(1)}
-                    </p>
-                  ) : (
-                    <p className="mt-2 text-xs italic text-gray-400">
-                      No answer provided yet.
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {event.questions.length > 0 ? (
+          <AstrologerMeetingQuestionsSection
+            questions={event.questions}
+            startDatetime={event.start_datetime}
+            consultationDuration={event.consultation_duration}
+            onQuestionsUpdated={onRefresh ?? (() => undefined)}
+          />
+        ) : null}
 
         {event.questions.length === 0 && (
           <p className="text-center text-sm font-medium text-white/70">
@@ -195,7 +175,7 @@ export function AstrologerMeetingDetail({
           onClick={() => router.push(ROUTES.astrologerMeetings)}
           className="mt-4 w-full rounded-full border border-white/40 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-80"
         >
-          ← Back to Meetings
+          {ASTRO_PORTAL_UI.detail.backToMeetings}
         </button>
       </div>
     </div>

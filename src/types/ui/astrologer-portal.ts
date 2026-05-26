@@ -19,4 +19,20 @@ export interface AstrologerMeetingDetailProps {
   /** Preserved from list navigation — Flutter `widget.name` / query args. */
   queryString: string;
   meetingLinkFallback?: string | null;
+  onRefresh?: () => void | Promise<void>;
+}
+
+export interface AstrologerMeetingQuestionsSectionProps {
+  questions: import("@/types/astrologer-portal").AstroQuestion[];
+  startDatetime: string;
+  consultationDuration: number | null;
+  onQuestionsUpdated: () => void | Promise<void>;
+}
+
+export interface AstrologerAnswerQuestionDialogProps {
+  open: boolean;
+  questions: import("@/types/astrologer-portal").AstroQuestion[];
+  startIndex: number;
+  onClose: () => void;
+  onComplete: () => void | Promise<void>;
 }

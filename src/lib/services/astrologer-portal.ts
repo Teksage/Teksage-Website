@@ -123,6 +123,26 @@ export async function fetchAstrologerEventDetail(
   return mapEventDetail(res.data);
 }
 
+function mapQuestion(raw: Record<string, unknown>): AstroQuestion {
+  return {
+    id: Number(raw.id),
+    question: String(raw.question ?? ""),
+    answer: raw.answer != null ? String(raw.answer) : null,
+  };
+}
+
+/** `PUT /api/astrologer/questions/{question_id}` — mirrors Flutter `AstroUserQuestion.updateQuestionAnswer`. */
+export async function updateAstrologerQuestionAnswer(
+  questionId: number,
+  answer: string
+): Promise<AstroQuestion> {
+  const res = await http.put<Record<string, unknown>>(
+    `${API_ENDPOINTS.astrologerQuestions}/${questionId}`,
+    { answer }
+  );
+  return mapQuestion(res.data);
+}
+
 export async function fetchAstrologerSlots(
   astrologerId: string | number,
   date: string

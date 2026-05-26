@@ -16,6 +16,7 @@ const AUTH_PATH_PREFIXES = [
   ROUTES.profile,
   ROUTES.panchang,
   ROUTES.horoscope,
+  ROUTES.notifications,
   ROUTES.settingsSubscriptions,
   ROUTES.astrologer,
 ] as const;

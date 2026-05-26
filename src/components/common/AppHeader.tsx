@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { APP_NAME } from "@/lib/constants";
+import { APP_NAME, ROUTES } from "@/lib/constants";
 import type { AppHeaderProps } from "@/types";
 
 function BellIcon() {
@@ -89,7 +89,7 @@ export function AppHeader({
         {action}
         {showNotification ? (
           <Link
-            href="/notifications"
+            href={ROUTES.notifications}
             className="rounded-full p-2 transition-colors hover:bg-black/10"
             style={{ color: fg ?? undefined }}
             aria-label="Notifications"

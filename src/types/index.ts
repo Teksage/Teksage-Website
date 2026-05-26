@@ -55,6 +55,19 @@ export interface Notification {
   isRead: boolean;
 }
 
+export type {
+  AppNotification,
+  ConsultationNotificationEvent,
+  NotificationTab,
+} from "./notifications";
+
+export type {
+  NotificationConsultationListProps,
+  NotificationDetailDialogProps,
+  NotificationGeneralListProps,
+  NotificationsTabBarProps,
+} from "./ui/notifications";
+
 // --- API utilities ---
 export interface ApiError {
   message: string;
@@ -189,7 +202,9 @@ export type {
 } from "./astrologer-portal";
 
 export type {
+  AstrologerAnswerQuestionDialogProps,
   AstrologerAvailabilityProps,
   AstrologerAvailabilityState,
   AstrologerMeetingDetailProps,
+  AstrologerMeetingQuestionsSectionProps,
 } from "./ui/astrologer-portal";

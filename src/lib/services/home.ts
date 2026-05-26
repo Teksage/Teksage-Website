@@ -1,5 +1,6 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import { fetchAppNotifications } from "@/lib/services/notifications";
 import type { Notification } from "@/types";
 
 export interface DailyPredictionSummary {
@@ -11,17 +12,6 @@ export interface DailyPredictionSummary {
 interface DailyPredictionApiBody {
   data?: Record<string, unknown> | string;
   prediction_id?: number;
-}
-
-/** Backend `GET /api/notifications` → `{ notifications: [...] }`. */
-interface NotificationsApiBody {
-  notifications?: Array<{
-    id: number;
-    title: string;
-    message: string;
-    sent_at?: string;
-    read_by?: boolean;
-  }>;
 }
 
 function mapDailyInner(inner: unknown): DailyPredictionSummary {
@@ -45,15 +35,12 @@ export async function fetchDailyPredictionSummary(): Promise<DailyPredictionSumm
 }
 
 export async function fetchNotifications(): Promise<Notification[]> {
-  const { data: body } = await http.get<NotificationsApiBody>(
-    API_ENDPOINTS.notifications
-  );
-  const raw = body?.notifications ?? [];
-  return raw.map((n) => ({
-    id: String(n.id),
+  const rows = await fetchAppNotifications();
+  return rows.map((n) => ({
+    id: n.id,
     title: n.title,
     message: n.message,
-    createdAt: n.sent_at ?? "",
-    isRead: Boolean(n.read_by),
+    createdAt: n.createdAt,
+    isRead: n.isRead,
   }));
 }

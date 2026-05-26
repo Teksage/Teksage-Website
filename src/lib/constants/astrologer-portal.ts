@@ -47,6 +47,28 @@ export const ASTRO_PORTAL_UI = {
     noQuestions: "No questions submitted.",
     booked: "Booked a slot for",
     min: "min",
+    consultingOn: "Consulting On",
+    language: "Language",
+    feesPaid: "Fees Paid",
+    submitted: "Submitted",
+    backToMeetings: "← Back to Meetings",
+  },
+
+  /** Customer Q&A on meeting detail — mirrors Flutter `answerDialog.dart`. */
+  questions: {
+    headerPending: "Queries asked — Time to share your thoughts!",
+    headerDone: "Queries asked — You've already shared your thoughts!",
+    noAnswerYet: "No answer provided yet.",
+    answerBtn: "Answer",
+    answerAfterMeeting:
+      "You can answer only after completing the consultation.",
+    dialogPlaceholder: "Type your answer here...",
+    previous: "Previous",
+    next: "Next",
+    done: "Done",
+    answerEmpty: "Please enter an answer.",
+    answerSaveFail: "Failed to save answer. Please try again.",
+    charLimit: 500,
   },
 
   // Availability

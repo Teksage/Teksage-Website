@@ -65,6 +65,8 @@ export const DASHBOARD_ASSETS = {
   sidebarCalendar: flutterSvg("sidebar-calendar.svg"),
   sidebarFolder: flutterSvg("sidebar-folder.svg"),
   sidebarMarriage: flutterSvg("sidebar-marriage.svg"),
+  sidebarNotification: flutterSvg("sidebar-notification.svg"),
+  sidebarProfile: flutterSvg("sidebar-profile.svg"),
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
 } as const;

@@ -66,16 +66,16 @@ export function AstrologerDashboard() {
     >
       <ConsultationBanner isAstrologer hideCta />
 
-      <div className="flex items-center">
+      <div className="flex min-w-0 items-center gap-2">
         <Image
           src={ASTROLOGER_ASSETS.dashLine}
           alt=""
           width={80}
           height={8}
-          className="flex-1 opacity-40"
+          className="min-w-0 flex-1 opacity-40"
           unoptimized
         />
-        <p className="mx-3 text-sm font-medium leading-none text-gray-900/50">
+        <p className="shrink-0 whitespace-nowrap text-sm font-medium leading-none text-gray-900/50">
           {ASTRO_PORTAL_UI.loginBadge}
         </p>
         <Image
@@ -83,7 +83,7 @@ export function AstrologerDashboard() {
           alt=""
           width={80}
           height={8}
-          className="flex-1 opacity-40"
+          className="min-w-0 flex-1 opacity-40"
           unoptimized
         />
       </div>
