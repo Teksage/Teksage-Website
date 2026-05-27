@@ -44,6 +44,11 @@ export interface HomeDashboardHeaderProps {
   className?: string;
 }
 
+export interface HomeDesktopHeaderProps {
+  greeting: string;
+  className?: string;
+}
+
 export interface HomeChatPanelProps {
   isLoggedIn: boolean;
   className?: string;

@@ -44,8 +44,6 @@ export function useChatStream(
   const lastAssistantIdRef = useRef<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /** Mode for the in-flight reply — survives messageModeRef reset after send. */
-  const outboundMessageModeRef = useRef<string>(CHAT_DEFAULTS.messageMode);
   const isStreamingRef = useRef(false);
   const settersRef = useRef(setters);
   const chatLanguageRef = useRef(chatLanguage);
@@ -121,16 +119,9 @@ export function useChatStream(
   }, []);
 
   const wantsAudio = useCallback(
-    () => expectsReplyAudio(outboundMessageModeRef.current ?? ""),
-    []
+    () => expectsReplyAudio(messageModeRef.current ?? ""),
+    [messageModeRef]
   );
-
-  function findLastAssistantIndex(messages: ChatMessage[]): number {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "assistant") return i;
-    }
-    return -1;
-  }
 
   const onStreamEnd = useCallback(async () => {
     clearResponseTimeout();
@@ -189,7 +180,6 @@ export function useChatStream(
     }
 
     loadRelatedQueries(queryForRelated);
-    outboundMessageModeRef.current = CHAT_DEFAULTS.messageMode;
   }, [
     appendLatestReplyFromHistory,
     clearResponseTimeout,
@@ -211,24 +201,20 @@ export function useChatStream(
         audioTimeoutRef.current = null;
       }
       const id = lastAssistantIdRef.current ?? assistantIdRef.current;
+      if (!id) return;
+      lastAssistantIdRef.current = null;
       setMessages((prev) => {
         const next = [...prev];
-        let idx = id ? next.findIndex((m) => m.id === id) : -1;
-        if (idx < 0) idx = findLastAssistantIndex(next);
+        const idx = next.findIndex((m) => m.id === id);
         if (idx < 0 || next[idx].role !== "assistant") return next;
-        const row = next[idx];
-        if (row.role !== "assistant") return next;
         next[idx] = {
-          id: row.id,
-          role: "assistant",
-          text: row.text,
-          isStreaming: false,
+          ...next[idx],
           audioBase64,
           audioPending: false,
+          isStreaming: false,
         };
         return next;
       });
-      lastAssistantIdRef.current = null;
     },
     [setMessages]
   );
@@ -288,13 +274,11 @@ export function useChatStream(
 
   const buildPayload = useCallback((query: string): ChatOutboundPayload => {
     const prefs = outboundPrefsRef.current;
-    const mode = messageModeRef.current?.trim() || CHAT_DEFAULTS.messageMode;
-    outboundMessageModeRef.current = mode;
     return {
       query,
       format: prefs?.format ?? CHAT_DEFAULTS.format,
       avator: prefs?.avator ?? CHAT_DEFAULTS.avatar,
-      message_mode: mode,
+      message_mode: messageModeRef.current?.trim() || CHAT_DEFAULTS.messageMode,
       chat_language: chatLanguageRef.current,
     };
   }, [messageModeRef, outboundPrefsRef]);
@@ -315,7 +299,6 @@ export function useChatStream(
     assistantIdRef.current = null;
     lastAssistantIdRef.current = null;
     bufferRef.current = "";
-    outboundMessageModeRef.current = CHAT_DEFAULTS.messageMode;
   }, []);
 
   return {

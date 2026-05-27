@@ -16,13 +16,6 @@ function resolveHttpOriginForWebSocket(): string {
     console.warn(
       "[chat] NEXT_PUBLIC_WS_BASE_URL is unset. Defaulting to http://127.0.0.1:8000 — set it in .env.local when using NEXT_PUBLIC_API_BASE_URL=same-origin."
     );
-    return "http://127.0.0.1:8000";
-  }
-
-  if (typeof window !== "undefined") {
-    console.error(
-      "[chat] NEXT_PUBLIC_WS_BASE_URL is required in production when NEXT_PUBLIC_API_BASE_URL is same-origin. Voice reply audio needs a working WebSocket to your FastAPI host."
-    );
   }
 
   return "http://127.0.0.1:8000";

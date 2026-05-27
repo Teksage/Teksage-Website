@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { chatReplyAudioObjectUrl } from "@/lib/chat-audio-decode";
 import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_VOICE_COPY } from "@/lib/constants/chat-voice";
 import { cn } from "@/lib/utils";
@@ -11,7 +10,10 @@ type ChatAudioPlayerProps = {
 };
 
 function blobUrlFromBase64(base64: string): string {
-  return chatReplyAudioObjectUrl(base64);
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return URL.createObjectURL(new Blob([bytes], { type: "audio/mpeg" }));
 }
 
 function formatTime(seconds: number): string {
