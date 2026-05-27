@@ -106,7 +106,9 @@ export class ChatWebSocketClient {
           finish(resolve);
         };
 
-        ws.onmessage = (event) => this.handleMessage(String(event.data));
+        ws.onmessage = (event) => {
+          void this.processMessage(event.data);
+        };
 
         ws.onerror = () => {
           finish(() => reject(new Error("WebSocket error")));
@@ -142,6 +144,18 @@ export class ChatWebSocketClient {
     }
   }
 
+  private async processMessage(data: string | Blob | ArrayBuffer): Promise<void> {
+    let raw: string;
+    if (typeof data === "string") {
+      raw = data;
+    } else if (data instanceof Blob) {
+      raw = await data.text();
+    } else {
+      raw = new TextDecoder().decode(data);
+    }
+    this.handleMessage(raw);
+  }
+
   private handleMessage(raw: string): void {
     const trimmed = raw.trim();
     if (trimmed === CHAT_WS_END_MARKER) {
@@ -150,7 +164,7 @@ export class ChatWebSocketClient {
     }
 
     try {
-      const parsed = JSON.parse(trimmed) as { audio_base64?: string };
+      const parsed = JSON.parse(trimmed) as { audio_base64?: string | null };
       const audio = parsed.audio_base64?.trim();
       if (audio) {
         this.handlers?.onAudioBase64?.(audio);
