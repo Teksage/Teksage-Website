@@ -65,8 +65,8 @@ export const NAV_TAB = {
 export const STORAGE_KEYS = {
   authToken: "teksage_auth_token",
   refreshToken: "teksage_refresh_token",
-  userId: "teksage_user_id",
-  userProfile: "teksage_user_profile",
+  /** Zustand persist — user, token, isAuthenticated */
+  authStore: "teksage-auth-store",
   language: "teksage_language",
   consultationDraft: "teksage_consultation_draft",
   consultationSummary: "teksage_consultation_summary",
@@ -75,6 +75,12 @@ export const STORAGE_KEYS = {
   onboardingSeen: "teksage_onboarding_seen",
   /** Flutter `seenWelcomeMessage`. */
   welcomeSeen: "teksage_welcome_seen",
+} as const;
+
+/** Deprecated auth keys — migrated to `STORAGE_KEYS.authStore`; cleared on logout. */
+export const LEGACY_AUTH_STORAGE_KEYS = {
+  userId: "teksage_user_id",
+  userProfile: "teksage_user_profile",
 } as const;
 
 // Pagination

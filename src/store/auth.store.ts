@@ -1,8 +1,7 @@
+import { STORAGE_KEYS } from "@/lib/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { UserProfile } from "@/types";
-
-const ZUSTAND_AUTH_STORAGE_KEY = "teksage-auth-store";
 
 interface AuthState {
   user: UserProfile | null;
@@ -39,7 +38,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: ZUSTAND_AUTH_STORAGE_KEY,
+      name: STORAGE_KEYS.authStore,
       partialize: (state) => ({
         user: state.user,
         token: state.token,

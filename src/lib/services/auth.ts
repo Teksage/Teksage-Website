@@ -84,8 +84,6 @@ function persistAuthTokens(auth: AuthResponse): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEYS.authToken, auth.token);
   localStorage.setItem(STORAGE_KEYS.refreshToken, auth.refreshToken);
-  localStorage.setItem(STORAGE_KEYS.userId, auth.user.id);
-  localStorage.setItem(STORAGE_KEYS.userProfile, JSON.stringify(auth.user));
   setAuthCookie(auth.token);
 }
 
