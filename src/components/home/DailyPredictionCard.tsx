@@ -54,11 +54,7 @@ export function DailyPredictionCard({
           <div className="mt-2 w-full rounded-[1.05rem] bg-white px-2 py-2.5 shadow-sm">
             {isLoading ? (
               <div className="flex flex-col items-center gap-1 py-0.5">
-                <Loader
-                  variant="inline"
-                  size="sm"
-                  label="Loading daily prediction"
-                />
+                <Loader variant="brand" size="sm" label="Loading daily prediction" />
                 <p className="text-center text-xs text-neutral-400">
                   {HD.loadingEllipsis}
                 </p>

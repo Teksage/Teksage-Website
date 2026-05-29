@@ -15,6 +15,7 @@ import { useSubscriptionPage } from "@/hooks/useSubscriptionPage";
 import { ROUTES } from "@/lib/constants/routes";
 import { isAutoPayEligiblePlan } from "@/lib/subscription-auto-pay";
 import { writeSubscriptionCheckout } from "@/lib/subscription-checkout-session";
+import { PageLoadingCenter } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 
 type SettingsSubscriptionsViewProps = { onBack: () => void };
@@ -63,8 +64,8 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
 
   if (loading) {
     return (
-      <div className="relative z-10 min-h-[40vh] bg-black px-5 py-8 text-white">
-        <p className="text-sm text-white/70">Loading...</p>
+      <div className="relative z-10 min-h-[40vh] bg-black">
+        <PageLoadingCenter />
       </div>
     );
   }

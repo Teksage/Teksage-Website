@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
+import { Loader } from "@/components/common/Loader";
 import { AstrologerMeetingHoroscope } from "@/components/astrologer/AstrologerMeetingHoroscope";
 import { useAstrologerEventDetail } from "@/hooks/useAstrologerEvents";
 import {
@@ -42,12 +43,7 @@ export function AstrologerMeetingHoroscopePage({
 
       {loading && (
         <div className="flex flex-1 items-center justify-center py-16">
-          <div
-            className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"
-            style={{
-              borderColor: `${ASTRO_PORTAL_COLORS.brandGreen} transparent transparent transparent`,
-            }}
-          />
+          <Loader variant="brand" size="lg" />
         </div>
       )}
 
