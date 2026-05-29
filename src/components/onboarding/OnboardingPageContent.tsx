@@ -7,8 +7,8 @@ import {
   ONBOARDING_SCREEN,
   ONBOARDING_SLIDES,
   ROUTES,
-  STORAGE_KEYS,
 } from "@/lib/constants";
+import { markOnboardingSeen } from "@/lib/onboarding-storage";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { APP_LANGUAGE_OPTIONS } from "@/lib/constants/settings-language";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ export function OnboardingPageContent() {
   const isLast = index === ONBOARDING_SLIDES.length - 1;
 
   function openLanguageDialog() {
-    localStorage.setItem(STORAGE_KEYS.onboardingSeen, "1");
+    markOnboardingSeen();
     setShowLanguageDialog(true);
   }
 

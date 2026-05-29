@@ -1,6 +1,7 @@
 "use client";
 
 import { useDashboard } from "@/hooks/useDashboard";
+import { useWelcomeRedirect } from "@/hooks/useWelcomeRedirect";
 import { formatHomeDashboardDate } from "@/lib/utils";
 import { ConsultationBanner } from "@/components/home/ConsultationBanner";
 import { PredictionCircles } from "@/components/home/PredictionCircles";
@@ -24,6 +25,7 @@ export default function HomePage() {
     error: dashboardError,
     hasExistingMatch,
   } = useDashboard();
+  useWelcomeRedirect();
   const { t, locale } = useAppLanguage();
 
   const greeting = user?.name

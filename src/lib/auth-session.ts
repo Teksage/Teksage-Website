@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from "@/lib/constants";
 import { clearAuthCookie } from "@/lib/auth-cookie";
+import { clearWelcomeMessageSeen } from "@/lib/onboarding-storage";
 import { ROUTES } from "@/lib/constants/routes";
 import { useAuthStore } from "@/store/auth.store";
 
@@ -14,6 +15,7 @@ const AUTH_LOCAL_STORAGE_KEYS = [
 export function clearAuthSession(): void {
   if (typeof window === "undefined") return;
   AUTH_LOCAL_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+  clearWelcomeMessageSeen();
   clearAuthCookie();
   useAuthStore.getState().clearAuth();
 }

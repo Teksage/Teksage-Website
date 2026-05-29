@@ -27,8 +27,9 @@ export default async function RootLayout({
     <html
       lang={htmlLangFromLocale(initialLocale)}
       className={`${urbanist.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <AppProviders initialLocale={initialLocale}>{children}</AppProviders>
       </body>
     </html>

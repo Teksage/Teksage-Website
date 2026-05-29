@@ -27,6 +27,13 @@ export const PUBLIC_ASSETS = {
 } as const;
 
 /** Flutter intro onboarding assets (`intro/welcomePage.dart`, `intro/onboardingPage.dart`). */
+/** Flutter `welcomePage.dart` (`welcomeLogo`, `welcomeCheckBox`, `welcomeBoxShadow`). */
+export const WELCOME_ASSETS = {
+  logo: flutterSvg("welcomeLogo.svg"),
+  check: flutterSvg("welcomeCheckBox.svg"),
+  shadow: flutterSvg("welcomeBoxShadow.svg"),
+} as const;
+
 export const ONBOARDING_ASSETS = {
   slide1: flutterImage("onBoard1.png"),
   slide2: flutterImage("onBoard2.png"),

@@ -2,8 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTES, STORAGE_KEYS } from "@/lib/constants";
+import { ROUTES } from "@/lib/constants";
 import { hasClientAuthToken } from "@/lib/auth-session";
+import { hasSeenOnboarding } from "@/lib/onboarding-storage";
 
 export default function RootPage() {
   const router = useRouter();
@@ -13,8 +14,7 @@ export default function RootPage() {
       router.replace(ROUTES.home);
       return;
     }
-    const seen = localStorage.getItem(STORAGE_KEYS.onboardingSeen) === "1";
-    router.replace(seen ? ROUTES.login : ROUTES.onboarding);
+    router.replace(hasSeenOnboarding() ? ROUTES.home : ROUTES.onboarding);
   }, [router]);
 
   return null;
