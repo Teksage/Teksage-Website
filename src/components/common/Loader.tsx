@@ -5,6 +5,7 @@ import { HalfTriangleDot } from "@/components/common/HalfTriangleDot";
 import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { LOADER_DEFAULT_ARIA_LABEL } from "@/lib/constants";
 import { LOADER_ICON_PX, LOADER_UI } from "@/lib/constants/loader-ui";
+import { PAGE_SHELL } from "@/lib/constants/page-shell";
 import { cn } from "@/lib/utils";
 import type { LoaderSize, LoaderProps } from "@/types";
 
@@ -14,12 +15,6 @@ const spinnerSizeClass: Record<LoaderSize, string> = {
   sm: "h-4 w-4 border-2",
   md: "h-8 w-8 border-2",
   lg: "h-12 w-12 border-4",
-};
-
-const inlineShellClass: Record<LoaderSize, string> = {
-  sm: LOADER_UI.inlineBoxSm,
-  md: LOADER_UI.inlineBoxMd,
-  lg: LOADER_UI.inlineBoxLg,
 };
 
 function resolveVariant(variant: LoaderProps["variant"]) {
@@ -39,6 +34,32 @@ function BrandLoaderMark({ size }: { size: LoaderSize }) {
       className="teksage-brand-logo-pulse object-contain"
       aria-hidden
     />
+  );
+}
+
+function LogoLoader({
+  size,
+  className,
+  label,
+  inline,
+}: {
+  size: LoaderSize;
+  className?: string;
+  label: string;
+  inline?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        inline ? "inline-flex shrink-0" : "flex",
+        "items-center justify-center",
+        className
+      )}
+      role="status"
+      aria-label={label}
+    >
+      <BrandLoaderMark size={size} />
+    </div>
   );
 }
 
@@ -72,29 +93,27 @@ export function Loader({
     );
   }
 
-  if (variant === "inline") {
-    return (
-      <div
-        className={cn(LOADER_UI.inlineShell, inlineShellClass[size], className)}
-        role="status"
-        aria-label={label}
-      >
-        <HalfTriangleDot className="scale-75" dotClassName="size-1.5" />
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={cn(
-        LOADER_UI.modalShell,
-        LOADER_UI.modalBox,
-        className
-      )}
-      role="status"
-      aria-label={label}
-    >
-      <BrandLoaderMark size={size} />
+    <LogoLoader
+      size={size}
+      className={className}
+      label={label}
+      inline={variant === "inline"}
+    />
+  );
+}
+
+/** Centered in-page loader — same logo as `LoadingOverlay`. */
+export function PageLoadingCenter({
+  size = "lg",
+  className,
+}: {
+  size?: LoaderSize;
+  className?: string;
+}) {
+  return (
+    <div className={cn(PAGE_SHELL.loadingCenter, className)}>
+      <Loader variant="brand" size={size} />
     </div>
   );
 }

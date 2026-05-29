@@ -7,7 +7,7 @@ export type LoaderVariant =
 export type LoaderSize = "sm" | "md" | "lg";
 
 export interface LoaderProps {
-  /** `brand` — Flutter `CustomLoader.show` card. `inline` — button/field embed. */
+  /** `brand` / `inline` — pulsing Teksage logo (no card). `inline` uses compact layout in buttons. */
   variant?: LoaderVariant;
   size?: LoaderSize;
   className?: string;

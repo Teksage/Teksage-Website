@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { PageLoadingCenter } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
 import {
@@ -130,14 +131,7 @@ export function AstrologerMeetingsList({
       {/* List */}
       <div className="flex-1 overflow-y-auto">
         {loading ? (
-          <div className="flex items-center justify-center py-24">
-            <div
-              className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"
-              style={{
-                borderColor: `${ASTRO_PORTAL_COLORS.brandGreen} transparent transparent transparent`,
-              }}
-            />
-          </div>
+          <PageLoadingCenter />
         ) : meetings.length === 0 ? (
           <EmptyState isUpcoming={isUpcoming} />
         ) : (

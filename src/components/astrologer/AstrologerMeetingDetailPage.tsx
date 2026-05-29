@@ -3,6 +3,7 @@
 import { use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
+import { Loader } from "@/components/common/Loader";
 import { AstrologerMeetingDetail } from "@/components/astrologer/AstrologerMeetingDetail";
 import { useAstrologerEventDetail } from "@/hooks/useAstrologerEvents";
 import {
@@ -55,14 +56,7 @@ export function AstrologerMeetingDetailPage({
 
       {loading && (
         <div className="flex flex-1 items-center justify-center">
-          <div className="flex h-16 w-24 items-center justify-center rounded-2xl bg-white shadow">
-            <div
-              className="h-7 w-7 animate-spin rounded-full border-4 border-t-transparent"
-              style={{
-                borderColor: `${ASTRO_PORTAL_COLORS.brandGreen} transparent transparent transparent`,
-              }}
-            />
-          </div>
+          <Loader variant="brand" size="lg" />
         </div>
       )}
 

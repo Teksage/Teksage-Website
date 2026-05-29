@@ -13,6 +13,7 @@ import {
   SETTINGS_SUBSCRIPTION_PAYMENT,
   SUBSCRIPTION_PAYMENT_LAYOUT,
 } from "@/lib/constants/settings-subscription-payment";
+import { PageLoadingCenter } from "@/components/common/Loader";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
 import {
@@ -163,7 +164,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   if (loading) {
     return (
       <div className={SETTINGS_UI.subscriptionPageShell}>
-        <p className="px-5 py-8 text-sm text-white/70">Loading...</p>
+        <PageLoadingCenter />
       </div>
     );
   }

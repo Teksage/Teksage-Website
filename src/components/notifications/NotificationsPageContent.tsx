@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
-import { Loader } from "@/components/common/Loader";
+import { PageLoadingCenter } from "@/components/common/Loader";
 import { NotificationConsultationList } from "@/components/notifications/NotificationConsultationList";
 import { NotificationDetailDialog } from "@/components/notifications/NotificationDetailDialog";
 import { NotificationGeneralList } from "@/components/notifications/NotificationGeneralList";
@@ -94,9 +94,7 @@ export function NotificationsPageContent({
         <NotificationsTabBar tab={tab} onTabChange={setTab} />
 
         {loading ? (
-          <div className={PAGE_SHELL.loadingCenter}>
-            <Loader />
-          </div>
+          <PageLoadingCenter />
         ) : error ? (
           <p className="px-5 py-12 text-center text-sm text-black/60">
             {NS.loadFailed}

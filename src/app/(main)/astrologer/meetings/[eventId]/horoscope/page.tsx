@@ -1,5 +1,6 @@
 import { Suspense, use } from "react";
 import { AstrologerMeetingHoroscopePage } from "@/components/astrologer/AstrologerMeetingHoroscopePage";
+import { Loader } from "@/components/common/Loader";
 
 interface PageProps {
   params: Promise<{ eventId: string }>;
@@ -12,7 +13,7 @@ export default function AstrologerMeetingHoroscopeRoute({ params }: PageProps) {
     <Suspense
       fallback={
         <div className="flex min-h-screen items-center justify-center bg-white">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-brand-primary)] border-t-transparent" />
+          <Loader variant="brand" size="lg" />
         </div>
       }
     >

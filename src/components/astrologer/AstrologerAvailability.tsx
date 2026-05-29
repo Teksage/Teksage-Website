@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { format, addDays, startOfWeek, isBefore, isToday, isSameDay } from "date-fns";
+import { PageLoadingCenter } from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS, SLOT_SESSIONS } from "@/lib/constants/astrologer-portal";
 import type { AstrologerAvailabilityProps } from "@/types";
@@ -384,14 +385,7 @@ export function AstrologerAvailability({
 
         {/* Slot sections */}
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div
-              className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"
-              style={{
-                borderColor: `${ASTRO_PORTAL_COLORS.brandGreen} transparent transparent transparent`,
-              }}
-            />
-          </div>
+          <PageLoadingCenter className="py-20" />
         ) : (
           <>
             <SessionSection
