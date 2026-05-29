@@ -123,6 +123,8 @@ export type {
   ChangeContactMode,
   SettingsRowVariant,
   SettingsRowProps,
+  SettingsModalDialogProps,
+  SettingsRateDialogProps,
 } from "./ui/settings";
 
 export type {

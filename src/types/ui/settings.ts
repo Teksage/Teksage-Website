@@ -86,3 +86,17 @@ export interface SettingsRowProps {
   onClick?: () => void;
   className?: string;
 }
+
+export interface SettingsModalDialogProps {
+  open: boolean;
+  onClose: () => void;
+  message: string;
+  confirmLabel: string;
+  onConfirm: () => void;
+}
+
+export interface SettingsRateDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onRateNow: () => void;
+}
