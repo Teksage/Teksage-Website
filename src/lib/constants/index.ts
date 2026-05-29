@@ -47,6 +47,7 @@ export * from "./chat-assets";
 export * from "./notifications-screen";
 export * from "./settings-change-contact";
 export * from "./onboarding-screen";
+export * from "./welcome-screen";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";
@@ -70,7 +71,10 @@ export const STORAGE_KEYS = {
   consultationDraft: "teksage_consultation_draft",
   consultationSummary: "teksage_consultation_summary",
   subscriptionCheckout: "teksage_subscription_checkout",
+  /** Flutter `seenOnboarding`. */
   onboardingSeen: "teksage_onboarding_seen",
+  /** Flutter `seenWelcomeMessage`. */
+  welcomeSeen: "teksage_welcome_seen",
 } as const;
 
 // Pagination
