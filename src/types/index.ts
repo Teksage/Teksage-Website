@@ -120,6 +120,7 @@ export type {
   ProfileAvatarProps,
   ProfileFieldProps,
   ProfilePhoneRowProps,
+  ChangeContactMode,
   SettingsRowVariant,
   SettingsRowProps,
 } from "./ui/settings";
@@ -174,6 +175,7 @@ export type {
   ProfileSettingsPayload,
   AppLanguageCode,
   AppLanguageOption,
+  ApplyLanguageOptions,
 } from "./settings";
 
 export type {

@@ -4,13 +4,25 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
-import { DASHBOARD_ASSETS, HOME_DASHBOARD, HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  HOME_LAYOUT,
+  ROUTES,
+} from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 /** Flutter `ChatBanner(fromChat: true)` — full-bleed strip under green app bar. */
 export function ChatConsultBanner() {
   const CS = useI18nConstants(CHAT_SCREEN);
   const HD = useI18nConstants(HOME_DASHBOARD);
+  const bookNowLabel = HD.bookNow;
+  const bookNowLineCount = bookNowLabel.split("\n").length;
+  const bookNowCharCount = bookNowLabel.replace(/\n/g, "").trim().length;
+  const useTallCta =
+    bookNowLineCount >= 2 ||
+    bookNowCharCount > HOME_DASHBOARD_UI.consultBannerCtaTallCharThreshold;
 
   return (
     <div
@@ -53,9 +65,12 @@ export function ChatConsultBanner() {
           href={ROUTES.consultation}
           returnPath={ROUTES.consultation}
           redirectHomeOnClose
-          className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[var(--color-brand-banner-dark)] shadow-sm"
+          className={cn(
+            HOME_DASHBOARD_UI.consultBannerCta,
+            useTallCta && HOME_DASHBOARD_UI.consultBannerCtaTall
+          )}
         >
-          {HD.bookNow}
+          {bookNowLabel}
         </AuthGatedLink>
       </div>
     </div>

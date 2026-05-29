@@ -29,7 +29,7 @@ export const HOME_LAYOUT = {
   floatingNavBottom: "pb-[env(safe-area-inset-bottom,0px)]",
   /** Main scroll clearance: pill height + safe area (matches `--main-bottom-nav-clearance`). */
   bottomNavClearance:
-    "pb-[calc(5.75rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
+    "pb-[calc(6.25rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
   /** Visible gap between last home strip (AI chat) and floating bottom nav. */
   chatBannerNavGap: "mb-5 sm:mb-6",
   floatingNavShadow: "shadow-[0_8px_32px_rgba(0,0,0,0.12)]",

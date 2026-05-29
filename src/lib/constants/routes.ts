@@ -5,10 +5,12 @@
 
 export const ROUTES = {
   root: "/",
+  onboarding: "/onboarding",
   home: "/home",
   panchang: "/panchang",
   horoscope: "/horoscope",
   settings: "/settings",
+  settingsChangeContact: "/settings/change-contact",
   settingsSubscriptions: "/settings/subscriptions",
   settingsSubscriptionPayment: "/settings/subscriptions/payment",
   profile: "/profile",

@@ -74,6 +74,8 @@ export interface ProfilePhoneRowProps {
   onVerificationSuccess?: () => void | Promise<void>;
 }
 
+export type ChangeContactMode = "email" | "mobile";
+
 export type SettingsRowVariant = "default" | "logout";
 
 export interface SettingsRowProps {
