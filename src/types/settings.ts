@@ -99,3 +99,8 @@ export interface AppLanguageOption {
   nativeLabel: string;
   backendName: string;
 }
+
+export type ApplyLanguageOptions = {
+  redirectTo?: string | null;
+  replace?: boolean;
+};

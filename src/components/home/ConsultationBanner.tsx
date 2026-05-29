@@ -24,6 +24,11 @@ export function ConsultationBanner({
 }: ConsultationBannerProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
   const buttonLabel = isAstrologer ? HD.myProfile : HD.bookNow;
+  const buttonLineCount = buttonLabel.split("\n").length;
+  const buttonCharCount = buttonLabel.replace(/\n/g, "").trim().length;
+  const useTallCta =
+    buttonLineCount >= 2 ||
+    buttonCharCount > HOME_DASHBOARD_UI.consultBannerCtaTallCharThreshold;
   const titleLines = isAstrologer
     ? HD.astrologerShort
     : HD.astrologerConsultationLines;
@@ -79,7 +84,10 @@ export function ConsultationBanner({
             returnPath={consultHref}
             redirectHomeOnClose
             inline
-            className={HOME_DASHBOARD_UI.consultBannerCta}
+            className={cn(
+              HOME_DASHBOARD_UI.consultBannerCta,
+              useTallCta && HOME_DASHBOARD_UI.consultBannerCtaTall
+            )}
           >
             {buttonLabel}
           </AuthGatedLink>

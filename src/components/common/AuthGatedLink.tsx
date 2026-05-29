@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { cn } from "@/lib/utils";
 import type { AuthGatedLinkProps } from "@/types/ui/auth-gated-link";
@@ -20,8 +21,14 @@ export function AuthGatedLink({
 }: AuthGatedLinkProps) {
   const { guardNavigation, isAuthenticated } = useAuthNavigation();
   const destination = returnPath ?? href;
+  const [mounted, setMounted] = useState(false);
 
-  if (isAuthenticated) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Token lives in localStorage — defer auth branch until after mount to avoid SSR mismatch.
+  if (mounted && isAuthenticated) {
     return (
       <Link href={href} className={className} onClick={onClick} aria-label={ariaLabel}>
         {children}

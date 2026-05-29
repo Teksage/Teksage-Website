@@ -12,8 +12,12 @@ export const HOME_DASHBOARD_UI = {
   consultBannerPortraitWrap:
     "relative z-[1] flex shrink-0 justify-center self-end pt-2.5 pl-2 pb-0.5 sm:pt-3 sm:pl-3 sm:pb-1",
   consultBannerTitle: `min-w-0 flex-1 whitespace-pre-line text-left ${TYPO.consultBannerBody} text-[var(--color-brand-consultation-heading)]`,
-  /** Pill CTA — far right, vertically centered (Flutter `homePage.dart` Row + design ref). */
-  consultBannerCta: `shrink-0 whitespace-nowrap rounded-full bg-white px-4 py-2.5 text-center ${TYPO.caption} text-[var(--color-brand-banner-dark)] shadow-sm transition-opacity hover:opacity-90 sm:px-5 sm:py-3`,
+  /** Pill CTA — allows multi-line labels (ta/hi/te/ml) via `whitespace-pre-line`. */
+  consultBannerCta: `flex shrink-0 items-center justify-center self-center max-w-[6.25rem] min-h-[2.5rem] whitespace-pre-line rounded-full bg-white px-3 py-2 text-center ${TYPO.caption} leading-snug text-[var(--color-brand-banner-dark)] shadow-sm transition-opacity hover:opacity-90 sm:max-w-[7rem] sm:px-4 sm:py-2.5`,
+  /** Extra vertical room when label is long or already has a line break. */
+  consultBannerCtaTall:
+    "min-h-[3.5rem] max-w-[7.25rem] py-3 leading-tight sm:min-h-[3.75rem] sm:max-w-[7.75rem] sm:py-3.5",
+  consultBannerCtaTallCharThreshold: 12,
   exploreSectionTitle: `${TYPO.exploreTitle} text-[color:var(--color-home-dashboard-heading)]`,
   exploreCircleLabel: `${TYPO.exploreCircle} text-[color:var(--color-home-dashboard-heading)]`,
   headerGreeting: `truncate ${TYPO.h3Bold} ${TYPO.leadingTight} lg:text-xl text-[color:var(--color-home-dashboard-heading)]`,

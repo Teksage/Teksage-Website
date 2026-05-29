@@ -45,6 +45,8 @@ export * from "./prediction-desktop-layout";
 export * from "./chat-screen";
 export * from "./chat-assets";
 export * from "./notifications-screen";
+export * from "./settings-change-contact";
+export * from "./onboarding-screen";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";
@@ -68,6 +70,7 @@ export const STORAGE_KEYS = {
   consultationDraft: "teksage_consultation_draft",
   consultationSummary: "teksage_consultation_summary",
   subscriptionCheckout: "teksage_subscription_checkout",
+  onboardingSeen: "teksage_onboarding_seen",
 } as const;
 
 // Pagination

@@ -3,6 +3,7 @@
 import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { SettingsModalDialog } from "@/components/settings/SettingsModalDialog";
 import { SettingsRateDialog } from "@/components/settings/SettingsRateDialog";
 import { ROUTES } from "@/lib/constants";
 import { SETTINGS_ASSETS } from "@/lib/constants/assets";
@@ -22,10 +23,10 @@ export function SettingsMenu() {
   const { openLoginPrompt } = useLoginPrompt();
   const { isAuthenticated, logout } = useAuth();
   const [rateOpen, setRateOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   function handleLogout() {
-    if (!window.confirm(SS.logoutConfirm)) return;
-    void logout();
+    setLogoutOpen(true);
   }
 
   function handleRateUs() {
@@ -93,6 +94,16 @@ export function SettingsMenu() {
         onRateNow={() => {
           setRateOpen(false);
           window.open(SS.playStoreUrl, "_blank", "noopener,noreferrer");
+        }}
+      />
+      <SettingsModalDialog
+        open={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+        message={t(SS.logoutConfirm)}
+        confirmLabel={t(SS.logoutLabel)}
+        onConfirm={() => {
+          setLogoutOpen(false);
+          void logout();
         }}
       />
     </>

@@ -74,6 +74,8 @@ export interface ProfilePhoneRowProps {
   onVerificationSuccess?: () => void | Promise<void>;
 }
 
+export type ChangeContactMode = "email" | "mobile";
+
 export type SettingsRowVariant = "default" | "logout";
 
 export interface SettingsRowProps {
@@ -83,4 +85,18 @@ export interface SettingsRowProps {
   href?: string;
   onClick?: () => void;
   className?: string;
+}
+
+export interface SettingsModalDialogProps {
+  open: boolean;
+  onClose: () => void;
+  message: string;
+  confirmLabel: string;
+  onConfirm: () => void;
+}
+
+export interface SettingsRateDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onRateNow: () => void;
 }
