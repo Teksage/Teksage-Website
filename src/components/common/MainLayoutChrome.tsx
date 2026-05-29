@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { BottomNav } from "@/components/common/BottomNav";
 import { DesktopMainNav } from "@/components/common/DesktopMainNav";
 import { ProtectedRoutePrompt } from "@/components/common/ProtectedRoutePrompt";
-import { LoginPromptProvider } from "@/contexts/LoginPromptContext";
 import { HOME_LAYOUT, ROUTES } from "@/lib/constants";
 import {
   isConsultationCheckoutPath,
@@ -25,7 +24,7 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const hideBottomNav = isChatRoute || isSubscriptionFlow;
 
   return (
-    <LoginPromptProvider>
+    <>
       <Suspense fallback={null}>
         <ProtectedRoutePrompt />
       </Suspense>
@@ -50,6 +49,6 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
           {hideBottomNav ? null : <BottomNav />}
         </div>
       </div>
-    </LoginPromptProvider>
+    </>
   );
 }

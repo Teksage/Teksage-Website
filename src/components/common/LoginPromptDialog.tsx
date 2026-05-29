@@ -18,8 +18,17 @@ export function LoginPromptDialog({ open, onClose, onLoginNow }: LoginPromptDial
   if (!open) return null;
 
   return (
-    <div className={DIALOG_UI.overlay} role="dialog" aria-modal aria-labelledby="login-prompt-title">
-      <div className={DIALOG_UI.card}>
+    <div
+      className={DIALOG_UI.overlay}
+      role="dialog"
+      aria-modal
+      aria-labelledby="login-prompt-title"
+      onClick={onClose}
+    >
+      <div
+        className={DIALOG_UI.card}
+        onClick={(event) => event.stopPropagation()}
+      >
         <button
           type="button"
           onClick={onClose}

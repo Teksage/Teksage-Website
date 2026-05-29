@@ -1,23 +1,40 @@
-import { STORAGE_KEYS } from "@/lib/constants";
+import { removeLegacyAuthKeys } from "@/lib/auth-persist";
 import { clearAuthCookie } from "@/lib/auth-cookie";
 import { clearWelcomeMessageSeen } from "@/lib/onboarding-storage";
+import { STORAGE_KEYS } from "@/lib/constants";
 import { ROUTES } from "@/lib/constants/routes";
 import { useAuthStore } from "@/store/auth.store";
 
 const AUTH_LOCAL_STORAGE_KEYS = [
   STORAGE_KEYS.authToken,
   STORAGE_KEYS.refreshToken,
-  STORAGE_KEYS.userId,
-  STORAGE_KEYS.userProfile,
+  STORAGE_KEYS.authStore,
 ] as const;
 
-/** Clears auth tokens, cookie, and persisted Zustand session (keeps language & other prefs). */
+/** Clears auth tokens, cookie, persisted Zustand session, and legacy keys. */
 export function clearAuthSession(): void {
   if (typeof window === "undefined") return;
   AUTH_LOCAL_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+  removeLegacyAuthKeys();
   clearWelcomeMessageSeen();
   clearAuthCookie();
   useAuthStore.getState().clearAuth();
+}
+
+/**
+ * localStorage token is the client source of truth. After DevTools "Clear site data"
+ * or clearing only localStorage, the auth cookie can outlive the token — middleware
+ * then skips `/login` while pages treat the user as logged out (blank screens).
+ */
+export function reconcileAuthSession(): void {
+  if (typeof window === "undefined") return;
+  if (hasClientAuthToken()) {
+    removeLegacyAuthKeys();
+    return;
+  }
+  clearAuthCookie();
+  useAuthStore.getState().clearAuth();
+  removeLegacyAuthKeys();
 }
 
 export function hasClientAuthToken(): boolean {

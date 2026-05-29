@@ -1,12 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { ChatPageView } from "@/components/chat/ChatPageView";
-import { useAuthStore } from "@/store/auth.store";
+import { PageLoadingCenter } from "@/components/common/Loader";
+import { isClientLoggedIn } from "@/lib/auth-session";
 
 export default function ChatPage() {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [ready, setReady] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  if (!isAuthenticated) return null;
+  useEffect(() => {
+    setLoggedIn(isClientLoggedIn());
+    setReady(true);
+  }, []);
+
+  if (!ready) return <PageLoadingCenter className="min-h-dvh" />;
+  if (!loggedIn) return null;
 
   return <ChatPageView />;
 }

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { LoginPromptDialog } from "@/components/common/LoginPromptDialog";
 import { ROUTES } from "@/lib/constants/routes";
 import { buildLoginRedirectPath } from "@/lib/login-redirect";
+import { reconcileAuthSession } from "@/lib/auth-session";
 
 export type OpenLoginPromptOptions = {
   returnPath?: string;
@@ -50,9 +51,11 @@ export function LoginPromptProvider({ children }: { children: ReactNode }) {
   }, [redirectHomeOnClose, router]);
 
   const handleLoginNow = useCallback(() => {
+    reconcileAuthSession();
+    const loginPath = buildLoginRedirectPath(returnPath);
     setOpen(false);
-    router.push(buildLoginRedirectPath(returnPath));
-  }, [returnPath, router]);
+    window.location.assign(loginPath);
+  }, [returnPath]);
 
   const value = useMemo(
     () => ({ openLoginPrompt, closeLoginPrompt }),
