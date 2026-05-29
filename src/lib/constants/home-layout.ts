@@ -19,17 +19,19 @@ export const HOME_LAYOUT = {
   homeCardRadius: "rounded-3xl",
   /** Stadium / pill ends — floating bottom nav (`bottomNavigation.dart`, radius 40). */
   pillStrip: "rounded-full",
-  bottomNavPadding: "px-2 py-2.5 sm:px-3 sm:py-3",
+  /** Flutter bar inset — compact pill (`responsiveHeight(0.0863)` ≈ 56–72px). */
+  bottomNavPadding: "px-3 py-2",
   bottomNavPillSurface: "bg-white",
   /** Horizontal inset for floating pill (Flutter `margin: EdgeInsets.symmetric(horizontal: 20)`). */
   floatingNavInsetX: "px-5",
   /** Transparent shell — page/tab background shows around the pill (Flutter `extendBody`). */
   floatingNavShell: "bg-transparent",
   /** Safe-area only — no extra gap that exposed gray body background. */
-  floatingNavBottom: "pb-[env(safe-area-inset-bottom,0px)]",
+  /** Flutter `bottomPadding` 20px when no safe-area. */
+  floatingNavBottom:
+    "pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]",
   /** Main scroll clearance: pill height + safe area (matches `--main-bottom-nav-clearance`). */
-  bottomNavClearance:
-    "pb-[calc(6.25rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
+  bottomNavClearance: "pb-[var(--main-bottom-nav-clearance)] lg:pb-8",
   /** Visible gap between last home strip (AI chat) and floating bottom nav. */
   chatBannerNavGap: "mb-5 sm:mb-6",
   floatingNavShadow: "shadow-[0_8px_32px_rgba(0,0,0,0.12)]",

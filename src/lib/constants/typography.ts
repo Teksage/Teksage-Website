@@ -89,7 +89,8 @@ export const TYPO = {
   leadingRelaxed: "leading-relaxed",
 
   navLabel: "text-nav font-semibold leading-tight sm:text-xs",
-  bottomNavLabel: "text-center text-nav font-semibold leading-tight sm:text-xs",
+  /** Flutter `fontSize11` — fixed 11px on mobile (no `sm:text-xs` bump). */
+  bottomNavLabel: "text-center text-[length:var(--text-nav)] text-nav font-semibold leading-none",
   badgeMicro: "text-micro font-semibold",
   badge2xs: "text-2xs font-semibold leading-tight",
   badge3xs: "text-3xs font-semibold leading-tight",

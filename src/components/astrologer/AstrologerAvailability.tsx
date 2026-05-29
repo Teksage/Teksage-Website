@@ -62,10 +62,10 @@ function isSlotInPast(range24: string, selectedDate: Date): boolean {
 interface WeekDatePickerProps {
   selectedDate: Date;
   onDateSelect: (d: Date) => void;
-  availableRanges: Set<string>;
+  markedDates: Set<string>;
 }
 
-function WeekDatePicker({ selectedDate, onDateSelect, availableRanges }: WeekDatePickerProps) {
+function WeekDatePicker({ selectedDate, onDateSelect, markedDates }: WeekDatePickerProps) {
   const today = useMemo(() => new Date(), []);
   const [weekStart, setWeekStart] = useState(() => {
     const d = new Date(today);
@@ -129,9 +129,8 @@ function WeekDatePicker({ selectedDate, onDateSelect, availableRanges }: WeekDat
             new Date(today.getFullYear(), today.getMonth(), today.getDate())
           );
           const isSelected = isSameDay(day, selectedDate);
-          const hasSlots =
-            !isPast &&
-            [...availableRanges].some(() => true); // simplified; full check would need date context
+          const dayKey = format(day, "yyyy-MM-dd");
+          const hasSlots = !isPast && markedDates.has(dayKey);
 
           return (
             <button
@@ -290,7 +289,6 @@ export function AstrologerAvailability({
   selectedDate,
   onDateChange,
   isEdit,
-  onEditChange,
   availability,
 }: AstrologerAvailabilityProps) {
   const [showBookedError, setShowBookedError] = useState(false);
@@ -299,6 +297,7 @@ export function AstrologerAvailability({
     bookedRanges,
     selectedRanges,
     setSelectedRanges,
+    markedDates,
     loading,
     saveMessage,
     setSaveMessage,
@@ -330,11 +329,18 @@ export function AstrologerAvailability({
       <div className="mx-auto max-w-2xl px-4 pb-4">
         {/* Divider */}
         <div className="border-b border-dashed border-black/20 py-4">
-          <p className="text-center text-sm font-semibold text-gray-900">
-            {isEdit
-              ? ASTRO_PORTAL_UI.avail.editingPrompt
-              : ASTRO_PORTAL_UI.avail.viewingPrompt}
-          </p>
+          <div className="space-y-1 text-center text-sm font-semibold text-gray-900">
+            <p>
+              {isEdit
+                ? ASTRO_PORTAL_UI.avail.editingPrompt
+                : ASTRO_PORTAL_UI.avail.viewingPrompt}
+            </p>
+            {isEdit ? (
+              <p className="text-xs font-medium text-gray-900/55">
+                {ASTRO_PORTAL_UI.avail.multiDateHint}
+              </p>
+            ) : null}
+          </div>
         </div>
 
         <div className="mt-7" />
@@ -342,17 +348,8 @@ export function AstrologerAvailability({
         {/* Week date picker */}
         <WeekDatePicker
           selectedDate={selectedDate}
-          onDateSelect={(d) => {
-            if (isEdit && availability.hasChanges) {
-              if (confirm(ASTRO_PORTAL_UI.avail.unsavedWarningBody)) {
-                onEditChange(false);
-                onDateChange(d);
-              }
-            } else {
-              onDateChange(d);
-            }
-          }}
-          availableRanges={selectedRanges}
+          onDateSelect={onDateChange}
+          markedDates={markedDates}
         />
 
         <div className="mt-5" />

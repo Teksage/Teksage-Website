@@ -84,11 +84,8 @@ export const ASTRO_PORTAL_UI = {
     bookedNotice: "This slot is already booked by a user and cannot be removed.",
     saveSuccess: "Slot Updated Successfully.",
     saveFail: "Please try again.",
-    unsavedWarningTitle: "Unsaved changes",
-    unsavedWarningBody:
-      "You have unsaved slot changes. Switching dates will discard them. Continue?",
-    unsavedConfirm: "Yes, discard",
-    unsavedCancel: "Keep editing",
+    multiDateHint:
+      "Pick slots on any date, then tap Save once to update all changed days.",
     emptyDayHint: "No slots set for this date. Tap Edit to add availability.",
   },
 

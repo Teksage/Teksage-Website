@@ -17,6 +17,14 @@ function longestNavLabelLength(labels: string[]): number {
   );
 }
 
+function bottomNavLabelClass(label: string, active: boolean): string {
+  const isMultiline = /\s/.test(label.trim());
+  return cn(
+    isMultiline ? NAV_UI.bottomNavLabelMultiline : NAV_UI.bottomNavLabelSingle,
+    active ? "text-[var(--color-brand-primary)]" : "text-black/60"
+  );
+}
+
 /**
  * Floating pill bottom nav — mirrors Flutter `bottomNavigation.dart`
  * (`extendBody: true`, horizontal margin, `BorderRadius.circular(40)`).
@@ -41,23 +49,22 @@ export function BottomNav({ className }: BottomNavProps) {
     isButton: boolean
   ) {
     const itemClass = cn(
-      "flex min-w-0 w-full flex-col items-center gap-1 px-0.5 py-1",
+      "flex min-w-0 w-full flex-col items-center",
+      NAV_UI.bottomNavItemGap,
+      "px-1 py-0.5",
       "transition-colors hover:bg-neutral-50/80",
       !isButton && "rounded-2xl"
     );
-    const labelClass = cn(
-      NAV_UI.bottomNavLabel,
-      active ? "text-[var(--color-brand-primary)]" : "text-neutral-500"
-    );
+    const labelClass = bottomNavLabelClass(label, active);
     const content = (
       <>
         <Image
           src={active ? tab.iconOn : tab.iconOff}
           alt=""
-          width={32}
-          height={33}
+          width={NAV_UI.bottomNavIconPx}
+          height={NAV_UI.bottomNavIconPx}
           unoptimized
-          className="size-8 shrink-0"
+          className={NAV_UI.bottomNavIconClass}
         />
         <span className={labelClass}>{label}</span>
       </>
@@ -99,7 +106,7 @@ export function BottomNav({ className }: BottomNavProps) {
           useTallNav && NAV_UI.bottomNavTallPill
         )}
       >
-        <div className="grid grid-cols-4 items-end gap-x-0.5">
+        <div className={cn("grid grid-cols-4 items-end", NAV_UI.bottomNavTabGap)}>
           {MAIN_NAV_ITEMS.map((tab, tabIndex) => {
             const active = pathname.startsWith(tab.href);
             const needsLogin = shouldPromptLogin(tab.href);

@@ -1,10 +1,13 @@
 import { TYPO } from "./typography";
 
-/** Bottom nav + desktop rail label typography. */
+/** Bottom nav — mirrors Flutter `bottomNavigation.dart` (`fontSize11`, ~24px icons). */
 export const NAV_UI = {
-  /** Flutter `fontSize11` + up to 2 lines for long translations (ta/hi/te). */
-  bottomNavLabel: `${TYPO.bottomNavLabel} w-full break-words line-clamp-2 leading-[1.15]`,
-  /** When any tab label exceeds this length, use taller pill (mirrors Flutter bar height). */
-  bottomNavLongLabelCharThreshold: 8,
-  bottomNavTallPill: "min-h-[4.35rem] py-3 sm:min-h-[4.5rem] sm:py-3.5",
+  bottomNavIconPx: 24,
+  bottomNavIconClass: "size-6 shrink-0",
+  bottomNavItemGap: "gap-0.5",
+  bottomNavTabGap: "gap-x-2.5",
+  bottomNavLabelSingle: `${TYPO.bottomNavLabel} w-full whitespace-nowrap text-center`,
+  bottomNavLabelMultiline: `${TYPO.bottomNavLabel} w-full text-center leading-[1.2] line-clamp-2 [overflow-wrap:anywhere] [word-break:keep-all]`,
+  bottomNavLongLabelCharThreshold: 10,
+  bottomNavTallPill: "min-h-[4rem] py-2",
 } as const;
