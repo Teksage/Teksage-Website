@@ -20,6 +20,18 @@ export function clearAuthSession(): void {
   useAuthStore.getState().clearAuth();
 }
 
+/**
+ * localStorage token is the client source of truth. After DevTools "Clear site data"
+ * or clearing only localStorage, the auth cookie can outlive the token — middleware
+ * then skips `/login` while pages treat the user as logged out (blank screens).
+ */
+export function reconcileAuthSession(): void {
+  if (typeof window === "undefined") return;
+  if (hasClientAuthToken()) return;
+  clearAuthCookie();
+  useAuthStore.getState().clearAuth();
+}
+
 export function hasClientAuthToken(): boolean {
   if (typeof window === "undefined") return false;
   return Boolean(localStorage.getItem(STORAGE_KEYS.authToken)?.trim());

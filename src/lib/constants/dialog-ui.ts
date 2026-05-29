@@ -4,8 +4,8 @@ import { TYPO } from "./typography";
 
 export const DIALOG_UI = {
   overlay:
-    "fixed inset-0 z-[100] flex items-center justify-center bg-black/10 p-6 backdrop-blur-sm",
-  card: "relative w-full max-w-sm rounded-xl bg-white p-4 shadow-xl",
+    "fixed inset-0 z-[250] flex items-center justify-center bg-black/10 p-6 backdrop-blur-sm",
+  card: "relative z-[251] w-full max-w-sm rounded-xl bg-white p-4 shadow-xl",
   closeBtn: "absolute right-3 top-3 flex size-8 items-center justify-center",
   bodyText: `px-4 pt-8 text-center ${TYPO.bodySemibold} ${TYPO.leadingRelaxed} text-[var(--color-brand-black)]`,
   primaryBtn: `min-w-[140px] rounded-full bg-[var(--color-brand-primary)] px-6 py-2.5 ${TYPO.bodySemibold} text-white`,

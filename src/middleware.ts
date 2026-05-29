@@ -1,26 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { STORAGE_KEYS } from "@/lib/constants";
-import { LOGIN_REDIRECT_QUERY, ROUTES } from "@/lib/constants/routes";
-import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
 
-function hasAuthCookie(request: NextRequest): boolean {
-  const token = request.cookies.get(STORAGE_KEYS.authToken)?.value;
-  return Boolean(token?.trim());
-}
-
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (pathname === ROUTES.login || pathname.startsWith(`${ROUTES.login}/`)) {
-    if (hasAuthCookie(request)) {
-      const raw = request.nextUrl.searchParams.get(LOGIN_REDIRECT_QUERY);
-      const dest = resolvePostLoginRedirectPath(raw);
-      return NextResponse.redirect(new URL(dest, request.url));
-    }
-    return NextResponse.next();
-  }
-
+/**
+ * Auth redirect for `/login` is handled client-side (`hasClientAuthToken`).
+ * Cookie-only sessions after clearing localStorage caused blank protected pages.
+ */
+export function middleware(_request: NextRequest) {
   return NextResponse.next();
 }
 

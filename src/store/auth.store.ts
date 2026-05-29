@@ -26,9 +26,17 @@ export const useAuthStore = create<AuthState>()(
       clearAuth: () => set({ user: null, token: null, isAuthenticated: false }),
 
       updateUser: (updates) =>
-        set((state) => ({
-          user: state.user ? { ...state.user, ...updates } : null,
-        })),
+        set((state) => {
+          if (!state.user) return { user: null };
+          const next = { ...state.user };
+          (Object.keys(updates) as (keyof UserProfile)[]).forEach((key) => {
+            const value = updates[key];
+            if (value !== undefined) {
+              (next as Record<string, unknown>)[key as string] = value;
+            }
+          });
+          return { user: next };
+        }),
     }),
     {
       name: ZUSTAND_AUTH_STORAGE_KEY,

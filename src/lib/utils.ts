@@ -28,7 +28,9 @@ export function formatHomeDashboardDate(
 export function isAstrologerHomeSession(
   user: UserProfile | null | undefined
 ): boolean {
-  const t = user?.userType?.trim().toLowerCase()
-  if (!t) return false
-  return t !== "customer"
+  if (!user) return false;
+  const legacy = user as UserProfile & { user_type?: string };
+  const t = user.userType?.trim().toLowerCase() ?? legacy.user_type?.trim().toLowerCase();
+  if (!t) return false;
+  return t !== "customer";
 }

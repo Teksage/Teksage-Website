@@ -30,12 +30,18 @@ function isForeignLocationText(location: string): boolean {
 
 /**
  * INR vs USD — mirrors Flutter `CurrencyService.getCurrency` (IN → INR).
- * Defaults to INR (India-first); only USD when clearly outside India.
+ * Profile `preferred_location` wins over phone country code (explicit user choice).
  */
 export function consultationCurrencyForLocation(
   preferredLocation?: string | null,
   context?: ConsultationCurrencyContext
 ): ConsultationCurrency {
+  const loc = preferredLocation?.trim() ?? "";
+  if (loc) {
+    if (isIndiaLocationText(loc)) return "INR";
+    if (isForeignLocationText(loc)) return "USD";
+  }
+
   const code = normalizeCountryCode(context?.countryCode);
   if (code === DEFAULT_COUNTRY_CODE_NUMERIC) return "INR";
 
@@ -44,10 +50,7 @@ export function consultationCurrencyForLocation(
     return "INR";
   }
 
-  const loc = preferredLocation?.trim() ?? "";
-  if (!loc) return "INR";
-  if (isIndiaLocationText(loc)) return "INR";
-  if (isForeignLocationText(loc)) return "USD";
+  if (code && code !== DEFAULT_COUNTRY_CODE_NUMERIC) return "USD";
 
   return "INR";
 }
