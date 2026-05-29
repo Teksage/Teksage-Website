@@ -106,7 +106,7 @@
   --yearly-landing-button-top: 75%;
   --yearly-landing-inset-x: 1.25rem;
   /** Matches `HOME_LAYOUT.bottomNavClearance` — floating nav + safe area. */
-  --main-bottom-nav-clearance: calc(6.25rem + env(safe-area-inset-bottom, 0px));
+  --main-bottom-nav-clearance: calc(4.75rem + env(safe-area-inset-bottom, 0px));
   --color-life-prediction-button-text: #54469d;
   --color-life-top: #9754f6;
   --color-life-bottom: #abaedb;

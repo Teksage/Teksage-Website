@@ -23,8 +23,8 @@ export default function AstrologerAvailabilityPage() {
       setIsEdit(false);
       return;
     }
-    await availability.saveSlots();
-    setIsEdit(false);
+    const ok = await availability.saveSlots();
+    if (ok) setIsEdit(false);
   }, [availability, isEdit]);
 
   const editSaveLabel = availability.saving
