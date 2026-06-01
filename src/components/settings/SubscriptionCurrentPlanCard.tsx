@@ -43,20 +43,16 @@ export function SubscriptionCurrentPlanCard({
             unoptimized
             className="h-auto w-[4.5rem]"
           />
-          <p className="mt-[18px] whitespace-pre-line text-lg font-semibold leading-none">
+          <p className="mt-[18px] whitespace-pre-line text-lg font-semibold leading-snug text-white">
             {SUB.currentPlan}
           </p>
         </div>
-        <div
-          className={cn(
-            "shrink-0 rounded-md bg-white/10 px-[15px] py-5 text-center"
-          )}
-        >
+        <div className={SETTINGS_UI.subscriptionPlanPriceBox}>
           <p className="text-price font-semibold leading-none">
             {symbol}
             {Math.round(price)}
           </p>
-          <p className="mt-2.5 text-xs leading-none text-white/60">
+          <p className="mt-2.5 text-xs leading-none text-white/80">
             {currentPlanTenureLine(tenureValue, tenureUnit, SUB.planLabel)}
           </p>
           <div className="mx-auto mt-2.5 h-[5px] w-[100px] overflow-hidden rounded-full bg-white/10">
@@ -65,7 +61,7 @@ export function SubscriptionCurrentPlanCard({
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <p className="mt-2.5 text-micro leading-none">
+          <p className="mt-2.5 text-micro leading-none text-white/90">
             {daysLeft} {SUB.daysLeft}
           </p>
         </div>
@@ -77,7 +73,7 @@ export function SubscriptionCurrentPlanCard({
             key={feature}
             className="flex items-center justify-between gap-3"
           >
-            <span className="text-sm text-white/50">{feature}</span>
+            <span className={SETTINGS_UI.subscriptionFeatureLabel}>{feature}</span>
             <Image
               src={SETTINGS_PAGE_ASSETS.planCheck}
               alt=""

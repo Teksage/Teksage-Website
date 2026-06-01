@@ -15,6 +15,10 @@ export const PREMIUM_PLAN_FEATURES = [
 ] as const;
 
 export const SETTINGS_UI = {
+  rowDefault:
+    "bg-[color-mix(in_srgb,var(--color-brand-black)_3%,transparent)] lg:border lg:border-neutral-100 lg:bg-white lg:shadow-[0_1px_2px_rgb(0_0_0_/0.04)]",
+  rowLogout:
+    "bg-[color-mix(in_srgb,var(--color-brand-error)_6%,transparent)] lg:border lg:border-[color-mix(in_srgb,var(--color-brand-error)_20%,transparent)]",
   whitePage: "relative z-10 min-h-0 flex-1 bg-white",
   languagePage: "relative z-10 min-h-0 flex-1 settings-language-gradient",
   subscriptionPage: "relative z-10 min-h-0 flex-1 bg-black text-white",
@@ -56,22 +60,30 @@ export const SETTINGS_UI = {
   legalHeroDate: "mt-2 text-center text-xs italic text-white",
   legalBody: "bg-white px-5 py-6",
   legalParagraph: "mt-2 text-sm leading-relaxed text-neutral-600",
-  subscriptionBg: "pointer-events-none absolute inset-x-0 top-12 z-0 h-64 w-full object-cover opacity-90",
+  subscriptionBg:
+    "pointer-events-none absolute inset-x-0 top-12 z-0 h-64 w-full object-cover opacity-60",
+  subscriptionHeroScrim:
+    "pointer-events-none absolute inset-x-0 top-12 z-[1] h-80 bg-gradient-to-b from-black/25 via-black/75 to-black",
   subscriptionPageShell:
-    "relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden bg-black text-white",
-  subscriptionScroll: "relative z-10 flex-1 overflow-y-auto",
+    "relative z-10 flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-black text-white",
+  subscriptionScroll: "relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain",
   subscriptionContent: "mx-auto w-full max-w-lg px-5 pt-2 lg:max-w-2xl lg:px-8",
+  subscriptionContentAboveFooter: "pb-6",
   subscriptionFooter:
-    "flex w-full shrink-0 justify-center bg-black px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] lg:px-8 lg:pb-8",
+    "sticky bottom-0 z-20 mt-auto flex w-full shrink-0 justify-center border-t border-white/10 bg-black px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] shadow-[0_-12px_32px_rgb(0_0_0_/0.65)] lg:px-8 lg:pb-6",
   subscriptionPrimaryBtn:
     "w-full max-w-md rounded-full bg-white py-4 text-center text-lg font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-95 disabled:opacity-60",
   subscriptionCard:
-    "relative z-10 rounded border border-white/12 bg-white/[0.04] px-5 pb-4 pt-6",
+    "relative z-10 rounded-xl border border-white/15 bg-[var(--color-subscription-card-surface)] px-5 pb-4 pt-6 shadow-[0_8px_32px_rgb(0_0_0_/0.5)] backdrop-blur-md",
+  subscriptionPlanPriceBox:
+    "shrink-0 rounded-md bg-[color-mix(in_srgb,var(--color-brand-black)_55%,transparent)] px-[15px] py-5 text-center ring-1 ring-white/15",
+  subscriptionFeatureLabel:
+    "text-sm font-medium leading-snug text-[var(--color-subscription-feature-text)]",
   subscriptionPlanRow: "relative z-10 mt-2.5 flex gap-2.5 lg:max-w-xl lg:mx-auto",
   subscriptionPlanCard:
     "relative mt-2.5 flex w-full flex-col items-center justify-center rounded border-[1.5px] px-1 py-2",
   subscriptionPlanCardIdle:
-    "h-[81px] border-white/12 bg-white/[0.04]",
+    "h-[81px] border-white/15 bg-[var(--color-subscription-plan-idle-surface)] backdrop-blur-sm",
   subscriptionPlanCardSelected:
     "h-[106px] border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)]",
   subscriptionTryPremiumTitle:

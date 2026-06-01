@@ -66,6 +66,9 @@
   --color-chat-bot-bubble: color-mix(in srgb, var(--color-brand-primary) 20%, white);
   --color-chat-bot-text: var(--color-brand-black);
   --color-chat-bot-border: color-mix(in srgb, var(--color-brand-primary) 28%, transparent);
+  --color-subscription-card-surface: color-mix(in srgb, var(--color-brand-black) 88%, transparent);
+  --color-subscription-plan-idle-surface: color-mix(in srgb, var(--color-brand-black) 72%, transparent);
+  --color-subscription-feature-text: rgb(255 255 255 / 0.94);
   /** Flutter `chatBG.png` — use via `.chat-shell-bg` (do not use dynamic Tailwind `bg-[url(...)]`). */
   --chat-shell-bg-image: url("/flutter-assets/images/chatBG.png");
   --color-brand-black: #000000;

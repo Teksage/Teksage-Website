@@ -121,5 +121,11 @@ export const SETTINGS_SECTION_TITLE: Record<SettingsSectionSlug, string> = {
 export const SETTINGS_SHELL_GRADIENT_CLASS = "settings-shell-gradient";
 
 export const SETTINGS_LAYOUT = {
-  menuContent: "relative z-10 mx-auto w-full max-w-lg px-5 pb-4 pt-6",
+  pageRoot: "relative min-h-dvh lg:bg-[var(--color-brand-bg)]",
+  /** Solid bar on desktop — `blend` alone disappears on the mint gradient. */
+  headerChrome:
+    "lg:border-b lg:border-[var(--color-home-dashboard-rule)] lg:bg-white lg:shadow-[0_1px_3px_rgb(0_0_0_/0.06)] lg:backdrop-blur-none",
+  desktopPanel:
+    "relative z-10 mx-auto w-full max-w-lg pb-4 pt-6 lg:my-5 lg:max-w-2xl lg:rounded-2xl lg:border lg:border-[var(--color-home-dashboard-rule)] lg:bg-white lg:px-6 lg:py-6 lg:shadow-[0_4px_24px_rgb(0_0_0_/0.07)]",
+  menuContent: "flex flex-col gap-3",
 } as const;
