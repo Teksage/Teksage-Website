@@ -37,7 +37,7 @@ export function LifePredictionCardSwiper({
   const prev = () => setIndex((i) => (i - 1 + total) % total);
 
   return (
-    <div className="px-5">
+    <div className="w-full min-w-0">
       <div
         className="relative rounded-[1.125rem] border-[3px] border-white/30 bg-[var(--color-life-container)] p-5 shadow-lg"
         onTouchStart={(e) => {

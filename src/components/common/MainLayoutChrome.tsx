@@ -6,7 +6,7 @@ import { BottomNav } from "@/components/common/BottomNav";
 import { DesktopMainNav } from "@/components/common/DesktopMainNav";
 import { HomeDesktopTopHeader } from "@/components/home/HomeDesktopTopHeader";
 import { ProtectedRoutePrompt } from "@/components/common/ProtectedRoutePrompt";
-import { HOME_LAYOUT, ROUTES } from "@/lib/constants";
+import { HOME_LAYOUT, ROUTES, isPredictionsPath } from "@/lib/constants";
 import {
   isConsultationCheckoutPath,
   isConsultationGreenFullBleedPath,
@@ -20,17 +20,20 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
   const isConsultCheckout = isConsultationCheckoutPath(pathname);
   const isSubscriptionFlow = pathname.startsWith(ROUTES.settingsSubscriptions);
+  const isPredictionPane =
+    isPredictionsPath(pathname) || pathname.startsWith(ROUTES.matchmaking);
   const isFullHeightPane =
     isChatRoute || isHomeRoute || isSubscriptionFlow;
   const hideBottomNav = isChatRoute || isSubscriptionFlow;
 
   const mainPaneClass = cn(
-    isFullHeightPane
-      ? "min-h-dvh p-0 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pb-0"
-      : cn(
-          HOME_LAYOUT.bottomNavClearance,
-          "min-h-0 lg:h-full lg:overflow-y-auto"
-        ),
+    isFullHeightPane &&
+      "min-h-dvh p-0 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pb-0",
+    isPredictionPane &&
+      "flex min-h-0 flex-1 flex-col overflow-y-auto p-0 lg:h-full lg:min-h-0",
+    !isFullHeightPane &&
+      !isPredictionPane &&
+      cn(HOME_LAYOUT.bottomNavClearance, "min-h-0 lg:h-full lg:overflow-y-auto"),
     isConsultGreen && "bg-[var(--color-consult-user-bg)]",
     isConsultCheckout && "bg-white",
     isSubscriptionFlow &&

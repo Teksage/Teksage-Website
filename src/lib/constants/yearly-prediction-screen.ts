@@ -20,9 +20,7 @@ export const YEARLY_DETAIL_SCREEN = {
   remedies: "Remedies",
   regenerateCta: "Regenerate",
   regenerating: "Regenerating…",
-  consultCta: "Astrology Consultation",
-  infoTooltip:
-    "Insights reflect information you've provided in your profile.",
+  consultCta: "Book Consultation",
   firstHalfPrefix: "First Half of",
   secondHalfPrefix: "Second Half of",
 } as const;
@@ -57,8 +55,3 @@ export const YEARLY_REMEDY_ENTRIES = [
   { key: "puja", label: "Puja" },
   { key: "charity", label: "Charity" },
 ] as const;
-
-export const YEARLY_LAYOUT = {
-  horizontalCardWidth: "min(86.67vw, 22rem)",
-  horizontalTrackInset: "pl-5",
-} as const;

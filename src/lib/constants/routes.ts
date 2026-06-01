@@ -38,5 +38,11 @@ export const ROUTES = {
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];
 
+export function isPredictionsPath(pathname: string): boolean {
+  return (
+    pathname === ROUTES.predictions || pathname.startsWith(`${ROUTES.predictions}/`)
+  );
+}
+
 /** Query key used by `SettingsMenu` and login return navigation. */
 export const LOGIN_REDIRECT_QUERY = "redirect" as const;

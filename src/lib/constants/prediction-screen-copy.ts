@@ -26,11 +26,10 @@ export const LIFE_LANDING_SCREEN = {
 } as const;
 
 export const LIFE_DETAIL_SCREEN = {
+  title: "Life Predictions",
   intro:
     "It's a privilege to guide you through the insights that your chart offers, especially at this meaningful stage of your life.",
-  consultCta: "Astrology Consultation",
-  infoTooltip:
-    "Insights reflect information you've provided in your profile.",
+  consultCta: "Book Consultation",
 } as const;
 
 export const MATCH_MAKING_FLUTTER = {

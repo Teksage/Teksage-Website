@@ -14,7 +14,7 @@ import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useAuthStore } from "@/store/auth.store";
 import { fetchPredictionDetail, isPredictionError } from "@/lib/services/predictions";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
-import { LIFE_SHELL_GRADIENT_CLASS, PAGE_SHELL, ROUTES } from "@/lib/constants";
+import { PAGE_SHELL, ROUTES } from "@/lib/constants";
 import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { cn } from "@/lib/utils";
 import type { PredictionDetailKind, PredictionDetailViewModel } from "@/types/prediction-detail";
@@ -116,22 +116,14 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
 
   if (kind === "yearly") {
     return (
-      <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root, PAGE_SHELL.flutterFullBleed)}>
+      <div className={cn(PAGE_SHELL.column, PAGE_SHELL.flutterFullBleed, "w-full min-w-0")}>
         <YearlyPredictionBody onBackClick={() => router.back()} />
       </div>
     );
   }
   if (kind === "life") {
     return (
-      <div
-        className={cn(
-          PAGE_SHELL.column,
-          PAGE_SHELL.root,
-          PAGE_SHELL.flutterFullBleed,
-          LIFE_SHELL_GRADIENT_CLASS,
-          "bg-gradient-to-b from-[#9754f6] to-[#abaedb]"
-        )}
-      >
+      <div className={cn(PAGE_SHELL.column, PAGE_SHELL.flutterFullBleed, "w-full min-w-0")}>
         <LifePredictionBody onBackClick={() => router.back()} />
       </div>
     );

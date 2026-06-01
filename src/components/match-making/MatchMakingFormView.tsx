@@ -141,34 +141,34 @@ export function MatchMakingFormView() {
           <p className="text-center text-sm font-semibold text-white">{err}</p>
         ) : null}
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
-        <MatchMakingPartnerSection
-          variant="boy"
-          name={boyName}
-          onNameChange={setBoyName}
-          rashi={boyRashi}
-          onRashiChange={(v) => {
-            setBoyRashi(v);
-            setBoyNak("");
-          }}
-          nakshatra={boyNak}
-          onNakshatraChange={setBoyNak}
-          rashiList={rashi}
-          nakshatraList={boyNaks}
-        />
-        <MatchMakingPartnerSection
-          variant="girl"
-          name={girlName}
-          onNameChange={setGirlName}
-          rashi={girlRashi}
-          onRashiChange={(v) => {
-            setGirlRashi(v);
-            setGirlNak("");
-          }}
-          nakshatra={girlNak}
-          onNakshatraChange={setGirlNak}
-          rashiList={rashi}
-          nakshatraList={girlNaks}
-        />
+          <MatchMakingPartnerSection
+            variant="boy"
+            name={boyName}
+            onNameChange={setBoyName}
+            rashi={boyRashi}
+            onRashiChange={(v) => {
+              setBoyRashi(v);
+              setBoyNak("");
+            }}
+            nakshatra={boyNak}
+            onNakshatraChange={setBoyNak}
+            rashiList={rashi}
+            nakshatraList={boyNaks}
+          />
+          <MatchMakingPartnerSection
+            variant="girl"
+            name={girlName}
+            onNameChange={setGirlName}
+            rashi={girlRashi}
+            onRashiChange={(v) => {
+              setGirlRashi(v);
+              setGirlNak("");
+            }}
+            nakshatra={girlNak}
+            onNakshatraChange={setGirlNak}
+            rashiList={rashi}
+            nakshatraList={girlNaks}
+          />
         </div>
         <button
           type="submit"

@@ -11,17 +11,19 @@ export function LifePredictionShell({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "relative w-full min-w-0 max-w-none min-h-dvh",
-        LIFE_SHELL_GRADIENT_CLASS,
-        "bg-gradient-to-b from-[#9754f6] to-[#abaedb]",
-        "-mb-[var(--main-bottom-nav-clearance)] lg:mb-0",
-        className
-      )}
-    >
+    <>
       <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.life} />
-      <div className="relative z-10 w-full min-w-0 min-h-dvh">{children}</div>
-    </div>
+      <div
+        className={cn(
+          "relative z-10 w-full min-w-0",
+          LIFE_SHELL_GRADIENT_CLASS,
+          "bg-gradient-to-b from-[#9754f6] to-[#abaedb]",
+          "-mb-[var(--main-bottom-nav-clearance)] lg:mb-0",
+          className
+        )}
+      >
+        {children}
+      </div>
+    </>
   );
 }

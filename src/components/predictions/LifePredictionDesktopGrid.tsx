@@ -29,7 +29,7 @@ export function LifePredictionDesktopGrid({
   sections: { title: string; content: string }[];
 }) {
   return (
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
+    <div className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6 xl:grid-cols-3 xl:gap-8">
       {sections.map((section) => (
         <article
           key={section.title}

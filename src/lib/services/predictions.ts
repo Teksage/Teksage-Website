@@ -95,9 +95,8 @@ export type YearlyInitialResult =
   | { ready: "error"; message: string };
 
 /**
- * `GET …/yearly?generate=false` — always show the landing UI (Generate button).
- * The API may return a cached prediction; we do not open the detail view until
- * the user taps Generate (`generate=true`).
+ * `GET …/yearly?generate=false` — mirrors Flutter `getYearlyPrediction()`:
+ * show detail when cached data exists, otherwise landing (Generate).
  */
 export async function fetchYearlyPredictionInitial(
   signal?: AbortSignal
@@ -110,7 +109,17 @@ export async function fetchYearlyPredictionInitial(
   if ("message" in parsed) {
     return { ready: "error", message: parsed.message };
   }
-  return { ready: "landing" };
+  const vm = toPredictionViewModel("yearly", parsed.data, parsed.predictionId);
+  if (isPredictionError(vm)) {
+    if (vm.message === PREDICTION_PARSE_EMPTY) {
+      return { ready: "landing" };
+    }
+    return { ready: "error", message: vm.message };
+  }
+  if (vm.kind !== "yearly" || !hasYearlyPredictionContent(vm)) {
+    return { ready: "landing" };
+  }
+  return { ready: "detail", data: vm };
 }
 
 /** `GET …/yearly?generate=true` — create/regenerate then show detail. */
@@ -137,8 +146,8 @@ function hasLifePredictionContent(
 }
 
 /**
- * `GET …/life?generate=false` — always show the landing UI (Generate button).
- * Cached predictions are ignored until the user taps Generate.
+ * `GET …/life?generate=false` — mirrors Flutter `getLifePrediction()`:
+ * show detail when cached data exists, otherwise landing (Generate).
  */
 export async function fetchLifePredictionInitial(
   signal?: AbortSignal
@@ -151,7 +160,17 @@ export async function fetchLifePredictionInitial(
   if ("message" in parsed) {
     return { ready: "error", message: parsed.message };
   }
-  return { ready: "landing" };
+  const vm = toPredictionViewModel("life", parsed.data, parsed.predictionId);
+  if (isPredictionError(vm)) {
+    if (vm.message === PREDICTION_PARSE_EMPTY) {
+      return { ready: "landing" };
+    }
+    return { ready: "error", message: vm.message };
+  }
+  if (!hasLifePredictionContent(vm)) {
+    return { ready: "landing" };
+  }
+  return { ready: "detail", data: vm };
 }
 
 /** `GET …/life?generate=true` — create/regenerate then show detail. */
