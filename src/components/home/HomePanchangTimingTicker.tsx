@@ -1,14 +1,10 @@
 "use client";
 
-import { HomePanchangTimingStrip } from "@/components/home/HomePanchangTimingStrip";
+import { HomePanchangTimingMobileCard } from "@/components/home/HomePanchangTimingMobileCard";
 import type { HomePanchangTimingTickerProps } from "@/types/ui/home-panchang-timing";
 import { cn } from "@/lib/utils";
 
-/** Mobile home — timings strip below greeting (`lg:hidden`). */
+/** @deprecated Prefer placing `HomePanchangTimingMobileCard` in home main scroll. */
 export function HomePanchangTimingTicker({ className }: HomePanchangTimingTickerProps) {
-  return (
-    <div className={cn("shrink-0 lg:hidden", className)}>
-      <HomePanchangTimingStrip variant="light" />
-    </div>
-  );
+  return <HomePanchangTimingMobileCard className={cn("lg:hidden", className)} />;
 }

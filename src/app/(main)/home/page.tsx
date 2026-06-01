@@ -8,7 +8,7 @@ import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
-import { HomePanchangTimingTicker } from "@/components/home/HomePanchangTimingTicker";
+import { HomePanchangTimingMobileCard } from "@/components/home/HomePanchangTimingMobileCard";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
@@ -47,8 +47,6 @@ export default function HomePage() {
         unreadCount={unreadCount}
       />
 
-      <HomePanchangTimingTicker className={cn(PAGE_SHELL.contentLayer, "lg:hidden")} />
-
       <div className={cn("relative z-10 flex min-h-0 flex-1 flex-col lg:h-full lg:flex-row")}>
         <main
           className={cn(
@@ -65,6 +63,7 @@ export default function HomePage() {
             isLoggedIn={isAuthenticated}
             isAstrologer={isAuthenticated && isAstrologer}
           />
+          <HomePanchangTimingMobileCard />
 
           <div
             className={cn(

@@ -30,6 +30,18 @@ export const HOME_PANCHANG_TIMING_UI = {
   valueLight: "text-xs font-bold leading-snug text-[var(--color-brand-black)]",
   ctaOnPrimary: `${TYPO.caption} font-semibold text-white underline-offset-2 hover:underline`,
   ctaLight: `${TYPO.caption} font-bold text-[var(--color-brand-black)] underline-offset-2 hover:underline`,
+  /** Mobile home — card in main scroll (`HomePanchangTimingMobileCard`). */
+  mobileCard:
+    "rounded-2xl border border-[color-mix(in_srgb,var(--color-brand-primary)_22%,transparent)] bg-white p-4 shadow-[0_2px_12px_rgb(0_0_0_/0.06)]",
+  mobileTitle: `${TYPO.labelSemibold} text-[var(--color-brand-panchang)]`,
+  mobileRowGroup: "mt-3 space-y-0 divide-y divide-neutral-100",
+  mobileRow: "flex items-start justify-between gap-4 py-3 first:pt-0 last:pb-0",
+  mobileLabel:
+    "w-[6.75rem] shrink-0 text-xs font-bold uppercase tracking-wide text-[var(--color-brand-black)]",
+  mobileValue:
+    "min-w-0 flex-1 text-right text-xs font-bold leading-snug text-[var(--color-brand-black)]",
+  mobileValueStack: "flex min-w-0 flex-1 flex-col items-end gap-1",
+  mobileCta: `${TYPO.caption} mt-4 w-full rounded-full border border-[var(--color-brand-primary)] py-2.5 font-bold text-[var(--color-brand-primary)]`,
 } as const;
 
 export const HOME_PANCHANG_TIMING_ROW_IDS = {

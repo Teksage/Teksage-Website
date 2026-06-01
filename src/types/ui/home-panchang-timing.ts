@@ -11,6 +11,10 @@ export interface HomePanchangTimingTickerProps {
   className?: string;
 }
 
+export interface HomePanchangTimingMobileCardProps {
+  className?: string;
+}
+
 export interface HomePanchangTimingStripCellProps {
   label: string;
   value: string;
