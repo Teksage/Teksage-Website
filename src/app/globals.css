@@ -425,6 +425,39 @@
   }
 }
 
+/** Horoscope north chart — Flutter `CustomMarquee` on `ComingSoonContainer`. */
+@keyframes horoscope-coming-soon-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.horoscope-coming-soon-marquee {
+  animation: horoscope-coming-soon-marquee 14s linear infinite;
+}
+
+/** Flutter `CustomMarquee` ShaderMask — fade strip at left/right edges. */
+.horoscope-coming-soon-marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+}
+
 /** Flutter `LoadingAnimationWidget.halfTriangleDot` — three pulsing dots on a triangle. */
 @keyframes teksage-half-triangle-dot {
 
