@@ -40,6 +40,7 @@ export * from "./prediction-detail-screen";
 export * from "./prediction-assets";
 export * from "./prediction-screen-copy";
 export * from "./weekly-prediction-layout";
+export * from "./weekly-prediction-card-ui";
 export * from "./yearly-prediction-screen";
 export * from "./match-making-screen";
 export * from "./page-shell";

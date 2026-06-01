@@ -137,13 +137,20 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
     );
   }
 
+  const flutterFullBleedShell =
+    flutterShell &&
+    cn(
+      PAGE_SHELL.flutterFullBleed,
+      "flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0"
+    );
+
   return (
     <div
       className={cn(
         PAGE_SHELL.column,
-        PAGE_SHELL.root,
+        kind === "weekly" || kind === "daily" ? "h-full min-h-0" : PAGE_SHELL.root,
         "w-full bg-[var(--color-brand-bg)]",
-        flutterShell && PAGE_SHELL.flutterFullBleed
+        flutterFullBleedShell
       )}
     >
       <AppHeader
@@ -154,9 +161,10 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
       />
       <div
         className={cn(
-          flutterShell
-            ? PAGE_SHELL.flutterFullBleed
-            : "mx-auto w-full max-w-lg px-4 py-6 lg:max-w-3xl"
+          flutterFullBleedShell ??
+            (flutterShell
+              ? PAGE_SHELL.flutterFullBleed
+              : "mx-auto w-full max-w-lg px-4 py-6 lg:max-w-3xl")
         )}
       >
         {err ? (
