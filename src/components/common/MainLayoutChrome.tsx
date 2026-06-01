@@ -11,10 +11,12 @@ import {
   isConsultationCheckoutPath,
   isConsultationGreenFullBleedPath,
 } from "@/lib/constants/consultation-routes";
+import { useAuthStore } from "@/store/auth.store";
 import { cn } from "@/lib/utils";
 
 export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
@@ -25,6 +27,8 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const isFullHeightPane =
     isChatRoute || isHomeRoute || isSubscriptionFlow;
   const hideBottomNav = isChatRoute || isSubscriptionFlow;
+  /** Top header shows brand when logged in — avoid duplicating it in the sidebar. */
+  const hideSidebarBrand = isAuthenticated;
 
   const mainPaneClass = cn(
     isFullHeightPane &&
@@ -46,10 +50,10 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
         <ProtectedRoutePrompt />
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">
-        <HomeDesktopTopHeader />
+        {isAuthenticated ? <HomeDesktopTopHeader /> : null}
         <div className="flex min-h-0 flex-1">
           <div className={cn(isChatRoute && "hidden lg:block")}>
-            <DesktopMainNav hideBrand className="h-full" />
+            <DesktopMainNav hideBrand={hideSidebarBrand} className="h-full" />
           </div>
           <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
             <main className={mainPaneClass}>{children}</main>

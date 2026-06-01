@@ -5,11 +5,14 @@ import { HomePanchangTimingStrip } from "@/components/home/HomePanchangTimingStr
 import { APP_NAME, PUBLIC_ASSETS } from "@/lib/constants";
 import { HOME_EMBED_HEADER_UI } from "@/lib/constants/home-embed-header-ui";
 import { HOME_LAYOUT } from "@/lib/constants/home-layout";
+import { useAuthStore } from "@/store/auth.store";
 import type { HomeDesktopTopHeaderProps } from "@/types/ui/home-embed-header";
 import { cn } from "@/lib/utils";
 
 /** Desktop (`lg+`) — brand above sidebar; timings above main content on all main routes. */
 export function HomeDesktopTopHeader({ className }: HomeDesktopTopHeaderProps) {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
   return (
     <header
       className={cn(HOME_EMBED_HEADER_UI.desktopTopHeader, className)}
@@ -31,9 +34,11 @@ export function HomeDesktopTopHeader({ className }: HomeDesktopTopHeaderProps) {
         />
         <span className={HOME_EMBED_HEADER_UI.brandWordmark}>{APP_NAME}</span>
       </div>
-      <div className={HOME_EMBED_HEADER_UI.timingColumn}>
-        <HomePanchangTimingStrip variant="light" flush />
-      </div>
+      {isAuthenticated ? (
+        <div className={HOME_EMBED_HEADER_UI.timingColumn}>
+          <HomePanchangTimingStrip variant="light" flush />
+        </div>
+      ) : null}
     </header>
   );
 }

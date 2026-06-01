@@ -63,7 +63,7 @@ export default function HomePage() {
             isLoggedIn={isAuthenticated}
             isAstrologer={isAuthenticated && isAstrologer}
           />
-          <HomePanchangTimingMobileCard />
+          {isAuthenticated ? <HomePanchangTimingMobileCard /> : null}
 
           <div
             className={cn(

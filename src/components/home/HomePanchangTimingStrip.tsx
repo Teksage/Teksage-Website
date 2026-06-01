@@ -56,8 +56,10 @@ export function HomePanchangTimingStrip({
 }: HomePanchangTimingStripProps) {
   const copy = useI18nConstants(DESKTOP_SIDEBAR_PANCHANG_TIMING);
   const { guardNavigation } = useAuthNavigation();
-  const { isLoading, rahuKala, yamaKanda, auspiciousSlots } =
+  const { isAuthenticated, isLoading, rahuKala, yamaKanda, auspiciousSlots } =
     useSidebarPanchangTiming();
+
+  if (!isAuthenticated) return null;
 
   const placeholder = isLoading ? copy.loading : copy.unavailable;
   const onPrimary = variant === "onPrimary";
