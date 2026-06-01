@@ -5,8 +5,6 @@ export const WEEKLY_SCREEN = {
   greetingPrefix: "Good morning,",
   greetingSuffix: "Hope you're having a wonderful start to your day.",
   dayTabs: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const,
-  infoTooltip:
-    "Insights reflect information you've provided in your profile.",
 } as const;
 
 export const YEARLY_LANDING_SCREEN = {

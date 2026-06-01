@@ -19,11 +19,7 @@ export const PREDICTION_DETAIL_SCREEN = {
   sectionRelationship: "Relationship",
   sectionWealth: "Wealth",
   sectionHealth: "Health",
-  /** Flutter daily prediction header pill — 6:00 AM cutoff matches `formatHomeDashboardDate`. */
-  dailyScheduledPill: "Your daily predictions was scheduled for 6 AM",
-  /** Flutter `PlatformTextConfig.infoText` (iOS wording). */
-  dailyInfoTooltip:
-    "Insights reflect information you've provided in your profile.",
+  cautiousLabel: "Cautious",
   /** Flutter `dailyPrediction.dart` when `chandra_bala` is 8. */
   chandrashtamaLabel: "Chandrashtama",
 } as const;

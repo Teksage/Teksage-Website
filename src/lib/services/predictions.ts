@@ -4,6 +4,7 @@ import type {
   PredictionDetailKind,
   PredictionDetailViewModel,
 } from "@/types/prediction-detail";
+import { cautiousFromWeeklyDetail } from "@/lib/daily-prediction-cautious";
 import {
   parsePredictionApiBody,
   toPredictionViewModel,
@@ -11,6 +12,7 @@ import {
   PREDICTION_PARSE_EMPTY,
   type PredictionDetailError,
 } from "@/lib/prediction-api-parse";
+import type { DailyPredictionDetail } from "@/types/prediction-detail";
 import {
   LIFE_LANDING_SCREEN,
   YEARLY_LANDING_SCREEN,
@@ -50,7 +52,35 @@ async function fetchPredictionRaw(
 export async function fetchPredictionDetail(
   kind: PredictionDetailKind
 ): Promise<PredictionDetailViewModel | PredictionDetailError> {
-  return fetchPredictionRaw(kind, false);
+  if (kind !== "daily") {
+    return fetchPredictionRaw(kind, false);
+  }
+  return fetchDailyPredictionDetail();
+}
+
+async function fetchDailyPredictionDetail(): Promise<
+  DailyPredictionDetail | PredictionDetailError
+> {
+  const [daily, weekly] = await Promise.all([
+    fetchPredictionRaw("daily", false),
+    fetchPredictionRaw("weekly", false),
+  ]);
+
+  if (isPredictionError(daily)) return daily;
+  if (daily.kind !== "daily") {
+    return { message: "Unexpected prediction format" };
+  }
+
+  let cautious = daily.cautious;
+  if (
+    !cautious &&
+    !isPredictionError(weekly) &&
+    weekly.kind === "weekly"
+  ) {
+    cautious = cautiousFromWeeklyDetail(weekly);
+  }
+
+  return cautious ? { ...daily, cautious } : daily;
 }
 
 export async function generatePredictionDetail(

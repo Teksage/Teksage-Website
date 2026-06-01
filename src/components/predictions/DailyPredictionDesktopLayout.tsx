@@ -23,7 +23,7 @@ export function DailyPredictionDesktopLayout({
   const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   const { locale } = useAppLanguage();
   const dateLine = formatHomeDashboardDate(new Date(), locale);
-  const showBala = data.tharaBala || data.chandraBala;
+  const showBala = data.tharaBala || data.chandraBala || data.cautious;
   const summary = data.quote?.trim();
 
   return (
@@ -53,31 +53,12 @@ export function DailyPredictionDesktopLayout({
                 className="h-5 w-5"
               />
             </button>
-            <h1 className="flex min-w-0 flex-1 items-center justify-center gap-2 text-center text-lg font-bold text-white sm:text-xl">
-              <span className="truncate">{pageTitle}</span>
-              <button
-                type="button"
-                className="shrink-0 rounded-full p-0.5 hover:bg-white/10"
-                title={PD.dailyInfoTooltip}
-                aria-label={PD.dailyInfoTooltip}
-              >
-                <img
-                  src={DAILY_PREDICTION_ASSETS.toolTip}
-                  alt=""
-                  width={22}
-                  height={22}
-                  className="size-[22px] brightness-0 invert"
-                />
-              </button>
+            <h1 className="min-w-0 flex-1 truncate text-center text-lg font-bold text-white sm:text-xl">
+              {pageTitle}
             </h1>
             <span className="size-10 shrink-0 sm:w-[38px]" aria-hidden />
           </div>
-          <div className="mx-auto mt-4 max-w-xl rounded-xl border border-white/60 px-3 py-2.5 sm:mt-5 sm:px-5 sm:py-2.5">
-            <p className="text-center text-xs font-semibold text-white sm:text-sm sm:leading-snug">
-              {PD.dailyScheduledPill}
-            </p>
-          </div>
-          <p className="mt-3 text-center text-base font-semibold text-white sm:mt-4 sm:text-lg">
+          <p className="mt-4 text-center text-base font-semibold text-white sm:mt-5 sm:text-lg">
             {dateLine}
           </p>
         </div>
@@ -93,6 +74,7 @@ export function DailyPredictionDesktopLayout({
           <DailyPredictionBalaPanel
             tharaBala={data.tharaBala}
             chandraBala={data.chandraBala}
+            cautious={data.cautious}
           />
         ) : null}
 

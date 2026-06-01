@@ -104,20 +104,7 @@ export function WeeklyPredictionLayout({
               />
             </button>
             <div className="mt-2 flex flex-col items-center gap-4 text-center text-white">
-              <h1 className="flex items-center gap-2 text-xl font-bold lg:text-2xl">
-                {WS.title}
-                <button
-                  type="button"
-                  title={WS.infoTooltip}
-                  aria-label={WS.infoTooltip}
-                >
-                  <img
-                    src={WEEKLY_PREDICTION_ASSETS.toolTip}
-                    alt=""
-                    className="size-[22px] brightness-0 invert"
-                  />
-                </button>
-              </h1>
+              <h1 className="text-xl font-bold lg:text-2xl">{WS.title}</h1>
               <p className="text-lg font-medium leading-snug lg:max-w-xl">
                 {WS.greetingPrefix} {name}!<br />
                 {WS.greetingSuffix}

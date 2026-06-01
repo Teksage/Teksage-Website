@@ -9,6 +9,8 @@ export interface DailyPredictionDetail {
   quote?: string;
   tharaBala?: string;
   chandraBala?: string;
+  /** Weekly `short_prediction` for today (e.g. Comfort & Joy). */
+  cautious?: string;
   predictionId: number | null;
 }
 
