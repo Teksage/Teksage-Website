@@ -6,7 +6,6 @@ import { useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationAstroCard } from "@/components/consultation/ConsultationAstroCard";
-import { ConsultationFilterChips } from "@/components/consultation/ConsultationFilterChips";
 import { consultationAstrologerPath } from "@/lib/constants/consultation-routes";
 import { consultationRouteUserId } from "@/lib/consultation-display";
 import {
@@ -22,19 +21,10 @@ export function ConsultationListingView() {
   const C = useI18nConstants(CONSULTATION_SCREEN);
   const router = useRouter();
   const [dotIndex, setDotIndex] = useState(0);
-  const {
-    currency,
-    categories,
-    languages,
-    top,
-    more,
-    loading,
-    error,
-    removeCategory,
-    removeLanguage,
-  } = useConsultationListing();
+  const { currency, top, more, loading, error } = useConsultationListing();
 
-  const showCarousel = more.length > 0 && top.length > 0;
+  const hasOtherAstrologers = more.length > 0;
+  const showCarousel = hasOtherAstrologers && top.length > 0;
   const topSlice = top.slice(0, 5);
 
   return (
@@ -58,12 +48,6 @@ export function ConsultationListingView() {
           <h1 className={CONSULTATION_LISTING_LAYOUT.heroTitle}>
             {CL.topHeading}
           </h1>
-          <ConsultationFilterChips
-            categories={categories}
-            languages={languages}
-            onRemoveCategory={removeCategory}
-            onRemoveLanguage={removeLanguage}
-          />
           {error ? (
             <p className="mt-6 text-center text-sm text-white">
               {C.loadError}
@@ -120,19 +104,21 @@ export function ConsultationListingView() {
             </>
           )}
         </section>
-        {!loading && more.length > 0 ? (
+        {!loading && hasOtherAstrologers ? (
           <section className={CONSULTATION_LISTING_LAYOUT.body}>
             <h2 className={CONSULTATION_LISTING_LAYOUT.otherTitle}>
               {CL.otherHeading}
             </h2>
             <div className={CONSULTATION_LISTING_LAYOUT.grid}>
-              {more.map((a) => (
+              {more.map((astrologer) => (
                 <ConsultationAstroCard
-                  key={a.astrologer_id}
+                  key={astrologer.astrologer_id}
                   variant="grid"
-                  astrologer={a}
+                  astrologer={astrologer}
                   currency={currency}
-                  href={consultationAstrologerPath(consultationRouteUserId(a))}
+                  href={consultationAstrologerPath(
+                    consultationRouteUserId(astrologer)
+                  )}
                 />
               ))}
             </div>

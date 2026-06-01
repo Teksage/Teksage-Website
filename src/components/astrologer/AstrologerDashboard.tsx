@@ -102,12 +102,6 @@ export function AstrologerDashboard() {
           iconSrc={ASTROLOGER_ASSETS.calendarIcon}
         />
       </div>
-      <DashCard
-        title={ASTRO_PORTAL_UI.card.chatPrompts.title}
-        subtitle={ASTRO_PORTAL_UI.card.chatPrompts.subtitle}
-        href={ROUTES.astrologerChatPrompts}
-        iconSrc={ASTROLOGER_ASSETS.meetingIcon}
-      />
     </div>
   );
 }

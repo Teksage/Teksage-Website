@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { isClientLoggedIn } from "@/lib/auth-session";
+import type { HydratedLoggedInState } from "@/types/hydrated-auth";
 
-/** False on server and first paint; then mirrors `isClientLoggedIn()`. Prevents hydration mismatch. */
-export function useHydratedLoggedIn(): boolean {
+/** After `ready`, `loggedIn` mirrors `isClientLoggedIn()` without SSR mismatch. */
+export function useHydratedLoggedIn(): HydratedLoggedInState {
+  const [ready, setReady] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     setLoggedIn(isClientLoggedIn());
+    setReady(true);
   }, []);
 
-  return loggedIn;
+  return { ready, loggedIn };
 }

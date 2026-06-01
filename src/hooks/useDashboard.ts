@@ -16,7 +16,8 @@ import type { Notification } from "@/types";
 export function useDashboard() {
   const { version: languageVersion } = useAppLanguage();
   const { user } = useAuthStore();
-  const isAuthenticated = useHydratedLoggedIn();
+  const { ready: authReady, loggedIn } = useHydratedLoggedIn();
+  const isAuthenticated = authReady && loggedIn;
   const [dailyPrediction, setDailyPrediction] =
     useState<DailyPredictionSummary | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -51,7 +52,7 @@ export function useDashboard() {
         }
       });
     return () => { cancelled = true; };
-  }, [isAuthenticated, languageVersion]);
+  }, [authReady, loggedIn, languageVersion]);
 
   return {
     user,

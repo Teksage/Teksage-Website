@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { isClientLoggedIn } from "@/lib/auth-session";
+import { PageLoadingCenter } from "@/components/common/Loader";
 import { useLoginPrompt } from "@/contexts/LoginPromptContext";
+import { useHydratedLoggedIn } from "@/hooks/useHydratedLoggedIn";
 import type { ConsultationAuthGateProps } from "@/types/ui/consultation";
 
 /** Requires login before consultation booking — Flutter `LoginPromptDialog`. */
@@ -10,18 +11,21 @@ export function ConsultationAuthGate({
   children,
   redirectPath,
 }: ConsultationAuthGateProps) {
-  const loggedIn = isClientLoggedIn();
+  const { ready, loggedIn } = useHydratedLoggedIn();
   const { openLoginPrompt } = useLoginPrompt();
 
   useEffect(() => {
+    if (!ready) return;
     if (loggedIn) return;
     openLoginPrompt({
       returnPath: redirectPath,
       redirectHomeOnClose: true,
     });
-  }, [loggedIn, openLoginPrompt, redirectPath]);
+  }, [ready, loggedIn, openLoginPrompt, redirectPath]);
 
-  if (!loggedIn) return null;
+  if (!ready || !loggedIn) {
+    return <PageLoadingCenter className="min-h-dvh" />;
+  }
 
   return <>{children}</>;
 }

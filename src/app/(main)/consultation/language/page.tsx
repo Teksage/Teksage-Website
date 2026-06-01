@@ -1,5 +1,5 @@
-import { ConsultationLanguageView } from "@/components/consultation/ConsultationLanguageView";
+import { ConsultationEntryRedirect } from "@/components/consultation/ConsultationEntryRedirect";
 
 export default function ConsultationLanguagePage() {
-  return <ConsultationLanguageView />;
+  return <ConsultationEntryRedirect />;
 }
