@@ -41,17 +41,17 @@ export function buildPanchangTimingRows(
   const auspiciousBody = auspicious.length ? auspicious.join("\n") : undefined;
   const amirthathi = formatPanchangSegmentValue(panchang.amirthathiYoga, copy);
 
-  const all: PanchangTimingRow[] = [
-    { key: "rahuKala", label: labels.rahuKala, value: panchang.rahuKala ?? "" },
-    { key: "yamaKanda", label: labels.yamaKanda, value: panchang.yamaKanda ?? "" },
+  const all = [
+    { key: "rahuKala" as const, label: labels.rahuKala, value: panchang.rahuKala ?? "" },
+    { key: "yamaKanda" as const, label: labels.yamaKanda, value: panchang.yamaKanda ?? "" },
     {
-      key: "auspiciousTime",
+      key: "auspiciousTime" as const,
       label: labels.auspiciousTime,
       value: auspiciousBody ?? "",
     },
-    { key: "paksha", label: labels.paksha, value: panchang.paksha ?? "" },
-    { key: "amirthathiYoga", label: labels.amirthathiYoga, value: amirthathi },
-  ].filter((r) => r.value.trim());
+    { key: "paksha" as const, label: labels.paksha, value: panchang.paksha ?? "" },
+    { key: "amirthathiYoga" as const, label: labels.amirthathiYoga, value: amirthathi },
+  ].filter((r) => r.value.trim()) as PanchangTimingRow[];
 
   return {
     all,
