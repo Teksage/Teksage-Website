@@ -24,6 +24,8 @@ export const PUBLIC_ASSETS = {
   loginLogo: flutterSvg("loginLogo_ios.svg"),
   /** Flutter `logo_ios.svg` */
   appLogo: flutterSvg("logo_ios.svg"),
+  /** Browser tab icon — cropped from `loginLogo_ios.svg` (`src/app/icon.svg`). */
+  siteIcon: "/icon.svg",
 } as const;
 
 /** Home dashboard — same files as Flutter `imageConstant.dart` home / bottom nav. */
