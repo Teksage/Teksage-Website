@@ -9,6 +9,7 @@ import { MatchMakingKutaTable } from "@/components/match-making/MatchMakingKutaT
 import { MatchMakingShell } from "@/components/match-making/MatchMakingShell";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
+import { MATCH_MAKING_LAYOUT } from "@/lib/constants/match-making-layout";
 import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
@@ -35,33 +36,24 @@ export function MatchMakingDetailsLayout({
           <div className="absolute inset-0 match-details-hero-overlay" />
         </div>
 
-        <header
-          className={cn(
-            "relative z-20 grid grid-cols-[auto_1fr_auto] items-center pt-6",
-            PREDICTION_DESKTOP_LAYOUT.contentColumn,
-            PREDICTION_DESKTOP_LAYOUT.contentGutter
-          )}
-        >
-          <button type="button" onClick={onBackClick} className="p-2" aria-label="Go back">
+        <header className={MATCH_MAKING_LAYOUT.headerBar}>
+          <button
+            type="button"
+            onClick={onBackClick}
+            className={MATCH_MAKING_LAYOUT.backButton}
+            aria-label="Go back"
+          >
             <img
               src={MATCH_MAKING_ASSETS.appBarBack}
               alt=""
               className="h-5 w-5 brightness-0 invert"
             />
           </button>
-          <h1 className="text-center text-xl font-bold text-white lg:text-2xl">
-            {MM.pageTitle}
-          </h1>
+          <h1 className={MATCH_MAKING_LAYOUT.headerTitle}>{MM.pageTitle}</h1>
           <span className="size-9" aria-hidden />
         </header>
 
-        <div
-          className={cn(
-            "relative z-10 space-y-4 pb-24 pt-4 lg:pb-12",
-            PREDICTION_DESKTOP_LAYOUT.contentColumn,
-            PREDICTION_DESKTOP_LAYOUT.contentGutter
-          )}
-        >
+        <div className={MATCH_MAKING_LAYOUT.detailsContent}>
           <MatchMakingDetailsHeroCard data={data} />
           {kutas.length > 0 ? <MatchMakingKutaTable kutas={kutas} /> : null}
           {kutas.length > 0 ? <MatchMakingKutaDetailsList kutas={kutas} /> : null}

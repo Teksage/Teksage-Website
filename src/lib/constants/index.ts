@@ -46,6 +46,7 @@ export * from "./yearly-prediction-card-ui";
 export * from "./yearly-prediction-detail-layout";
 export * from "./life-prediction-detail-layout";
 export * from "./match-making-screen";
+export * from "./match-making-layout";
 export * from "./page-shell";
 export * from "./prediction-desktop-layout";
 export * from "./chat-screen";

@@ -10,7 +10,7 @@ import { MatchMakingPartnerSection } from "@/components/match-making/MatchMaking
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
-import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
+import { MATCH_MAKING_LAYOUT } from "@/lib/constants/match-making-layout";
 import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { cn } from "@/lib/utils";
 import {
@@ -103,40 +103,29 @@ export function MatchMakingFormView() {
   }
 
   return (
-    <div
-      className={cn(
-        PAGE_SHELL.column,
-        PAGE_SHELL.root,
-        "min-h-dvh bg-[linear-gradient(180deg,var(--color-match-top)_0%,var(--color-match-bottom)_100%)]"
-      )}
-    >
-      <header
-        className={cn(
-          "relative pb-2 pt-10 text-center text-white",
-          PREDICTION_DESKTOP_LAYOUT.contentColumn,
-          PREDICTION_DESKTOP_LAYOUT.contentGutter
-        )}
-      >
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="absolute left-3 top-8 p-2"
-          aria-label="Go back"
-        >
-          <img src={MATCH_MAKING_ASSETS.appBarBack} alt="" className="h-5 w-5 brightness-0 invert" />
-        </button>
-        <h1 className="text-xl font-bold">{MM.pageTitle}</h1>
-        <p className="mt-2 text-sm font-medium">{MM.subtitle}</p>
+    <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root, MATCH_MAKING_LAYOUT.pageRoot)}>
+      <header className="w-full shrink-0">
+        <div className={MATCH_MAKING_LAYOUT.heroInner}>
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className={MATCH_MAKING_LAYOUT.backButton}
+            aria-label="Go back"
+          >
+            <img
+              src={MATCH_MAKING_ASSETS.appBarBack}
+              alt=""
+              className="h-5 w-5 brightness-0 invert"
+            />
+          </button>
+          <div className={MATCH_MAKING_LAYOUT.heroCopy}>
+            <h1 className={MATCH_MAKING_LAYOUT.heroTitle}>{MM.pageTitle}</h1>
+            <p className={MATCH_MAKING_LAYOUT.heroSubtitle}>{MM.subtitle}</p>
+          </div>
+        </div>
       </header>
 
-      <form
-        onSubmit={(e) => void onSubmit(e)}
-        className={cn(
-          "flex flex-col gap-4 pb-12 pt-6",
-          PREDICTION_DESKTOP_LAYOUT.contentColumn,
-          PREDICTION_DESKTOP_LAYOUT.contentGutter
-        )}
-      >
+      <form onSubmit={(e) => void onSubmit(e)} className={MATCH_MAKING_LAYOUT.formBody}>
         {err ? (
           <p className="text-center text-sm font-semibold text-white">{err}</p>
         ) : null}
