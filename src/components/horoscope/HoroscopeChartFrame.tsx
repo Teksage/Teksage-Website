@@ -14,7 +14,9 @@ export function HoroscopeChartFrame({
   showTitle,
 }: HoroscopeChartFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [frameHeight, setFrameHeight] = useState(HOROSCOPE_CHART_FRAME.fallbackHeightPx);
+  const [frameHeight, setFrameHeight] = useState<number>(
+    HOROSCOPE_CHART_FRAME.fallbackHeightPx
+  );
 
   useEffect(() => {
     setFrameHeight(HOROSCOPE_CHART_FRAME.fallbackHeightPx);
