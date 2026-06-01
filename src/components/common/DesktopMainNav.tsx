@@ -9,6 +9,7 @@ import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
 import { DesktopNavGreeting } from "@/components/common/DesktopNavGreeting";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
 import { DesktopNavOtherPredictionsMenu } from "@/components/common/DesktopNavOtherPredictionsMenu";
+import { DesktopNavUnlockPremium } from "@/components/common/DesktopNavUnlockPremium";
 import {
   DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK,
   DESKTOP_SIDEBAR_BOOK_LINK,
@@ -35,6 +36,7 @@ export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavP
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
+  const showPremiumUpsell = isAuthenticated && !user?.isPremium;
   const consultSidebarLink = isAstrologer
     ? DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK
     : DESKTOP_SIDEBAR_BOOK_LINK;
@@ -71,10 +73,12 @@ export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavP
           hideBrand && "pt-4"
         )}
       >
-        <DesktopNavGreeting
-          userName={user?.name}
-          isAuthenticated={isAuthenticated}
-        />
+        {isAuthenticated ? (
+          <DesktopNavGreeting
+            userName={user?.name}
+            isAuthenticated={isAuthenticated}
+          />
+        ) : null}
 
         <DesktopNavAiChatCard />
 
@@ -161,6 +165,12 @@ export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavP
           label={HDS.settings}
           active={pathname.startsWith(DESKTOP_SIDEBAR_SETTINGS_LINK.href)}
         />
+
+        {showPremiumUpsell ? (
+          <div className="mt-auto pt-4">
+            <DesktopNavUnlockPremium />
+          </div>
+        ) : null}
       </nav>
     </aside>
   );

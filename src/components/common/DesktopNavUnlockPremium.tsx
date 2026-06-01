@@ -11,7 +11,6 @@ import { ROUTES } from "@/lib/constants/routes";
 
 export function DesktopNavUnlockPremium() {
   const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
-  const HOM = useI18nConstants(HOME_DASHBOARD_SIDEBAR_ASSETS);
   return (
     <div className="relative mt-auto rounded-2xl border border-[var(--color-brand-primary)]/15 bg-[var(--color-home-screen-mint)]/60 p-4">
       <Image
