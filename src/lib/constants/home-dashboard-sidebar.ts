@@ -17,7 +17,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
   lifePredictions: "Life Predictions",
   loveCompatibility: "Love Compatibility",
   notifications: "Notifications",
-  panchangam: "Panchangam",
+  panchangam: "Panchang",
   horoscope: "Horoscope",
   settings: "Settings",
   unlockPremium: "Unlock Premium",

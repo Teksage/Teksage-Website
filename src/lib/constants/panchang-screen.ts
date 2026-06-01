@@ -86,7 +86,7 @@ export const PANCHANG_LAYOUT = {
     "absolute right-3 top-[min(7.4vh,52px)] rounded-full border border-white/25 text-white hover:bg-white/10 lg:right-8 lg:top-10 lg:border-[color-mix(in_srgb,var(--color-brand-panchang)_40%,transparent)] lg:text-[var(--color-brand-panchang)] lg:hover:bg-black/5",
   content: "relative z-10 pb-4 text-[var(--color-brand-black)] lg:pb-8",
   contentColumn:
-    "mx-auto w-full max-w-md px-4 lg:max-w-3xl lg:px-8 xl:max-w-4xl",
+    "mx-auto w-full max-w-md px-4 lg:max-w-4xl lg:px-8 xl:max-w-5xl",
   infoDialog:
     "max-w-sm rounded-2xl border border-neutral-200 bg-white p-6 text-[var(--color-brand-black)] shadow-xl [&::backdrop]:bg-black/45",
   infoDialogTitle: "text-base font-semibold",
@@ -119,10 +119,15 @@ const panchangCardBorder =
 
 /** Panchang cards + section grid — mobile stack, desktop two-column upper block. */
 export const PANCHANG_SECTIONS = {
-  stack: "flex flex-col gap-2.5 pb-4 pt-1 lg:gap-6",
-  upperGrid: "flex flex-col gap-2.5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6",
-  columnStack: "flex flex-col gap-2.5 lg:gap-4",
-  card: `mx-auto w-full max-w-md ${panchangCardBorder} px-4 py-1 lg:max-w-none`,
-  pairRow: "mx-auto flex w-full max-w-md gap-2 lg:max-w-none",
+  stack: "flex flex-col gap-2.5 pb-4 pt-1 lg:gap-5",
+  upperGrid:
+    "flex flex-col gap-2.5 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-5 xl:gap-6",
+  columnStack: "flex min-h-0 flex-col gap-2.5 lg:gap-4",
+  rightColumn: "flex min-h-0 flex-col gap-2.5 lg:gap-4",
+  card: `mx-auto w-full max-w-md ${panchangCardBorder} px-4 py-1 lg:mx-0 lg:max-w-none lg:h-full`,
+  rightTimingCard: "lg:flex-1",
+  pairRow: "mx-auto flex w-full max-w-md gap-2 lg:mx-0 lg:max-w-none",
   dateRibbon: "relative mx-auto w-full max-w-md px-5 lg:max-w-none lg:px-0",
+  mobileTimingCard: "lg:hidden",
+  desktopSecondaryTimingCard: "hidden lg:block",
 } as const;

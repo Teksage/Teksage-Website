@@ -137,6 +137,8 @@ export type {
   PanchangBalaPairProps,
   PanchangSunTimeGridProps,
   PanchangExtendedTimingCardProps,
+  PanchangTimingCardVariant,
+  PanchangTimingRowsCardProps,
   HoroscopeProfileCardProps,
   HoroscopeChartVariant,
   HoroscopeChartToggleProps,
