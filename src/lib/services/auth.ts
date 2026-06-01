@@ -3,6 +3,7 @@ import { API_ENDPOINTS } from "@/lib/constants/api";
 import { DEFAULT_COUNTRY_CODE_NUMERIC, STORAGE_KEYS } from "@/lib/constants";
 import { clearAuthSession } from "@/lib/auth-session";
 import { setAuthCookie } from "@/lib/auth-cookie";
+import { buildLogoutRequestBody } from "@/lib/logout-request";
 import type { OtpPayload, AuthResponse } from "@/types";
 
 /** Flat JSON from `POST /api/auth/otp/login-verify` (backend `login_verify`). */
@@ -74,7 +75,12 @@ export async function verifyOtp(payload: OtpPayload): Promise<AuthResponse> {
 
 export async function logout(): Promise<void> {
   try {
-    await http.post(API_ENDPOINTS.logout);
+    const body = buildLogoutRequestBody();
+    if (body) {
+      await http.post(API_ENDPOINTS.logout, body);
+    }
+  } catch {
+    // Best-effort server revoke; always clear local session below
   } finally {
     clearAuthTokens();
   }

@@ -2,26 +2,16 @@
  *  Mirrors Flutter `NotificationService` + `NotificationFirebaseService`.
  *  Same backend endpoint: POST /api/auth/register-token/
  */
-import { getFirebaseApp, FIREBASE_VAPID_KEY } from "@/lib/firebase";
+import { getFirebaseApp } from "@/lib/firebase";
+import { FIREBASE_VAPID_KEY, isFirebaseWebConfigured } from "@/lib/firebase-config";
 import { isClientLoggedIn } from "@/lib/auth-session";
 import { http } from "@/lib/services/http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
-
-const SW_PATH = "/firebase-messaging-sw.js";
-
-function isConfigured(): boolean {
-  const vapid = FIREBASE_VAPID_KEY.trim();
-  return Boolean(
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-      process.env.NEXT_PUBLIC_FIREBASE_APP_ID &&
-      vapid &&
-      !vapid.includes("your_vapid")
-  );
-}
+import { FIREBASE_MESSAGING_SW_PATH } from "@/lib/constants/firebase-push";
 
 /** Register SW and wait until it is active before calling getToken(). */
 async function getMessagingServiceWorker(): Promise<ServiceWorkerRegistration> {
-  await navigator.serviceWorker.register(SW_PATH);
+  await navigator.serviceWorker.register(FIREBASE_MESSAGING_SW_PATH);
   return navigator.serviceWorker.ready;
 }
 
@@ -46,7 +36,7 @@ async function fetchFcmToken(): Promise<string | null> {
  * Retries once after a short delay (auth cookie / SW may not be ready on first paint).
  */
 export async function initWebPush(): Promise<void> {
-  if (typeof window === "undefined" || !isConfigured()) return;
+  if (typeof window === "undefined" || !isFirebaseWebConfigured()) return;
 
   for (let attempt = 0; attempt < 2; attempt++) {
     if (!isClientLoggedIn()) return;

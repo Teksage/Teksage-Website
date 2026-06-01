@@ -1,8 +1,8 @@
 /** Login page layout + legal copy — keep literals out of `page.tsx`. */
 
 export const LOGIN_SCREEN = {
-  /** Set true to show Mobile | Email tabs on `/login` (Flutter `LoginPageMobile`). */
-  showMobileLoginTab: false,
+  /** Mobile | Email tabs on `/login` — mobile first (Flutter `LoginPageMobile`). */
+  showMobileLoginTab: true,
   brandLogoWidthPx: 176,
   tabListAria: "Sign in method",
   tabMobile: "Mobile",
