@@ -29,7 +29,7 @@ export const LIFE_DETAIL_SCREEN = {
   title: "Life Predictions",
   intro:
     "It's a privilege to guide you through the insights that your chart offers, especially at this meaningful stage of your life.",
-  consultCta: "Book Consultation",
+  consultCta: "Consult Astrologer",
 } as const;
 
 export const MATCH_MAKING_FLUTTER = {

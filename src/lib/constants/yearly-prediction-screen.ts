@@ -20,7 +20,7 @@ export const YEARLY_DETAIL_SCREEN = {
   remedies: "Remedies",
   regenerateCta: "Regenerate",
   regenerating: "Regenerating…",
-  consultCta: "Book Consultation",
+  consultCta: "Consult Astrologer",
   firstHalfPrefix: "First Half of",
   secondHalfPrefix: "Second Half of",
 } as const;
