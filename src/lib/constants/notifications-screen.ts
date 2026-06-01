@@ -30,6 +30,9 @@ export const NOTIFICATION_DISPLAY_TITLES = {
   yearlyPredictionDesc: "Your Yearly Prediction have been generated",
 } as const;
 
+/** Flutter `DateFormat("dd MMM, yyyy - h:mm a")` on notification cards. */
+export const NOTIFICATION_SENT_AT_FORMAT = "dd MMM, yyyy - h:mm a";
+
 export const NOTIFICATIONS_UI = {
   page: "relative z-10 flex min-h-0 flex-1 flex-col bg-white",
   content: "mx-auto flex w-full max-w-lg min-h-0 flex-1 flex-col",

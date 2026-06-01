@@ -11,15 +11,31 @@ import type {
   ConsultationSlot,
 } from "@/types/consultation";
 
+function asRecord(v: unknown): Record<string, unknown> | null {
+  if (v != null && typeof v === "object" && !Array.isArray(v)) {
+    return v as Record<string, unknown>;
+  }
+  return null;
+}
+
+function parseAstrologerListPayload(body: unknown): unknown[] {
+  if (Array.isArray(body)) return body;
+  const record = asRecord(body);
+  if (!record) return [];
+  const list = record.astrologers ?? record.data;
+  return Array.isArray(list) ? list : [];
+}
+
 function parseAstrologer(raw: unknown): ConsultationAstrologer | null {
   if (!raw || typeof raw !== "object") return null;
   const row = raw as Record<string, unknown>;
-  const userId = Number(row.user_id);
+  const nestedUser = asRecord(row.user);
+  const userId = Number(row.user_id ?? nestedUser?.user_id);
   const astrologerId = Number(row.astrologer_id);
   if (!Number.isFinite(userId) && !Number.isFinite(astrologerId)) return null;
   return {
     astrologer_id: Number.isFinite(astrologerId) ? astrologerId : userId,
-    user_id: Number.isFinite(userId) ? userId : astrologerId,
+    user_id: Number.isFinite(userId) && userId > 0 ? userId : astrologerId,
     expertise: Array.isArray(row.expertise) ? (row.expertise as string[]) : [],
     languages: Array.isArray(row.languages) ? (row.languages as string[]) : [],
     experience: row.experience != null ? Number(row.experience) : undefined,
@@ -49,12 +65,11 @@ export async function fetchTopAstrologers(
   categories: string[],
   languages: string[]
 ): Promise<ConsultationAstrologer[]> {
-  const { data } = await http.post<{ data?: unknown[] }>(
-    API_ENDPOINTS.astrologerFilter,
-    { category: categories, languages }
-  );
-  const list = data?.data ?? [];
-  return list
+  const { data } = await http.post<unknown>(API_ENDPOINTS.astrologerFilter, {
+    category: categories,
+    languages,
+  });
+  return parseAstrologerListPayload(data)
     .map(parseAstrologer)
     .filter((row): row is ConsultationAstrologer => row != null);
 }
@@ -66,11 +81,10 @@ export async function fetchMoreAstrologers(
     excludeIds.length > 0
       ? `?astro_ids=${excludeIds.join(",")}`
       : "";
-  const { data } = await http.get<{ astrologers?: unknown[] }>(
+  const { data } = await http.get<unknown>(
     `${API_ENDPOINTS.astrologerFilter}${query}`
   );
-  const list = data?.astrologers ?? [];
-  return list
+  return parseAstrologerListPayload(data)
     .map(parseAstrologer)
     .filter((row): row is ConsultationAstrologer => row != null);
 }

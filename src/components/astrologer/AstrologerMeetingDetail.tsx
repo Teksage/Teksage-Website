@@ -1,12 +1,14 @@
 "use client";
 
 import { format } from "date-fns";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AstrologerMeetingHoroscopeCard } from "@/components/astrologer/AstrologerMeetingHoroscopeCard";
 import { AstrologerMeetingQuestionsSection } from "@/components/astrologer/AstrologerMeetingQuestionsSection";
 import { hasAstrologerMeetingHoroscope } from "@/lib/astrologer-horoscope-display";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
+import { updateAstrologerEventStatus } from "@/lib/services/astrologer-portal";
 import { ROUTES } from "@/lib/constants/routes";
 import type { AstrologerMeetingDetailProps } from "@/types";
 
@@ -35,7 +37,24 @@ export function AstrologerMeetingDetail({
   onRefresh,
 }: AstrologerMeetingDetailProps) {
   const router = useRouter();
-  const isCompleted = event.status === "completed";
+  const [isCompleted, setIsCompleted] = useState(event.status === "completed");
+  const [completing, setCompleting] = useState(false);
+  const [completeError, setCompleteError] = useState<string | null>(null);
+
+  async function handleMarkComplete() {
+    if (completing) return;
+    setCompleting(true);
+    setCompleteError(null);
+    try {
+      await updateAstrologerEventStatus(event.id, "completed");
+      setIsCompleted(true);
+      if (onRefresh) await onRefresh();
+    } catch {
+      setCompleteError(ASTRO_PORTAL_UI.detail.markCompleteFail);
+    } finally {
+      setCompleting(false);
+    }
+  }
 
   let meetingDate = "";
   let startTime = "";
@@ -109,12 +128,10 @@ export function AstrologerMeetingDetail({
           )}
 
           {/* Meeting Link / action button */}
-          <div className="mt-5">
+          <div className="mt-5 space-y-2">
             {isCompleted ? (
               <div
-                className={cn(
-                  "flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-base font-semibold"
-                )}
+                className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-base font-semibold"
                 style={{ color: ASTRO_PORTAL_COLORS.brandGreen }}
               >
                 <span>{ASTRO_PORTAL_UI.detail.submitted}</span>
@@ -122,27 +139,43 @@ export function AstrologerMeetingDetail({
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-            ) : (event.event_link ?? meetingLinkFallback) ? (
-              <a
-                href={event.event_link ?? meetingLinkFallback ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full rounded-full py-2.5 text-center text-base font-semibold text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: ASTRO_PORTAL_COLORS.brandGreen }}
-              >
-                {ASTRO_PORTAL_UI.detail.joinMeeting}
-              </a>
             ) : (
-              <div
-                className="w-full rounded-full border py-2.5 text-center text-base font-semibold"
-                style={{
-                  borderColor: "#87AE0E",
-                  color: "#87AE0E",
-                }}
-              >
-                {ASTRO_PORTAL_UI.detail.noLink}
-              </div>
+              <>
+                {(event.event_link ?? meetingLinkFallback) ? (
+                  <a
+                    href={event.event_link ?? meetingLinkFallback ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full rounded-full py-2.5 text-center text-base font-semibold text-white transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: ASTRO_PORTAL_COLORS.brandGreen }}
+                  >
+                    {ASTRO_PORTAL_UI.detail.joinMeeting}
+                  </a>
+                ) : (
+                  <div
+                    className="w-full rounded-full border py-2.5 text-center text-base font-semibold"
+                    style={{ borderColor: "#87AE0E", color: "#87AE0E" }}
+                  >
+                    {ASTRO_PORTAL_UI.detail.noLink}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => void handleMarkComplete()}
+                  disabled={completing}
+                  className="w-full rounded-full border border-white/40 py-2 text-center text-sm font-semibold text-white transition-opacity hover:opacity-80 disabled:opacity-50"
+                >
+                  {completing
+                    ? ASTRO_PORTAL_UI.detail.markCompleting
+                    : ASTRO_PORTAL_UI.detail.markComplete}
+                </button>
+              </>
             )}
+            {completeError ? (
+              <p className="text-center text-xs font-medium text-red-200">
+                {completeError}
+              </p>
+            ) : null}
           </div>
         </div>
 

@@ -78,6 +78,8 @@ export interface ChatAvatarSheetProps {
 export interface ChatPageViewProps {
   /** Home dashboard right panel — hides full-page chrome. */
   embedded?: boolean;
+  /** Replaces default `ChatEmbedHeader` when `embedded` (e.g. home timings + title). */
+  embedHeader?: ReactNode;
 }
 
 export interface ChatPreferenceBarProps {

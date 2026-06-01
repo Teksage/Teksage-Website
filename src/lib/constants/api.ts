@@ -29,7 +29,13 @@ export const API_ENDPOINTS = {
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",
   notifyUpdate: "/api/auth/notify-update",
-  registerToken: "/api/auth/register-token/",
+  /**
+   * Web (same-origin): `app/api/auth/register-token` route handler → FastAPI.
+   * Direct FastAPI calls must use `registerTokenFastApi` (trailing slash).
+   */
+  registerToken: "/api/auth/register-token",
+  /** FastAPI `auth.py` route — trailing slash required; do not change for mobile parity. */
+  registerTokenFastApi: "/api/auth/register-token/",
   updateAppLanguage: "/api/auth/update-app-language",
   deleteAccountRequest: "/api/auth/delete/request",
   deleteAccountConfirm: "/api/auth/delete/confirm",
@@ -95,6 +101,12 @@ export const API_ENDPOINTS = {
   shareLife: "/api/share/life",
   sharePanchang: "/api/share/panchang",
   shareMatchMaking: "/api/share/match_making",
+
+  // --- Chat prompts — `chat_prompts.py` ---
+  /** `GET` — list prompts | `POST` — create prompt */
+  chatPrompts: "/api/chat-prompts/",
+  /** `PUT` — toggle prompt active/inactive */
+  chatPromptsStatus: "/api/chat-prompts/status",
 
   // --- FAQ — `faq.py`, mount `/faq` ---
   faq: "/api/faq/",

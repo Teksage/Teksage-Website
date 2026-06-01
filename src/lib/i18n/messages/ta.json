@@ -12,6 +12,7 @@
   "Chat Now": "அரட்டை",
   "Thara Bala": "தாரா பலம்",
   "Chandra Bala": "சந்திர பலம்",
+  "Cautious": "எச்சரிக்கை",
   "Astrologer\\nConsultation": "ஜோதிடர்\\nஆலோசனை",
   "Astrologer Consultation": "ஜோதிடர் ஆலோசனை",
   "My Profile": "எனது சுயவிவரம்",
@@ -449,5 +450,18 @@
   "Upgrade Now": "இப்போதே மேம்படுத்துங்கள்",
   "Sign in to chat": "அரட்டைக்கு உள்நுழையவும்",
   "Log in to use AI Voice Astro Chat on your dashboard.": "AI குரல் அரட்டைக்கு உள்நுழையவும்.",
-  "Log in": "உள்நுழைவு"
+  "Log in": "உள்நுழைவு",
+  "Hello": "வணக்கம்",
+  "there": "நண்பரே",
+  "24/7": "24/7",
+  "Astro AI Chat": "ஆஸ்ட்ரோ AI சாட்",
+  "Book Consultation": "ஆலோசனை பதிவு",
+  "Other Predictions": "பிற கணிப்புகள்",
+  "Love Compatibility": "காதல் பொருத்தம்",
+  "Panchangam": "பஞ்சாங்கம்",
+  "Click to know more": "மேலும் அறிய கிளிக் செய்யுங்கள்",
+  "Loading…": "ஏற்றுகிறது…",
+  "Today's timings": "இன்றைய நேரங்கள்",
+  "Based on your profile location": "உங்கள் சுயவிவர இடத்தின் அடிப்படையில்",
+  "View full Panchang": "முழு பஞ்சாங்கம் காண்க"
 }

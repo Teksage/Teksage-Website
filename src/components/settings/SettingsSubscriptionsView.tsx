@@ -80,6 +80,7 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
         unoptimized
         className={SETTINGS_UI.subscriptionBg}
       />
+      <div className={SETTINGS_UI.subscriptionHeroScrim} aria-hidden />
       <SettingsSubpageHeader
         title={SUB.pageTitle}
         onBack={onBack}
@@ -87,7 +88,12 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
         className="bg-transparent"
       />
       <div className={SETTINGS_UI.subscriptionScroll}>
-        <div className={SETTINGS_UI.subscriptionContent}>
+        <div
+          className={cn(
+            SETTINGS_UI.subscriptionContent,
+            showUpgradeBtn && SETTINGS_UI.subscriptionContentAboveFooter
+          )}
+        >
           {!isPremium ? (
             <div className="mb-5 flex flex-col items-center">
               <Image

@@ -1,5 +1,6 @@
 import { YEARLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
 import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
+import { YEARLY_CARD_UI } from "@/lib/constants/yearly-prediction-card-ui";
 import { cn } from "@/lib/utils";
 import type { YearlyCategorizedPrediction } from "@/types/prediction-yearly";
 
@@ -19,18 +20,24 @@ export function YearlyOverviewCard({
   label: string;
   description: string;
 }) {
+  const C = YEARLY_CARD_UI;
+
   return (
     <article
       className={cn(
-        "flex shrink-0 flex-col items-center rounded-[1.125rem] bg-[var(--color-yearly-card-bg)] px-6 py-8 text-center",
+        C.surface,
+        C.surfaceMint,
         PREDICTION_DESKTOP_LAYOUT.horizontalCardWidth
       )}
     >
-      <img src={ICONS[field]} alt="" className="h-14 w-14" />
-      <h3 className="mt-5 text-card-title font-bold leading-tight text-[var(--color-brand-black)]">
-        {label}
-      </h3>
-      <p className="mt-2 text-base leading-snug text-black/80">{description}</p>
+      <img src={YEARLY_PREDICTION_ASSETS.cardDeco} alt="" className={C.deco} />
+      <div className={C.body}>
+        <div className={C.headerRow}>
+          <h3 className={C.title}>{label}</h3>
+          <img src={ICONS[field]} alt="" className={C.icon} />
+        </div>
+        <p className={C.bodyText}>{description}</p>
+      </div>
     </article>
   );
 }

@@ -1,5 +1,5 @@
-import { ConsultationCategoryView } from "@/components/consultation/ConsultationCategoryView";
+import { ConsultationEntryRedirect } from "@/components/consultation/ConsultationEntryRedirect";
 
 export default function ConsultationPage() {
-  return <ConsultationCategoryView />;
+  return <ConsultationEntryRedirect />;
 }

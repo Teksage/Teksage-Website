@@ -17,5 +17,9 @@ export default function ChatPage() {
   if (!ready) return <PageLoadingCenter className="min-h-dvh" />;
   if (!loggedIn) return null;
 
-  return <ChatPageView />;
+  return (
+    <div className="flex h-full min-h-0 w-full flex-col">
+      <ChatPageView />
+    </div>
+  );
 }

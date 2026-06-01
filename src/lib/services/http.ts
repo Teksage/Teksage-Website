@@ -1,5 +1,21 @@
 import axios, { AxiosError } from "axios";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+
+/**
+ * FastAPI requires `/register-token/`; 307 redirects can drop `Authorization`.
+ * Same-origin web path has no slash — `app/api/auth/register-token` proxies for us.
+ */
+function withRegisterTokenTrailingSlash(url: string, baseURL?: string): string {
+  if (!url.includes("register-token") || url.includes("register-token/")) {
+    return url;
+  }
+  const isSameOriginWebProxy =
+    !baseURL &&
+    (url === API_ENDPOINTS.registerToken ||
+      url.endsWith(API_ENDPOINTS.registerToken));
+  if (isSameOriginWebProxy) return url;
+  return url.replace(/register-token\/?$/, "register-token/");
+}
 import { STORAGE_KEYS } from "@/lib/constants";
 import {
   clearAuthSession,
@@ -29,6 +45,9 @@ http.interceptors.request.use((config) => {
     }
     config.headers.response_language = getStoredAppLanguageName();
   }
+  if (config.url) {
+    config.url = withRegisterTokenTrailingSlash(config.url, config.baseURL);
+  }
   return config;
 });
 
@@ -36,8 +55,12 @@ http.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      clearAuthSession();
-      redirectHomeFromProtectedIfNeeded();
+      const url = error.config?.url ?? "";
+      // FCM token registration can fail before auth is fully ready — don't wipe session
+      if (!url.includes("/register-token")) {
+        clearAuthSession();
+        redirectHomeFromProtectedIfNeeded();
+      }
     }
     return Promise.reject(error);
   }

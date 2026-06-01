@@ -8,11 +8,7 @@ import {
   SETTINGS_LAYOUT,
   SETTINGS_SCREEN,
 } from "@/lib/constants/settings-screen";
-import {
-  HOME_LAYOUT,
-  MAIN_TAB_VIEWPORT_BACKDROP,
-  PAGE_SHELL,
-} from "@/lib/constants";
+import { MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { cn } from "@/lib/utils";
 
@@ -20,15 +16,20 @@ export default function SettingsPage() {
   const SS = useI18nConstants(SETTINGS_SCREEN);
   const { t } = useAppLanguage();
   return (
-    <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
-      <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.settings} />
+    <div className={cn(PAGE_SHELL.column, SETTINGS_LAYOUT.pageRoot)}>
+      <MainTabViewportBackdrop
+        className={cn(
+          MAIN_TAB_VIEWPORT_BACKDROP.settings,
+          "lg:opacity-0"
+        )}
+      />
       <AppHeader
         blend
         title={t(SS.title)}
-        className={PAGE_SHELL.contentLayer}
+        className={cn(PAGE_SHELL.contentLayer, SETTINGS_LAYOUT.headerChrome)}
       />
 
-      <div className={cn(HOME_LAYOUT.maxWidth, SETTINGS_LAYOUT.menuContent)}>
+      <div className={cn(PAGE_SHELL.contentLayer, SETTINGS_LAYOUT.desktopPanel)}>
         <SettingsMenu />
       </div>
     </div>

@@ -5,8 +5,6 @@ export const WEEKLY_SCREEN = {
   greetingPrefix: "Good morning,",
   greetingSuffix: "Hope you're having a wonderful start to your day.",
   dayTabs: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const,
-  infoTooltip:
-    "Insights reflect information you've provided in your profile.",
 } as const;
 
 export const YEARLY_LANDING_SCREEN = {
@@ -28,11 +26,10 @@ export const LIFE_LANDING_SCREEN = {
 } as const;
 
 export const LIFE_DETAIL_SCREEN = {
+  title: "Life Predictions",
   intro:
     "It's a privilege to guide you through the insights that your chart offers, especially at this meaningful stage of your life.",
-  consultCta: "Astrology Consultation",
-  infoTooltip:
-    "Insights reflect information you've provided in your profile.",
+  consultCta: "Consult Astrologer",
 } as const;
 
 export const MATCH_MAKING_FLUTTER = {

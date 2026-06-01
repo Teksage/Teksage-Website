@@ -1,7 +1,6 @@
 "use client";
 
 import { useDashboard } from "@/hooks/useDashboard";
-import { useWelcomeRedirect } from "@/hooks/useWelcomeRedirect";
 import { formatHomeDashboardDate } from "@/lib/utils";
 import { ConsultationBanner } from "@/components/home/ConsultationBanner";
 import { PredictionCircles } from "@/components/home/PredictionCircles";
@@ -9,6 +8,7 @@ import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
+import { HomePanchangTimingMobileCard } from "@/components/home/HomePanchangTimingMobileCard";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
@@ -25,7 +25,6 @@ export default function HomePage() {
     error: dashboardError,
     hasExistingMatch,
   } = useDashboard();
-  useWelcomeRedirect();
   const { t, locale } = useAppLanguage();
 
   const greeting = user?.name
@@ -34,7 +33,12 @@ export default function HomePage() {
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
 
   return (
-    <div className={cn(PAGE_SHELL.homeRoot, "lg:h-dvh lg:overflow-hidden lg:flex-col")}>
+    <div
+      className={cn(
+        PAGE_SHELL.homeRoot,
+        "flex min-h-0 flex-1 flex-col lg:h-full lg:overflow-hidden"
+      )}
+    >
       <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.home} />
       <HomeDashboardHeader
         className={cn(PAGE_SHELL.contentLayer, "lg:hidden")}
@@ -59,6 +63,7 @@ export default function HomePage() {
             isLoggedIn={isAuthenticated}
             isAstrologer={isAuthenticated && isAstrologer}
           />
+          <HomePanchangTimingMobileCard />
 
           <div
             className={cn(
@@ -93,7 +98,7 @@ export default function HomePage() {
 
         <HomeChatPanel
           isLoggedIn={isAuthenticated}
-          className="sticky top-0 h-dvh shrink-0 lg:static lg:h-full lg:min-h-0 lg:flex-1"
+          className="hidden min-h-0 min-w-0 flex-1 lg:flex"
         />
       </div>
     </div>

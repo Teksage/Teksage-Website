@@ -6,6 +6,8 @@ const flutterSvg = (file: string) => `/flutter-assets/svg/${file}` as const;
 export const CHAT_PREFERENCE_KEYS = {
   style: "chat_style",
   avatar: "chat_avatar",
+  /** Flutter SharedPreferences — `chatLanguage.dart`. */
+  language: "ChatLanguage",
 } as const;
 
 export type ChatStyleFormat = "long" | "short";

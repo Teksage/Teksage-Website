@@ -5,9 +5,6 @@
 
 export const ROUTES = {
   root: "/",
-  onboarding: "/onboarding",
-  /** Flutter `WelcomePage` — non-premium users after first home load. */
-  welcome: "/welcome",
   home: "/home",
   panchang: "/panchang",
   horoscope: "/horoscope",
@@ -29,6 +26,7 @@ export const ROUTES = {
   astrologer: "/astrologer",
   astrologerMeetings: "/astrologer/meetings",
   astrologerAvailability: "/astrologer/availability",
+  astrologerChatPrompts: "/astrologer/chat-prompts",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",
@@ -39,6 +37,12 @@ export const ROUTES = {
 } as const;
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];
+
+export function isPredictionsPath(pathname: string): boolean {
+  return (
+    pathname === ROUTES.predictions || pathname.startsWith(`${ROUTES.predictions}/`)
+  );
+}
 
 /** Query key used by `SettingsMenu` and login return navigation. */
 export const LOGIN_REDIRECT_QUERY = "redirect" as const;

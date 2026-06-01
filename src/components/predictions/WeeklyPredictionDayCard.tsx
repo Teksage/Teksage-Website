@@ -1,4 +1,5 @@
 import { PredictionBalaSplit } from "@/components/predictions/PredictionBalaSplit";
+import { WEEKLY_PREDICTION_CARD_UI } from "@/lib/constants/weekly-prediction-card-ui";
 import type { WeeklyDayPrediction } from "@/types/prediction-detail";
 import { cn } from "@/lib/utils";
 
@@ -11,19 +12,22 @@ export function WeeklyPredictionDayCard({
   data: WeeklyDayPrediction;
   cardRef?: (el: HTMLElement | null) => void;
 }) {
-  const badgeColor = data.isPositiveDay
-    ? "text-[var(--color-weekly-badge-positive)]"
-    : "text-[var(--color-brand-error)]";
-
   return (
-    <article ref={cardRef} className="overflow-hidden rounded-[1.25rem] bg-white shadow-sm">
-      <div className="flex h-[50px] items-center justify-between rounded-t-[1.25rem] bg-[var(--color-weekly-card-header)] px-5">
-        <h2 className="text-lg font-semibold text-white">{day}</h2>
-        <span className={cn("rounded-full bg-white px-2.5 py-1 text-xs font-bold", badgeColor)}>
+    <article ref={cardRef} className={WEEKLY_PREDICTION_CARD_UI.article}>
+      <div className={WEEKLY_PREDICTION_CARD_UI.header}>
+        <h2 className={WEEKLY_PREDICTION_CARD_UI.dayTitle}>{day}</h2>
+        <span
+          className={cn(
+            WEEKLY_PREDICTION_CARD_UI.badge,
+            data.isPositiveDay
+              ? WEEKLY_PREDICTION_CARD_UI.badgePositive
+              : WEEKLY_PREDICTION_CARD_UI.badgeNegative
+          )}
+        >
           {data.shortPrediction}
         </span>
       </div>
-      <p className="px-5 py-5 text-base text-black/70">{data.longPrediction}</p>
+      <p className={WEEKLY_PREDICTION_CARD_UI.bodyText}>{data.longPrediction}</p>
       <PredictionBalaSplit
         tharaBala={data.tharaBala != null ? String(data.tharaBala) : undefined}
         chandraBala={data.chandraBala != null ? String(data.chandraBala) : undefined}

@@ -10,5 +10,9 @@ export function WeeklyPredictionBody({
   data: WeeklyPredictionDetail;
   onBackClick: () => void;
 }) {
-  return <WeeklyPredictionLayout data={data} onBackClick={onBackClick} />;
+  return (
+    <div className="flex min-h-0 w-full flex-1 flex-col">
+      <WeeklyPredictionLayout data={data} onBackClick={onBackClick} />
+    </div>
+  );
 }

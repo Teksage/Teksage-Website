@@ -24,23 +24,8 @@ export const PUBLIC_ASSETS = {
   loginLogo: flutterSvg("loginLogo_ios.svg"),
   /** Flutter `logo_ios.svg` */
   appLogo: flutterSvg("logo_ios.svg"),
-} as const;
-
-/** Flutter intro onboarding assets (`intro/welcomePage.dart`, `intro/onboardingPage.dart`). */
-/** Flutter `welcomePage.dart` (`welcomeLogo`, `welcomeCheckBox`, `welcomeBoxShadow`). */
-export const WELCOME_ASSETS = {
-  logo: flutterSvg("welcomeLogo.svg"),
-  check: flutterSvg("welcomeCheckBox.svg"),
-  shadow: flutterSvg("welcomeBoxShadow.svg"),
-} as const;
-
-export const ONBOARDING_ASSETS = {
-  slide1: flutterImage("onBoard1.png"),
-  slide2: flutterImage("onBoard2.png"),
-  slide3: flutterImage("onBoard3.png"),
-  iosBottomBackground: flutterImage("iosOnboardBg.png"),
-  arrowBack: flutterSvg("backIcon.svg"),
-  arrowForward: flutterSvg("forwardIcon.svg"),
+  /** Browser tab icon — cropped from `loginLogo_ios.svg` (`src/app/icon.svg`). */
+  siteIcon: "/icon.svg",
 } as const;
 
 /** Home dashboard — same files as Flutter `imageConstant.dart` home / bottom nav. */
@@ -81,6 +66,7 @@ export const DASHBOARD_ASSETS = {
   /** Desktop dashboard sidebar — outline icons (design ref). */
   sidebarCalendar: flutterSvg("sidebar-calendar.svg"),
   sidebarFolder: flutterSvg("sidebar-folder.svg"),
+  sidebarWeekly: flutterSvg("sidebar-weekly.svg"),
   sidebarMarriage: flutterSvg("sidebar-marriage.svg"),
   sidebarNotification: flutterSvg("sidebar-notification.svg"),
   sidebarProfile: flutterSvg("sidebar-profile.svg"),

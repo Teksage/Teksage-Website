@@ -101,8 +101,15 @@ export default function SettingsSectionPage() {
     }
   }
 
+  const isSubscriptionSection = section === "subscriptions";
+
   return (
-    <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
+    <div
+      className={cn(
+        PAGE_SHELL.column,
+        isSubscriptionSection ? "h-full min-h-0" : PAGE_SHELL.root
+      )}
+    >
       {showMintBackdrop ? (
         <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.settings} />
       ) : null}

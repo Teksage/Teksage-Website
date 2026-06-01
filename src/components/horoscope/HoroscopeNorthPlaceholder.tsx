@@ -1,23 +1,26 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { HoroscopeComingSoonMarquee } from "@/components/horoscope/HoroscopeComingSoonMarquee";
+import { HOROSCOPE_LAYOUT, HOROSCOPE_SCREEN } from "@/lib/constants";
 
-/** Mirrors Flutter `ComingSoonContainer` (`comingSoon.dart`) — no marquee on web. */
+/** Mirrors Flutter `ComingSoonContainer` (`comingSoon.dart`). */
 export function HoroscopeNorthPlaceholder() {
   const H = useI18nConstants(HOROSCOPE_SCREEN);
-  const lines = H.northChartLines;
+  const L = HOROSCOPE_LAYOUT;
 
   return (
-    <div className="flex flex-col items-center justify-center py-8 text-center">
-      {lines.map((line) => (
-        <span
-          key={line}
-          className="text-[clamp(2.25rem,12vw,4.5rem)] font-extrabold leading-[0.75] text-[color-mix(in_srgb,var(--color-horoscope-north-watermark)_50%,transparent)]"
-        >
-          {line}
-        </span>
-      ))}
+    <div className={L.northComingSoonStage}>
+      <div className={L.northWatermarkBlock} aria-hidden>
+        {H.northChartLines.map((line) => (
+          <span key={line} className={L.northWatermark}>
+            {line}
+          </span>
+        ))}
+      </div>
+      <div className={L.comingSoonMarqueeShell}>
+        <HoroscopeComingSoonMarquee label={H.comingSoonMarquee} />
+      </div>
     </div>
   );
 }

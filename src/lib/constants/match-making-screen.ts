@@ -32,7 +32,7 @@ export const MATCH_MAKING_SCREEN = {
   maxColumn: "Max",
   presentBadge: "Present",
   absentBadge: "Absent",
-  expertConnectCta: "Expert Connect",
+  expertConnectCta: "Consult Astrologer",
   regenerateCta: "Regenerate",
   scoreLabel: "Score",
   generalLabel: "Summary",

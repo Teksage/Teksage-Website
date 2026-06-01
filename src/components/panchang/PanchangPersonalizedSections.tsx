@@ -47,13 +47,23 @@ export function PanchangPersonalizedSections({
           </div>
         </div>
 
-        <div className={S.columnStack}>
+        <div className={S.rightColumn}>
           <PanchangBalaPair panchang={panchang} />
           <PanchangSunTimeGrid sunrise={panchang.sunrise} sunset={panchang.sunset} />
+          <PanchangExtendedTimingCard
+            panchang={panchang}
+            variant="primary"
+            className={S.rightTimingCard}
+          />
         </div>
       </div>
 
-      <PanchangExtendedTimingCard panchang={panchang} />
+      <PanchangExtendedTimingCard panchang={panchang} className={S.mobileTimingCard} />
+      <PanchangExtendedTimingCard
+        panchang={panchang}
+        variant="secondary"
+        className={S.desktopSecondaryTimingCard}
+      />
     </div>
   );
 }

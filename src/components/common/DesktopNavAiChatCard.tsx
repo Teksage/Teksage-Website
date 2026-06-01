@@ -25,7 +25,7 @@ export function DesktopNavAiChatCard() {
     <Link
       href={DESKTOP_SIDEBAR_AI_CHAT_HREF}
       className={cn(
-        "mb-2 flex items-center gap-3 rounded-2xl border px-3 py-3 transition-colors",
+        "mb-2 flex shrink-0 items-center gap-3 rounded-2xl border px-3 py-3 transition-colors",
         active
           ? "border-[var(--color-brand-primary)]/25 bg-[var(--color-home-screen-mint)]"
           : "border-neutral-200/90 bg-white hover:bg-neutral-50"

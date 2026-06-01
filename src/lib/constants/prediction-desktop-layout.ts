@@ -8,10 +8,14 @@ export const PREDICTION_DESKTOP_LAYOUT = {
   /** Centered form / hero card */
   narrowColumn: "mx-auto w-full max-w-md lg:max-w-xl",
   landingRoot:
-    "relative w-full min-h-dvh overflow-hidden lg:flex lg:min-h-[min(100dvh,52rem)] lg:flex-col lg:items-center lg:justify-center lg:py-14",
-  landingMobile: "relative h-dvh w-full lg:hidden",
+    "relative flex w-full min-h-dvh min-w-0 flex-col overflow-hidden lg:min-h-0 lg:flex-1",
+  landingMobile: "relative h-dvh w-full shrink-0 lg:hidden",
   landingDesktop:
-    "hidden w-full flex-col text-center lg:flex",
+    "relative hidden min-h-0 w-full min-w-0 flex-1 flex-col lg:flex",
+  landingDesktopBackBar: "w-full shrink-0 px-4 pt-8 lg:px-8 lg:pt-10",
+  landingDesktopContent:
+    "flex min-h-0 flex-1 flex-col items-center justify-center px-4 pb-14 text-center lg:px-8 lg:pb-16",
+  landingDesktopCopyMax: "max-w-lg",
   /** Full-width stacked CTAs — Flutter yearly/life detail (vertical buttons). */
   stackedCtaColumn: "mx-auto flex w-full max-w-md flex-col gap-4",
   detailCtaButton:

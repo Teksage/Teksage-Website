@@ -3,7 +3,26 @@ import type { ConsultationAstrologer } from "@/types/consultation";
 
 /** API routes use astrologer `user_id` (Flutter `astro.userId`), not `astrologer_id` PK. */
 export function consultationRouteUserId(astrologer: ConsultationAstrologer): number {
-  return astrologer.user_id;
+  const nested = astrologer.user?.user_id;
+  if (Number.isFinite(astrologer.user_id) && astrologer.user_id > 0) {
+    return astrologer.user_id;
+  }
+  if (nested != null && Number.isFinite(nested) && nested > 0) {
+    return nested;
+  }
+  return astrologer.astrologer_id;
+}
+
+/** `GET /astrologer/filter?astro_ids=` expects account `user_id` values (Flutter `userId`). */
+export function consultationExcludeUserIds(
+  astrologers: ConsultationAstrologer[]
+): number[] {
+  const ids = new Set<number>();
+  for (const astrologer of astrologers) {
+    const id = consultationRouteUserId(astrologer);
+    if (Number.isFinite(id) && id > 0) ids.add(id);
+  }
+  return [...ids];
 }
 
 export function formatConsultationCategoryLabel(category: string): string {

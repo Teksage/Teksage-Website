@@ -137,6 +137,8 @@ export type {
   PanchangBalaPairProps,
   PanchangSunTimeGridProps,
   PanchangExtendedTimingCardProps,
+  PanchangTimingCardVariant,
+  PanchangTimingRowsCardProps,
   HoroscopeProfileCardProps,
   HoroscopeChartVariant,
   HoroscopeChartToggleProps,
@@ -213,3 +215,9 @@ export type {
   AstrologerMeetingDetailProps,
   AstrologerMeetingQuestionsSectionProps,
 } from "./ui/astrologer-portal";
+
+export type {
+  ChatPrompt,
+  ChatPromptCreatePayload,
+  ChatPromptStatusPayload,
+} from "./chat-prompts";

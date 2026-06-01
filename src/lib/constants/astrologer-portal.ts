@@ -21,6 +21,10 @@ export const ASTRO_PORTAL_UI = {
       title: "My Availability",
       subtitle: "Set your available time slots.",
     },
+    chatPrompts: {
+      title: "Chat Prompts",
+      subtitle: "Manage AI chat quick-prompt suggestions.",
+    },
   },
 
   // Meetings list
@@ -52,6 +56,9 @@ export const ASTRO_PORTAL_UI = {
     feesPaid: "Fees Paid",
     submitted: "Submitted",
     backToMeetings: "← Back to Meetings",
+    markComplete: "Mark as Completed",
+    markCompleting: "Saving…",
+    markCompleteFail: "Failed to update status. Please try again.",
   },
 
   /** Customer Q&A on meeting detail — mirrors Flutter `answerDialog.dart`. */
@@ -69,6 +76,8 @@ export const ASTRO_PORTAL_UI = {
     answerEmpty: "Please enter an answer.",
     answerSaveFail: "Failed to save answer. Please try again.",
     charLimit: 500,
+    deleteQuestion: "Delete",
+    deleteQuestionFail: "Failed to delete question.",
   },
 
   // Availability

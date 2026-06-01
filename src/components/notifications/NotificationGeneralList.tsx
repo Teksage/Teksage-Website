@@ -6,17 +6,17 @@ import { EmptyState } from "@/components/common/EmptyState";
 import {
   NOTIFICATIONS_SCREEN,
   NOTIFICATIONS_UI,
+  NOTIFICATION_SENT_AT_FORMAT,
 } from "@/lib/constants/notifications-screen";
+import { parseApiDateTime, isValidDate } from "@/lib/api-datetime";
 import { notificationDisplayCopy } from "@/lib/notification-display";
 import { cn } from "@/lib/utils";
 import type { NotificationGeneralListProps } from "@/types/ui/notifications";
 
 function formatSentAt(iso: string): string {
-  try {
-    return format(new Date(iso), "dd MMM, yyyy - h:mm a");
-  } catch {
-    return iso;
-  }
+  const d = parseApiDateTime(iso);
+  if (!isValidDate(d)) return iso;
+  return format(d, NOTIFICATION_SENT_AT_FORMAT);
 }
 
 export function NotificationGeneralList({

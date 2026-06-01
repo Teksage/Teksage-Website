@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { cn } from "@/lib/utils";
 import type { SettingsRowProps, SettingsRowVariant } from "@/types";
 
@@ -40,9 +41,7 @@ export function SettingsRow({
     <div
       className={cn(
         "flex min-h-[52px] items-center justify-between gap-3 rounded-lg px-5",
-        variant === "logout"
-          ? "bg-[color-mix(in_srgb,var(--color-brand-error)_6%,transparent)]"
-          : "bg-[color-mix(in_srgb,var(--color-brand-black)_3%,transparent)]",
+        variant === "logout" ? SETTINGS_UI.rowLogout : SETTINGS_UI.rowDefault,
         className
       )}
     >

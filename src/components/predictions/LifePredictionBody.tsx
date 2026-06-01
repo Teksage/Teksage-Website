@@ -27,6 +27,13 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
       .then((result) => {
         if (result.ready === "error") {
           setErr(result.message);
+          setView("landing");
+          return;
+        }
+        if (result.ready === "detail") {
+          setData(result.data);
+          setView("detail");
+          return;
         }
         setView("landing");
       })

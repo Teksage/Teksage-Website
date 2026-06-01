@@ -30,18 +30,15 @@ export function PredictionGenerateLandingDesktop({
   onBackClick: () => void;
   onGenerate: () => void;
 }) {
+  const L = PREDICTION_DESKTOP_LAYOUT;
+
   return (
-    <div
-      className={cn(
-        PREDICTION_DESKTOP_LAYOUT.landingDesktop,
-        "mx-auto w-full max-w-xl px-6 lg:px-8"
-      )}
-    >
-      <div className="flex w-full items-center">
+    <div className={L.landingDesktop}>
+      <div className={L.landingDesktopBackBar}>
         <button
           type="button"
           onClick={onBackClick}
-          className="-ml-2 rounded-full p-2 transition-colors hover:bg-white/10"
+          className="rounded-full p-2 transition-colors hover:bg-white/10"
           aria-label="Go back"
         >
           <img
@@ -52,12 +49,17 @@ export function PredictionGenerateLandingDesktop({
         </button>
       </div>
 
-      <div className="flex w-full flex-col items-center text-center">
-        <PredictionLandingHero decoSrc={decoSrc} logoSrc={logoSrc} variant="desktop" className="mt-2" />
+      <div className={L.landingDesktopContent}>
+        <PredictionLandingHero decoSrc={decoSrc} logoSrc={logoSrc} variant="desktop" />
         <h1 className="prediction-slide-up mt-10 text-2xl-display font-bold leading-tight text-white">
           {title}
         </h1>
-        <p className="prediction-slide-up-delay mt-4 max-w-md text-lg font-medium leading-relaxed text-white">
+        <p
+          className={cn(
+            "prediction-slide-up-delay mt-4 text-lg font-medium leading-relaxed text-white",
+            L.landingDesktopCopyMax
+          )}
+        >
           {description}
         </p>
         <button
@@ -65,7 +67,8 @@ export function PredictionGenerateLandingDesktop({
           disabled={generating}
           onClick={onGenerate}
           className={cn(
-            "prediction-slide-up-btn mt-10 w-full max-w-md rounded-[1.25rem] bg-white py-3 text-lg font-semibold disabled:opacity-70",
+            "prediction-slide-up-btn mt-10 w-full rounded-[1.25rem] bg-white py-3 text-lg font-semibold disabled:opacity-70",
+            L.landingDesktopCopyMax,
             buttonTextClass
           )}
         >

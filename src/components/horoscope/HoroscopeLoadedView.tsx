@@ -41,15 +41,19 @@ export function HoroscopeLoadedView({
                 title={data.rasi_chart_label ?? H.chartFallbackRasi}
                 html={data.rashi_chart ?? ""}
                 showTitle={false}
+                className={L.chartFrame}
               />
               <HoroscopeChartFrame
                 title={data.navamsa_chart_label ?? H.chartFallbackNavamsa}
                 html={data.navamsa_chart ?? ""}
                 showTitle={false}
+                className={L.chartFrame}
               />
             </>
           ) : (
-            <HoroscopeNorthPlaceholder />
+            <div className={L.northComingSoonWrap}>
+              <HoroscopeNorthPlaceholder />
+            </div>
           )}
         </div>
       </div>

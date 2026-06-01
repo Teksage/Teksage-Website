@@ -8,6 +8,7 @@ import { SettingsRateDialog } from "@/components/settings/SettingsRateDialog";
 import { ROUTES } from "@/lib/constants";
 import { SETTINGS_ASSETS } from "@/lib/constants/assets";
 import {
+  SETTINGS_LAYOUT,
   SETTINGS_PRIMARY_LINKS,
   SETTINGS_SCREEN,
 } from "@/lib/constants/settings-screen";
@@ -47,7 +48,7 @@ export function SettingsMenu() {
 
   return (
     <>
-      <div className="flex flex-col gap-3">
+      <div className={SETTINGS_LAYOUT.menuContent}>
         {SETTINGS_PRIMARY_LINKS.map((item) => (
           <SettingsRow
             key={item.id}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { htmlLangFromLocale } from "@/lib/i18n";
 import { getServerAppLocale } from "@/lib/i18n/server-locale";
 import "./globals.css";
@@ -12,8 +13,12 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "teksage",
-  description: "teksage — Your Astrology & Predictions Platform",
+  title: "Teksage",
+  description: "Teksage — Your Astrology & Predictions Platform",
+  icons: {
+    icon: [{ url: PUBLIC_ASSETS.siteIcon, type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default async function RootLayout({

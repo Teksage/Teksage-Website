@@ -1,3 +1,4 @@
+import type { PanchangTimingRow } from "@/lib/panchang-timing-rows";
 import type { HoroscopePayload, PanchangDetail } from "../astrology";
 
 export interface HoroscopeChartFrameProps {
@@ -39,8 +40,17 @@ export interface PanchangSunTimeGridProps {
   sunset?: string;
 }
 
+export type PanchangTimingCardVariant = "all" | "primary" | "secondary";
+
+export interface PanchangTimingRowsCardProps {
+  rows: PanchangTimingRow[];
+  className?: string;
+}
+
 export interface PanchangExtendedTimingCardProps {
   panchang: PanchangDetail;
+  variant?: PanchangTimingCardVariant;
+  className?: string;
 }
 
 export interface HoroscopeProfileCardProps {

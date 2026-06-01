@@ -16,19 +16,12 @@ function ProfileRow({
   isLast: boolean;
 }) {
   if (!value?.trim()) return null;
+  const L = HOROSCOPE_LAYOUT;
+
   return (
-    <div
-      className={cn(
-        "flex items-start justify-between gap-3 border-dashed border-[var(--color-panchang-row-divider)] py-2.5 text-sm",
-        !isLast && "border-b"
-      )}
-    >
-      <span className="w-1/3 shrink-0 font-semibold text-[var(--color-brand-panchang)]">
-        {label}
-      </span>
-      <span className="min-w-0 flex-1 text-right font-medium leading-snug text-[var(--color-brand-black)]">
-        {value}
-      </span>
+    <div className={cn(L.profileRow, !isLast && "border-b")}>
+      <span className={L.profileRowLabel}>{label}</span>
+      <span className={L.profileRowValue}>{value}</span>
     </div>
   );
 }
