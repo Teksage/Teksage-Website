@@ -6,15 +6,18 @@ import { usePathname } from "next/navigation";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { useAuthStore } from "@/store/auth.store";
 import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
+import { DesktopNavGreeting } from "@/components/common/DesktopNavGreeting";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
-import { DesktopNavPredictionsMenu } from "@/components/common/DesktopNavPredictionsMenu";
-import { DesktopNavUnlockPremium } from "@/components/common/DesktopNavUnlockPremium";
+import { DesktopNavOtherPredictionsMenu } from "@/components/common/DesktopNavOtherPredictionsMenu";
 import {
   DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK,
   DESKTOP_SIDEBAR_BOOK_LINK,
-  DESKTOP_SIDEBAR_MARRIAGE_LINK,
+  DESKTOP_SIDEBAR_DAILY_PREDICTION_LINK,
+  DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK,
   DESKTOP_SIDEBAR_NOTIFICATIONS_LINK,
-  DESKTOP_SIDEBAR_UTILITY_LINKS,
+  DESKTOP_SIDEBAR_PANCHANG_LINK,
+  DESKTOP_SIDEBAR_SETTINGS_LINK,
+  DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK,
 } from "@/lib/constants/desktop-sidebar-nav";
 import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
 import { HOME_LAYOUT } from "@/lib/constants/home-layout";
@@ -25,19 +28,12 @@ import { cn, isAstrologerHomeSession } from "@/lib/utils";
 /**
  * Desktop left rail — design ref dashboard sidebar (`lg+`).
  */
-export function DesktopMainNav({ className }: DesktopMainNavProps) {
+export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavProps) {
   const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
-  const utilityLabels: Record<
-    (typeof DESKTOP_SIDEBAR_UTILITY_LINKS)[number]["labelKey"],
-    string
-  > = {
-    panchang: HDS.panchang,
-    horoscope: HDS.horoscope,
-    settings: HDS.settings,
-  };
   const pathname = usePathname();
   const { guardNavigation } = useAuthNavigation();
   const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
   const consultSidebarLink = isAstrologer
     ? DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK
@@ -46,28 +42,76 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
   return (
     <aside
       className={cn(
-        "sticky top-0 z-30 hidden h-dvh shrink-0 flex-col border-r border-neutral-200/90 bg-white lg:flex",
+        "sticky top-0 z-30 hidden shrink-0 flex-col border-r border-neutral-200/90 bg-white lg:flex",
+        hideBrand ? "h-full" : "h-dvh",
         HOME_LAYOUT.desktopAsideWidth,
         className
       )}
       aria-label="Main navigation"
     >
-      <div className="flex items-center gap-2 border-b border-neutral-100 px-4 py-5">
-        <Image
-          src={PUBLIC_ASSETS.appLogo}
-          alt=""
-          width={36}
-          height={36}
-          unoptimized
-          className="size-9 shrink-0"
-        />
-        <span className="truncate text-base font-bold capitalize text-[color:var(--color-brand-panchang)]">
-          {APP_NAME}
-        </span>
-      </div>
+      {!hideBrand ? (
+        <div className="flex items-center gap-2 border-b border-neutral-100 px-4 py-5">
+          <Image
+            src={PUBLIC_ASSETS.appLogo}
+            alt=""
+            width={36}
+            height={36}
+            unoptimized
+            className="size-9 shrink-0"
+          />
+          <span className="truncate text-base font-bold capitalize text-[color:var(--color-brand-panchang)]">
+            {APP_NAME}
+          </span>
+        </div>
+      ) : null}
 
-      <nav className="scrollbar-hidden flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-4">
+      <nav
+        className={cn(
+          "scrollbar-hidden flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-4",
+          hideBrand && "pt-4"
+        )}
+      >
+        <DesktopNavGreeting
+          userName={user?.name}
+          isAuthenticated={isAuthenticated}
+        />
+
         <DesktopNavAiChatCard />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_DAILY_PREDICTION_LINK.icon}
+          label={HDS.dailyPredictions}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_DAILY_PREDICTION_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_DAILY_PREDICTION_LINK.href, {
+              redirectHomeOnClose: true,
+            })
+          }
+        />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK.icon}
+          label={HDS.weeklyPredictions}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK.href, {
+              redirectHomeOnClose: true,
+            })
+          }
+        />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK.icon}
+          label={HDS.loveCompatibility}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK.href, {
+              redirectHomeOnClose: true,
+            })
+          }
+        />
+
+        <DesktopNavOtherPredictionsMenu />
 
         {isAstrologer ? (
           <DesktopNavItem
@@ -81,10 +125,7 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
         ) : (
           <DesktopNavItem
             iconSrc={consultSidebarLink.icon}
-            labelLines={{
-              primary: HDS.bookConsultationLine1,
-              secondary: HDS.bookConsultationLine2,
-            }}
+            label={HDS.bookConsultation}
             active={pathname.startsWith(consultSidebarLink.href)}
             onClick={() =>
               guardNavigation(consultSidebarLink.href, { redirectHomeOnClose: true })
@@ -92,17 +133,14 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           />
         )}
 
-        <DesktopNavPredictionsMenu />
-
         <DesktopNavItem
-          iconSrc={DESKTOP_SIDEBAR_MARRIAGE_LINK.icon}
-          labelLines={{
-            primary: HDS.marriageLine1,
-            secondary: HDS.marriageLine2,
-          }}
-          active={pathname.startsWith(DESKTOP_SIDEBAR_MARRIAGE_LINK.href)}
+          iconSrc={DESKTOP_SIDEBAR_PANCHANG_LINK.icon}
+          label={HDS.panchangam}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_PANCHANG_LINK.href)}
           onClick={() =>
-            guardNavigation(DESKTOP_SIDEBAR_MARRIAGE_LINK.href, { redirectHomeOnClose: true })
+            guardNavigation(DESKTOP_SIDEBAR_PANCHANG_LINK.href, {
+              redirectHomeOnClose: true,
+            })
           }
         />
 
@@ -117,25 +155,12 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           }
         />
 
-        {DESKTOP_SIDEBAR_UTILITY_LINKS.map((item) => {
-          const isSettings = item.labelKey === "settings";
-          return (
-            <DesktopNavItem
-              key={item.href}
-              href={isSettings ? item.href : undefined}
-              iconSrc={item.icon}
-              label={utilityLabels[item.labelKey]}
-              active={pathname.startsWith(item.href)}
-              onClick={
-                isSettings
-                  ? undefined
-                  : () => guardNavigation(item.href, { redirectHomeOnClose: true })
-              }
-            />
-          );
-        })}
-
-        <DesktopNavUnlockPremium />
+        <DesktopNavItem
+          href={DESKTOP_SIDEBAR_SETTINGS_LINK.href}
+          iconSrc={DESKTOP_SIDEBAR_SETTINGS_LINK.icon}
+          label={HDS.settings}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_SETTINGS_LINK.href)}
+        />
       </nav>
     </aside>
   );

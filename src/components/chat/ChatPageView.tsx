@@ -20,7 +20,7 @@ import { useChatPreferences } from "@/hooks/useChatPreferences";
 import { useChatVoiceInput } from "@/hooks/useChatVoiceInput";
 import type { ChatPageViewProps } from "@/types/ui/chat";
 
-export function ChatPageView({ embedded = false }: ChatPageViewProps) {
+export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const listEndRef = useRef<HTMLDivElement>(null);
   const [composerPlaceholder, setComposerPlaceholder] = useState<string>(
@@ -145,7 +145,13 @@ export function ChatPageView({ embedded = false }: ChatPageViewProps) {
         aria-hidden
       />
 
-      {embedded ? <ChatEmbedHeader /> : <ChatAppBar />}
+      {embedded ? (
+        <div className="relative z-30 shrink-0 pointer-events-auto">
+          {embedHeader ?? <ChatEmbedHeader />}
+        </div>
+      ) : (
+        <ChatAppBar />
+      )}
       {embedded ? null : <ChatConsultStrip />}
 
       {toast || voice.statusHint ? (

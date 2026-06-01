@@ -1,6 +1,6 @@
 /** Web push notifications via Firebase Cloud Messaging.
  *  Mirrors Flutter `NotificationService` + `NotificationFirebaseService`.
- *  Same backend endpoint: POST /api/auth/register-token/
+ *  Same backend contract as mobile: POST /api/auth/register-token/ (via web proxy when same-origin).
  */
 import { getFirebaseApp } from "@/lib/firebase";
 import { FIREBASE_VAPID_KEY, isFirebaseWebConfigured } from "@/lib/firebase-config";
@@ -95,7 +95,9 @@ function resolveNotificationPath(title: string | undefined | null): string {
 export async function subscribeToForegroundMessages(
   onNavigate: (path: string) => void
 ): Promise<() => void> {
-  if (typeof window === "undefined" || !isConfigured()) return () => undefined;
+  if (typeof window === "undefined" || !isFirebaseWebConfigured()) {
+    return () => undefined;
+  }
 
   try {
     const { getMessaging, onMessage } = await import("firebase/messaging");

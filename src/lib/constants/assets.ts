@@ -64,6 +64,7 @@ export const DASHBOARD_ASSETS = {
   /** Desktop dashboard sidebar — outline icons (design ref). */
   sidebarCalendar: flutterSvg("sidebar-calendar.svg"),
   sidebarFolder: flutterSvg("sidebar-folder.svg"),
+  sidebarWeekly: flutterSvg("sidebar-weekly.svg"),
   sidebarMarriage: flutterSvg("sidebar-marriage.svg"),
   sidebarNotification: flutterSvg("sidebar-notification.svg"),
   sidebarProfile: flutterSvg("sidebar-profile.svg"),

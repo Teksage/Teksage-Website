@@ -29,8 +29,13 @@ export const API_ENDPOINTS = {
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",
   notifyUpdate: "/api/auth/notify-update",
-  /** `POST` — save FCM/web push token. Trailing slash required (FastAPI route). */
-  registerToken: "/api/auth/register-token/",
+  /**
+   * Web (same-origin): `app/api/auth/register-token` route handler → FastAPI.
+   * Direct FastAPI calls must use `registerTokenFastApi` (trailing slash).
+   */
+  registerToken: "/api/auth/register-token",
+  /** FastAPI `auth.py` route — trailing slash required; do not change for mobile parity. */
+  registerTokenFastApi: "/api/auth/register-token/",
   updateAppLanguage: "/api/auth/update-app-language",
   deleteAccountRequest: "/api/auth/delete/request",
   deleteAccountConfirm: "/api/auth/delete/confirm",

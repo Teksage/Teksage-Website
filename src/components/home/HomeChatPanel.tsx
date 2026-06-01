@@ -3,6 +3,7 @@
 import { useI18nConstants } from "@/hooks/useT";
 import Link from "next/link";
 import { ChatPageView } from "@/components/chat/ChatPageView";
+import { HomeChatEmbedHeader } from "@/components/home/HomeChatEmbedHeader";
 import { useLoginPrompt } from "@/contexts/LoginPromptContext";
 import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
 import { ROUTES } from "@/lib/constants/routes";
@@ -47,7 +48,7 @@ export function HomeChatPanel({ isLoggedIn, className }: HomeChatPanelProps) {
         className
       )}
     >
-      <ChatPageView embedded />
+      <ChatPageView embedded embedHeader={<HomeChatEmbedHeader />} />
     </aside>
   );
 }

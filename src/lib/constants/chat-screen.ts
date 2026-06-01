@@ -42,6 +42,10 @@ export const CHAT_LAYOUT = {
   onboardingOptionsStack: "mt-8 space-y-4 lg:mt-10 lg:space-y-5",
   messageGutter: "px-5",
   messageBubble: TYPO.chatBubble,
+  messageColumn:
+    "flex max-w-[min(94%,32rem)] flex-col gap-1 lg:max-w-[min(92%,40rem)]",
+  botMessageBubble:
+    "border border-[var(--color-chat-bot-border)] bg-[var(--color-chat-bot-bubble)] text-[var(--color-chat-bot-text)]",
   headerBlock: "bg-[var(--color-brand-primary)] text-white",
   composerShell: "bg-[var(--color-chat-composer-bg)]",
 } as const;

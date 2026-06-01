@@ -7,7 +7,7 @@ import { useState } from "react";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import {
-  HOME_DASHBOARD_PREDICTION_LINKS,
+  HOME_DASHBOARD_OTHER_PREDICTION_LINKS,
   HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT,
   HOME_DASHBOARD_SIDEBAR,
   HOME_DASHBOARD_SIDEBAR_ASSETS,
@@ -15,7 +15,7 @@ import {
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
 
-function PredictionsChevron({ open }: { open: boolean }) {
+function OtherPredictionsChevron({ open }: { open: boolean }) {
   return (
     <Image
       src={HOME_DASHBOARD_SIDEBAR_ASSETS.predictionsChevron}
@@ -32,28 +32,41 @@ function PredictionsChevron({ open }: { open: boolean }) {
   );
 }
 
-export function DesktopNavPredictionsMenu() {
+const OTHER_PREDICTION_ROUTES = [
+  ROUTES.predictionsYearly,
+  ROUTES.predictionsLife,
+  ROUTES.horoscope,
+] as const;
+
+export function DesktopNavOtherPredictionsMenu() {
   const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
-  const predictionLinks = useI18nConstants(HOME_DASHBOARD_PREDICTION_LINKS);
+  const otherLinks = useI18nConstants(HOME_DASHBOARD_OTHER_PREDICTION_LINKS);
   const pathname = usePathname();
   const { guardNavigation } = useAuthNavigation();
-  const predictionsActive = pathname.startsWith(ROUTES.predictions);
-  const [open, setOpen] = useState(predictionsActive);
+  const submenuActive = OTHER_PREDICTION_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
+  const [open, setOpen] = useState(submenuActive);
 
   return (
     <div className="flex flex-col">
       <DesktopNavItem
-        iconSrc={HOME_DASHBOARD_SIDEBAR_ASSETS.predictions}
-        label={HDS.predictions}
-        active={predictionsActive}
-        trailing={<PredictionsChevron open={open} />}
+        iconSrc={HOME_DASHBOARD_SIDEBAR_ASSETS.otherPredictions}
+        label={HDS.otherPredictions}
+        active={submenuActive}
+        trailing={<OtherPredictionsChevron open={open} />}
         onClick={() => setOpen((value) => !value)}
         ariaExpanded={open}
       />
 
       {open ? (
-        <ul className={cn("mt-0.5 space-y-0.5 pb-1 pr-1", HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT)}>
-          {predictionLinks.map((item) => {
+        <ul
+          className={cn(
+            "mt-0.5 space-y-0.5 pb-1 pr-1",
+            HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT
+          )}
+        >
+          {otherLinks.map((item) => {
             const active = pathname === item.href;
             return (
               <li key={item.href}>

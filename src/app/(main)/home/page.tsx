@@ -8,6 +8,7 @@ import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
+import { HomePanchangTimingTicker } from "@/components/home/HomePanchangTimingTicker";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
@@ -32,7 +33,12 @@ export default function HomePage() {
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
 
   return (
-    <div className={cn(PAGE_SHELL.homeRoot, "lg:h-dvh lg:overflow-hidden lg:flex-col")}>
+    <div
+      className={cn(
+        PAGE_SHELL.homeRoot,
+        "flex min-h-0 flex-1 flex-col lg:h-full lg:overflow-hidden"
+      )}
+    >
       <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.home} />
       <HomeDashboardHeader
         className={cn(PAGE_SHELL.contentLayer, "lg:hidden")}
@@ -40,6 +46,8 @@ export default function HomePage() {
         isAuthenticated={isAuthenticated}
         unreadCount={unreadCount}
       />
+
+      <HomePanchangTimingTicker className={cn(PAGE_SHELL.contentLayer, "lg:hidden")} />
 
       <div className={cn("relative z-10 flex min-h-0 flex-1 flex-col lg:h-full lg:flex-row")}>
         <main
@@ -91,7 +99,7 @@ export default function HomePage() {
 
         <HomeChatPanel
           isLoggedIn={isAuthenticated}
-          className="sticky top-0 h-dvh shrink-0 lg:static lg:h-full lg:min-h-0 lg:flex-1"
+          className="hidden min-h-0 min-w-0 flex-1 lg:flex"
         />
       </div>
     </div>

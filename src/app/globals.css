@@ -51,14 +51,20 @@
   --color-consult-filter-chip: #7fa900;
   --color-consult-match-track: #d9d9d9;
   --desktop-sidebar-width: 17.5rem;
+  --color-home-timing-rail-bg: #e8f4e4;
+  --color-home-timing-chip-bg: #f4faf2;
+  --color-home-timing-rahu: #c45c2a;
+  --color-home-timing-yama: #8b6914;
+  --color-home-timing-auspicious: var(--color-brand-panchang);
   --color-ai-chat-icon: #2e8b1e;
   --color-chat-shell: #ffffff;
   --color-chat-composer-bg: #e3f8e1;
   --color-chat-user-bubble: #f5f5f5;
   --color-chat-user-text: var(--color-brand-black);
   --color-chat-user-avatar-bg: #e8f5e6;
-  --color-chat-bot-bubble: var(--color-brand-primary);
-  --color-chat-bot-text: #ffffff;
+  --color-chat-bot-bubble: color-mix(in srgb, var(--color-brand-primary) 20%, white);
+  --color-chat-bot-text: var(--color-brand-black);
+  --color-chat-bot-border: color-mix(in srgb, var(--color-brand-primary) 28%, transparent);
   /** Flutter `chatBG.png` — use via `.chat-shell-bg` (do not use dynamic Tailwind `bg-[url(...)]`). */
   --chat-shell-bg-image: url("/flutter-assets/images/chatBG.png");
   --color-brand-black: #000000;

@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
       },
       {
         // Next.js route handlers under `app/api/places/*` — do not proxy to FastAPI.
-        source: "/api/:path((?!places/).*)",
+        // Exclude register-token — handled by `app/api/auth/register-token/route.ts`.
+        source: "/api/:path((?!places/)(?!auth/register-token$).*)",
         destination: `${backendOrigin}/api/:path`,
       },
     ];

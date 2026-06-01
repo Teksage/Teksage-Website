@@ -24,14 +24,14 @@ export function ChatMessageBubble({
       {!isUser ? (
         <img src={CHAT_ASSETS.botLogo} alt="" className="mr-2 mt-1 size-8 shrink-0 self-start" />
       ) : null}
-      <div className="flex max-w-[min(85%,22rem)] flex-col gap-1">
+      <div className={CHAT_LAYOUT.messageColumn}>
         <div
           className={cn(
             "rounded-[0.9rem] px-3 py-2.5",
             CHAT_LAYOUT.messageBubble,
             isUser
               ? "border border-black/10 bg-[var(--color-chat-user-bubble)] text-[var(--color-chat-user-text)]"
-              : "bg-[var(--color-chat-bot-bubble)] text-[var(--color-chat-bot-text)]"
+              : CHAT_LAYOUT.botMessageBubble
           )}
         >
           <p className="whitespace-pre-wrap break-words">{message.text}</p>
