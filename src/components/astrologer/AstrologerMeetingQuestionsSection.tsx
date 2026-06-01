@@ -12,6 +12,7 @@ import {
   ASTRO_PORTAL_COLORS,
   ASTRO_PORTAL_UI,
 } from "@/lib/constants/astrologer-portal";
+import { deleteAstrologerQuestion } from "@/lib/services/astrologer-portal";
 import type { AstrologerMeetingQuestionsSectionProps } from "@/types";
 
 const Q = ASTRO_PORTAL_UI.questions;
@@ -25,8 +26,8 @@ export function AstrologerMeetingQuestionsSection({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
-  const [displayQuestions, setDisplayQuestions] =
-    useState<AstroQuestion[]>(questions);
+  const [displayQuestions, setDisplayQuestions] = useState<AstroQuestion[]>(questions);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
     setDisplayQuestions(questions);
@@ -39,6 +40,21 @@ export function AstrologerMeetingQuestionsSection({
       prev.map((q) => (q.id === updated.id ? updated : q))
     );
     void onQuestionsUpdated();
+  }
+
+  async function handleDelete(id: number) {
+    if (deletingId !== null) return;
+    setDeletingId(id);
+    setInfoMessage(null);
+    try {
+      await deleteAstrologerQuestion(id);
+      setDisplayQuestions((prev) => prev.filter((q) => q.id !== id));
+      void onQuestionsUpdated();
+    } catch {
+      setInfoMessage(Q.deleteQuestionFail ?? "Failed to delete question.");
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   function openAnswer(index: number) {
@@ -71,19 +87,29 @@ export function AstrologerMeetingQuestionsSection({
                   <p className="flex-1 text-sm font-semibold text-gray-900">
                     {q.question}
                   </p>
-                  {!answered ? (
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    {!answered ? (
+                      <button
+                        type="button"
+                        onClick={() => openAnswer(index)}
+                        className="rounded-full border px-2.5 py-1.5 text-xs font-semibold"
+                        style={{
+                          borderColor: ASTRO_PORTAL_COLORS.brandGreen,
+                          color: ASTRO_PORTAL_COLORS.brandGreen,
+                        }}
+                      >
+                        {Q.answerBtn}
+                      </button>
+                    ) : null}
                     <button
                       type="button"
-                      onClick={() => openAnswer(index)}
-                      className="shrink-0 rounded-full border px-2.5 py-1.5 text-xs font-semibold"
-                      style={{
-                        borderColor: ASTRO_PORTAL_COLORS.brandGreen,
-                        color: ASTRO_PORTAL_COLORS.brandGreen,
-                      }}
+                      onClick={() => void handleDelete(q.id)}
+                      disabled={deletingId === q.id}
+                      className="rounded-full border border-red-300 px-2.5 py-1.5 text-xs font-semibold text-red-500 transition-opacity hover:opacity-80 disabled:opacity-40"
                     >
-                      {Q.answerBtn}
+                      {deletingId === q.id ? "…" : Q.deleteQuestion ?? "Delete"}
                     </button>
-                  ) : null}
+                  </div>
                 </div>
                 {answered ? (
                   <p className="mt-2 text-sm font-medium leading-snug text-gray-900/50">

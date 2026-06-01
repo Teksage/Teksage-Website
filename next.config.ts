@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        // Preserve trailing slash — FastAPI routes like `/register-token/` 307 without it,
+        // and redirect drops the Authorization header → 401 on register-token.
+        source: "/api/:path((?!places/).*)/",
+        destination: `${backendOrigin}/api/:path/`,
+      },
+      {
         // Next.js route handlers under `app/api/places/*` — do not proxy to FastAPI.
         source: "/api/:path((?!places/).*)",
         destination: `${backendOrigin}/api/:path`,

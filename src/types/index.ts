@@ -213,3 +213,9 @@ export type {
   AstrologerMeetingDetailProps,
   AstrologerMeetingQuestionsSectionProps,
 } from "./ui/astrologer-portal";
+
+export type {
+  ChatPrompt,
+  ChatPromptCreatePayload,
+  ChatPromptStatusPayload,
+} from "./chat-prompts";

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { isClientLoggedIn } from "@/lib/auth-session";
+import { useHydratedLoggedIn } from "@/hooks/useHydratedLoggedIn";
 import { useAuthStore } from "@/store/auth.store";
 import {
   fetchDailyPredictionSummary,
@@ -15,7 +16,7 @@ import type { Notification } from "@/types";
 export function useDashboard() {
   const { version: languageVersion } = useAppLanguage();
   const { user } = useAuthStore();
-  const isAuthenticated = isClientLoggedIn();
+  const isAuthenticated = useHydratedLoggedIn();
   const [dailyPrediction, setDailyPrediction] =
     useState<DailyPredictionSummary | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -28,7 +29,7 @@ export function useDashboard() {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isClientLoggedIn()) return;
     let cancelled = false;
     Promise.all([
       fetchDailyPredictionSummary(),

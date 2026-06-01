@@ -59,6 +59,10 @@ export function OtpVerifyView({
             }
       );
       setAuth(response.user, response.token);
+      // Fire-and-forget — push registration is non-fatal
+      void import("@/lib/services/push-notifications").then(({ initWebPush }) =>
+        initWebPush()
+      );
       const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
       router.replace(dest);
     } catch {

@@ -131,6 +131,21 @@ function mapQuestion(raw: Record<string, unknown>): AstroQuestion {
   };
 }
 
+/** `PUT /api/astrologer/events/{event_id}` — update event status (e.g. mark completed). */
+export async function updateAstrologerEventStatus(
+  eventId: number,
+  status: string
+): Promise<void> {
+  await http.put(`${API_ENDPOINTS.astroEvents}/${eventId}`, { status });
+}
+
+/** `DELETE /api/astrologer/questions/{question_id}` — remove a customer question. */
+export async function deleteAstrologerQuestion(
+  questionId: number
+): Promise<void> {
+  await http.delete(`${API_ENDPOINTS.astrologerQuestions}/${questionId}`);
+}
+
 /** `PUT /api/astrologer/questions/{question_id}` — mirrors Flutter `AstroUserQuestion.updateQuestionAnswer`. */
 export async function updateAstrologerQuestionAnswer(
   questionId: number,

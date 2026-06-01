@@ -36,8 +36,12 @@ http.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      clearAuthSession();
-      redirectHomeFromProtectedIfNeeded();
+      const url = error.config?.url ?? "";
+      // FCM token registration can fail before auth is fully ready — don't wipe session
+      if (!url.includes("/register-token")) {
+        clearAuthSession();
+        redirectHomeFromProtectedIfNeeded();
+      }
     }
     return Promise.reject(error);
   }

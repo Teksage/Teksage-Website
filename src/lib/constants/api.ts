@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",
   notifyUpdate: "/api/auth/notify-update",
+  /** `POST` — save FCM/web push token. Trailing slash required (FastAPI route). */
   registerToken: "/api/auth/register-token/",
   updateAppLanguage: "/api/auth/update-app-language",
   deleteAccountRequest: "/api/auth/delete/request",
@@ -95,6 +96,12 @@ export const API_ENDPOINTS = {
   shareLife: "/api/share/life",
   sharePanchang: "/api/share/panchang",
   shareMatchMaking: "/api/share/match_making",
+
+  // --- Chat prompts — `chat_prompts.py` ---
+  /** `GET` — list prompts | `POST` — create prompt */
+  chatPrompts: "/api/chat-prompts/",
+  /** `PUT` — toggle prompt active/inactive */
+  chatPromptsStatus: "/api/chat-prompts/status",
 
   // --- FAQ — `faq.py`, mount `/faq` ---
   faq: "/api/faq/",

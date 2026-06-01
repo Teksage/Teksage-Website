@@ -29,6 +29,7 @@ export const ROUTES = {
   astrologer: "/astrologer",
   astrologerMeetings: "/astrologer/meetings",
   astrologerAvailability: "/astrologer/availability",
+  astrologerChatPrompts: "/astrologer/chat-prompts",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",
