@@ -5,9 +5,6 @@
 
 export const ROUTES = {
   root: "/",
-  onboarding: "/onboarding",
-  /** Flutter `WelcomePage` — non-premium users after first home load. */
-  welcome: "/welcome",
   home: "/home",
   panchang: "/panchang",
   horoscope: "/horoscope",
