@@ -13,7 +13,7 @@ export function ChatAppBar() {
 
   return (
     <header className={cn("relative z-20 shrink-0", CHAT_LAYOUT.headerBlock)}>
-      <div className="flex items-center gap-2 px-3 pb-2 pt-[max(0.5rem,env(safe-area-inset-top,0px))]">
+      <div className="flex items-center gap-2 px-3 pb-3 pt-[max(0.5rem,env(safe-area-inset-top,0px))] lg:pb-4">
         <button
           type="button"
           onClick={() => router.back()}
@@ -26,11 +26,6 @@ export function ChatAppBar() {
           {CS.title}
         </h1>
         <span className="size-10 shrink-0" aria-hidden />
-      </div>
-      <div className="flex justify-center px-4 pb-3">
-        <p className="rounded-md bg-white/20 px-3 py-1.5 text-center text-xs font-semibold text-white sm:text-sm">
-          {CS.subtitleTag}
-        </p>
       </div>
     </header>
   );

@@ -30,9 +30,6 @@ export const HOME_PANCHANG_TIMING_UI = {
   valueLight: "text-xs font-bold leading-snug text-[var(--color-brand-black)]",
   ctaOnPrimary: `${TYPO.caption} font-semibold text-white underline-offset-2 hover:underline`,
   ctaLight: `${TYPO.caption} font-bold text-[var(--color-brand-black)] underline-offset-2 hover:underline`,
-  embedTitleBlock: "px-4 py-3 text-center",
-  embedTitle: `text-base font-bold text-white`,
-  embedSubtitle: `mt-1 text-xs font-semibold text-white/90`,
 } as const;
 
 export const HOME_PANCHANG_TIMING_ROW_IDS = {

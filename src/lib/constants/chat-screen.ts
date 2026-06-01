@@ -32,7 +32,7 @@ export const CHAT_SCREEN = {
 /** Chat page layout — Flutter `chatAppBar.dart` + `chat.dart`. */
 export const CHAT_LAYOUT = {
   pageRoot:
-    "relative flex min-h-dvh w-full flex-col bg-[var(--color-chat-shell)] lg:mx-auto lg:my-4 lg:max-w-3xl lg:min-h-[calc(100dvh-2rem)] lg:overflow-hidden lg:rounded-3xl lg:border lg:border-black/10 lg:shadow-lg",
+    "relative flex min-h-dvh w-full flex-col bg-[var(--color-chat-shell)] lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-hidden",
   onboardingRootEmbedded:
     "relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-white",
   onboardingRootStandalone: "fixed inset-0 z-50 flex flex-col bg-white",
@@ -47,7 +47,12 @@ export const CHAT_LAYOUT = {
   botMessageBubble:
     "border border-[var(--color-chat-bot-border)] bg-[var(--color-chat-bot-bubble)] text-[var(--color-chat-bot-text)]",
   headerBlock: "bg-[var(--color-brand-primary)] text-white",
+  embedHeaderBlock: "px-4 py-3 text-center",
+  embedHeaderTitle: `${TYPO.h3Bold} text-white`,
+  appBarTitle: `${TYPO.h3Bold} flex-1 text-center text-white`,
   composerShell: "bg-[var(--color-chat-composer-bg)]",
+  /** Standalone `/chat` — hidden on desktop (`lg+`); home embed omits the strip entirely. */
+  consultStripRoot: "relative z-10 shrink-0 lg:hidden",
 } as const;
 
 /** Free-tier cap — Flutter `freeUserLimit`. */

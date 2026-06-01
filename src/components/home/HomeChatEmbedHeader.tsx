@@ -1,7 +1,6 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { HOME_PANCHANG_TIMING_UI } from "@/lib/constants/home-panchang-timing-ui";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
 
@@ -11,9 +10,8 @@ export function HomeChatEmbedHeader() {
 
   return (
     <header className={cn(CHAT_LAYOUT.headerBlock, "relative z-30 shrink-0")}>
-      <div className={HOME_PANCHANG_TIMING_UI.embedTitleBlock}>
-        <h2 className={HOME_PANCHANG_TIMING_UI.embedTitle}>{CS.title}</h2>
-        <p className={HOME_PANCHANG_TIMING_UI.embedSubtitle}>{CS.subtitleTag}</p>
+      <div className={CHAT_LAYOUT.embedHeaderBlock}>
+        <h2 className={CHAT_LAYOUT.embedHeaderTitle}>{CS.title}</h2>
       </div>
     </header>
   );
