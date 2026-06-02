@@ -27,6 +27,8 @@ export interface SubscriptionPlan {
   tenureValue: number;
   tenureCount: string;
   osType: string;
+  /** Service IDs from `service_catalog.plan_services` (JSONB). */
+  planServices: number[];
 }
 
 export interface SubscriptionCouponResult {

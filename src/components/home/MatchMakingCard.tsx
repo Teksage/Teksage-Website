@@ -39,7 +39,7 @@ export function MatchMakingCard({
       >
         <div className="relative z-10 flex shrink-0 justify-center px-2 pt-5">
           <p className={HOME_DASHBOARD_UI.matchCardTitle}>
-            {HD.marriageMatchMakingLines}
+            {HD.loveCompatibilityLines}
           </p>
         </div>
 

@@ -19,7 +19,6 @@ export const PREDICTION_DETAIL_SCREEN = {
   sectionRelationship: "Relationship",
   sectionWealth: "Wealth",
   sectionHealth: "Health",
-  cautiousLabel: "Cautious",
   /** Flutter `dailyPrediction.dart` when `chandra_bala` is 8. */
   chandrashtamaLabel: "Chandrashtama",
 } as const;

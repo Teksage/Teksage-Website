@@ -21,6 +21,8 @@ import {
   markSubscriptionActivating,
   readSubscriptionCheckout,
 } from "@/lib/subscription-checkout-session";
+import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
+import { SETTINGS_SUBSCRIPTIONS_COPY } from "@/lib/constants/settings-subscriptions";
 import {
   refreshAuthProfileAfterSubscription,
   waitForPremiumActivation,
@@ -128,6 +130,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     markSubscriptionActivating();
     await waitForPremiumActivation();
     await refreshAuthProfileAfterSubscription();
+    showSuccessAppSnackBar(SETTINGS_SUBSCRIPTIONS_COPY.paymentSuccess);
     router.replace(ROUTES.settingsSubscriptions);
   }
 

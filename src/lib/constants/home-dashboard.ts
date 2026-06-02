@@ -11,9 +11,9 @@ export const HOME_DASHBOARD = {
   bookNow: "Book Now",
   myProfile: "My Profile",
   astrologerShort: "Astrologer",
-  marriageMatchMaking: "Marriage Match Making",
-  /** Two-line title on home card (Flutter layout). */
-  marriageMatchMakingLines: "Marriage\nMatch Making",
+  loveCompatibility: "Love Compatibility",
+  /** Two-line title on home card. */
+  loveCompatibilityLines: "Love\nCompatibility",
   dailyPrediction: "Daily Prediction",
   tharaBala: "Thara Bala",
   chandraBala: "Chandra Bala",

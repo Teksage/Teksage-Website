@@ -12,10 +12,23 @@ import {
 } from "@/lib/services/consultation";
 import type { ConsultationAstrologer } from "@/types/consultation";
 
+function mergeAstrologerLists(
+  primary: ConsultationAstrologer[],
+  secondary: ConsultationAstrologer[]
+): ConsultationAstrologer[] {
+  const seen = new Set(primary.map((a) => a.astrologer_id));
+  const merged = [...primary];
+  for (const row of secondary) {
+    if (seen.has(row.astrologer_id)) continue;
+    seen.add(row.astrologer_id);
+    merged.push(row);
+  }
+  return merged;
+}
+
 export function useConsultationListing() {
   const { languageVersion } = useT();
-  const [top, setTop] = useState<ConsultationAstrologer[]>([]);
-  const [more, setMore] = useState<ConsultationAstrologer[]>([]);
+  const [astrologers, setAstrologers] = useState<ConsultationAstrologer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,13 +39,11 @@ export function useConsultationListing() {
     setError(null);
     try {
       const topList = await fetchTopAstrologers(cats, langs);
-      setTop(topList);
       const excludeUserIds = consultationExcludeUserIds(topList);
       const rest = await fetchMoreAstrologers(excludeUserIds);
-      setMore(rest);
+      setAstrologers(mergeAstrologerLists(topList, rest));
     } catch {
-      setTop([]);
-      setMore([]);
+      setAstrologers([]);
       setError("load");
     } finally {
       setLoading(false);
@@ -47,8 +58,7 @@ export function useConsultationListing() {
 
   return {
     currency,
-    top,
-    more,
+    astrologers,
     loading,
     error,
   };

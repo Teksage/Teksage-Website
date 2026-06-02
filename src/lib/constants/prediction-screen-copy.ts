@@ -33,7 +33,7 @@ export const LIFE_DETAIL_SCREEN = {
 } as const;
 
 export const MATCH_MAKING_FLUTTER = {
-  pageTitle: "Marriage Match Making",
+  pageTitle: "Love Compatibility",
   subtitle: "Check astrological compatibility for a perfect match",
   boySection: "Boy Details",
   girlSection: "Girl Details",

@@ -14,6 +14,7 @@ import {
 } from "@/lib/constants/settings-notifications";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { fetchProfileSettings } from "@/lib/services/settings-profile";
+import { showErrorAppSnackBar } from "@/lib/app-snackbar";
 import { updateNotificationPrefs } from "@/lib/services/settings-notifications";
 import { cn } from "@/lib/utils";
 import type { NotificationPrefs } from "@/types/settings";
@@ -54,6 +55,7 @@ export function SettingsPushNotificationsView() {
     } catch {
       setPrefs(previous);
       setError(SN.updateFailed);
+      showErrorAppSnackBar(SN.updateFailed);
     }
   }
 

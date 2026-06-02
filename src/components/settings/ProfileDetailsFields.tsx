@@ -1,27 +1,33 @@
 "use client";
 
+import { useFormContext } from "react-hook-form";
 import { useI18nConstants } from "@/hooks/useT";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/common/Loader";
+import { ProfileChatLanguageField } from "@/components/settings/ProfileChatLanguageField";
 import { ProfileField } from "@/components/settings/ProfileField";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
-import { CHAT_LANGUAGE_OPTIONS, PROFILE_DETAILS } from "@/lib/constants/profile-details";
+import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { useProfileRashiNakshatra } from "@/hooks/useProfileRashiNakshatra";
+import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
 import { cn } from "@/lib/utils";
 import type { ProfileDetailsFieldsProps } from "@/types";
 
 export function ProfileDetailsFields({
-  form,
-  setField,
   user,
   isEditing,
   isSaving,
-  onSave,
   onProfileRefresh,
-  onRashiResolved,
 }: ProfileDetailsFieldsProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<ProfileDetailsFormValues>();
+
+  const form = watch();
   const birthLocationForApi =
     form.birthLocationFull.trim() || form.placeOfBirth.trim();
 
@@ -30,8 +36,13 @@ export function ProfileDetailsFields({
     dateOfBirth: form.dateOfBirth,
     timeOfBirth: form.timeOfBirth,
     birthLocation: birthLocationForApi,
-    onResolved: (rashi, nakshatra) => onRashiResolved?.(rashi, nakshatra),
+    onResolved: (rashi, nakshatra) => {
+      setValue("rashi", rashi);
+      setValue("nakshatra", nakshatra);
+    },
   });
+
+  const touch = { shouldDirty: true as const };
 
   return (
     <div className="flex flex-col gap-3.5">
@@ -40,18 +51,22 @@ export function ProfileDetailsFields({
         required
         label={PD.firstName}
         value={form.firstName}
-        onChange={(v) => setField("firstName", v)}
+        onChange={(v) => setValue("firstName", v, touch)}
         isEditable={isEditing}
         placeholder="First name"
+        hasError={Boolean(errors.firstName)}
+        errorMessage={errors.firstName?.message}
       />
       <ProfileField
         appearance="profile"
         required
         label={PD.lastName}
         value={form.lastName}
-        onChange={(v) => setField("lastName", v)}
+        onChange={(v) => setValue("lastName", v, touch)}
         isEditable={isEditing}
         placeholder="Last name"
+        hasError={Boolean(errors.lastName)}
+        errorMessage={errors.lastName?.message}
       />
       <ProfileField
         appearance="profile"
@@ -59,43 +74,31 @@ export function ProfileDetailsFields({
         label={PD.email}
         type="email"
         value={form.email}
-        onChange={(v) => setField("email", v)}
+        onChange={(v) => setValue("email", v, touch)}
         isEditable={isEditing}
         placeholder="Email"
+        hasError={Boolean(errors.email)}
+        errorMessage={errors.email?.message}
       />
 
       <ProfilePhoneRow
         countryCode={form.countryCode}
         mobile={form.mobile}
-        onMobileChange={(v) => setField("mobile", v)}
+        onMobileChange={(v) => setValue("mobile", v, touch)}
         isMobileVerified={user.isMobileVerified}
         isEditing={isEditing}
         onVerificationSuccess={onProfileRefresh}
+        hasError={Boolean(errors.mobile)}
+        errorMessage={errors.mobile?.message}
       />
 
-      <div className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-[var(--color-brand-black)]">
-          {PD.chatLanguage}
-          <span className="text-[var(--color-brand-error)]">*</span>
-        </span>
-        <select
-          value={form.chatLanguages}
-          onChange={(e) => setField("chatLanguages", e.target.value)}
-          disabled={!isEditing}
-          className={cn(
-            "h-12 w-full rounded-xl border border-black/15 bg-neutral-100 px-3 text-sm font-medium",
-            "text-[var(--color-brand-black)] outline-none",
-            "focus:border-[var(--color-brand-primary)]",
-            !isEditing && "cursor-not-allowed opacity-90"
-          )}
-        >
-          {CHAT_LANGUAGE_OPTIONS.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-      </div>
+      <ProfileChatLanguageField
+        value={form.chatLanguages}
+        onChange={(v) => setValue("chatLanguages", v, touch)}
+        isEditing={isEditing}
+        hasError={Boolean(errors.chatLanguages)}
+        errorMessage={errors.chatLanguages?.message}
+      />
 
       <ProfileField
         appearance="profile"
@@ -103,9 +106,11 @@ export function ProfileDetailsFields({
         label={PD.dateOfBirth}
         type="date"
         value={form.dateOfBirth}
-        onChange={(v) => setField("dateOfBirth", v)}
+        onChange={(v) => setValue("dateOfBirth", v, touch)}
         isEditable={isEditing}
         onBlurCommit={() => void refreshRashi()}
+        hasError={Boolean(errors.dateOfBirth)}
+        errorMessage={errors.dateOfBirth?.message}
       />
       <ProfileField
         appearance="profile"
@@ -113,9 +118,11 @@ export function ProfileDetailsFields({
         label={PD.timeOfBirth}
         type="time"
         value={form.timeOfBirth}
-        onChange={(v) => setField("timeOfBirth", v)}
+        onChange={(v) => setValue("timeOfBirth", v, touch)}
         isEditable={isEditing}
         onBlurCommit={() => void refreshRashi()}
+        hasError={Boolean(errors.timeOfBirth)}
+        errorMessage={errors.timeOfBirth?.message}
       />
 
       <ProfileLocationField
@@ -126,28 +133,33 @@ export function ProfileDetailsFields({
         isEditable={isEditing}
         placeholder="Place of birth"
         onChange={(city, full) => {
-          setField("placeOfBirth", city);
-          setField("birthLocationFull", full);
+          setValue("placeOfBirth", city, touch);
+          setValue("birthLocationFull", full, touch);
         }}
         onBlurCommit={() => void refreshRashi()}
+        hasError={Boolean(errors.placeOfBirth)}
+        errorMessage={errors.placeOfBirth?.message}
       />
       <ProfileLocationField
         label={PD.currentLocation}
+        required
         value={form.preferredLocation}
         fullLocation={form.preferredLocationFull}
         isEditable={isEditing}
         placeholder="Current location"
         onChange={(city, full) => {
-          setField("preferredLocation", city);
-          setField("preferredLocationFull", full);
+          setValue("preferredLocation", city, touch);
+          setValue("preferredLocationFull", full, touch);
         }}
+        hasError={Boolean(errors.preferredLocation)}
+        errorMessage={errors.preferredLocation?.message}
       />
 
       {rashiBusy ? (
-        <p className="flex items-center gap-2 text-xs font-medium text-black/55">
+        <div className="flex items-center gap-2 text-xs font-medium text-black/55">
           <Loader variant="inline" size="sm" />
           {PD.rashiResolving}
-        </p>
+        </div>
       ) : null}
       {rashiError ? (
         <p className="text-xs font-semibold text-[var(--color-brand-error)]">{rashiError}</p>
@@ -158,7 +170,7 @@ export function ProfileDetailsFields({
         required
         label={PD.rasi}
         value={form.rashi}
-        onChange={(v) => setField("rashi", v)}
+        onChange={(v) => setValue("rashi", v, touch)}
         isEditable={false}
         placeholder="Rasi"
       />
@@ -167,29 +179,23 @@ export function ProfileDetailsFields({
         required
         label={PD.nakshatram}
         value={form.nakshatra}
-        onChange={(v) => setField("nakshatra", v)}
+        onChange={(v) => setValue("nakshatra", v, touch)}
         isEditable={false}
         placeholder="Nakshatram"
       />
 
       {isEditing ? (
         <Button
-          type="button"
-          onClick={onSave}
+          type="submit"
           disabled={isSaving}
           className={cn(
             "mt-4 h-11 w-full rounded-full bg-[var(--color-brand-primary)]",
             "font-semibold text-white hover:bg-[var(--color-brand-primary)]/90"
           )}
         >
-          {isSaving ? (
-            <Loader variant="inline" size="sm" />
-          ) : (
-            PD.save
-          )}
+          {isSaving ? <Loader variant="inline" size="sm" /> : PD.save}
         </Button>
       ) : null}
     </div>
   );
 }
-

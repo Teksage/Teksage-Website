@@ -69,7 +69,6 @@ export function DailyPredictionBalaPanel({
           <p className={DAILY_PREDICTION_BALA_UI.valueText}>
             {cautious ?? "—"}
           </p>
-          <p className={DAILY_PREDICTION_BALA_UI.label}>{PD.cautiousLabel}</p>
         </div>
       </div>
     </div>

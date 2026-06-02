@@ -9,6 +9,11 @@ import type {
   SubscriptionPlan,
 } from "@/types/settings";
 
+function parsePlanServices(raw: unknown): number[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((v) => Number(v)).filter((n) => Number.isFinite(n) && n > 0);
+}
+
 function parsePlan(raw: Record<string, unknown>): SubscriptionPlan | null {
   const planId = Number(raw.plan_id);
   if (!Number.isFinite(planId)) return null;
@@ -27,6 +32,7 @@ function parsePlan(raw: Record<string, unknown>): SubscriptionPlan | null {
     tenureValue: Number(raw.tenure_value ?? 0),
     tenureCount: String(raw.tenure_count ?? ""),
     osType: String(raw.os_type ?? ""),
+    planServices: parsePlanServices(raw.plan_services),
   };
 }
 

@@ -43,6 +43,9 @@
   --color-brand-ios: #1081DD;
   --color-brand-bg: #F1F1F1;
   --color-brand-error: #E60000;
+  --color-snackbar-success-bg: #c2edc0;
+  --color-snackbar-error-bg: #ffe1d4;
+  --color-snackbar-info-bg: #bae8b5;
   --color-brand-banner: #A2C734;
   --color-brand-banner-border: #C8EF54;
   --color-brand-consultation-heading: #3a3b00;

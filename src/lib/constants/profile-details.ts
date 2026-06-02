@@ -30,7 +30,9 @@ export const PROFILE_DETAILS = {
 } as const;
 
 export const PROFILE_LAYOUT = {
-  main: "relative z-10 mx-auto w-full max-w-lg overflow-visible px-5 pb-4 pt-5",
+  main: "relative z-10 mx-auto w-full max-w-lg overflow-visible px-5 pb-4 pt-5 lg:max-w-2xl lg:px-0 lg:pb-8",
+  desktopPanel:
+    "lg:rounded-2xl lg:border lg:border-[var(--color-home-dashboard-rule)] lg:bg-white lg:px-6 lg:py-6 lg:shadow-[0_4px_24px_rgb(0_0_0_/0.07)]",
   editButton:
     "mr-1 px-2 py-2 text-lg font-semibold text-[var(--color-brand-primary)]",
   errorBanner:
