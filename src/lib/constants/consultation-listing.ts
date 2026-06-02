@@ -5,8 +5,6 @@ const flutterImage = (file: string) => `/flutter-assets/images/${file}` as const
 
 export const CONSULTATION_LISTING_SCREEN = {
   appBarTitle: "Astrologer Consultation",
-  topHeading: "Top 5 astrologers\nbased on preferences",
-  otherHeading: "List of Other Astrologers",
   bookNow: "Book Now",
   matchSuffix: "Match",
   perSession: "/ 30 min",

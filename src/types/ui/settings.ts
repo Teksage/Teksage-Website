@@ -18,17 +18,23 @@ export type ProfileDetailsFormState = {
 };
 
 export interface ProfileDetailsFieldsProps {
-  form: ProfileDetailsFormState;
-  setField: <K extends keyof ProfileDetailsFormState>(
-    key: K,
-    value: ProfileDetailsFormState[K]
-  ) => void;
   user: UserProfile;
   isEditing: boolean;
   isSaving: boolean;
-  onSave: () => void;
   onProfileRefresh?: () => void | Promise<void>;
-  onRashiResolved?: (rashi: string, nakshatra: string) => void;
+}
+
+export interface ProfileLocationFieldProps {
+  label: string;
+  required?: boolean;
+  value: string;
+  fullLocation: string;
+  isEditable: boolean;
+  placeholder: string;
+  onChange: (city: string, fullLocation: string) => void;
+  onBlurCommit?: () => void;
+  hasError?: boolean;
+  errorMessage?: string;
 }
 
 export interface ProfileDetailsFormProps {
@@ -72,6 +78,8 @@ export interface ProfilePhoneRowProps {
   isMobileVerified?: boolean;
   isEditing: boolean;
   onVerificationSuccess?: () => void | Promise<void>;
+  hasError?: boolean;
+  errorMessage?: string;
 }
 
 export type ChangeContactMode = "email" | "mobile";

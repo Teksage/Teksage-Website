@@ -7,6 +7,7 @@ import { SettingsSubpageHeader } from "@/components/settings/SettingsSubpageHead
 import { SubscriptionCurrentPlanCard } from "@/components/settings/SubscriptionCurrentPlanCard";
 import { SubscriptionAutoPayManage } from "@/components/settings/SubscriptionAutoPayManage";
 import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
+import { SubscriptionPlanBenefits } from "@/components/settings/SubscriptionPlanBenefits";
 import { SubscriptionPlanPicker } from "@/components/settings/SubscriptionPlanPicker";
 import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
@@ -135,6 +136,7 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
             priceOf={planPrice}
             onSelect={setSelectedId}
           />
+          <SubscriptionPlanBenefits selectedPlan={selectedPlan} />
           {autoPayEligible && showUpgradeBtn ? (
             <SubscriptionAutoPayToggle
               enabled={autoPayEnabled}

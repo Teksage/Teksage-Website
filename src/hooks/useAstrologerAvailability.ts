@@ -14,6 +14,7 @@ import {
   availableRangesFromSlots,
   bookedRangesFromSlots,
 } from "@/lib/services/astrologer-portal";
+import { showErrorAppSnackBar, showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
 
 export function useAstrologerAvailability(selectedDate: Date) {
@@ -114,10 +115,14 @@ export function useAstrologerAvailability(selectedDate: Date) {
         return next;
       });
       await loadDate(dateStr, { syncDraftFromServer: true });
-      setSaveMessage({ type: "success", text: ASTRO_PORTAL_UI.avail.saveSuccess });
+      const successText = ASTRO_PORTAL_UI.avail.saveSuccess;
+      setSaveMessage({ type: "success", text: successText });
+      showSuccessAppSnackBar(successText);
       return true;
     } catch {
-      setSaveMessage({ type: "error", text: ASTRO_PORTAL_UI.avail.saveFail });
+      const failText = ASTRO_PORTAL_UI.avail.saveFail;
+      setSaveMessage({ type: "error", text: failText });
+      showErrorAppSnackBar(failText);
       return false;
     } finally {
       setSaving(false);

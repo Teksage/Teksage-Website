@@ -69,17 +69,19 @@ export default function ProfilePage() {
         {error ? (
           <p className={PROFILE_LAYOUT.errorBanner}>{error}</p>
         ) : null}
-        {user ? (
-          <ProfileDetailsForm
-            key={`${user.id}-${user.email ?? ""}-${user.mobile ?? ""}`}
-            user={user}
-            isEditing={isEditing}
-            onSave={saveProfile}
-            isSaving={isSaving}
-            onDoneEditing={() => setIsEditing(false)}
-            onProfileRefresh={refetchProfile}
-          />
-        ) : null}
+        <div className={PROFILE_LAYOUT.desktopPanel}>
+          {user ? (
+            <ProfileDetailsForm
+              key={`${user.id}-${user.email ?? ""}-${user.mobile ?? ""}`}
+              user={user}
+              isEditing={isEditing}
+              onSave={saveProfile}
+              isSaving={isSaving}
+              onDoneEditing={() => setIsEditing(false)}
+              onProfileRefresh={refetchProfile}
+            />
+          ) : null}
+        </div>
       </main>
       <LoadingOverlay open={isLoading} />
     </div>

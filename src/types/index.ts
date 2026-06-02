@@ -120,6 +120,7 @@ export type {
   ProfileAvatarProps,
   ProfileFieldProps,
   ProfilePhoneRowProps,
+  ProfileLocationFieldProps,
   ChangeContactMode,
   SettingsRowVariant,
   SettingsRowProps,

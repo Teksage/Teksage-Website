@@ -1,46 +1,20 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfileDetailsFields } from "@/components/settings/ProfileDetailsFields";
-import { DEFAULT_CHAT_LANGUAGE, DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
-import { extractCityFromLocation } from "@/lib/profile-birth-normalize";
-import type {
-  ProfileDetailsFormProps,
-  ProfileDetailsFormState,
-  UserProfile,
-} from "@/types";
-
-function splitNameForForm(u: UserProfile): { first: string; last: string } {
-  if (u.firstName != null || u.lastName != null) {
-    return { first: u.firstName ?? "", last: u.lastName ?? "" };
-  }
-  const p = u.name.trim().split(/\s+/);
-  if (p.length === 0) return { first: "", last: "" };
-  if (p.length === 1) return { first: p[0], last: "" };
-  return { first: p[0], last: p.slice(1).join(" ") };
-}
-
-function userToFormState(user: UserProfile): ProfileDetailsFormState {
-  const { first, last } = splitNameForForm(user);
-  const birthFull = user.placeOfBirth ?? "";
-  const prefFull = user.preferredLocation ?? "";
-  return {
-    firstName: first,
-    lastName: last,
-    email: user.email ?? "",
-    mobile: user.mobile ?? "",
-    countryCode: user.countryCode ?? DEFAULT_COUNTRY_CODE_NUMERIC,
-    chatLanguages: user.chatLanguages ?? DEFAULT_CHAT_LANGUAGE,
-    dateOfBirth: user.dateOfBirth ?? "",
-    timeOfBirth: user.timeOfBirth ?? "",
-    placeOfBirth: extractCityFromLocation(birthFull),
-    birthLocationFull: birthFull,
-    preferredLocation: extractCityFromLocation(prefFull),
-    preferredLocationFull: prefFull,
-    rashi: user.rashi ?? "",
-    nakshatra: user.nakshatra ?? "",
-  };
-}
+import { showErrorAppSnackBar } from "@/lib/app-snackbar";
+import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
+import {
+  profileDetailsFormSchema,
+  type ProfileDetailsFormValues,
+} from "@/lib/profile-form-schema";
+import {
+  profileFormValuesToUpdate,
+  userToProfileFormValues,
+} from "@/lib/profile-form-mappers";
+import type { ProfileDetailsFormProps } from "@/types";
 
 export function ProfileDetailsForm({
   user,
@@ -51,53 +25,40 @@ export function ProfileDetailsForm({
   onProfileRefresh,
   className,
 }: ProfileDetailsFormProps) {
-  const [form, setForm] = useState<ProfileDetailsFormState>(() =>
-    userToFormState(user)
+  const methods = useForm<ProfileDetailsFormValues>({
+    resolver: zodResolver(profileDetailsFormSchema),
+    defaultValues: userToProfileFormValues(user),
+    mode: "onSubmit",
+  });
+
+  const { reset, handleSubmit } = methods;
+
+  useEffect(() => {
+    reset(userToProfileFormValues(user));
+  }, [user, reset]);
+
+  const onValidSubmit = handleSubmit(
+    async (data) => {
+      const ok = await onSave(profileFormValuesToUpdate(data, user));
+      if (ok) onDoneEditing();
+    },
+    () => {
+      showErrorAppSnackBar(PROFILE_FORM_VALIDATION.fillAllRequired, {
+        position: "top",
+      });
+    }
   );
-
-  function setField<K extends keyof ProfileDetailsFormState>(
-    key: K,
-    value: ProfileDetailsFormState[K]
-  ) {
-    setForm((p) => ({ ...p, [key]: value }));
-  }
-
-  const resolveRashi = useCallback((rashi: string, nakshatra: string) => {
-    setForm((p) => ({ ...p, rashi, nakshatra }));
-  }, []);
-
-  async function handleSave() {
-    const name = [form.firstName, form.lastName].filter(Boolean).join(" ").trim();
-    const ok = await onSave({
-      name: name || user.name,
-      firstName: form.firstName,
-      lastName: form.lastName,
-      email: form.email,
-      mobile: form.mobile,
-      countryCode: form.countryCode,
-      chatLanguages: form.chatLanguages,
-      dateOfBirth: form.dateOfBirth,
-      timeOfBirth: form.timeOfBirth,
-      placeOfBirth: form.birthLocationFull.trim() || form.placeOfBirth.trim(),
-      preferredLocation:
-        form.preferredLocationFull.trim() || form.preferredLocation.trim(),
-    });
-    if (ok) onDoneEditing();
-  }
 
   return (
-    <div className={className}>
-      <ProfileDetailsFields
-        form={form}
-        setField={setField}
-        user={user}
-        isEditing={isEditing}
-        isSaving={isSaving}
-        onSave={handleSave}
-        onProfileRefresh={onProfileRefresh}
-        onRashiResolved={resolveRashi}
-      />
-    </div>
+    <FormProvider {...methods}>
+      <form className={className} onSubmit={onValidSubmit} noValidate>
+        <ProfileDetailsFields
+          user={user}
+          isEditing={isEditing}
+          isSaving={isSaving}
+          onProfileRefresh={onProfileRefresh}
+        />
+      </form>
+    </FormProvider>
   );
 }
-

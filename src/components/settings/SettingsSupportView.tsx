@@ -4,6 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { SETTINGS_SUPPORT_COPY } from "@/lib/constants/settings-support";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
+import { showErrorAppSnackBar, showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { submitSupportQuery } from "@/lib/services/settings-support";
 import { cn } from "@/lib/utils";
 
@@ -26,10 +27,11 @@ export function SettingsSupportView() {
     setMessage(null);
     try {
       await submitSupportQuery(trimmed);
-      setMessage(SU.success);
+      showSuccessAppSnackBar(SU.success);
       setQuery("");
     } catch {
       setError(SU.failed);
+      showErrorAppSnackBar(SU.failed);
     } finally {
       setBusy(false);
     }

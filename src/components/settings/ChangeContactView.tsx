@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { OTP_LENGTH, ROUTES, SETTINGS_CHANGE_CONTACT } from "@/lib/constants";
 import { sendAuthenticatedOtp, verifyAuthenticatedOtp } from "@/lib/services/profile-verify";
+import { showErrorAppSnackBar, showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { useProfile } from "@/hooks/useProfile";
 import { cn } from "@/lib/utils";
 import type { ChangeContactMode } from "@/types";
@@ -90,6 +91,7 @@ export function ChangeContactView() {
         return;
       }
       await refetchProfile();
+      showSuccessAppSnackBar(SETTINGS_CHANGE_CONTACT.success, { position: "top" });
       router.replace(ROUTES.profile);
     } catch (error) {
       setIsError(true);

@@ -1,14 +1,14 @@
 /** Match making — user-facing copy (mirrors Flutter `matchMakingPage.dart`). */
 
 export const MATCH_MAKING_SCREEN = {
-  pageTitle: "Marriage Match Making",
+  pageTitle: "Love Compatibility",
   subtitle: "Check astrological compatibility for a perfect match",
   boySection: "Boy Details",
   girlSection: "Girl Details",
   boyNamePlaceholder: "Enter boy's name",
   girlNamePlaceholder: "Enter girl's name",
   calculateCta: "Calculate Match",
-  loginTitle: "Sign in for match making",
+  loginTitle: "Sign in for love compatibility",
   loginDescription: "Log in to calculate compatibility between two profiles.",
   loginCta: "Go to login",
   loadErrorTitle: "Could not load match data",
@@ -21,7 +21,7 @@ export const MATCH_MAKING_SCREEN = {
   rashiFormLabel: "Rasi (moon sign)",
   nakshatraFormLabel: "Nakshatra",
   selectPlaceholder: "Select…",
-  resultTitle: "Marriage Match Making",
+  resultTitle: "Love Compatibility",
   boyNameLabel: "Boy Name",
   girlNameLabel: "Girl Name",
   rasiLabel: "Rasi",

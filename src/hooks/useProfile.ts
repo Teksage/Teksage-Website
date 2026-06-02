@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/auth.store";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import { messageFromProfileApiError } from "@/lib/profile-api-error";
 import { fetchProfile, updateProfile } from "@/lib/services/profile";
 import type { UserProfile } from "@/types";
 
@@ -58,11 +64,15 @@ export function useProfile() {
     setIsSaving(true);
     setError(null);
     try {
-      const updated = await updateProfile(updates);
-      updateUser(updated);
+      const { profile, message } = await updateProfile(updates);
+      updateUser(profile);
+      showSuccessAppSnackBar(message, { position: "top" });
       return true;
-    } catch {
-      setError("Failed to save profile. Please try again.");
+    } catch (err) {
+      const msg =
+        messageFromProfileApiError(err) ??
+        APP_SNACKBAR_MESSAGES.profileSaveFailed;
+      showErrorAppSnackBar(msg, { position: "top" });
       return false;
     } finally {
       setIsSaving(false);

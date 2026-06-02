@@ -3,7 +3,7 @@
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
-import { PREMIUM_PLAN_FEATURES, SETTINGS_UI } from "@/lib/constants/settings-ui";
+import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { SETTINGS_SUBSCRIPTIONS_COPY } from "@/lib/constants/settings-subscriptions";
 import { currentPlanTenureLine } from "@/lib/subscription-plan-label";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,6 @@ export function SubscriptionCurrentPlanCard({
   progress,
 }: SubscriptionCurrentPlanCardProps) {
   const SUB = useI18nConstants(SETTINGS_SUBSCRIPTIONS_COPY);
-  const features = useI18nConstants(PREMIUM_PLAN_FEATURES);
   const progressPct = Math.round(progress * 100);
   const progressColor =
     progress < 0.1 ? "bg-red-500" : "bg-white";
@@ -66,25 +65,6 @@ export function SubscriptionCurrentPlanCard({
           </p>
         </div>
       </div>
-      <div className="my-5 border-t border-dashed border-white/50" />
-      <ul className="space-y-2.5">
-        {features.map((feature) => (
-          <li
-            key={feature}
-            className="flex items-center justify-between gap-3"
-          >
-            <span className={SETTINGS_UI.subscriptionFeatureLabel}>{feature}</span>
-            <Image
-              src={SETTINGS_PAGE_ASSETS.planCheck}
-              alt=""
-              width={20}
-              height={20}
-              unoptimized
-              className="size-5 shrink-0"
-            />
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

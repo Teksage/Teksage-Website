@@ -34,4 +34,6 @@ export const SETTINGS_SUBSCRIPTIONS_COPY = {
     "Payment received. Activating your premium plan… refresh in a moment if this stays.",
   noPlans: "No plans available for your region.",
   premiumFeatures: "Premium unlocks daily, weekly, and yearly prediction notifications.",
+  comparePlans: "Compare the plans",
+  planBenefitsTitle: "Included with this plan",
 } as const;

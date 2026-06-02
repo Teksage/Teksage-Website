@@ -21,6 +21,8 @@ export function ProfilePhoneRow({
   isMobileVerified,
   isEditing,
   onVerificationSuccess,
+  hasError,
+  errorMessage,
 }: ProfilePhoneRowProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
   const [otpPhase, setOtpPhase] = useState(false);
@@ -91,8 +93,11 @@ export function ProfilePhoneRow({
       </span>
       <div
         className={cn(
-          "flex h-12 items-stretch overflow-hidden rounded-xl border border-black/15 bg-neutral-100",
+          "flex h-12 items-stretch overflow-hidden rounded-xl border bg-neutral-100",
           "transition-colors focus-within:border-[var(--color-brand-primary)]",
+          hasError
+            ? "border-[var(--color-brand-error)]"
+            : "border-black/15",
           !isEditing && "opacity-90"
         )}
       >
@@ -173,6 +178,11 @@ export function ProfilePhoneRow({
         </div>
       ) : null}
 
+      {hasError && errorMessage ? (
+        <p className="text-xs font-semibold text-[var(--color-brand-error)]">
+          {errorMessage}
+        </p>
+      ) : null}
       {feedback ? (
         <p className="text-xs font-semibold text-[var(--color-brand-error)]">{feedback}</p>
       ) : null}

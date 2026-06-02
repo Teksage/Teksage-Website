@@ -6,17 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { fetchPlaceSuggestions, type PlaceSuggestion } from "@/lib/places-suggestions";
 import { cn } from "@/lib/utils";
-
-type ProfileLocationFieldProps = {
-  label: string;
-  required?: boolean;
-  value: string;
-  fullLocation: string;
-  isEditable: boolean;
-  placeholder: string;
-  onChange: (city: string, fullLocation: string) => void;
-  onBlurCommit?: () => void;
-};
+import type { ProfileLocationFieldProps } from "@/types";
 
 type MenuPos = { top: number; left: number; width: number };
 
@@ -29,6 +19,8 @@ export function ProfileLocationField({
   placeholder,
   onChange,
   onBlurCommit,
+  hasError,
+  errorMessage,
 }: ProfileLocationFieldProps) {
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -150,11 +142,19 @@ export function ProfileLocationField({
         disabled={!isEditable}
         placeholder={placeholder}
         className={cn(
-          "h-12 rounded-xl border border-black/15 bg-neutral-100 px-4 text-sm font-medium",
-          "focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0",
+          "h-12 rounded-xl border bg-neutral-100 px-4 text-sm font-medium",
+          "focus-visible:ring-0",
+          hasError
+            ? "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]"
+            : "border-black/15 focus-visible:border-[var(--color-brand-primary)]",
           !isEditable && "cursor-not-allowed opacity-90"
         )}
       />
+      {hasError && errorMessage ? (
+        <p className="text-xs font-semibold text-[var(--color-brand-error)]">
+          {errorMessage}
+        </p>
+      ) : null}
       {menu}
       {!isEditable && fullLocation && fullLocation !== value ? (
         <p className="text-xs text-black/45">{fullLocation}</p>
