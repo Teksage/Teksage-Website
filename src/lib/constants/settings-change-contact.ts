@@ -1,0 +1,20 @@
+export const SETTINGS_CHANGE_CONTACT = {
+  title: "Change Email / Mobile",
+  subtitle:
+    "Choose what you want to update. We will send an OTP and update it after verification.",
+  modeLabel: "Update",
+  modeEmail: "Email",
+  modeMobile: "Mobile",
+  emailLabel: "New Email",
+  mobileLabel: "New Mobile Number",
+  countryCodeLabel: "Country code",
+  sendOtp: "Send OTP",
+  otpLabel: "OTP",
+  verifyAndUpdate: "Verify & Update",
+  otpHintEmail: "Enter the OTP sent to your new email.",
+  otpHintMobile: "Enter the OTP sent to your new mobile number.",
+  success: "Contact updated successfully.",
+  invalidEmail: "Enter a valid email address.",
+  invalidMobile: "Enter a valid 10-digit mobile number.",
+  invalidOtp: "Enter a valid 6-digit OTP.",
+} as const;

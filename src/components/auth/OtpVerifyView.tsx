@@ -94,7 +94,6 @@ export function OtpVerifyView({
       setIsResending(false);
     }
   }
-
   const maskedContact =
     contactType === OTP_CONTACT_TYPE_MOBILE
       ? contact.replace(/(\d{2})\d{6}(\d{2})/, "$1xxxxxx$2")

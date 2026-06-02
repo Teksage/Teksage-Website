@@ -1,0 +1,167 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { SettingsSubpageHeader } from "@/components/settings/SettingsSubpageHeader";
+import { SubscriptionCurrentPlanCard } from "@/components/settings/SubscriptionCurrentPlanCard";
+import { SubscriptionAutoPayManage } from "@/components/settings/SubscriptionAutoPayManage";
+import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
+import { SubscriptionPlanBenefits } from "@/components/settings/SubscriptionPlanBenefits";
+import { SubscriptionPlanPicker } from "@/components/settings/SubscriptionPlanPicker";
+import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
+import { SETTINGS_UI } from "@/lib/constants/settings-ui";
+import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
+import { useSubscriptionPage } from "@/hooks/useSubscriptionPage";
+import { ROUTES } from "@/lib/constants/routes";
+import { isAutoPayEligiblePlan } from "@/lib/subscription-auto-pay";
+import { writeSubscriptionCheckout } from "@/lib/subscription-checkout-session";
+import { PageLoadingCenter } from "@/components/common/Loader";
+import { cn } from "@/lib/utils";
+
+type SettingsSubscriptionsViewProps = { onBack: () => void };
+
+export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewProps) {
+  const router = useRouter();
+  const currency = useConsultationCurrency();
+  const {
+    SUB,
+    isPremium,
+    currentPrice,
+    tenureValue,
+    tenureUnit,
+    daysLeft,
+    progress,
+    pickerPlans,
+    recommendedId,
+    selectedId,
+    setSelectedId,
+    selectedPlan,
+    showUpgradeBtn,
+    loading,
+    error,
+    planPrice,
+    isAutoPayActive,
+    nextBillingDate,
+    cancelAutoPay,
+    activatingPremium,
+  } = useSubscriptionPage(currency);
+  const [autoPayEnabled, setAutoPayEnabled] = useState(false);
+
+  const autoPayEligible =
+    selectedPlan != null && isAutoPayEligiblePlan(selectedPlan.planId, currency);
+
+  function onUpgrade() {
+    if (!selectedPlan) return;
+    writeSubscriptionCheckout({
+      planId: selectedPlan.planId,
+      currency,
+      autoPay: autoPayEligible && autoPayEnabled,
+    });
+    router.push(ROUTES.settingsSubscriptionPayment);
+  }
+
+  const symbol = currency === "INR" ? "\u20b9" : "$";
+
+  if (loading) {
+    return (
+      <div className="relative z-10 min-h-[40vh] bg-black">
+        <PageLoadingCenter />
+      </div>
+    );
+  }
+
+  return (
+    <div className={SETTINGS_UI.subscriptionPageShell}>
+      <Image
+        src={SETTINGS_PAGE_ASSETS.subscriptionBg}
+        alt=""
+        width={800}
+        height={400}
+        unoptimized
+        className={SETTINGS_UI.subscriptionBg}
+      />
+      <div className={SETTINGS_UI.subscriptionHeroScrim} aria-hidden />
+      <SettingsSubpageHeader
+        title={SUB.pageTitle}
+        onBack={onBack}
+        variant="dark"
+        className="bg-transparent"
+      />
+      <div className={SETTINGS_UI.subscriptionScroll}>
+        <div
+          className={cn(
+            SETTINGS_UI.subscriptionContent,
+            showUpgradeBtn && SETTINGS_UI.subscriptionContentAboveFooter
+          )}
+        >
+          {!isPremium ? (
+            <div className="mb-5 flex flex-col items-center">
+              <Image
+                src={SETTINGS_PAGE_ASSETS.subscriptionPro}
+                alt=""
+                width={120}
+                height={120}
+                unoptimized
+                className="h-auto w-[7rem]"
+              />
+              <p className={cn(SETTINGS_UI.subscriptionTryPremiumTitle, "mt-3")}>
+                {SUB.tryPremium}
+              </p>
+            </div>
+          ) : null}
+          {isPremium ? (
+            <>
+              <SubscriptionCurrentPlanCard
+                symbol={symbol}
+                price={currentPrice}
+                tenureValue={tenureValue}
+                tenureUnit={tenureUnit}
+                daysLeft={daysLeft}
+                progress={progress}
+              />
+              {isAutoPayActive ? (
+                <SubscriptionAutoPayManage
+                  nextBillingDate={nextBillingDate}
+                  onCancel={cancelAutoPay}
+                />
+              ) : null}
+            </>
+          ) : null}
+          <SubscriptionPlanPicker
+            plans={pickerPlans}
+            selectedId={selectedId}
+            recommendedId={recommendedId}
+            symbol={symbol}
+            priceOf={planPrice}
+            onSelect={setSelectedId}
+          />
+          <SubscriptionPlanBenefits selectedPlan={selectedPlan} />
+          {autoPayEligible && showUpgradeBtn ? (
+            <SubscriptionAutoPayToggle
+              enabled={autoPayEnabled}
+              onChange={setAutoPayEnabled}
+            />
+          ) : null}
+          {activatingPremium && !isPremium ? (
+            <p className="mt-3 rounded-lg bg-white/10 px-3 py-2 text-center text-sm text-white/90">
+              {SUB.activating}
+            </p>
+          ) : null}
+          {error ? <p className="mt-3 text-sm text-red-400">{error}</p> : null}
+        </div>
+      </div>
+      {showUpgradeBtn ? (
+        <div className={SETTINGS_UI.subscriptionFooter}>
+          <button
+            type="button"
+            className={SETTINGS_UI.subscriptionPrimaryBtn}
+            onClick={onUpgrade}
+          >
+            {isPremium ? SUB.upgradeCta : SUB.subscribeCta}
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}

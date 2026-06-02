@@ -1,0 +1,65 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth.store";
+import { clearAuthSession } from "@/lib/auth-session";
+import { ROUTES } from "@/lib/constants/routes";
+import { sendOtp, verifyOtp, logout as logoutService } from "@/lib/services/auth";
+import type { OtpPayload } from "@/types";
+
+export function useAuth() {
+  const router = useRouter();
+  const { user, isAuthenticated, setAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function requestOtp(mobile: string) {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await sendOtp(mobile);
+      return true;
+    } catch {
+      setError("Failed to send OTP. Please try again.");
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function confirmOtp(payload: OtpPayload) {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await verifyOtp(payload);
+      setAuth(response.user, response.token);
+      router.push(ROUTES.home);
+    } catch {
+      setError("Invalid OTP. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function logout() {
+    setIsLoading(true);
+    try {
+      await logoutService();
+    } finally {
+      clearAuthSession();
+      router.replace(ROUTES.home);
+      setIsLoading(false);
+    }
+  }
+
+  return {
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+    requestOtp,
+    confirmOtp,
+    logout,
+  };
+}

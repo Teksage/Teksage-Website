@@ -79,7 +79,6 @@ export async function resendOtp(
   const { data } = await http.post<{ message: string }>(API_ENDPOINTS.sendOtp, body);
   return data;
 }
-
 export async function verifyOtp(payload: OtpPayload): Promise<AuthResponse> {
   const { data } = await http.post<LoginVerifyApiResponse>(
     API_ENDPOINTS.verifyOtp,

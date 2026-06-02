@@ -1,0 +1,29 @@
+---
+description: Component authoring conventions for Teksage Website
+globs: "src/components/**/*.tsx,src/app/**/*.tsx"
+alwaysApply: false
+---
+
+# Component Patterns
+
+## Structure
+- Export named components, not anonymous default exports, in shared files.
+- Every presentational component must accept and spread `className?: string`.
+- Use `cva` (class-variance-authority) for any component that has variants or sizes.
+- Keep component files under 200 lines; extract sub-components when approaching limit.
+
+## Styling
+- Colors come exclusively from `src/lib/constants/colors.ts` — never raw hex strings.
+- Tailwind utility classes only; reference CSS variables defined in `src/app/globals.css`.
+- Use `cn()` from `src/lib/utils.ts` to merge conditional classes cleanly.
+
+## Design
+- Mobile-first: design for 375px width first, then scale up with `md:` / `lg:` prefixes.
+- Bottom navigation is fixed at bottom on mobile (mirrors Flutter BottomNavigationBar).
+- Follow the Flutter color palette: primary green `#10B100`, background `#F1F1F1`.
+- Urbanist font is the brand typeface — loaded via `next/font/google` in root layout.
+
+## Reusability
+- Before creating a new component, search `src/components/` for an existing one to extend.
+- `src/components/common/` components must be truly generic (no feature-specific logic).
+- Pass callbacks via props; never couple a shared component to a specific API or store.

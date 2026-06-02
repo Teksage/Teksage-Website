@@ -1,0 +1,29 @@
+---
+description: Backend API integration rules for Teksage Website
+globs: "src/lib/services/**/*.ts,src/app/api/**/*.ts,src/hooks/**/*.ts"
+alwaysApply: false
+---
+
+# API Integration Rules
+
+## Constants
+- `NEXT_PUBLIC_API_BASE_URL` — define only in `.env.local` (local) or the host's env (production). Read via `getPublicApiBaseUrl()` from `src/lib/env.ts` — never read `process.env` ad hoc in components.
+- Never put secrets in `NEXT_PUBLIC_*` variables (they ship to the browser).
+- All API path segments → `src/lib/constants/api.ts` (`API_ENDPOINTS`).
+
+## Services (`src/lib/services/`)
+- One file per feature: `auth.ts`, `home.ts`, `horoscope.ts`, `panchang.ts`, etc.
+- Each function is typed: accepts typed params, returns typed response (from `src/types/`).
+- Use `axios` instance configured in `src/lib/services/http.ts` (base URL + interceptors).
+- Wrap calls in try/catch and throw a typed `ApiError` for consumers to handle.
+
+## Hooks (`src/hooks/`)
+- Name: `use<Feature>.ts` — e.g. `useAuth.ts`, `useDashboard.ts`.
+- Always expose `{ data, isLoading, error }` shape.
+- Never call `fetch` or `axios` directly inside a component — go through a hook.
+- Use `zustand` stores for global client state (auth session, user profile).
+
+## Auth
+- Auth token stored via `zustand` + `localStorage` (mirrors Flutter LocallySavedData).
+- Attach token in `src/lib/services/http.ts` request interceptor.
+- On 401 response, clear token and redirect to `/login`.
