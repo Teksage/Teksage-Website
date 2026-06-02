@@ -6,9 +6,8 @@
 export const API_ENDPOINTS = {
   // --- Auth (OTP) — `api/endpoints/auth.py`, mount `/auth` ---
   /** `POST` — `LoginSchema`: email and/or mobile_number + country_code */
-  // Backend in production responds reliably on trailing-slash route.
-  // Keep this slash to avoid 307 redirect on OTP request.
-  sendOtp: "/api/auth/otp/request/",
+  // Keep OTP request path without trailing slash.
+  sendOtp: "/api/auth/otp/request",
   /** `POST` — `VerifyOTPSchema` + OTP */
   verifyOtp: "/api/auth/otp/login-verify",
   /** Authenticated — send OTP (`LoginSchema`). */
