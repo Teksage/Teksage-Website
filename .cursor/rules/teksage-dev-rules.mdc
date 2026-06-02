@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+
+# Teksage Website — Global Development Rules
+
+- Always understand existing code structure before writing new code.
+- Check for reusable components/functions before creating new ones (DRY principle).
+- No file may exceed 200 lines; split into smaller focused files if needed.
+- Never hardcode colors — always import from `src/lib/constants/colors.ts` (or use existing CSS variables from `src/app/globals.css` such as `--color-brand-*`).
+- Never hardcode font families, sizes, or weights — use `TYPO` / `FONT_SIZE` from `src/lib/constants/typography.ts` (theme tokens in `globals.css` `@theme`). Do not use arbitrary `text-[…]` or inline font styles; prefer feature constants (e.g. `HOME_DASHBOARD_UI`, `CHAT_LAYOUT`) that compose `TYPO`.
+- Never hardcode public asset paths — import from `src/lib/constants/assets.ts` (`PUBLIC_ASSETS`, `DASHBOARD_ASSETS`, etc.).
+- Never hardcode string/number literals for product UI (copy, labels, regex, dimensions, route path strings, query keys, PDF filenames, default country codes, etc.) — define them in `src/lib/constants/*.ts` and import via `@/lib/constants` (or the focused module). **`.tsx` files should wire UI only, not embed magic values.**
+- Never hardcode in-app URL paths in components — use `src/lib/constants/routes.ts` (`ROUTES`) and helpers like `src/lib/login-redirect.ts` (`buildLoginRedirectPath`).
+- Never use inline `style={{}}` — always use `className` with Tailwind utilities (if a value must be dynamic visually, add a design token to `globals.css` `@theme` / `:root` and reference it with `var(--…)` in classes).
+- Use `cn()` from `src/lib/utils.ts` for conditional/dynamic class composition.
+- Use shadcn/ui for all UI primitives (Button, Input, Dialog, Sheet, etc.).
+- Shared primitives (shadcn wrappers) → `src/components/ui/`.
+- Shared app-specific components → `src/components/common/`.
+- Feature-specific components → `src/components/<feature>/`.
+- Backend API base URL → `NEXT_PUBLIC_API_BASE_URL` in `.env.local`, read via `src/lib/env.ts` (`getPublicApiBaseUrl()`). Never hardcode hosts in code.
+- API path segments only → `src/lib/constants/api.ts` (`API_ENDPOINTS`).
+- Custom data-fetching hooks → `src/hooks/use<Feature>.ts`.
+- **TypeScript types and interfaces** (`interface`, `type`, DTOs, component props, unions) **live in `.ts` files only** — under `src/types/` (e.g. `src/types/index.ts`, `src/types/user-profile.ts`, `src/types/ui/*.ts` for shared component props). **Do not declare domain or component prop types inside `.tsx` files.** `.tsx` may `import type { … } from "@/types"` (or a `src/types/ui/...` path re-exported from `@/types`). Small **re-export** lines in a `.tsx` file (e.g. `export type { LoaderProps } from "@/types"`) are allowed for backwards-compatible public API.
+- Mirror Flutter widget names in component names for traceability (e.g. `HomeBanner` mirrors Flutter `HomeBannerWidget`).
+- Mobile-first responsive design — the site must feel native on mobile (mirrors Flutter app).
