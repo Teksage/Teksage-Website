@@ -63,6 +63,22 @@ export async function sendOtp(mobile: string): Promise<{ message: string }> {
   return data;
 }
 
+export async function resendOtp(
+  payload:
+    | { email: string }
+    | { mobile_number: string; country_code?: string }
+): Promise<{ message: string }> {
+  const body =
+    "email" in payload
+      ? { email: payload.email.trim().toLowerCase() }
+      : {
+          mobile_number: payload.mobile_number,
+          country_code:
+            payload.country_code?.replace(/\D/g, "") ?? DEFAULT_COUNTRY_CODE_NUMERIC,
+        };
+  const { data } = await http.post<{ message: string }>(API_ENDPOINTS.sendOtp, body);
+  return data;
+}
 export async function verifyOtp(payload: OtpPayload): Promise<AuthResponse> {
   const { data } = await http.post<LoginVerifyApiResponse>(
     API_ENDPOINTS.verifyOtp,

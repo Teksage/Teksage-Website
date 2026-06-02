@@ -10,25 +10,19 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        // OTP request should always hit backend without trailing slash to avoid 307.
-        source: "/api/auth/otp/request/",
-        destination: `${backendOrigin}/api/auth/otp/request`,
+        // Special case: register-token REQUIRES trailing slash (FastAPI route definition)
+        source: "/api/auth/register-token",
+        destination: `${backendOrigin}/api/auth/register-token/`,
       },
       {
-        // Same as above for non-trailing-slash request path.
-        source: "/api/auth/otp/request",
-        destination: `${backendOrigin}/api/auth/otp/request`,
+        // Normalize ALL other /api/* paths: remove trailing slash to avoid 307 redirects
+        // Exclude: places (Next.js route handlers) and register-token (handled above)
+        source: "/api/:path((?!places/)(?!auth/register-token$).*)/",
+        destination: `${backendOrigin}/api/:path`,
       },
       {
-        // Preserve trailing slash — FastAPI routes like `/register-token/` 307 without it,
-        // and redirect drops the Authorization header → 401 on register-token.
-        source: "/api/:path((?!places/)(?!auth/otp/request/?$).*)/",
-        destination: `${backendOrigin}/api/:path/`,
-      },
-      {
-        // Next.js route handlers under `app/api/places/*` — do not proxy to FastAPI.
-        // Exclude register-token — handled by `app/api/auth/register-token/route.ts`.
-        source: "/api/:path((?!places/)(?!auth/register-token$)(?!auth/otp/request/?$).*)",
+        // Pass through paths without trailing slash as-is (excluding places and register-token)
+        source: "/api/:path((?!places/)(?!auth/register-token$).*)",
         destination: `${backendOrigin}/api/:path`,
       },
     ];
