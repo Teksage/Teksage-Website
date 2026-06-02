@@ -1,0 +1,67 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ChatOnboardingHeader } from "@/components/chat/ChatOnboardingHeader";
+import { ChatStyleOptionCard } from "@/components/chat/ChatStyleOptionCard";
+import { Button } from "@/components/ui/button";
+import {
+  CHAT_PREFERENCES,
+  CHAT_STYLE_OPTIONS,
+  type ChatStyleFormat,
+} from "@/lib/constants/chat-preferences";
+import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
+import { cn } from "@/lib/utils";
+import type { ChatStyleOnboardingProps } from "@/types/ui/chat";
+
+export function ChatStyleOnboarding({
+  embedded = false,
+  onContinue,
+}: ChatStyleOnboardingProps) {
+  const CP = useI18nConstants(CHAT_PREFERENCES);
+  const styleOptions = useI18nConstants(CHAT_STYLE_OPTIONS);
+  const router = useRouter();
+  const [selected, setSelected] = useState<ChatStyleFormat | null>(null);
+
+  return (
+    <div
+      className={cn(
+        embedded ? CHAT_LAYOUT.onboardingRootEmbedded : CHAT_LAYOUT.onboardingRootStandalone
+      )}
+    >
+      <ChatOnboardingHeader onBack={() => router.back()} />
+
+      <div className={CHAT_LAYOUT.onboardingContent}>
+        <div>
+          <h1 className={CHAT_LAYOUT.onboardingTitle}>
+            {CP.styleOnboardingTitle}
+          </h1>
+          <div className={CHAT_LAYOUT.onboardingOptionsStack}>
+            {styleOptions.map((option) => (
+              <ChatStyleOptionCard
+                key={option.format}
+                label={option.label}
+                hint={option.hint}
+                selected={selected === option.format}
+                onSelect={() => setSelected(option.format)}
+              />
+            ))}
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          disabled={!selected}
+          onClick={() => selected && onContinue(selected)}
+          className={cn(
+            "h-auto w-full rounded-full py-3.5 text-lg font-semibold lg:max-w-sm lg:self-center",
+            !selected && "bg-black/20 text-white hover:bg-black/20"
+          )}
+        >
+          {CP.continueCta}
+        </Button>
+      </div>
+    </div>
+  );
+}

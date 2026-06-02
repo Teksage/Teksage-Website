@@ -1,0 +1,107 @@
+/** Consultation booking — mirrors Flutter `AstrologerUserConsult` models + FastAPI astrologer routes. */
+
+export interface ConsultationAstrologerUser {
+  user_id: number;
+  first_name?: string | null;
+  last_name?: string | null;
+  email?: string;
+  preferred_location?: string | null;
+}
+
+export interface ConsultationAstrologer {
+  astrologer_id: number;
+  user_id: number;
+  expertise: string[];
+  languages: string[];
+  experience?: number;
+  local_consulting_fee?: number;
+  foreign_consulting_fee?: number;
+  customer_rating?: number | null;
+  astrologer_profile_info?: string | null;
+  picture?: string | null;
+  match_percentage?: number;
+  user?: ConsultationAstrologerUser;
+}
+
+export interface ConsultationReviewEvent {
+  rating?: number | null;
+  customer_id?: number;
+  first_name?: string | null;
+  last_name?: string | null;
+}
+
+export interface ConsultationAstrologerDetail {
+  astrologer: ConsultationAstrologer;
+  events: ConsultationReviewEvent[];
+}
+
+export interface ConsultationSlot {
+  start_datetime: string;
+  end_datetime: string;
+  event_booked: boolean;
+}
+
+export interface ConsultationRazorpayOrder {
+  id: string;
+  amount: number;
+  currency: string;
+  key: string;
+}
+
+export interface ConsultationCouponResult {
+  plan_price: number;
+  discount: number;
+  discounted_price: number;
+  cgst_percentage: number;
+  sgst_percentage: number;
+  cgst: number;
+  sgst: number;
+  final_price: number;
+  coupon_id?: number;
+}
+
+export interface ConsultationFilter {
+  categories: string[];
+  languages: string[];
+}
+
+export interface ConsultationBookingDraft extends ConsultationFilter {
+  astrologerId: number;
+  astrologerName: string;
+  astrologerPicture?: string | null;
+  fee: number;
+  currency: string;
+  slotStart: string;
+  slotEnd: string;
+}
+
+export interface ConsultationEventSummary {
+  id: number;
+  start_datetime?: string;
+  end_datetime?: string;
+  event_link?: string | null;
+  category?: string[];
+  languages?: string[];
+  consultation_fee?: number;
+  currency?: string;
+}
+
+export interface ConsultationQuestion {
+  id: number;
+  question: string;
+  answer?: string | null;
+  index?: number;
+}
+
+export interface ConsultationCompletedBooking {
+  eventId: number;
+  eventLink?: string | null;
+  startDatetime: string;
+  endDatetime: string;
+  categories: string[];
+  languages: string[];
+  consultationFee: number;
+  currency: string;
+  astrologerName: string;
+  astrologerPicture?: string | null;
+}

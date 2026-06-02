@@ -1,0 +1,508 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-urbanist);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-urbanist);
+
+  /* Typography scale — sync with `src/lib/constants/typography.ts` `FONT_SIZE` */
+  --text-3xs: 0.5rem;
+  --text-2xs: 0.5625rem;
+  --text-micro: 0.625rem;
+  --text-nav: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-sm-plus: 0.8125rem;
+  --text-body-sm: 0.9375rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.75rem;
+  --text-page-title: 1.75rem;
+  --text-card-title: 1.375rem;
+  --text-title-md: 1.1rem;
+  --text-title-lg: 1.35rem;
+  --text-2xl-display: 2rem;
+  --text-display: 1.8rem;
+  --text-display-sm: 1.8125rem;
+  --text-price: 1.5625rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.25rem;
+  --text-button-sm: 0.8rem;
+  /* shadcn `sm` button */
+
+  /* Teksage brand tokens — mirrors Flutter colorConstant.dart */
+  --color-brand-primary: #10B100;
+  --color-brand-ios: #1081DD;
+  --color-brand-bg: #F1F1F1;
+  --color-brand-error: #E60000;
+  --color-snackbar-success-bg: #c2edc0;
+  --color-snackbar-error-bg: #ffe1d4;
+  --color-snackbar-info-bg: #bae8b5;
+  --color-brand-banner: #A2C734;
+  --color-brand-banner-border: #C8EF54;
+  --color-brand-consultation-heading: #3a3b00;
+  --color-home-screen-mint: #c6e7b9;
+  --color-consult-user-bg: #94c10d;
+  --color-consult-user-text: #87b303;
+  --color-consult-filter-chip: #7fa900;
+  --color-consult-match-track: #d9d9d9;
+  --desktop-sidebar-width: 17.5rem;
+  --color-home-timing-rail-bg: #e8f4e4;
+  --color-home-timing-chip-bg: #f4faf2;
+  --color-home-timing-rahu: #c45c2a;
+  --color-home-timing-yama: #8b6914;
+  --color-home-timing-auspicious: var(--color-brand-panchang);
+  --color-ai-chat-icon: #2e8b1e;
+  --color-chat-shell: #ffffff;
+  --color-chat-composer-bg: #e3f8e1;
+  --color-chat-user-bubble: #f5f5f5;
+  --color-chat-user-text: var(--color-brand-black);
+  --color-chat-user-avatar-bg: #e8f5e6;
+  --color-chat-bot-bubble: color-mix(in srgb, var(--color-brand-primary) 20%, white);
+  --color-chat-bot-text: var(--color-brand-black);
+  --color-chat-bot-border: color-mix(in srgb, var(--color-brand-primary) 28%, transparent);
+  --color-subscription-card-surface: color-mix(in srgb, var(--color-brand-black) 88%, transparent);
+  --color-subscription-plan-idle-surface: color-mix(in srgb, var(--color-brand-black) 72%, transparent);
+  --color-subscription-feature-text: rgb(255 255 255 / 0.94);
+  /** Flutter `chatBG.png` — use via `.chat-shell-bg` (do not use dynamic Tailwind `bg-[url(...)]`). */
+  --chat-shell-bg-image: url("/flutter-assets/images/chatBG.png");
+  --color-brand-black: #000000;
+  --color-home-dashboard-heading: var(--color-brand-black);
+  --color-home-dashboard-rule: rgb(0 0 0 / 0.30);
+  --color-daily-green-from: #0da602;
+  --color-daily-green-to: rgb(16 177 0 / 0.75);
+  /* Daily prediction — desktop category headers (see `COLORS.dailyDesktop*` in `colors.ts`) */
+  --color-daily-desktop-career-header: #e2eafb;
+  --color-daily-desktop-relationship-header: #ffeaf8;
+  --color-daily-desktop-wealth-header: #fbeee2;
+  --color-daily-desktop-health-header: #e6e2fb;
+  --color-daily-desktop-consult-mid: #7cb342;
+  --color-daily-chandrashtama: #ff3232;
+  --color-daily-chandrashtama-bg: #ffe0e0;
+  /* Weekly — `weeklyPrediction.dart` + `colorConstant.dart` */
+  --color-weekly-hero-from: #00b17f;
+  --color-weekly-hero-to: rgb(0 177 94 / 0);
+  --color-weekly-card-header: #61cc95;
+  --color-weekly-badge-positive: #30569f;
+  /* Match making — `matchMakingPage.dart` */
+  --color-match-top: #f78c8c;
+  --color-match-bottom: #ffe1d4;
+  --color-match-head: #ffebeb;
+  --color-match-button-text: #fc5d59;
+  --color-match-fab: #fc9c96;
+  /* Life detail card — `colorConstant.dart` */
+  --color-life-container: #d9cbf6;
+  --color-life-title-text: #4933bd;
+  --color-brand-match-card-peach: #ffe1d4;
+  --color-brand-match-pink-soft: #ffb3c0;
+  --color-brand-match-orange-soft: #ff8b84;
+  --color-brand-match-red: #fc5d59;
+  --color-yearly-top: #ef8b8b;
+  --color-yearly-bottom: #e8da8c;
+  --color-yearly-prediction-button-text: #ca5b5b;
+  --color-yearly-card-bg: #fff7c8;
+  --yearly-landing-deco-w: 72.27vw;
+  --yearly-landing-deco-max: 18.125rem;
+  --yearly-landing-logo: 4.5rem;
+  --yearly-landing-back-top: 6.41%;
+  --yearly-landing-hero-top: 13.31%;
+  --yearly-landing-title-top: 47.42%;
+  --yearly-landing-description-top: 53.21%;
+  --yearly-landing-button-top: 75%;
+  --yearly-landing-inset-x: 1.25rem;
+  /** Matches `HOME_LAYOUT.bottomNavClearance` — floating nav + safe area. */
+  --main-bottom-nav-clearance: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  --color-life-prediction-button-text: #54469d;
+  --color-life-top: #9754f6;
+  --color-life-bottom: #abaedb;
+  --color-brand-banner-dark: #100C0D;
+  --color-brand-banner-font: #0e0d0c;
+  --color-brand-marriage: #FF7075;
+  --color-brand-weekly: #61CC95;
+  --color-brand-panchang: #229716;
+  --color-brand-horoscope-bg: #BAE8B5;
+  --color-horoscope-north-watermark: #97d492;
+  --color-panchang-hero-top: #0b121a;
+  --color-panchang-hero-bottom: #7ca2b9;
+  /* Panchang white cards — mirrors `colorConstant.dart` + `panchangPage.dart` (see `COLORS.panchangRowDivider`, `COLORS.panchangCardMutedText`). */
+  --color-panchang-row-divider: rgb(0 0 0 / 0.3);
+  --color-panchang-card-muted-text: rgb(0 0 0 / 0.6);
+  --horoscope-chart-iframe-min-h: 260px;
+  /** Top green band — Flutter `horoscopePage.dart` `responsiveHeight(0.4226)` (viewport, not document %). */
+  --horoscope-green-band-height: 42.26vh;
+  --brand-login-max-display: 280px;
+  --login-email-cta-disabled-bg: #e4f0e2;
+  --login-email-cta-disabled-text: #4a9c45;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  /* Teksage primary green #10B100 */
+  --primary: oklch(0.62 0.2 142);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-[var(--color-brand-bg)] text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
+
+/**
+ * Settings shell — visually matches Flutter `settings_page.dart` body (mint wash).
+ * Stops are opaque so the parent `(main)` layout gray (`--color-brand-bg`) does not
+ * bleed through semi-transparent whites (which made green disappear).
+ */
+@layer utilities {
+  .settings-shell-gradient {
+    background: linear-gradient(to top,
+        color-mix(in srgb, var(--color-home-screen-mint) 88%, white) 0%,
+        color-mix(in srgb, var(--color-home-screen-mint) 45%, white) 42%,
+        rgb(255 255 255) 88%);
+  }
+
+  /** Flutter `AppLanguagePage` Android gradient. */
+  .settings-language-gradient {
+    background: linear-gradient(to top,
+        color-mix(in srgb, var(--color-brand-primary) 10%, white) 0%,
+        color-mix(in srgb, white 50%, white) 90%);
+  }
+
+  /** Flutter `TermsAndConditionsPage` / `PrivacyPage` green header. */
+  .settings-legal-hero {
+    background-color: var(--color-brand-primary);
+  }
+
+  /**
+   * Horoscope tab — `horoscopePage.dart`: green band ~42% viewport (`responsiveHeight(0.4226)`),
+   * then `horoscopeLightBg` (#BAE8B5). Shell height follows content (no `min-h-dvh` stretch).
+   */
+  .horoscope-split-shell-bg {
+    background-color: var(--color-brand-horoscope-bg);
+    background-image: linear-gradient(to bottom,
+        var(--color-brand-panchang) 0,
+        var(--color-brand-panchang) var(--horoscope-green-band-height),
+        var(--color-brand-horoscope-bg) var(--horoscope-green-band-height),
+        var(--color-brand-horoscope-bg) 100%);
+  }
+
+  /** Yearly / life prediction tabs — gradient under floating bottom nav. */
+  .match-details-body-gradient {
+    background: linear-gradient(180deg,
+        #faaba6 0%,
+        var(--color-brand-match-red) 100%);
+  }
+
+  .match-details-hero-overlay {
+    background: linear-gradient(180deg,
+        rgb(247 140 140 / 0.5) 0%,
+        rgb(255 225 212 / 0.5) 100%);
+  }
+
+  .match-ring-pulse {
+    animation: match-ring-pulse 1s ease-in-out infinite alternate;
+  }
+
+  .yearly-shell-gradient {
+    background: linear-gradient(180deg,
+        var(--color-yearly-top) 15.98%,
+        var(--color-yearly-bottom) 76.85%);
+  }
+
+  .life-shell-gradient {
+    background: linear-gradient(180deg, #9754f6 15.98%, #abaedb 76.85%);
+  }
+
+  .prediction-rotate-slow {
+    animation: prediction-rotate 8s linear infinite;
+  }
+
+  .prediction-rotate-landing {
+    animation: prediction-rotate 15s linear infinite;
+  }
+
+  .prediction-slide-up {
+    animation: prediction-slide-up 0.8s ease-out both;
+  }
+
+  .prediction-slide-up-delay {
+    animation: prediction-slide-up 0.8s ease-out 0.1s both;
+  }
+
+  .prediction-slide-up-btn {
+    animation: prediction-slide-up 0.8s ease-out 0.2s both;
+  }
+}
+
+@keyframes match-ring-pulse {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes prediction-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prediction-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .consult-match-fill {
+    width: calc(var(--consult-match-pct, 0) * 1%);
+  }
+
+  .desktop-sidebar-width {
+    width: var(--desktop-sidebar-width);
+  }
+
+  .chat-shell-bg {
+    background-image: var(--chat-shell-bg-image);
+  }
+
+  .chat-avatar-sheet-seeker {
+    background: linear-gradient(180deg, #10b100 0%, #ffffff 55%);
+  }
+
+  .chat-avatar-sheet-luminary {
+    background: linear-gradient(180deg, #93b100 0%, #ffffff 55%);
+  }
+
+  .chat-avatar-sheet-guardian {
+    background: linear-gradient(180deg, #0085b1 0%, #ffffff 55%);
+  }
+
+  .chat-avatar-sheet-pathfinder {
+    background: linear-gradient(180deg, #00b18e 0%, #ffffff 55%);
+  }
+}
+
+/** Desktop: shorter hero band + taller charts (mobile keeps viewport-based band). */
+@media (min-width: 1024px) {
+  :root {
+    --horoscope-green-band-height: 10.5rem;
+    --horoscope-chart-iframe-min-h: 300px;
+  }
+}
+
+/** Horoscope north chart — Flutter `CustomMarquee` on `ComingSoonContainer`. */
+@keyframes horoscope-coming-soon-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.horoscope-coming-soon-marquee {
+  animation: horoscope-coming-soon-marquee 14s linear infinite;
+}
+
+/** Flutter `CustomMarquee` ShaderMask — fade strip at left/right edges. */
+.horoscope-coming-soon-marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+}
+
+/** Flutter `LoadingAnimationWidget.halfTriangleDot` — three pulsing dots on a triangle. */
+@keyframes teksage-half-triangle-dot {
+
+  0%,
+  80%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.65);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes teksage-brand-logo-pulse {
+
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.94);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.teksage-half-triangle-dot {
+  animation: teksage-half-triangle-dot 1s ease-in-out infinite;
+}
+
+.teksage-half-triangle-dot-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.teksage-half-triangle-dot-delay-2 {
+  animation-delay: 0.3s;
+}
+
+.teksage-brand-logo-pulse {
+  animation: teksage-brand-logo-pulse 1.2s ease-in-out infinite;
+}
