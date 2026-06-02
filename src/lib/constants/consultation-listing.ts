@@ -31,7 +31,7 @@ export const CONSULTATION_LISTING_LAYOUT = {
   dotActive: "bg-white",
   body: "px-5 pb-10 pt-6",
   otherTitle: "text-center text-base font-semibold text-[var(--color-brand-black)]/60",
-  grid: "mt-5 grid grid-cols-1 gap-x-5 gap-y-2.5 sm:grid-cols-2 xl:grid-cols-3",
+  grid: "mt-5 grid grid-cols-2 gap-x-5 gap-y-2.5 xl:grid-cols-3",
 } as const;
 
 export const CONSULTATION_ASTRO_CARD = {
