@@ -15,6 +15,7 @@ export const ROUTES = {
   profile: "/profile",
   login: "/login",
   notifications: "/notifications",
+  whatsappUpdates: "/whatsapp-updates",
   chat: "/chat",
   consultation: "/consultation",
   consultationLanguage: "/consultation/language",

@@ -69,6 +69,7 @@ export const DASHBOARD_ASSETS = {
   sidebarWeekly: flutterSvg("sidebar-weekly.svg"),
   sidebarMarriage: flutterSvg("sidebar-marriage.svg"),
   sidebarNotification: flutterSvg("sidebar-notification.svg"),
+  sidebarWhatsapp: flutterSvg("sidebar-whatsapp.svg"),
   sidebarProfile: flutterSvg("sidebar-profile.svg"),
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
@@ -107,6 +108,7 @@ export const PANCHANG_ASSETS = {
 export const SETTINGS_ASSETS = {
   profile: flutterSvg("profile.svg"),
   pushNotifications: flutterSvg("notifySetting.svg"),
+  whatsapp: flutterSvg("sidebar-whatsapp.svg"),
   language: flutterSvg("languageIcon.svg"),
   subscription: flutterSvg("subscription.svg"),
   terms: flutterSvg("terms.svg"),
@@ -136,3 +138,14 @@ export const SETTINGS_PAGE_ASSETS = {
 } as const;
 
 export type SettingsAssetKey = keyof typeof SETTINGS_ASSETS;
+
+/** WhatsApp Updates page — benefit row icons (design ref). */
+export const WHATSAPP_UPDATES_ASSETS = {
+  benefitTransit: flutterSvg("whatsapp-benefit-planet.svg"),
+  benefitFavorable: flutterSvg("whatsapp-benefit-calendar.svg"),
+  benefitHoroscope: flutterSvg("profile.svg"),
+  benefitAlerts: flutterSvg("notification.svg"),
+  ctaWhatsapp: flutterSvg("sidebar-whatsapp.svg"),
+  ctaChevron: flutterSvg("rightArrow.svg"),
+  unsubscribeShield: flutterSvg("verified.svg"),
+} as const;

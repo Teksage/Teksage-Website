@@ -1,0 +1,52 @@
+import { TYPO } from "@/lib/constants/typography";
+
+export const WHATSAPP_UPDATES_SCREEN = {
+  title: "WhatsApp Updates",
+  backAria: "Go back",
+  heroLead: "Never Miss an",
+  heroHighlight: "Important Astrological Opportunity",
+  heroBody:
+    "Get timely WhatsApp alerts about important planetary movements, favorable periods, and personalized horoscope updates that can help you make better decisions at the right time.",
+  benefitsTitle: "What You'll Receive",
+  benefitTransitTitle: "Major Planetary Transits",
+  benefitTransitDesc: "Important movements that impact your life.",
+  benefitFavorableTitle: "Favorable Periods",
+  benefitFavorableDesc: "Best times for important decisions and activities.",
+  benefitHoroscopeTitle: "Personalized Horoscope Highlights",
+  benefitHoroscopeDesc: "Key insights based on your unique birth chart.",
+  benefitAlertsTitle: "Important Alerts",
+  benefitAlertsDesc: "Special days, events and astrological updates.",
+  ctaLabel: "Enable WhatsApp Astrology Alerts",
+  ctaSending: "Sending…",
+  unsubscribeNote: "You can unsubscribe anytime by sending",
+  unsubscribeKeyword: "STOP",
+  unsubscribeSuffix: "on WhatsApp.",
+  pendingTitle: "Check your WhatsApp",
+  pendingBody: "We sent a confirmation message. Reply on WhatsApp to enable alerts.",
+  grantedTitle: "WhatsApp alerts enabled",
+  grantedBody: "You will receive astrology updates on WhatsApp.",
+  verifyPhoneTitle: "Verify your mobile number",
+  verifyPhoneBody: "Verify your phone to receive the WhatsApp consent message.",
+  loadFailed: "Could not load WhatsApp status.",
+  requestFailed: "Could not send WhatsApp message. Try again later.",
+  resendCooldown: "Message already sent. Check WhatsApp or try again later.",
+} as const;
+
+export const WHATSAPP_UPDATES_UI = {
+  page: "relative z-10 flex min-h-0 flex-1 flex-col bg-[var(--color-surface-muted)]",
+  inner: "mx-auto flex w-full max-w-lg min-h-0 flex-1 flex-col px-4 pb-8",
+  heroTitle: `${TYPO.pageTitle} font-bold text-[var(--color-brand-black)] leading-tight`,
+  heroHighlight: "text-[var(--color-brand-primary)]",
+  heroBody: `${TYPO.body} text-[var(--color-brand-black)]/80 mt-3`,
+  card: "mt-6 rounded-2xl border border-black/5 bg-white p-4 shadow-sm",
+  benefitsSectionTitle: `${TYPO.body} font-semibold text-[var(--color-brand-primary)]`,
+  benefitRow: "flex gap-3 py-3 first:pt-0 last:pb-0",
+  benefitIcon:
+    "flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)]/15",
+  benefitTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
+  benefitDesc: `${TYPO.bodySm} text-[var(--color-brand-black)]/65 mt-0.5`,
+  footer: `${TYPO.bodySm} text-[var(--color-brand-primary)] text-center mt-4 px-2`,
+  statusBox: "mt-4 rounded-xl bg-white border border-black/10 p-4 text-center",
+  statusTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
+  statusBody: `${TYPO.bodySm} text-[var(--color-brand-black)]/70 mt-1`,
+} as const;
