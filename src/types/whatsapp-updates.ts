@@ -13,4 +13,9 @@ export type WhatsAppConsentRequestResult = {
   consentSentAt: string | null;
 };
 
+export type WhatsAppConsentRevokeResult = {
+  granted: boolean;
+  revokedAt: string | null;
+};
+
 export type { WhatsAppUpdatesPageContentProps } from "@/types/ui/whatsapp-updates";

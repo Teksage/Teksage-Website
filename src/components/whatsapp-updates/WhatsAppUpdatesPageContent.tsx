@@ -3,6 +3,7 @@
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { WhatsAppUpdatesBenefitsCard } from "@/components/whatsapp-updates/WhatsAppUpdatesBenefitsCard";
 import { WhatsAppUpdatesCta } from "@/components/whatsapp-updates/WhatsAppUpdatesCta";
+import { WhatsAppUpdatesDisableCta } from "@/components/whatsapp-updates/WhatsAppUpdatesDisableCta";
 import { WhatsAppUpdatesHeader } from "@/components/whatsapp-updates/WhatsAppUpdatesHeader";
 import { WhatsAppUpdatesHero } from "@/components/whatsapp-updates/WhatsAppUpdatesHero";
 import { WhatsAppUpdatesPhoneGate } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneGate";
@@ -19,16 +20,32 @@ import type { WhatsAppUpdatesPageContentProps } from "@/types/whatsapp-updates";
 export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageContentProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
   const user = useAuthStore((s) => s.user);
-  const { consent, loading, sending, error, requestConsent } = useWhatsAppConsent();
+  const { consent, loading, sending, revoking, error, requestConsent, revokeConsent } =
+    useWhatsAppConsent();
 
   const verified = Boolean(user?.isMobileVerified);
-  const pending = verified && !consent.granted && Boolean(consent.consentSentAt);
+  const showRevoked = verified && !consent.granted && Boolean(consent.revokedAt);
+  const pending =
+    verified &&
+    !consent.granted &&
+    Boolean(consent.consentSentAt) &&
+    !consent.revokedAt;
   const canEnable =
-    verified && !consent.granted && (consent.canResend || !consent.consentSentAt);
+    verified &&
+    !consent.granted &&
+    (showRevoked || consent.canResend || !consent.consentSentAt);
 
   async function handleEnable() {
     try {
       await requestConsent();
+    } catch {
+      /* error state set in hook */
+    }
+  }
+
+  async function handleDisable() {
+    try {
+      await revokeConsent();
     } catch {
       /* error state set in hook */
     }
@@ -56,6 +73,25 @@ export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageCon
           <div className={WHATSAPP_UPDATES_UI.statusBox}>
             <p className={WHATSAPP_UPDATES_UI.statusTitle}>{WU.grantedTitle}</p>
             <p className={WHATSAPP_UPDATES_UI.statusBody}>{WU.grantedBody}</p>
+            <WhatsAppUpdatesDisableCta
+              loading={revoking}
+              onDisable={() => void handleDisable()}
+            />
+          </div>
+        ) : null}
+
+        {showRevoked ? (
+          <div className={WHATSAPP_UPDATES_UI.statusBox}>
+            <p className={WHATSAPP_UPDATES_UI.statusTitle}>{WU.revokedTitle}</p>
+            <p className={WHATSAPP_UPDATES_UI.statusBody}>{WU.revokedBody}</p>
+            <WhatsAppUpdatesCta
+              disabled={!verified}
+              loading={sending}
+              onEnable={() => void handleEnable()}
+              className="mt-4"
+              showStopNote={false}
+              hintText={WU.reenableHint}
+            />
           </div>
         ) : null}
 
@@ -72,11 +108,13 @@ export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageCon
               ? WU.resendCooldown
               : error === "load_failed"
                 ? WU.loadFailed
-                : WU.requestFailed}
+                : error === "revoke_failed"
+                  ? WU.revokeFailed
+                  : WU.requestFailed}
           </p>
         ) : null}
 
-        {canEnable ? (
+        {canEnable && !showRevoked ? (
           <WhatsAppUpdatesCta
             disabled={!verified}
             loading={sending}

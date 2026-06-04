@@ -465,5 +465,12 @@
   "Based on your profile location": "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಸ್ಥಳದ ಆಧಾರದ ಮೇಲೆ",
   "View full Panchang": "ಪೂರ್ಣ ಪಂಚಾಂಗ ನೋಡಿ",
   "WhatsApp Updates": "WhatsApp ಅಪ್‌ಡೇಟ್‌ಗಳು",
-  "Enable WhatsApp Astrology Alerts": "WhatsApp ಜ್ಯೋತಿಷ್ಯ ಅಲರ್ಟ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ"
+  "Enable WhatsApp Astrology Alerts": "WhatsApp ಜ್ಯೋತಿಷ್ಯ ಅಲರ್ಟ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+  "Disable WhatsApp Alerts": "WhatsApp ಅಲರ್ಟ್‌ಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ",
+  "Disabling…": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತಿದೆ…",
+  "WhatsApp alerts disabled": "WhatsApp ಅಲರ್ಟ್‌ಗಳು ನಿಷ್ಕ್ರಿಯವಾಗಿವೆ",
+  "You will no longer receive astrology updates on WhatsApp. You can enable alerts again anytime.": "ಇನ್ನು ಮುಂದೆ WhatsApp ನಲ್ಲಿ ಜ್ಯೋತಿಷ್ಯ ಅಪ್‌ಡೇಟ್‌ಗಳು ಬರುವುದಿಲ್ಲ. ನೀವು ಯಾವಾಗ ಬೇಕಾದರೂ ಮತ್ತೆ ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು.",
+  "You will no longer receive astrology updates on WhatsApp. Tap the button below to enable alerts again.": "ಇನ್ನು ಮುಂದೆ WhatsApp ನಲ್ಲಿ ಜ್ಯೋತಿಷ್ಯ ಅಪ್‌ಡೇಟ್‌ಗಳು ಬರುವುದಿಲ್ಲ. ಮತ್ತೆ ಸಕ್ರಿಯಗೊಳಿಸಲು ಕೆಳಗಿನ ಬಟನ್ ಒತ್ತಿ.",
+  "We will send a new confirmation message on WhatsApp.": "ನಾವು WhatsApp ನಲ್ಲಿ ಹೊಸ ದೃಢೀಕರಣ ಸಂದೇಶವನ್ನು ಕಳುಹಿಸುತ್ತೇವೆ.",
+  "Could not disable WhatsApp alerts. Try again later.": "WhatsApp ಅಲರ್ಟ್‌ಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 }

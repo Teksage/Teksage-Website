@@ -25,6 +25,13 @@ export const WHATSAPP_UPDATES_SCREEN = {
   pendingBody: "We sent a confirmation message. Reply on WhatsApp to enable alerts.",
   grantedTitle: "WhatsApp alerts enabled",
   grantedBody: "You will receive astrology updates on WhatsApp.",
+  disableCtaLabel: "Disable WhatsApp Alerts",
+  disableCtaSending: "Disabling…",
+  revokedTitle: "WhatsApp alerts disabled",
+  revokedBody:
+    "You will no longer receive astrology updates on WhatsApp. Tap the button below to enable alerts again.",
+  reenableHint: "We will send a new confirmation message on WhatsApp.",
+  revokeFailed: "Could not disable WhatsApp alerts. Try again later.",
   verifyPhoneTitle: "Verify your mobile number",
   verifyPhoneBody: "Verify your phone to receive the WhatsApp consent message.",
   loadFailed: "Could not load WhatsApp status.",
@@ -49,4 +56,6 @@ export const WHATSAPP_UPDATES_UI = {
   statusBox: "mt-4 rounded-xl bg-white border border-black/10 p-4 text-center",
   statusTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
   statusBody: `${TYPO.bodySm} text-[var(--color-brand-black)]/70 mt-1`,
+  disableBtn:
+    "mt-4 flex h-11 w-full items-center justify-center rounded-xl border border-[var(--color-brand-error)]/40 bg-white text-base font-semibold text-[var(--color-brand-error)] hover:bg-[var(--color-brand-error)]/5 disabled:opacity-50",
 } as const;

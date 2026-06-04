@@ -2,6 +2,7 @@ import { http } from "@/lib/services/http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import type {
   WhatsAppConsentRequestResult,
+  WhatsAppConsentRevokeResult,
   WhatsAppConsentState,
 } from "@/types/whatsapp-updates";
 
@@ -42,5 +43,18 @@ export async function requestWhatsAppConsent(): Promise<WhatsAppConsentRequestRe
     granted: Boolean(data.granted),
     messageId: data.message_id ?? null,
     consentSentAt: data.consent_sent_at ?? null,
+  };
+}
+
+type ConsentRevokeDto = {
+  granted: boolean;
+  revoked_at?: string | null;
+};
+
+export async function revokeWhatsAppConsent(): Promise<WhatsAppConsentRevokeResult> {
+  const { data } = await http.post<ConsentRevokeDto>(API_ENDPOINTS.whatsappConsentRevoke);
+  return {
+    granted: Boolean(data.granted),
+    revokedAt: data.revoked_at ?? null,
   };
 }

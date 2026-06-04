@@ -15,6 +15,8 @@ type WhatsAppUpdatesCtaProps = {
   loading: boolean;
   onEnable: () => void;
   className?: string;
+  showStopNote?: boolean;
+  hintText?: string;
 };
 
 export function WhatsAppUpdatesCta({
@@ -22,6 +24,8 @@ export function WhatsAppUpdatesCta({
   loading,
   onEnable,
   className,
+  showStopNote = true,
+  hintText,
 }: WhatsAppUpdatesCtaProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
 
@@ -53,18 +57,23 @@ export function WhatsAppUpdatesCta({
           className="size-[18px] shrink-0 brightness-0 invert"
         />
       </Button>
-      <p className={WHATSAPP_UPDATES_UI.footer}>
-        <Image
-          src={WHATSAPP_UPDATES_ASSETS.unsubscribeShield}
-          alt=""
-          width={14}
-          height={14}
-          className="mr-1 inline-block"
-          unoptimized
-        />
-        {WU.unsubscribeNote}{" "}
-        <strong>{WU.unsubscribeKeyword}</strong> {WU.unsubscribeSuffix}
-      </p>
+      {hintText ? (
+        <p className={WHATSAPP_UPDATES_UI.footer}>{hintText}</p>
+      ) : null}
+      {showStopNote ? (
+        <p className={WHATSAPP_UPDATES_UI.footer}>
+          <Image
+            src={WHATSAPP_UPDATES_ASSETS.unsubscribeShield}
+            alt=""
+            width={14}
+            height={14}
+            className="mr-1 inline-block"
+            unoptimized
+          />
+          {WU.unsubscribeNote}{" "}
+          <strong>{WU.unsubscribeKeyword}</strong> {WU.unsubscribeSuffix}
+        </p>
+      ) : null}
     </div>
   );
 }

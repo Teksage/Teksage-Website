@@ -48,6 +48,7 @@ export const API_ENDPOINTS = {
   // --- WhatsApp (Gupshup) — `api/endpoints/whatsapp.py` ---
   whatsappConsentStatus: "/api/whatsapp/consent/status",
   whatsappConsentRequest: "/api/whatsapp/consent/request",
+  whatsappConsentRevoke: "/api/whatsapp/consent/revoke",
 
   // --- Predictions — `api/endpoints/predictions.py`, mount `/prediction` ---
   dailyPrediction: "/api/prediction/daily",

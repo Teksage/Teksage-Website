@@ -464,5 +464,12 @@
   "Based on your profile location": "आपके प्रोफ़ाइल स्थान के अनुसार",
   "View full Panchang": "पूरा पंचांग देखें",
   "WhatsApp Updates": "WhatsApp अपडेट",
-  "Enable WhatsApp Astrology Alerts": "WhatsApp ज्योतिष अलर्ट सक्षम करें"
+  "Enable WhatsApp Astrology Alerts": "WhatsApp ज्योतिष अलर्ट सक्षम करें",
+  "Disable WhatsApp Alerts": "WhatsApp अलर्ट बंद करें",
+  "Disabling…": "बंद किया जा रहा है…",
+  "WhatsApp alerts disabled": "WhatsApp अलर्ट बंद हैं",
+  "You will no longer receive astrology updates on WhatsApp. You can enable alerts again anytime.": "अब आपको WhatsApp पर ज्योतिष अपडेट नहीं मिलेंगे। आप कभी भी फिर से सक्षम कर सकते हैं।",
+  "You will no longer receive astrology updates on WhatsApp. Tap the button below to enable alerts again.": "अब आपको WhatsApp पर ज्योतिष अपडेट नहीं मिलेंगे। फिर से सक्षम करने के लिए नीचे बटन दबाएं।",
+  "We will send a new confirmation message on WhatsApp.": "हम WhatsApp पर एक नया पुष्टिकरण संदेश भेजेंगे।",
+  "Could not disable WhatsApp alerts. Try again later.": "WhatsApp अलर्ट बंद नहीं हो सके। बाद में पुनः प्रयास करें।"
 }
