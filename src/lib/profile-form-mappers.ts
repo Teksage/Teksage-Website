@@ -1,4 +1,5 @@
 import { DEFAULT_CHAT_LANGUAGE, DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
+import { normalizePhoneParts } from "@/lib/phone-utils";
 import { extractCityFromLocation } from "@/lib/profile-birth-normalize";
 import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
 import type { UserProfile } from "@/types";
@@ -23,12 +24,13 @@ export function userToProfileFormValues(user: UserProfile): ProfileDetailsFormVa
   const { first, last } = splitNameForForm(user);
   const birthFull = user.placeOfBirth ?? "";
   const prefFull = user.preferredLocation ?? "";
+  const phone = normalizePhoneParts(user.countryCode, user.mobile);
   return {
     firstName: first,
     lastName: last,
     email: user.email ?? "",
-    mobile: user.mobile ?? "",
-    countryCode: user.countryCode ?? DEFAULT_COUNTRY_CODE_NUMERIC,
+    mobile: phone.mobile,
+    countryCode: phone.countryCode,
     chatLanguages: user.chatLanguages ?? DEFAULT_CHAT_LANGUAGE,
     dateOfBirth: user.dateOfBirth ?? "",
     timeOfBirth: user.timeOfBirth ?? "",
@@ -46,13 +48,14 @@ export function profileFormValuesToUpdate(
   user: UserProfile
 ): Partial<UserProfile> {
   const name = [data.firstName, data.lastName].filter(Boolean).join(" ").trim();
+  const phone = normalizePhoneParts(data.countryCode, data.mobile);
   return {
     name: name || user.name,
     firstName: data.firstName.trim(),
     lastName: data.lastName.trim(),
     email: data.email.trim(),
-    mobile: data.mobile.replace(/\D/g, ""),
-    countryCode: data.countryCode.replace(/\D/g, "") || DEFAULT_COUNTRY_CODE_NUMERIC,
+    mobile: phone.mobile,
+    countryCode: phone.countryCode || DEFAULT_COUNTRY_CODE_NUMERIC,
     chatLanguages: data.chatLanguages,
     dateOfBirth: data.dateOfBirth,
     timeOfBirth: data.timeOfBirth,
