@@ -74,6 +74,7 @@ export interface ProfileFieldProps {
 export interface ProfilePhoneRowProps {
   countryCode: string;
   mobile: string;
+  onCountryCodeChange: (value: string) => void;
   onMobileChange: (value: string) => void;
   isMobileVerified?: boolean;
   isEditing: boolean;
