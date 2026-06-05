@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
-import { OTP_LENGTH } from "@/lib/constants";
+import {
+  OTP_LENGTH,
+  LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS,
+  LOGIN_MOBILE_FORM,
+} from "@/lib/constants";
 import {
   sendAuthenticatedOtp,
   verifyAuthenticatedOtp,
@@ -17,6 +21,7 @@ import type { ProfilePhoneRowProps } from "@/types";
 export function ProfilePhoneRow({
   countryCode,
   mobile,
+  onCountryCodeChange,
   onMobileChange,
   isMobileVerified,
   isEditing,
@@ -32,6 +37,9 @@ export function ProfilePhoneRow({
   const [feedback, setFeedback] = useState<string | null>(null);
 
   const cc = (countryCode || "91").replace(/\D/g, "") || "91";
+  const dialValue =
+    LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.find((o) => o.dial.replace("+", "") === cc)?.dial ??
+    `+${cc}`;
   const digits = mobile.replace(/\D/g, "");
 
   async function handleSendOtp() {
@@ -107,7 +115,24 @@ export function ProfilePhoneRow({
             "text-sm font-semibold text-neutral-800"
           )}
         >
-          +{cc}
+          {isEditing ? (
+            <select
+              value={dialValue}
+              onChange={(e) =>
+                onCountryCodeChange(e.target.value.replace(/\D/g, "") || "91")
+              }
+              className="w-full border-none bg-transparent text-center text-sm font-semibold outline-none"
+              aria-label={LOGIN_MOBILE_FORM.countryCodeAria}
+            >
+              {LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.map((o) => (
+                <option key={o.dial} value={o.dial}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          ) : (
+            `+${cc}`
+          )}
         </div>
         <Input
           type="tel"
