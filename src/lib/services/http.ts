@@ -18,6 +18,10 @@ function withRegisterTokenTrailingSlash(url: string, baseURL?: string): string {
 }
 import { STORAGE_KEYS } from "@/lib/constants";
 import {
+  AUTH_CLIENT_PLATFORM,
+  AUTH_HTTP_HEADERS,
+} from "@/lib/constants/auth-http";
+import {
   clearAuthSession,
   redirectHomeFromProtectedIfNeeded,
 } from "@/lib/auth-session";
@@ -27,7 +31,10 @@ import { getStoredAppLanguageName } from "@/lib/settings-language-storage";
 
 const http = axios.create({
   timeout: 30000,
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json",
+    [AUTH_HTTP_HEADERS.clientPlatform]: AUTH_CLIENT_PLATFORM.web,
+  },
 });
 
 http.interceptors.request.use((config) => {
