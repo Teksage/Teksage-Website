@@ -108,7 +108,7 @@ export const PANCHANG_ASSETS = {
 export const SETTINGS_ASSETS = {
   profile: flutterSvg("profile.svg"),
   pushNotifications: flutterSvg("notifySetting.svg"),
-  whatsapp: flutterSvg("sidebar-whatsapp.svg"),
+  whatsapp: flutterSvg("settings-whatsapp.svg"),
   language: flutterSvg("languageIcon.svg"),
   subscription: flutterSvg("subscription.svg"),
   terms: flutterSvg("terms.svg"),
