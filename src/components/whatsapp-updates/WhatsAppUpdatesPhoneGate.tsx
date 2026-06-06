@@ -14,6 +14,7 @@ export function WhatsAppUpdatesPhoneGate() {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
   const user = useAuthStore((s) => s.user);
   const { refetchProfile } = useProfile();
+  const [countryCode, setCountryCode] = useState(user?.countryCode ?? "91");
   const [mobile, setMobile] = useState(user?.mobile?.replace(/\D/g, "") ?? "");
 
   if (user?.isMobileVerified) return null;
@@ -24,8 +25,9 @@ export function WhatsAppUpdatesPhoneGate() {
       <p className={WHATSAPP_UPDATES_UI.statusBody}>{WU.verifyPhoneBody}</p>
       <div className="mt-4 text-left">
         <ProfilePhoneRow
-          countryCode={user?.countryCode ?? "91"}
+          countryCode={countryCode}
           mobile={mobile}
+          onCountryCodeChange={setCountryCode}
           onMobileChange={setMobile}
           isMobileVerified={false}
           isEditing
