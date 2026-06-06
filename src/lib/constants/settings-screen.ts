@@ -43,6 +43,13 @@ export const SETTINGS_PRIMARY_LINKS: readonly SettingsPrimaryLink[] = [
     iconKey: "pushNotifications",
     gateLogin: true,
   },
+  {
+    id: "whatsapp-updates",
+    label: "WhatsApp Updates",
+    href: ROUTES.whatsappUpdates,
+    iconKey: "whatsapp",
+    gateLogin: true,
+  },
   // P4 — Change email / mobile (hidden until product enables; route: ROUTES.settingsChangeContact)
   // {
   //   id: "change-contact",
