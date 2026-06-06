@@ -2,6 +2,7 @@
 
 export const OTP_VERIFY_SCREEN = {
   invalidOtp: "Invalid OTP. Please try again.",
+  resendError: "Failed to resend OTP. Please try again.",
   heading: "Enter OTP",
   sentBeforeDigits: "We sent a ",
   sentAfterDigits: "-digit code to",

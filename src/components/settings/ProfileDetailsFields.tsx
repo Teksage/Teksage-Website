@@ -84,6 +84,7 @@ export function ProfileDetailsFields({
       <ProfilePhoneRow
         countryCode={form.countryCode}
         mobile={form.mobile}
+        onCountryCodeChange={(v) => setValue("countryCode", v, touch)}
         onMobileChange={(v) => setValue("mobile", v, touch)}
         isMobileVerified={user.isMobileVerified}
         isEditing={isEditing}

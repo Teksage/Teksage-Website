@@ -9,7 +9,7 @@ import { Loader } from "@/components/common/Loader";
 import { BrandLoginLogo } from "@/components/common/BrandLoginLogo";
 import { LoginBackButton } from "@/components/auth/LoginChrome";
 import { useAuthStore } from "@/store/auth.store";
-import { verifyOtp } from "@/lib/services/auth";
+import { resendOtp, verifyOtp } from "@/lib/services/auth";
 import { cn } from "@/lib/utils";
 import {
   DEFAULT_COUNTRY_CALLING_CODE,
@@ -40,6 +40,7 @@ export function OtpVerifyView({
   const [otpCells, setOtpCells] = useState<string[]>(emptyOtpCells);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const otpDigits = otpCells.join("");
   const isComplete = otpDigits.length === OTP_LENGTH;
@@ -73,6 +74,26 @@ export function OtpVerifyView({
     }
   }
 
+  async function handleResendOtp() {
+    if (isLoading || isResending) return;
+    setIsResending(true);
+    setError(null);
+    try {
+      if (contactType === OTP_CONTACT_TYPE_EMAIL) {
+        await resendOtp({ email: contact });
+      } else {
+        await resendOtp({
+          mobile_number: contact,
+          country_code: (mobileCountryCode ?? DEFAULT_COUNTRY_CALLING_CODE).replace("+", ""),
+        });
+      }
+      setOtpCells(emptyOtpCells());
+    } catch {
+      setError(OV.resendError);
+    } finally {
+      setIsResending(false);
+    }
+  }
   const maskedContact =
     contactType === OTP_CONTACT_TYPE_MOBILE
       ? contact.replace(/(\d{2})\d{6}(\d{2})/, "$1xxxxxx$2")
@@ -130,12 +151,19 @@ export function OtpVerifyView({
         <button
           type="button"
           className="mt-6 text-center text-sm text-neutral-500 transition-colors hover:text-[var(--color-brand-primary)]"
-          onClick={onBack}
+          onClick={handleResendOtp}
+          disabled={isLoading || isResending}
         >
-          {OV.resendQuestion}{" "}
-          <span className="font-semibold text-[var(--color-brand-primary)]">
-            {OV.resendCta}
-          </span>
+          {isResending ? (
+            <Loader variant="inline" size="sm" />
+          ) : (
+            <>
+              {OV.resendQuestion}{" "}
+              <span className="font-semibold text-[var(--color-brand-primary)]">
+                {OV.resendCta}
+              </span>
+            </>
+          )}
         </button>
       </div>
     </div>

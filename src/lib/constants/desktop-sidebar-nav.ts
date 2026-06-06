@@ -36,6 +36,11 @@ export const DESKTOP_SIDEBAR_NOTIFICATIONS_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.notification,
 } as const;
 
+export const DESKTOP_SIDEBAR_WHATSAPP_LINK = {
+  href: ROUTES.whatsappUpdates,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.whatsapp,
+} as const;
+
 export const DESKTOP_SIDEBAR_PANCHANG_LINK = {
   href: ROUTES.panchang,
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.panchang,

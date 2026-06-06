@@ -222,3 +222,9 @@ export type {
   ChatPromptCreatePayload,
   ChatPromptStatusPayload,
 } from "./chat-prompts";
+
+export type {
+  WhatsAppConsentState,
+  WhatsAppConsentRequestResult,
+  WhatsAppConsentRevokeResult,
+} from "./whatsapp-updates";
