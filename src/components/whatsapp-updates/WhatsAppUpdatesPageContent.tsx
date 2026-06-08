@@ -57,6 +57,15 @@ export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageCon
     }
   }
 
+  async function handleStartOver() {
+    try {
+      await revokeConsent();
+      setChangingNumber(false);
+    } catch {
+      /* error state set in hook */
+    }
+  }
+
   if (loading) {
     return (
       <div className={cn(WHATSAPP_UPDATES_UI.page, className)}>
@@ -106,8 +115,10 @@ export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageCon
           <WhatsAppUpdatesPendingCard
             consent={consent}
             sending={sending}
+            startingOver={revoking}
             onResend={(payload) => void handleSend(payload)}
             onChangeNumber={() => setChangingNumber(true)}
+            onStartOver={() => void handleStartOver()}
             profileCountryCode={profile.countryCode}
             profileMobile={profile.mobile}
             showPhoneChoice={changingNumber}

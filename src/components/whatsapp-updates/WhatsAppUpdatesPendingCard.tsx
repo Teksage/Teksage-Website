@@ -18,8 +18,10 @@ import type { WhatsAppUpdatesPendingCardProps } from "@/types/whatsapp-updates";
 export function WhatsAppUpdatesPendingCard({
   consent,
   sending,
+  startingOver,
   onResend,
   onChangeNumber,
+  onStartOver,
   profileCountryCode,
   profileMobile,
   showPhoneChoice,
@@ -41,7 +43,7 @@ export function WhatsAppUpdatesPendingCard({
   }, [consent.consentSentAt, consent.resendAvailableAt]);
 
   const onCooldown = secondsLeft > 0;
-  const canResend = !onCooldown;
+  const canResend = !onCooldown && consent.canResend;
 
   if (showPhoneChoice) {
     return (
@@ -101,9 +103,22 @@ export function WhatsAppUpdatesPendingCard({
         )}
       </Button>
 
-      <button type="button" onClick={onChangeNumber} className={WHATSAPP_UPDATES_UI.changeNumberBtn}>
-        {WU.changeNumberLink}
-      </button>
+      <p className={`${WHATSAPP_UPDATES_UI.statusBody} mt-3`}>{WU.resendDeliveryHint}</p>
+
+      <div className={WHATSAPP_UPDATES_UI.pendingLinkStack}>
+        <button type="button" onClick={onChangeNumber} className={WHATSAPP_UPDATES_UI.changeNumberBtn}>
+          {WU.changeNumberLink}
+        </button>
+
+        <button
+          type="button"
+          disabled={sending || startingOver}
+          onClick={onStartOver}
+          className={WHATSAPP_UPDATES_UI.changeNumberBtn}
+        >
+          {startingOver ? WU.startOverSending : WU.startOverLink}
+        </button>
+      </div>
     </div>
   );
 }

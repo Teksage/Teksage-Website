@@ -43,8 +43,10 @@ export type WhatsAppUpdatesSendSectionProps = {
 export type WhatsAppUpdatesPendingCardProps = {
   consent: WhatsAppConsentState;
   sending: boolean;
+  startingOver: boolean;
   onResend: (payload: WhatsAppConsentRequestPayload) => void;
   onChangeNumber: () => void;
+  onStartOver: () => void;
   profileCountryCode: string;
   profileMobile: string;
   showPhoneChoice: boolean;

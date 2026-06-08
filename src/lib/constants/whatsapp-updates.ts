@@ -47,6 +47,10 @@ export const WHATSAPP_UPDATES_SCREEN = {
   resendCooldownHint: "Resend available in",
   resendCooldownActive: "Please wait before resending",
   changeNumberLink: "Use a different number",
+  startOverLink: "Didn't get the message? Start over",
+  startOverSending: "Starting over…",
+  resendDeliveryHint:
+    "If resend still doesn't arrive, start over or try a different WhatsApp number.",
 } as const;
 
 /** Poll consent status while waiting for the user to reply on WhatsApp. */
@@ -89,8 +93,9 @@ export const WHATSAPP_UPDATES_UI = {
     "h-12 flex-1 rounded-xl border-neutral-300 bg-white px-4 text-base font-semibold shadow-sm ring-1 ring-inset ring-neutral-300 focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0",
   resendBtn:
     "mt-4 flex h-11 w-full items-center justify-center rounded-xl bg-[var(--color-brand-primary)] text-base font-semibold text-white hover:bg-[var(--color-brand-primary)]/90 disabled:opacity-50",
+  pendingLinkStack: "mt-3 flex w-full flex-col items-center gap-2",
   changeNumberBtn:
-    `${TYPO.bodySm} mt-3 font-medium text-[var(--color-brand-primary)] underline-offset-2 hover:underline`,
+    `${TYPO.bodySm} block w-full text-center font-medium text-[var(--color-brand-primary)] underline-offset-2 hover:underline`,
   resendCountdown:
     `${TYPO.body} mt-3 font-semibold tabular-nums text-[var(--color-brand-primary)]`,
   resendCountdownHint: `${TYPO.bodySm} mt-1 text-[var(--color-brand-black)]/65`,
