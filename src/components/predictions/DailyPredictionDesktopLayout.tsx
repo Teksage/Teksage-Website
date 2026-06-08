@@ -75,6 +75,7 @@ export function DailyPredictionDesktopLayout({
             tharaBala={data.tharaBala}
             chandraBala={data.chandraBala}
             cautious={data.cautious}
+            cautiousIsPositiveDay={data.cautiousIsPositiveDay}
           />
         ) : null}
 

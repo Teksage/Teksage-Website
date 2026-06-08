@@ -154,16 +154,9 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
       )}
       {embedded ? null : <ChatConsultStrip />}
 
-      {toast || voice.statusHint ? (
-        <p
-          className={cn(
-            "relative z-10 mx-4 mt-1 shrink-0 rounded-lg px-3 py-2 text-sm",
-            toast
-              ? "bg-[var(--color-brand-error)]/10 text-[var(--color-brand-error)]"
-              : "bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)]"
-          )}
-        >
-          {toast ?? voice.statusHint}
+      {toast ? (
+        <p className="relative z-10 mx-4 mt-1 shrink-0 rounded-lg bg-[var(--color-brand-error)]/10 px-3 py-2 text-sm text-[var(--color-brand-error)]">
+          {toast}
         </p>
       ) : null}
 
@@ -218,6 +211,10 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
           onMicPress={voice.toggleRecording}
           isRecording={voice.isRecording}
           isTranscribing={voice.isTranscribing}
+          recordingElapsedSec={voice.elapsedSec}
+          recordingAmplitudes={voice.amplitudes}
+          onCancelRecording={voice.cancelRecording}
+          onStopRecording={voice.stopRecording}
           micDisabled={!enableInput || !sessionReady}
           preferenceBar={preferenceBar}
           embedded={embedded}

@@ -16,6 +16,8 @@ import { fetchPredictionDetail, isPredictionError } from "@/lib/services/predict
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
 import { LoginPromptButton } from "@/components/common/LoginPromptButton";
+import { PredictionProfilePrompt } from "@/components/predictions/PredictionProfilePrompt";
+import { isPredictionProfileIncompleteMessage } from "@/lib/prediction-request-error";
 import { cn } from "@/lib/utils";
 import type { PredictionDetailKind, PredictionDetailViewModel } from "@/types/prediction-detail";
 
@@ -159,7 +161,9 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
               : "mx-auto w-full max-w-lg px-4 py-6 lg:max-w-3xl")
         )}
       >
-        {err ? (
+        {err && isPredictionProfileIncompleteMessage(err) ? (
+          <PredictionProfilePrompt />
+        ) : err ? (
           <div className="text-center">
             <p className="font-semibold text-[var(--color-brand-error)]">{err}</p>
             <Button type="button" className="mt-4 rounded-full" onClick={() => window.location.reload()}>

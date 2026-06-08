@@ -5,6 +5,7 @@ import { DAILY_PREDICTION_ASSETS } from "@/lib/constants";
 import { DAILY_PREDICTION_BALA_UI } from "@/lib/constants/daily-prediction-bala-ui";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import { HOME_DASHBOARD } from "@/lib/constants/home-dashboard";
+import { predictionDayStatusTextClass } from "@/lib/prediction-day-status";
 import { cn } from "@/lib/utils";
 
 function BalaDivider() {
@@ -25,10 +26,12 @@ export function DailyPredictionBalaPanel({
   tharaBala,
   chandraBala,
   cautious,
+  cautiousIsPositiveDay = false,
 }: {
   tharaBala?: string;
   chandraBala?: string;
   cautious?: string;
+  cautiousIsPositiveDay?: boolean;
 }) {
   const HD = useI18nConstants(HOME_DASHBOARD);
   const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
@@ -66,7 +69,12 @@ export function DailyPredictionBalaPanel({
         <BalaDivider />
 
         <div className={DAILY_PREDICTION_BALA_UI.column}>
-          <p className={DAILY_PREDICTION_BALA_UI.valueText}>
+          <p
+            className={cn(
+              DAILY_PREDICTION_BALA_UI.valueText,
+              cautious && predictionDayStatusTextClass(cautiousIsPositiveDay)
+            )}
+          >
             {cautious ?? "—"}
           </p>
         </div>

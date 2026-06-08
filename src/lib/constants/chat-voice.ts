@@ -14,8 +14,11 @@ export const CHAT_VOICE_COPY = {
   notSupported: "Voice recording is not supported in this browser.",
   transcribeFailed: "Could not transcribe audio. Please try again.",
   recording: "Recording… tap mic to stop",
-  transcribing: "Converting speech to text…",
+  transcribing: "Got it, typing that up for you…",
   speechConverting: "Converting this into speech for you…",
+  languagesHint: "AI can understand all languages",
+  cancelRecordingAria: "Cancel recording",
+  stopRecordingAria: "Stop recording",
   playAria: "Play reply audio",
   pauseAria: "Pause reply audio",
 } as const;

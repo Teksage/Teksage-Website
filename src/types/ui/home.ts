@@ -50,6 +50,5 @@ export interface HomeDesktopHeaderProps {
 }
 
 export interface HomeChatPanelProps {
-  isLoggedIn: boolean;
   className?: string;
 }
