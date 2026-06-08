@@ -1,3 +1,5 @@
+import { mapPredictionApiStringError } from "@/lib/prediction-request-error";
+import { resolvePredictionPositiveDay } from "@/lib/prediction-day-status";
 import { parseYearlyPredictionDetail } from "@/lib/prediction-yearly-parse";
 import type {
   DailyPredictionDetail,
@@ -42,7 +44,7 @@ export function parsePredictionApiBody(
     typeof o.prediction_id === "number" ? o.prediction_id : null;
   const data = o.data;
   if (typeof data === "string") {
-    return { message: data };
+    return { message: mapPredictionApiStringError(data) };
   }
   return { predictionId, data };
 }
@@ -82,15 +84,19 @@ export function toPredictionViewModel(
     for (const [dayKey, val] of Object.entries(rec)) {
       const dayRec = asRecord(val);
       if (!dayRec) continue;
+      const tharaBala =
+        typeof dayRec.thara_bala === "number"
+          ? dayRec.thara_bala
+          : undefined;
       days.push({
         day: titleCaseDay(dayKey),
         shortPrediction: String(dayRec.short_prediction ?? ""),
         longPrediction: String(dayRec.long_prediction ?? ""),
-        isPositiveDay: Boolean(dayRec.is_positive_day),
-        tharaBala:
-          typeof dayRec.thara_bala === "number"
-            ? dayRec.thara_bala
-            : undefined,
+        isPositiveDay: resolvePredictionPositiveDay({
+          isPositiveDay: dayRec.is_positive_day,
+          tharaBala,
+        }),
+        tharaBala,
         chandraBala:
           typeof dayRec.chandra_bala === "number"
             ? dayRec.chandra_bala

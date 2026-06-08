@@ -1,4 +1,5 @@
 import { PredictionBalaSplit } from "@/components/predictions/PredictionBalaSplit";
+import { predictionDayStatusTextClass } from "@/lib/prediction-day-status";
 import { WEEKLY_PREDICTION_CARD_UI } from "@/lib/constants/weekly-prediction-card-ui";
 import type { WeeklyDayPrediction } from "@/types/prediction-detail";
 import { cn } from "@/lib/utils";
@@ -12,6 +13,8 @@ export function WeeklyPredictionDayCard({
   data: WeeklyDayPrediction;
   cardRef?: (el: HTMLElement | null) => void;
 }) {
+  const isPositiveDay = data.isPositiveDay ?? false;
+
   return (
     <article ref={cardRef} className={WEEKLY_PREDICTION_CARD_UI.article}>
       <div className={WEEKLY_PREDICTION_CARD_UI.header}>
@@ -19,9 +22,7 @@ export function WeeklyPredictionDayCard({
         <span
           className={cn(
             WEEKLY_PREDICTION_CARD_UI.badge,
-            data.isPositiveDay
-              ? WEEKLY_PREDICTION_CARD_UI.badgePositive
-              : WEEKLY_PREDICTION_CARD_UI.badgeNegative
+            predictionDayStatusTextClass(isPositiveDay)
           )}
         >
           {data.shortPrediction}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
+import { ChatRecordingComposer } from "@/components/chat/ChatRecordingComposer";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,10 @@ export function ChatComposer({
   onMicPress,
   isRecording = false,
   isTranscribing = false,
+  recordingElapsedSec = 0,
+  recordingAmplitudes = [],
+  onCancelRecording,
+  onStopRecording,
   micDisabled = false,
   preferenceBar,
   embedded = false,
@@ -22,6 +27,21 @@ export function ChatComposer({
   const CS = useI18nConstants(CHAT_SCREEN);
   const canSend = Boolean(value.trim()) && !disabled && !isTranscribing;
   const micBusy = disabled || micDisabled || isTranscribing;
+  const showRecordingBar = isRecording || isTranscribing;
+
+  if (showRecordingBar && onCancelRecording && onStopRecording) {
+    return (
+      <ChatRecordingComposer
+        elapsedSec={recordingElapsedSec}
+        amplitudes={recordingAmplitudes}
+        isTranscribing={isTranscribing}
+        onCancel={onCancelRecording}
+        onStop={onStopRecording}
+        preferenceBar={preferenceBar}
+        embedded={embedded}
+      />
+    );
+  }
 
   return (
     <div

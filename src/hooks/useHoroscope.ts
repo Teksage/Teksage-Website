@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { DOWNLOAD_FILENAMES } from "@/lib/constants";
+import {
+  PREDICTION_PROFILE_INCOMPLETE,
+  mapPredictionApiStringError,
+} from "@/lib/prediction-request-error";
 import { useAuthStore } from "@/store/auth.store";
 import {
   fetchHoroscope,
@@ -14,13 +18,14 @@ import type { HoroscopePayload } from "@/types";
 function horoscopeErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
     const d = err.response?.data as { detail?: string; data?: string } | undefined;
-    if (d?.detail === "Profile not completed") {
-      return "PROFILE_INCOMPLETE";
+    if (typeof d?.detail === "string") {
+      return mapPredictionApiStringError(d.detail);
     }
-    if (typeof d?.detail === "string") return d.detail;
-    if (typeof d?.data === "string") return d.data;
+    if (typeof d?.data === "string") {
+      return mapPredictionApiStringError(d.data);
+    }
   }
-  if (err instanceof Error) return err.message;
+  if (err instanceof Error) return mapPredictionApiStringError(err.message);
   return "Failed to load horoscope.";
 }
 
@@ -71,7 +76,7 @@ export function useHoroscope() {
     data,
     isLoading,
     error,
-    profileIncomplete: error === "PROFILE_INCOMPLETE",
+    profileIncomplete: error === PREDICTION_PROFILE_INCOMPLETE,
     reload: load,
     downloadPdf,
   };

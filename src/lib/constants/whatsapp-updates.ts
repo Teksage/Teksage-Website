@@ -39,6 +39,9 @@ export const WHATSAPP_UPDATES_SCREEN = {
   resendCooldown: "Message already sent. Check WhatsApp or try again later.",
 } as const;
 
+/** Poll consent status while waiting for the user to reply on WhatsApp. */
+export const WHATSAPP_CONSENT_POLL_MS = 5000;
+
 export const WHATSAPP_UPDATES_UI = {
   page: "relative z-10 flex min-h-0 flex-1 flex-col bg-[var(--color-surface-muted)]",
   inner: "mx-auto flex w-full max-w-lg min-h-0 flex-1 flex-col px-4 pb-8",
