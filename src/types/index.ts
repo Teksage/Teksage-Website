@@ -226,5 +226,7 @@ export type {
 export type {
   WhatsAppConsentState,
   WhatsAppConsentRequestResult,
+  WhatsAppConsentRequestPayload,
+  WhatsAppConsentPhoneMode,
   WhatsAppConsentRevokeResult,
 } from "./whatsapp-updates";
