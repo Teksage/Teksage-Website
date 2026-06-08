@@ -6,6 +6,7 @@ import {
   requestWhatsAppConsent,
   revokeWhatsAppConsent,
 } from "@/lib/services/whatsapp-consent";
+import { WHATSAPP_CONSENT_POLL_MS } from "@/lib/constants/whatsapp-updates";
 import type { WhatsAppConsentState } from "@/types/whatsapp-updates";
 
 const EMPTY: WhatsAppConsentState = {
@@ -24,16 +25,23 @@ export function useWhatsAppConsent() {
   const [revoking, setRevoking] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const refresh = useCallback(async () => {
-    setError(null);
-    setLoading(true);
+  const refresh = useCallback(async (options?: { silent?: boolean }) => {
+    const silent = options?.silent ?? false;
+    if (!silent) {
+      setError(null);
+      setLoading(true);
+    }
     try {
       const next = await fetchWhatsAppConsentStatus();
       setConsent(next);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "load_failed");
+      if (!silent) {
+        setError(e instanceof Error ? e.message : "load_failed");
+      }
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   }, []);
 
@@ -46,10 +54,10 @@ export function useWhatsAppConsent() {
       consent.consentSentAt && !consent.granted && !consent.revokedAt;
     if (!waiting) return;
     const id = window.setInterval(() => {
-      void refresh();
-    }, 5000);
+      void refresh({ silent: true });
+    }, WHATSAPP_CONSENT_POLL_MS);
     return () => window.clearInterval(id);
-  }, [consent.consentSentAt, consent.granted, refresh]);
+  }, [consent.consentSentAt, consent.granted, consent.revokedAt, refresh]);
 
   const requestConsent = useCallback(async () => {
     setError(null);
