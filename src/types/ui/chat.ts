@@ -11,7 +11,21 @@ export interface ChatComposerProps {
   onMicPress?: () => void;
   isRecording?: boolean;
   isTranscribing?: boolean;
+  recordingElapsedSec?: number;
+  recordingAmplitudes?: number[];
+  onCancelRecording?: () => void;
+  onStopRecording?: () => void;
   micDisabled?: boolean;
+  preferenceBar?: ReactNode;
+  embedded?: boolean;
+}
+
+export interface ChatRecordingComposerProps {
+  elapsedSec: number;
+  amplitudes: number[];
+  isTranscribing: boolean;
+  onCancel: () => void;
+  onStop: () => void;
   preferenceBar?: ReactNode;
   embedded?: boolean;
 }

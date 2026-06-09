@@ -1,4 +1,6 @@
 import { PredictionBalaSplit } from "@/components/predictions/PredictionBalaSplit";
+import { useT } from "@/hooks/useT";
+import { predictionDayStatusTextClass } from "@/lib/prediction-day-status";
 import { WEEKLY_PREDICTION_CARD_UI } from "@/lib/constants/weekly-prediction-card-ui";
 import type { WeeklyDayPrediction } from "@/types/prediction-detail";
 import { cn } from "@/lib/utils";
@@ -12,16 +14,17 @@ export function WeeklyPredictionDayCard({
   data: WeeklyDayPrediction;
   cardRef?: (el: HTMLElement | null) => void;
 }) {
+  const { t } = useT();
+  const isPositiveDay = data.isPositiveDay ?? false;
+
   return (
     <article ref={cardRef} className={WEEKLY_PREDICTION_CARD_UI.article}>
       <div className={WEEKLY_PREDICTION_CARD_UI.header}>
-        <h2 className={WEEKLY_PREDICTION_CARD_UI.dayTitle}>{day}</h2>
+        <h2 className={WEEKLY_PREDICTION_CARD_UI.dayTitle}>{t(day)}</h2>
         <span
           className={cn(
             WEEKLY_PREDICTION_CARD_UI.badge,
-            data.isPositiveDay
-              ? WEEKLY_PREDICTION_CARD_UI.badgePositive
-              : WEEKLY_PREDICTION_CARD_UI.badgeNegative
+            predictionDayStatusTextClass(isPositiveDay)
           )}
         >
           {data.shortPrediction}

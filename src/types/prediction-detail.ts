@@ -11,6 +11,7 @@ export interface DailyPredictionDetail {
   chandraBala?: string;
   /** Weekly `short_prediction` for today (e.g. Comfort & Joy). */
   cautious?: string;
+  cautiousIsPositiveDay?: boolean;
   predictionId: number | null;
 }
 

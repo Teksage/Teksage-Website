@@ -89,6 +89,11 @@ export const DAILY_PREDICTION_ASSETS = {
   balaDivider: flutterSvg("divider_daily.svg"),
 } as const;
 
+/** Prediction share sheet — Flutter `share.svg`. */
+export const PREDICTION_SHARE_ASSETS = {
+  share: flutterSvg("share.svg"),
+} as const;
+
 /** Premium Personalized Panchang — `panchangPage.dart` + `imageConstant.dart`. */
 export const PANCHANG_ASSETS = {
   /**
@@ -108,7 +113,7 @@ export const PANCHANG_ASSETS = {
 export const SETTINGS_ASSETS = {
   profile: flutterSvg("profile.svg"),
   pushNotifications: flutterSvg("notifySetting.svg"),
-  whatsapp: flutterSvg("sidebar-whatsapp.svg"),
+  whatsapp: flutterSvg("settings-whatsapp.svg"),
   language: flutterSvg("languageIcon.svg"),
   subscription: flutterSvg("subscription.svg"),
   terms: flutterSvg("terms.svg"),

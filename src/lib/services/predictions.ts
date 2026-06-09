@@ -1,5 +1,10 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import {
+  PREDICTION_PROFILE_INCOMPLETE,
+  isPredictionProfileIncompleteError,
+  predictionErrorMessage,
+} from "@/lib/prediction-request-error";
 import type {
   PredictionDetailKind,
   PredictionDetailViewModel,
@@ -42,11 +47,18 @@ async function fetchPredictionRaw(
       ? `${endpointForKind(kind)}?generate=${generate}`
       : endpointForKind(kind);
 
-  const { data: body } = await http.get<unknown>(path);
-  const parsed = parsePredictionApiBody(body);
-  if ("message" in parsed) return parsed;
+  try {
+    const { data: body } = await http.get<unknown>(path);
+    const parsed = parsePredictionApiBody(body);
+    if ("message" in parsed) return parsed;
 
-  return toPredictionViewModel(kind, parsed.data, parsed.predictionId);
+    return toPredictionViewModel(kind, parsed.data, parsed.predictionId);
+  } catch (error) {
+    if (isPredictionProfileIncompleteError(error)) {
+      return { message: PREDICTION_PROFILE_INCOMPLETE };
+    }
+    return { message: predictionErrorMessage(error) };
+  }
 }
 
 export async function fetchPredictionDetail(
@@ -72,15 +84,21 @@ async function fetchDailyPredictionDetail(): Promise<
   }
 
   let cautious = daily.cautious;
+  let cautiousIsPositiveDay = daily.cautiousIsPositiveDay;
   if (
     !cautious &&
     !isPredictionError(weekly) &&
     weekly.kind === "weekly"
   ) {
-    cautious = cautiousFromWeeklyDetail(weekly);
+    const status = cautiousFromWeeklyDetail(weekly);
+    if (status) {
+      cautious = status.text;
+      cautiousIsPositiveDay = status.isPositiveDay;
+    }
   }
 
-  return cautious ? { ...daily, cautious } : daily;
+  if (!cautious) return daily;
+  return { ...daily, cautious, cautiousIsPositiveDay };
 }
 
 export async function generatePredictionDetail(
@@ -92,6 +110,7 @@ export async function generatePredictionDetail(
 export type YearlyInitialResult =
   | { ready: "landing" }
   | { ready: "detail"; data: YearlyPredictionDetail }
+  | { ready: "profile_incomplete" }
   | { ready: "error"; message: string };
 
 /**
@@ -101,31 +120,44 @@ export type YearlyInitialResult =
 export async function fetchYearlyPredictionInitial(
   signal?: AbortSignal
 ): Promise<YearlyInitialResult> {
-  const { data: body } = await http.get<unknown>(
-    `${API_ENDPOINTS.yearlyPrediction}?generate=false`,
-    { signal }
-  );
-  const parsed = parsePredictionApiBody(body);
-  if ("message" in parsed) {
-    return { ready: "error", message: parsed.message };
-  }
-  const vm = toPredictionViewModel("yearly", parsed.data, parsed.predictionId);
-  if (isPredictionError(vm)) {
-    if (vm.message === PREDICTION_PARSE_EMPTY) {
+  try {
+    const { data: body } = await http.get<unknown>(
+      `${API_ENDPOINTS.yearlyPrediction}?generate=false`,
+      { signal }
+    );
+    const parsed = parsePredictionApiBody(body);
+    if ("message" in parsed) {
+      if (parsed.message === PREDICTION_PROFILE_INCOMPLETE) {
+        return { ready: "profile_incomplete" };
+      }
+      return { ready: "error", message: parsed.message };
+    }
+    const vm = toPredictionViewModel("yearly", parsed.data, parsed.predictionId);
+    if (isPredictionError(vm)) {
+      if (vm.message === PREDICTION_PARSE_EMPTY) {
+        return { ready: "landing" };
+      }
+      return { ready: "error", message: vm.message };
+    }
+    if (vm.kind !== "yearly" || !hasYearlyPredictionContent(vm)) {
       return { ready: "landing" };
     }
-    return { ready: "error", message: vm.message };
+    return { ready: "detail", data: vm };
+  } catch (error) {
+    if (isPredictionProfileIncompleteError(error)) {
+      return { ready: "profile_incomplete" };
+    }
+    return { ready: "error", message: predictionErrorMessage(error) };
   }
-  if (vm.kind !== "yearly" || !hasYearlyPredictionContent(vm)) {
-    return { ready: "landing" };
-  }
-  return { ready: "detail", data: vm };
 }
 
 /** `GET …/yearly?generate=true` — create/regenerate then show detail. */
 export async function generateYearlyPrediction(): Promise<YearlyInitialResult> {
   const res = await fetchPredictionRaw("yearly", true);
   if (isPredictionError(res)) {
+    if (res.message === PREDICTION_PROFILE_INCOMPLETE) {
+      return { ready: "profile_incomplete" };
+    }
     return { ready: "error", message: res.message };
   }
   if (res.kind !== "yearly" || !hasYearlyPredictionContent(res)) {
@@ -137,6 +169,7 @@ export async function generateYearlyPrediction(): Promise<YearlyInitialResult> {
 export type LifeInitialResult =
   | { ready: "landing" }
   | { ready: "detail"; data: StructuredPredictionDetail }
+  | { ready: "profile_incomplete" }
   | { ready: "error"; message: string };
 
 function hasLifePredictionContent(
@@ -152,31 +185,44 @@ function hasLifePredictionContent(
 export async function fetchLifePredictionInitial(
   signal?: AbortSignal
 ): Promise<LifeInitialResult> {
-  const { data: body } = await http.get<unknown>(
-    `${API_ENDPOINTS.lifePrediction}?generate=false`,
-    { signal }
-  );
-  const parsed = parsePredictionApiBody(body);
-  if ("message" in parsed) {
-    return { ready: "error", message: parsed.message };
-  }
-  const vm = toPredictionViewModel("life", parsed.data, parsed.predictionId);
-  if (isPredictionError(vm)) {
-    if (vm.message === PREDICTION_PARSE_EMPTY) {
+  try {
+    const { data: body } = await http.get<unknown>(
+      `${API_ENDPOINTS.lifePrediction}?generate=false`,
+      { signal }
+    );
+    const parsed = parsePredictionApiBody(body);
+    if ("message" in parsed) {
+      if (parsed.message === PREDICTION_PROFILE_INCOMPLETE) {
+        return { ready: "profile_incomplete" };
+      }
+      return { ready: "error", message: parsed.message };
+    }
+    const vm = toPredictionViewModel("life", parsed.data, parsed.predictionId);
+    if (isPredictionError(vm)) {
+      if (vm.message === PREDICTION_PARSE_EMPTY) {
+        return { ready: "landing" };
+      }
+      return { ready: "error", message: vm.message };
+    }
+    if (!hasLifePredictionContent(vm)) {
       return { ready: "landing" };
     }
-    return { ready: "error", message: vm.message };
+    return { ready: "detail", data: vm };
+  } catch (error) {
+    if (isPredictionProfileIncompleteError(error)) {
+      return { ready: "profile_incomplete" };
+    }
+    return { ready: "error", message: predictionErrorMessage(error) };
   }
-  if (!hasLifePredictionContent(vm)) {
-    return { ready: "landing" };
-  }
-  return { ready: "detail", data: vm };
 }
 
 /** `GET …/life?generate=true` — create/regenerate then show detail. */
 export async function generateLifePrediction(): Promise<LifeInitialResult> {
   const res = await fetchPredictionRaw("life", true);
   if (isPredictionError(res)) {
+    if (res.message === PREDICTION_PROFILE_INCOMPLETE) {
+      return { ready: "profile_incomplete" };
+    }
     return { ready: "error", message: res.message };
   }
   if (!hasLifePredictionContent(res)) {
@@ -185,32 +231,22 @@ export async function generateLifePrediction(): Promise<LifeInitialResult> {
   return { ready: "detail", data: res };
 }
 
-export async function downloadPredictionPdf(args: {
-  kind: "daily" | "weekly" | "yearly" | "life";
+export async function fetchPredictionSharePdf(args: {
+  kind: "daily" | "weekly";
   predictionId: number;
-  filename: string;
-}): Promise<void> {
+}): Promise<Blob> {
   const path =
-    args.kind === "daily"
-      ? API_ENDPOINTS.shareDaily
-      : args.kind === "weekly"
-        ? API_ENDPOINTS.shareWeekly
-        : args.kind === "yearly"
-          ? API_ENDPOINTS.shareYearly
-          : API_ENDPOINTS.shareLife;
-
+    args.kind === "daily" ? API_ENDPOINTS.shareDaily : API_ENDPOINTS.shareWeekly;
   const { data } = await http.post<Blob>(
     path,
     { prediction_id: args.predictionId },
-    { responseType: "blob" }
+    { responseType: "blob", timeout: 120_000 }
   );
-
-  const url = URL.createObjectURL(data);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = args.filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  if (data.type.includes("json")) {
+    const detail = await data.text();
+    throw new Error(detail || "pdf_failed");
+  }
+  return data;
 }
 
 export { isPredictionError };

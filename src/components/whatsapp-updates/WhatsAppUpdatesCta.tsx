@@ -9,15 +9,7 @@ import {
   WHATSAPP_UPDATES_UI,
 } from "@/lib/constants/whatsapp-updates";
 import { cn } from "@/lib/utils";
-
-type WhatsAppUpdatesCtaProps = {
-  disabled: boolean;
-  loading: boolean;
-  onEnable: () => void;
-  className?: string;
-  showStopNote?: boolean;
-  hintText?: string;
-};
+import type { WhatsAppUpdatesCtaProps } from "@/types/whatsapp-updates";
 
 export function WhatsAppUpdatesCta({
   disabled,
@@ -26,6 +18,7 @@ export function WhatsAppUpdatesCta({
   className,
   showStopNote = true,
   hintText,
+  ctaLabel,
 }: WhatsAppUpdatesCtaProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
 
@@ -46,7 +39,7 @@ export function WhatsAppUpdatesCta({
           className="size-[22px] brightness-0 invert"
         />
         <span className="flex-1 text-center">
-          {loading ? WU.ctaSending : WU.ctaLabel}
+          {loading ? WU.ctaSending : ctaLabel ?? WU.ctaLabel}
         </span>
         <Image
           src={WHATSAPP_UPDATES_ASSETS.ctaChevron}

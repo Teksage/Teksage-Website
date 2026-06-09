@@ -10,4 +10,6 @@ export const CHAT_ASSETS = {
   styleIcon: DASHBOARD_ASSETS.chatStyleIcon,
   avatarIcon: DASHBOARD_ASSETS.chatAvatarIcon,
   chevron: DASHBOARD_ASSETS.downArrow,
+  deleteRecording: "/flutter-assets/svg/deleteChatIcon.svg",
+  stopRecording: "/flutter-assets/svg/stopChatRecord.svg",
 } as const;

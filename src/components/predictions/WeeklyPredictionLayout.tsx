@@ -1,11 +1,14 @@
 "use client";
 
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
+import { usePredictionShare } from "@/hooks/usePredictionShare";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { WEEKLY_PREDICTION_LAYOUT } from "@/lib/constants/weekly-prediction-layout";
 import { RotatingImage } from "@/components/predictions/RotatingImage";
 import { WeeklyPredictionDayCard } from "@/components/predictions/WeeklyPredictionDayCard";
 import { DailyPredictionConsultStrip } from "@/components/predictions/DailyPredictionConsultStrip";
+import { PredictionShareButton } from "@/components/predictions/PredictionShareButton";
+import { PredictionShareSheet } from "@/components/predictions/PredictionShareSheet";
 import { WEEKLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
 import { WEEKLY_SCREEN } from "@/lib/constants/prediction-screen-copy";
 import { useAuthStore } from "@/store/auth.store";
@@ -20,13 +23,33 @@ export function WeeklyPredictionLayout({
   onBackClick: () => void;
 }) {
   const WS = useI18nConstants(WEEKLY_SCREEN);
+  const { t } = useT();
   const user = useAuthStore((s) => s.user);
+  const { sharing, loadingLabel, error, success, shareReady, prepareShare, confirmShare, resetShare } =
+    usePredictionShare();
+  const [shareOpen, setShareOpen] = useState(false);
+
+  function openShareSheet() {
+    resetShare();
+    setShareOpen(true);
+  }
+
+  function closeShareSheet() {
+    setShareOpen(false);
+    resetShare();
+  }
+
+  function handlePrepareShare() {
+    if (data.predictionId == null) return;
+    void prepareShare("weekly", data.predictionId);
+  }
   const [selected, setSelected] = useState(0);
   const listRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const programmaticScrollRef = useRef(false);
 
-  const name = user?.name?.trim() || "there";
+  const name = user?.name?.trim() || t("there");
+  const canShare = data.predictionId != null;
 
   const scrollCardIntoView = useCallback((index: number) => {
     const el = cardRefs.current[index];
@@ -94,13 +117,20 @@ export function WeeklyPredictionLayout({
           className="absolute left-0 top-[61px] w-full opacity-90"
         />
         <div className={WEEKLY_PREDICTION_LAYOUT.heroInner}>
-            <button type="button" onClick={onBackClick} className="p-3" aria-label="Go back">
-              <img
-                src={WEEKLY_PREDICTION_ASSETS.back}
-                alt=""
-                className="h-5 w-5 brightness-0 invert"
+            <div className="flex items-center justify-between">
+              <button type="button" onClick={onBackClick} className="p-3" aria-label="Go back">
+                <img
+                  src={WEEKLY_PREDICTION_ASSETS.back}
+                  alt=""
+                  className="h-5 w-5 brightness-0 invert"
+                />
+              </button>
+              <PredictionShareButton
+                disabled={!canShare}
+                onClick={openShareSheet}
+                className="brightness-0 invert hover:bg-white/10"
               />
-            </button>
+            </div>
             <div className="mt-2 flex flex-col items-center gap-4 text-center text-white">
               <h1 className="text-xl font-bold lg:text-2xl">{WS.title}</h1>
               <p className="max-w-3xl text-lg font-medium leading-snug lg:max-w-none">
@@ -143,7 +173,31 @@ export function WeeklyPredictionLayout({
         <div className={WEEKLY_PREDICTION_LAYOUT.consultStripSpan}>
           <DailyPredictionConsultStrip />
         </div>
+        {error && !shareOpen ? (
+          <p className="col-span-full mt-2 text-center text-sm text-[var(--color-brand-error)]">
+            {error}
+          </p>
+        ) : null}
+        {success && !shareOpen ? (
+          <p className="col-span-full mt-2 text-center text-sm text-[var(--color-brand-primary)]">
+            {success}
+          </p>
+        ) : null}
       </div>
+
+      {canShare && data.predictionId != null ? (
+        <PredictionShareSheet
+          open={shareOpen}
+          sharing={sharing}
+          loadingLabel={loadingLabel}
+          shareReady={shareReady}
+          successMessage={success}
+          errorMessage={error}
+          onClose={closeShareSheet}
+          onPrepareShare={handlePrepareShare}
+          onConfirmShare={() => void confirmShare()}
+        />
+      ) : null}
     </div>
   );
 }

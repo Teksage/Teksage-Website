@@ -37,7 +37,27 @@ export const WHATSAPP_UPDATES_SCREEN = {
   loadFailed: "Could not load WhatsApp status.",
   requestFailed: "Could not send WhatsApp message. Try again later.",
   resendCooldown: "Message already sent. Check WhatsApp or try again later.",
+  phoneChoiceProfileLabel: "Use my verified profile number",
+  phoneChoiceDifferentLabel: "Use a different WhatsApp number",
+  phoneChoiceInvalidMobile: "Enter a valid mobile number.",
+  sendConfirmationLabel: "Send confirmation message",
+  pendingSentToPrefix: "Message sent to",
+  resendCta: "Resend WhatsApp message",
+  resendSending: "Resending…",
+  resendCooldownHint: "Resend available in",
+  resendCooldownActive: "Please wait before resending",
+  changeNumberLink: "Use a different number",
+  startOverLink: "Didn't get the message? Start over",
+  startOverSending: "Starting over…",
+  resendDeliveryHint:
+    "If resend still doesn't arrive, start over or try a different WhatsApp number.",
 } as const;
+
+/** Poll consent status while waiting for the user to reply on WhatsApp. */
+export const WHATSAPP_CONSENT_POLL_MS = 5000;
+
+/** Fallback resend cooldown when API omits resend_available_at. */
+export const WHATSAPP_CONSENT_RESEND_COOLDOWN_MS = 120_000;
 
 export const WHATSAPP_UPDATES_UI = {
   page: "relative z-10 flex min-h-0 flex-1 flex-col bg-[var(--color-surface-muted)]",
@@ -58,4 +78,25 @@ export const WHATSAPP_UPDATES_UI = {
   statusBody: `${TYPO.bodySm} text-[var(--color-brand-black)]/70 mt-1`,
   disableBtn:
     "mt-4 flex h-11 w-full items-center justify-center rounded-xl border border-[var(--color-brand-error)]/40 bg-white text-base font-semibold text-[var(--color-brand-error)] hover:bg-[var(--color-brand-error)]/5 disabled:opacity-50",
+  phoneChoiceRow: "flex items-start gap-3 rounded-lg border border-black/10 p-3 text-left",
+  phoneChoiceRadioInput: "sr-only",
+  phoneChoiceRadioIndicator:
+    "mt-1 size-4 shrink-0 rounded-full border-2 border-[var(--color-brand-black)]/20 bg-white",
+  phoneChoiceRadioIndicatorSelected:
+    "border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)]",
+  phoneChoiceLabel: `${TYPO.bodySm} font-medium text-[var(--color-brand-black)]`,
+  phoneChoiceHint: `${TYPO.bodySm} text-[var(--color-brand-black)]/65 mt-0.5`,
+  phoneInputWrap: "mt-3 flex gap-2",
+  phoneDialSelect:
+    "flex h-12 min-w-[72px] shrink-0 items-center justify-center rounded-xl border border-neutral-300 bg-white px-2",
+  phoneMobileInput:
+    "h-12 flex-1 rounded-xl border-neutral-300 bg-white px-4 text-base font-semibold shadow-sm ring-1 ring-inset ring-neutral-300 focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0",
+  resendBtn:
+    "mt-4 flex h-11 w-full items-center justify-center rounded-xl bg-[var(--color-brand-primary)] text-base font-semibold text-white hover:bg-[var(--color-brand-primary)]/90 disabled:opacity-50",
+  pendingLinkStack: "mt-3 flex w-full flex-col items-center gap-2",
+  changeNumberBtn:
+    `${TYPO.bodySm} block w-full text-center font-medium text-[var(--color-brand-primary)] underline-offset-2 hover:underline`,
+  resendCountdown:
+    `${TYPO.body} mt-3 font-semibold tabular-nums text-[var(--color-brand-primary)]`,
+  resendCountdownHint: `${TYPO.bodySm} mt-1 text-[var(--color-brand-black)]/65`,
 } as const;

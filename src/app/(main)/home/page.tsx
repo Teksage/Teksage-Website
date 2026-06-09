@@ -96,10 +96,7 @@ export default function HomePage() {
           <ChatBanner isLoggedIn={isAuthenticated} />
         </main>
 
-        <HomeChatPanel
-          isLoggedIn={isAuthenticated}
-          className="hidden min-h-0 min-w-0 flex-1 lg:flex"
-        />
+        <HomeChatPanel className="hidden min-h-0 min-w-0 flex-1 lg:flex" />
       </div>
     </div>
   );
