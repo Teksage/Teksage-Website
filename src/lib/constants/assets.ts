@@ -89,6 +89,11 @@ export const DAILY_PREDICTION_ASSETS = {
   balaDivider: flutterSvg("divider_daily.svg"),
 } as const;
 
+/** Prediction share sheet — Flutter `share.svg`. */
+export const PREDICTION_SHARE_ASSETS = {
+  share: flutterSvg("share.svg"),
+} as const;
+
 /** Premium Personalized Panchang — `panchangPage.dart` + `imageConstant.dart`. */
 export const PANCHANG_ASSETS = {
   /**

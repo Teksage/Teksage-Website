@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useI18nConstants } from "@/hooks/useT";
+import { usePredictionShare } from "@/hooks/usePredictionShare";
 import { DailyPredictionBalaPanel } from "@/components/predictions/DailyPredictionBalaPanel";
 import { DailyPredictionConsultStrip } from "@/components/predictions/DailyPredictionConsultStrip";
-// import { DailyPredictionPdfRow } from "@/components/predictions/DailyPredictionConsultStrip";
 import { DailyPredictionDesktopCategoryCard } from "@/components/predictions/DailyPredictionDesktopCategoryCard";
+import { PredictionShareButton } from "@/components/predictions/PredictionShareButton";
+import { PredictionShareSheet } from "@/components/predictions/PredictionShareSheet";
 import { DAILY_PREDICTION_ASSETS } from "@/lib/constants";
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import { formatHomeDashboardDate, cn } from "@/lib/utils";
@@ -22,9 +25,28 @@ export function DailyPredictionDesktopLayout({
 }) {
   const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   const { locale } = useAppLanguage();
+  const { sharing, loadingLabel, error, success, shareReady, prepareShare, confirmShare, resetShare } =
+    usePredictionShare();
+  const [shareOpen, setShareOpen] = useState(false);
+
+  function openShareSheet() {
+    resetShare();
+    setShareOpen(true);
+  }
+
+  function closeShareSheet() {
+    setShareOpen(false);
+    resetShare();
+  }
+
+  function handlePrepareShare() {
+    if (data.predictionId == null) return;
+    void prepareShare("daily", data.predictionId);
+  }
   const dateLine = formatHomeDashboardDate(new Date(), locale);
   const showBala = data.tharaBala || data.chandraBala || data.cautious;
   const summary = data.quote?.trim();
+  const canShare = data.predictionId != null;
 
   return (
     <div className="pb-10">
@@ -56,7 +78,11 @@ export function DailyPredictionDesktopLayout({
             <h1 className="min-w-0 flex-1 truncate text-center text-lg font-bold text-white sm:text-xl">
               {pageTitle}
             </h1>
-            <span className="size-10 shrink-0 sm:w-[38px]" aria-hidden />
+            <PredictionShareButton
+              disabled={!canShare}
+              onClick={openShareSheet}
+              className="brightness-0 invert hover:bg-white/10"
+            />
           </div>
           <p className="mt-4 text-center text-base font-semibold text-white sm:mt-5 sm:text-lg">
             {dateLine}
@@ -108,9 +134,28 @@ export function DailyPredictionDesktopLayout({
           />
         </div>
 
-        {/* Download PDF — disabled for now; re-enable via DailyPredictionPdfRow when ready. */}
         <DailyPredictionConsultStrip />
+        {error && !shareOpen ? (
+          <p className="mt-3 text-center text-sm text-[var(--color-brand-error)]">{error}</p>
+        ) : null}
+        {success && !shareOpen ? (
+          <p className="mt-3 text-center text-sm text-[var(--color-brand-primary)]">{success}</p>
+        ) : null}
       </div>
+
+      {canShare && data.predictionId != null ? (
+        <PredictionShareSheet
+          open={shareOpen}
+          sharing={sharing}
+          loadingLabel={loadingLabel}
+          shareReady={shareReady}
+          successMessage={success}
+          errorMessage={error}
+          onClose={closeShareSheet}
+          onPrepareShare={handlePrepareShare}
+          onConfirmShare={() => void confirmShare()}
+        />
+      ) : null}
     </div>
   );
 }

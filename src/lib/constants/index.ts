@@ -38,6 +38,7 @@ export * from "./login-mobile-form";
 export * from "./login-screen";
 export * from "./otp-verify-screen";
 export * from "./prediction-detail-screen";
+export * from "./prediction-share";
 export * from "./prediction-assets";
 export * from "./prediction-screen-copy";
 export * from "./weekly-prediction-layout";

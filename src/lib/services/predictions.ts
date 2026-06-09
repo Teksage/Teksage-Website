@@ -231,32 +231,22 @@ export async function generateLifePrediction(): Promise<LifeInitialResult> {
   return { ready: "detail", data: res };
 }
 
-export async function downloadPredictionPdf(args: {
-  kind: "daily" | "weekly" | "yearly" | "life";
+export async function fetchPredictionSharePdf(args: {
+  kind: "daily" | "weekly";
   predictionId: number;
-  filename: string;
-}): Promise<void> {
+}): Promise<Blob> {
   const path =
-    args.kind === "daily"
-      ? API_ENDPOINTS.shareDaily
-      : args.kind === "weekly"
-        ? API_ENDPOINTS.shareWeekly
-        : args.kind === "yearly"
-          ? API_ENDPOINTS.shareYearly
-          : API_ENDPOINTS.shareLife;
-
+    args.kind === "daily" ? API_ENDPOINTS.shareDaily : API_ENDPOINTS.shareWeekly;
   const { data } = await http.post<Blob>(
     path,
     { prediction_id: args.predictionId },
-    { responseType: "blob" }
+    { responseType: "blob", timeout: 120_000 }
   );
-
-  const url = URL.createObjectURL(data);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = args.filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  if (data.type.includes("json")) {
+    const detail = await data.text();
+    throw new Error(detail || "pdf_failed");
+  }
+  return data;
 }
 
 export { isPredictionError };
