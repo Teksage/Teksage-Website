@@ -102,6 +102,14 @@ export function AstrologerDashboard() {
           iconSrc={ASTROLOGER_ASSETS.calendarIcon}
         />
       </div>
+      <div className="flex gap-4">
+        <DashCard
+          title={ASTRO_PORTAL_UI.card.askRequests.title}
+          subtitle={ASTRO_PORTAL_UI.card.askRequests.subtitle}
+          href={ROUTES.astrologerAskRequests}
+          iconSrc={ASTROLOGER_ASSETS.meetingIcon}
+        />
+      </div>
     </div>
   );
 }

@@ -119,6 +119,17 @@ export const API_ENDPOINTS = {
 
   // --- Countries — `country.py` ---
   countries: "/api/countries",
+
+  // --- Ask Astrologer — `ask_astrologer.py`, mount `/ask-astrologer` ---
+  askAstrologerPricing: "/api/ask-astrologer/pricing",
+  askAstrologerCreate: "/api/ask-astrologer/create",
+  askAstrologerVerify: "/api/ask-astrologer/verify",
+  askAstrologerRequests: "/api/ask-astrologer/requests",
+  /** Append `/{request_id}` — single request detail for the logged-in customer. */
+  askAstrologerRequest: "/api/ask-astrologer",
+
+  // --- Astrologer portal: Ask requests ---
+  astrologerAskRequests: "/api/astrologer/ask-requests",
 } as const;
 
 export type ApiEndpointKey = keyof typeof API_ENDPOINTS;

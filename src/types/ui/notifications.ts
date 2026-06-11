@@ -1,5 +1,6 @@
 import type {
   AppNotification,
+  AskAstrologerNotificationItem,
   ConsultationNotificationEvent,
   NotificationTab,
 } from "@/types/notifications";
@@ -17,11 +18,23 @@ export interface NotificationGeneralListProps {
 export interface NotificationConsultationListProps {
   items: ConsultationNotificationEvent[];
   isAstrologer: boolean;
+  askItems?: AskAstrologerNotificationItem[];
 }
 
 export interface NotificationDetailDialogProps {
   open: boolean;
   title: string;
   message: string;
+  onClose: () => void;
+}
+
+export interface AskAstrologerAnswerDialogProps {
+  open: boolean;
+  userQuestion: string;
+  answerText: string | null;
+  answerVoiceUrl: string | null;
+  answeredAt?: string | null;
+  loading?: boolean;
+  error?: string | null;
   onClose: () => void;
 }

@@ -4,6 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { format } from "date-fns";
 import { EmptyState } from "@/components/common/EmptyState";
+import { AskAstrologerNotificationCard } from "@/components/notifications/AskAstrologerNotificationCard";
 import {
   NOTIFICATIONS_SCREEN,
   NOTIFICATIONS_UI,
@@ -22,18 +23,22 @@ function formatEventDate(iso: string): string {
 export function NotificationConsultationList({
   items,
   isAstrologer,
+  askItems = [],
 }: NotificationConsultationListProps) {
   const NS = useI18nConstants(NOTIFICATIONS_SCREEN);
   const label = isAstrologer
     ? NS.astrologerAppointmentOn
     : NS.customerAppointmentOn;
 
-  if (items.length === 0) {
+  if (items.length === 0 && askItems.length === 0) {
     return <EmptyState title={NS.emptyConsultation} className="py-12" />;
   }
 
   return (
     <ul className={NOTIFICATIONS_UI.list}>
+      {askItems.map((ask) => (
+        <AskAstrologerNotificationCard key={`ask-${ask.id}`} item={ask} />
+      ))}
       {items.map((event) => (
         <li key={event.id} className={NOTIFICATIONS_UI.consultationCard}>
           <div className="flex min-w-0 items-center gap-2.5">

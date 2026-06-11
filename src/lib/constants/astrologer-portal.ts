@@ -25,6 +25,24 @@ export const ASTRO_PORTAL_UI = {
       title: "Chat Prompts",
       subtitle: "Manage AI chat quick-prompt suggestions.",
     },
+    askRequests: {
+      title: "Ask Requests",
+      subtitle: "Answer single questions assigned to you.",
+    },
+  },
+
+  /** Ask-request answer form — voice record / attach. */
+  askAnswerVoice: {
+    recordLabel: "Record voice",
+    attachLabel: "Attach file",
+    removeLabel: "Remove",
+    recordingHint: "Tap stop when finished",
+    permissionDenied: "Microphone permission is required to record voice.",
+    notSupported: "Voice recording is not supported in this browser.",
+    saveFailed: "Could not save recording. Please try again.",
+    cancelRecordingAria: "Cancel recording",
+    stopRecordingAria: "Stop recording",
+    maxRecordSec: 180,
   },
 
   // Meetings list

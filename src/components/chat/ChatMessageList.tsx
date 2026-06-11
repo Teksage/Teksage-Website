@@ -18,18 +18,27 @@ export function ChatMessageList({
         CHAT_LAYOUT.messageGutter
       )}
     >
-      {messages.map((message) => (
-        <ChatMessageBubble
-          key={message.id}
-          message={message}
-          userInitials={userInitials}
-          onRetry={
-            message.role === "user" && message.status === "failed"
-              ? () => onRetry(message.id)
-              : undefined
-          }
-        />
-      ))}
+      {messages.map((message, index) => {
+        // For assistant messages, find the preceding user message to power ChatMessageActions
+        const prevUserQuestion =
+          message.role === "assistant" && index > 0 && messages[index - 1].role === "user"
+            ? messages[index - 1].text
+            : undefined;
+
+        return (
+          <ChatMessageBubble
+            key={message.id}
+            message={message}
+            userInitials={userInitials}
+            userQuestion={prevUserQuestion}
+            onRetry={
+              message.role === "user" && message.status === "failed"
+                ? () => onRetry(message.id)
+                : undefined
+            }
+          />
+        );
+      })}
       {showTyping ? <ChatTypingIndicator /> : null}
       <div ref={listEndRef} className="h-px shrink-0" aria-hidden />
     </div>
