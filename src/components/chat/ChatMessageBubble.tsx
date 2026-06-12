@@ -22,7 +22,7 @@ export function ChatMessageBubble({
 }) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const isUser = message.role === "user";
-  const showActions = !isUser && Boolean(userQuestion) && message.status !== "failed";
+  const showActions = !isUser && Boolean(userQuestion);
 
   return (
     <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>

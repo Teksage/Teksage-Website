@@ -29,6 +29,8 @@ export default function AskAstrologerLanguagesPage() {
 
   if (!flow) return null;
 
+  const flowState = flow;
+
   const canSubmit = Boolean(primary);
 
   function clearErrors() {
@@ -45,8 +47,16 @@ export default function AskAstrologerLanguagesPage() {
       setSecondError(ASK_ASTROLOGER_SCREEN.languageDuplicateError);
       return;
     }
+    if (!flowState.user_question || !flowState.ai_response) {
+      router.replace(ROUTES.chat);
+      return;
+    }
     const languages = [primary, secondary].filter(Boolean);
-    writeAskAstrologerFlow({ ...flow, preferred_languages: languages });
+    writeAskAstrologerFlow({
+      user_question: flowState.user_question,
+      ai_response: flowState.ai_response,
+      preferred_languages: languages,
+    });
     router.push(ROUTES.askAstrologerCheckout);
   }
 
