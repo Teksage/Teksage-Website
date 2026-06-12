@@ -126,12 +126,12 @@ export default function AskAstrologerCheckoutPage() {
         ) : undefined
       }
     >
-      {!pricing && !loadError ? (
-        <PageLoadingCenter />
-      ) : loadError ? (
+      {loadError ? (
         <p className="text-center text-sm text-[var(--color-brand-error)]">
           {ASK_ASTROLOGER_SCREEN.checkoutLoadError}
         </p>
+      ) : !pricing ? (
+        <PageLoadingCenter />
       ) : (
         <AskAstrologerCheckoutContent
           userQuestion={flow.user_question}
