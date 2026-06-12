@@ -130,6 +130,11 @@ export const CONSULTATION_LAYOUT = {
   langFieldPlaceholder: "text-[var(--color-brand-black)]/60",
   langFieldValue: "text-white",
   langIcon: "mr-2.5 size-5 shrink-0 object-contain",
+  langFieldLabelCompact: "text-sm font-medium text-[var(--color-brand-black)]/60",
+  langFieldCompact:
+    "mt-1 flex w-full min-w-0 items-center justify-between rounded-full border border-[var(--color-brand-black)]/12 px-3 py-2",
+  langFieldTextCompact: "truncate text-sm font-semibold",
+  langIconCompact: "mr-1.5 size-4 shrink-0 object-contain",
   /** Flutter language sheet list — ~50% viewport, scroll inside modal. */
   langList: "scrollbar-hidden min-h-0 flex-1 overflow-y-auto py-2",
   langListItem:

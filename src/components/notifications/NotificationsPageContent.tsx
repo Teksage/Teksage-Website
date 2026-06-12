@@ -132,6 +132,7 @@ export function NotificationsPageContent({
         userQuestion={askAnswer.userQuestion}
         answerText={askAnswer.answerText}
         answerVoiceUrl={askAnswer.answerVoiceUrl}
+        answerVoiceDurationSec={askAnswer.answerVoiceDurationSec}
         answeredAt={askAnswer.answeredAt}
         loading={askAnswer.loading}
         error={askAnswer.error}

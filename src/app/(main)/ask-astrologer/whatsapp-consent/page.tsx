@@ -2,16 +2,19 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AppHeader } from "@/components/common/AppHeader";
-import { ConsultationFlowCta } from "@/components/consultation/ConsultationFlowCta";
+import { AskAstrologerShell } from "@/components/ask-astrologer/AskAstrologerShell";
+import { AskAstrologerWhatsAppConsentContent } from "@/components/ask-astrologer/AskAstrologerWhatsAppConsentContent";
 import { PageLoadingCenter } from "@/components/common/Loader";
-import { WhatsAppUpdatesSendSection } from "@/components/whatsapp-updates/WhatsAppUpdatesSendSection";
-import { WhatsAppUpdatesPhoneGate } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneGate";
+import { WhatsAppUpdatesCta } from "@/components/whatsapp-updates/WhatsAppUpdatesCta";
 import { useWhatsAppConsent } from "@/hooks/useWhatsAppConsent";
+import { useWhatsAppConsentForm } from "@/hooks/useWhatsAppConsentForm";
 import { useAuthStore } from "@/store/auth.store";
 import { normalizePhoneParts } from "@/lib/phone-utils";
 import { ROUTES } from "@/lib/constants/routes";
-import { ASK_ASTROLOGER_SCREEN, ASK_ASTROLOGER_UI } from "@/lib/constants/chat-ask-astrologer";
+import {
+  ASK_ASTROLOGER_LAYOUT,
+  ASK_ASTROLOGER_SCREEN,
+} from "@/lib/constants/chat-ask-astrologer";
 import type { WhatsAppConsentRequestPayload } from "@/types/whatsapp-updates";
 
 export default function AskAstrologerWhatsAppConsentPage() {
@@ -19,10 +22,12 @@ export default function AskAstrologerWhatsAppConsentPage() {
   const user = useAuthStore((s) => s.user);
   const { consent, loading, sending, requestConsent } = useWhatsAppConsent();
   const profile = normalizePhoneParts(user?.countryCode, user?.mobile);
-
   const verified = Boolean(user?.isMobileVerified);
+  const { phoneChoiceProps, buildPayload } = useWhatsAppConsentForm({
+    profileCountryCode: profile.countryCode,
+    profileMobile: profile.mobile,
+  });
 
-  // Skip if already granted
   useEffect(() => {
     if (!loading && consent.granted) {
       router.replace(ROUTES.askAstrologerConfirmation);
@@ -31,10 +36,9 @@ export default function AskAstrologerWhatsAppConsentPage() {
 
   if (loading) {
     return (
-      <div className={ASK_ASTROLOGER_UI.page}>
-        <AppHeader title={ASK_ASTROLOGER_SCREEN.waConsentTitle} />
+      <AskAstrologerShell title={ASK_ASTROLOGER_SCREEN.waConsentTitle} showBack={false}>
         <PageLoadingCenter />
-      </div>
+      </AskAstrologerShell>
     );
   }
 
@@ -49,44 +53,46 @@ export default function AskAstrologerWhatsAppConsentPage() {
     }
   }
 
+  function onSendClick() {
+    const payload = buildPayload();
+    if (payload) void handleEnable(payload);
+  }
+
   return (
-    <div className={ASK_ASTROLOGER_UI.page}>
-      <AppHeader
-        title={ASK_ASTROLOGER_SCREEN.waConsentTitle}
-        showBack
-        onBackClick={() => router.back()}
-      />
-      <div className={ASK_ASTROLOGER_UI.inner}>
-        <h1 className={ASK_ASTROLOGER_UI.heading}>
-          {ASK_ASTROLOGER_SCREEN.waConsentHeading}
-        </h1>
-        <p className={ASK_ASTROLOGER_UI.subtitle}>
-          {ASK_ASTROLOGER_SCREEN.waConsentSubtitle}
-        </p>
-        <div className="mt-4">
-          {!verified ? <WhatsAppUpdatesPhoneGate /> : null}
+    <AskAstrologerShell
+      title={ASK_ASTROLOGER_SCREEN.waConsentTitle}
+      onBack={() => router.back()}
+      centered
+      footer={
+        <>
           {verified ? (
-            <WhatsAppUpdatesSendSection
+            <WhatsAppUpdatesCta
               disabled={false}
               loading={sending}
-              profileCountryCode={profile.countryCode}
-              profileMobile={profile.mobile}
-              onSend={(payload) => void handleEnable(payload)}
+              onEnable={onSendClick}
+              variant="flow"
               showStopNote={false}
-              hintText={ASK_ASTROLOGER_SCREEN.waConsentEnable}
+              ctaLabel={
+                sending
+                  ? ASK_ASTROLOGER_SCREEN.waConsentSending
+                  : ASK_ASTROLOGER_SCREEN.waConsentCta
+              }
             />
           ) : null}
-        </div>
-      </div>
-      <footer className="sticky bottom-0 border-t border-black/10 bg-white px-5 py-4">
-        <button
-          type="button"
-          onClick={() => router.push(ROUTES.askAstrologerConfirmation)}
-          className="w-full py-3 text-sm font-medium text-black/60 hover:text-black/80"
-        >
-          {ASK_ASTROLOGER_SCREEN.waConsentSkip}
-        </button>
-      </footer>
-    </div>
+          <button
+            type="button"
+            onClick={() => router.push(ROUTES.askAstrologerConfirmation)}
+            className={ASK_ASTROLOGER_LAYOUT.skipLink}
+          >
+            {ASK_ASTROLOGER_SCREEN.waConsentSkip}
+          </button>
+        </>
+      }
+    >
+      <AskAstrologerWhatsAppConsentContent
+        verified={verified}
+        phoneChoiceProps={phoneChoiceProps}
+      />
+    </AskAstrologerShell>
   );
 }

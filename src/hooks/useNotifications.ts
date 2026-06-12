@@ -54,6 +54,7 @@ export function useNotifications(initialTab: NotificationTab = "general") {
             user_question: r.user_question,
             answer_text: r.answer_text,
             answer_voice_url: r.answer_voice_url,
+            answer_voice_duration_sec: r.answer_voice_duration_sec,
             answered_at: r.answered_at,
             paid_at: r.paid_at,
             created_at: r.created_at,

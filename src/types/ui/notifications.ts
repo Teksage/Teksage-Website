@@ -33,6 +33,7 @@ export interface AskAstrologerAnswerDialogProps {
   userQuestion: string;
   answerText: string | null;
   answerVoiceUrl: string | null;
+  answerVoiceDurationSec?: number | null;
   answeredAt?: string | null;
   loading?: boolean;
   error?: string | null;

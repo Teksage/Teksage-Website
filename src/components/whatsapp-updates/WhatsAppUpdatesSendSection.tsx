@@ -1,18 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useWhatsAppConsentForm } from "@/hooks/useWhatsAppConsentForm";
 import { WhatsAppUpdatesCta } from "@/components/whatsapp-updates/WhatsAppUpdatesCta";
 import { WhatsAppUpdatesPhoneChoice } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneChoice";
 import { useI18nConstants } from "@/hooks/useT";
-import { LOGIN_MOBILE_DIGITS_REGEX } from "@/lib/constants";
 import { WHATSAPP_UPDATES_SCREEN } from "@/lib/constants/whatsapp-updates";
-import { maskPhoneForDisplay } from "@/lib/whatsapp-consent-resend";
-import { normalizePhoneParts } from "@/lib/phone-utils";
-import type {
-  WhatsAppConsentPhoneMode,
-  WhatsAppConsentRequestPayload,
-  WhatsAppUpdatesSendSectionProps,
-} from "@/types/whatsapp-updates";
+import type { WhatsAppUpdatesSendSectionProps } from "@/types/whatsapp-updates";
 
 export function WhatsAppUpdatesSendSection({
   disabled,
@@ -25,29 +18,10 @@ export function WhatsAppUpdatesSendSection({
   ctaLabel,
 }: WhatsAppUpdatesSendSectionProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
-  const profile = normalizePhoneParts(profileCountryCode, profileMobile);
-  const [mode, setMode] = useState<WhatsAppConsentPhoneMode>("profile");
-  const [countryCode, setCountryCode] = useState(profile.countryCode);
-  const [mobile, setMobile] = useState("");
-  const [validationError, setValidationError] = useState<string | null>(null);
-
-  const profileMasked = maskPhoneForDisplay(profile.countryCode, profile.mobile);
-
-  function buildPayload(): WhatsAppConsentRequestPayload | null {
-    if (mode === "profile") {
-      return { useProfilePhone: true };
-    }
-    if (!LOGIN_MOBILE_DIGITS_REGEX.test(mobile)) {
-      setValidationError(WU.phoneChoiceInvalidMobile);
-      return null;
-    }
-    setValidationError(null);
-    return {
-      useProfilePhone: false,
-      countryCode: countryCode.replace(/\D/g, ""),
-      mobileNumber: mobile,
-    };
-  }
+  const { phoneChoiceProps, buildPayload } = useWhatsAppConsentForm({
+    profileCountryCode,
+    profileMobile,
+  });
 
   function handleEnable() {
     const payload = buildPayload();
@@ -57,19 +31,7 @@ export function WhatsAppUpdatesSendSection({
 
   return (
     <div className="mt-4">
-      <WhatsAppUpdatesPhoneChoice
-        mode={mode}
-        profileMasked={profileMasked}
-        countryCode={countryCode}
-        mobile={mobile}
-        onModeChange={setMode}
-        onCountryCodeChange={setCountryCode}
-        onMobileChange={(value) => {
-          setMobile(value);
-          setValidationError(null);
-        }}
-        validationError={validationError}
-      />
+      <WhatsAppUpdatesPhoneChoice {...phoneChoiceProps} />
       <WhatsAppUpdatesCta
         disabled={disabled}
         loading={loading}

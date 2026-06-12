@@ -14,7 +14,7 @@ import {
 type UseVoiceRecorderOptions = {
   disabled?: boolean;
   maxRecordSec: number;
-  onComplete: (file: File) => void;
+  onComplete: (file: File, durationSec: number) => void;
   onError: (message: string) => void;
 };
 
@@ -34,6 +34,7 @@ export function useVoiceRecorder({
   const mimeRef = useRef("audio/webm");
   const stopTimerRef = useRef<number | null>(null);
   const tickTimerRef = useRef<number | null>(null);
+  const elapsedSecRef = useRef(0);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -70,6 +71,7 @@ export function useVoiceRecorder({
 
   const resetRecordingUi = useCallback(() => {
     setElapsedSec(0);
+    elapsedSecRef.current = 0;
     setAmplitudes(createSilentWaveform());
   }, []);
 
@@ -128,7 +130,8 @@ export function useVoiceRecorder({
         const blob = await blobPromise;
         if (blob.size < 1) return;
         const filename = voiceBlobFilename(mimeRef.current);
-        onComplete(new File([blob], filename, { type: mimeRef.current }));
+        const durationSec = Math.max(1, elapsedSecRef.current || 1);
+        onComplete(new File([blob], filename, { type: mimeRef.current }), durationSec);
       } catch {
         onError("Could not save recording. Please try again.");
       } finally {
@@ -169,7 +172,11 @@ export function useVoiceRecorder({
       setIsRecording(true);
 
       tickTimerRef.current = window.setInterval(() => {
-        setElapsedSec((prev) => prev + 1);
+        setElapsedSec((prev) => {
+          const next = prev + 1;
+          elapsedSecRef.current = next;
+          return next;
+        });
       }, 1000);
 
       stopTimerRef.current = window.setTimeout(() => {

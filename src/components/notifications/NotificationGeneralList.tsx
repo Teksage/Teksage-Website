@@ -38,16 +38,20 @@ export function NotificationGeneralList({
             <button
               type="button"
               className={cn(
-                NOTIFICATIONS_UI.item,
-                "w-full",
-                item.isRead ? NOTIFICATIONS_UI.itemRead : NOTIFICATIONS_UI.itemUnread
+                NOTIFICATIONS_UI.generalCard,
+                !item.isRead && NOTIFICATIONS_UI.generalCardUnread
               )}
               onClick={() => onOpen(item)}
             >
-              <p className={NOTIFICATIONS_UI.itemTitle}>{copy.title}</p>
-              <p className={NOTIFICATIONS_UI.itemMessage}>{copy.message}</p>
+              <p className={NOTIFICATIONS_UI.generalCardTitle}>
+                {!item.isRead ? (
+                  <span className={NOTIFICATIONS_UI.generalUnreadDot} aria-hidden />
+                ) : null}
+                {copy.title}
+              </p>
+              <p className={NOTIFICATIONS_UI.generalCardMessage}>{copy.message}</p>
               {item.createdAt ? (
-                <p className={NOTIFICATIONS_UI.itemDate}>
+                <p className={NOTIFICATIONS_UI.generalCardDate}>
                   {formatSentAt(item.createdAt)}
                 </p>
               ) : null}

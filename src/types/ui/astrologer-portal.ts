@@ -40,6 +40,7 @@ export interface AstrologerAnswerQuestionDialogProps {
 
 export interface AskAnswerVoiceInputProps {
   voiceFile: File | null;
-  onVoiceFileChange: (file: File | null) => void;
+  voiceDurationSec: number | null;
+  onVoiceFileChange: (file: File | null, durationSec?: number | null) => void;
   disabled?: boolean;
 }

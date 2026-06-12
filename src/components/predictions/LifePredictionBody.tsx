@@ -24,35 +24,41 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     const controller = new AbortController();
     fetchLifePredictionInitial(controller.signal)
       .then((result) => {
+        if (cancelled) return;
         if (result.ready === "profile_incomplete") {
           setView("profile");
           return;
         }
-    if (result.ready === "error") {
-      if (isPredictionProfileIncompleteMessage(result.message)) {
-        setView("profile");
-        return;
-      }
-      setErr(result.message);
-      setView("landing");
-      return;
-    }
+        if (result.ready === "error") {
+          if (isPredictionProfileIncompleteMessage(result.message)) {
+            setView("profile");
+            return;
+          }
+          setErr(result.message);
+          setView("landing");
+          return;
+        }
         if (result.ready === "detail") {
           setData(result.data);
           setView("detail");
           return;
         }
+        setErr(null);
         setView("landing");
       })
       .catch((e: unknown) => {
-        if (controller.signal.aborted) return;
+        if (cancelled) return;
         setErr(e instanceof Error ? e.message : "Request failed");
         setView("landing");
       });
-    return () => controller.abort();
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [languageVersion]);
 
   async function runGenerate() {

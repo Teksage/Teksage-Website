@@ -27,6 +27,7 @@ export interface AskAstrologerNotificationItem {
   user_question: string;
   answer_text: string | null;
   answer_voice_url: string | null;
+  answer_voice_duration_sec: number | null;
   answered_at: string | null;
   paid_at: string | null;
   created_at: string | null;

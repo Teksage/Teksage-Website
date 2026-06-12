@@ -77,6 +77,10 @@ export function useAskAnswerFromQuery(
     userQuestion: askDetail?.user_question ?? askFromList?.user_question ?? "",
     answerText: askDetail?.answer_text ?? askFromList?.answer_text ?? null,
     answerVoiceUrl: askDetail?.answer_voice_url ?? askFromList?.answer_voice_url ?? null,
+    answerVoiceDurationSec:
+      askDetail?.answer_voice_duration_sec ??
+      askFromList?.answer_voice_duration_sec ??
+      null,
     answeredAt: askDetail?.answered_at ?? askFromList?.answered_at ?? null,
     loading: askDetailLoading && !askDetail && !askFromList,
     error: askDetailError,

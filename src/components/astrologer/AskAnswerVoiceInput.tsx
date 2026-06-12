@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChatVoiceWaveform } from "@/components/chat/ChatVoiceWaveform";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
 import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
+import { readAudioDurationFromFile } from "@/lib/audio-duration";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
 import { formatVoiceTimer } from "@/lib/format-voice-timer";
@@ -15,6 +16,7 @@ const VOICE = ASTRO_PORTAL_UI.askAnswerVoice;
 
 export function AskAnswerVoiceInput({
   voiceFile,
+  voiceDurationSec,
   onVoiceFileChange,
   disabled = false,
 }: AskAnswerVoiceInputProps) {
@@ -25,9 +27,9 @@ export function AskAnswerVoiceInput({
   const recorder = useVoiceRecorder({
     disabled,
     maxRecordSec: VOICE.maxRecordSec,
-    onComplete: (file) => {
+    onComplete: (file, durationSec) => {
       setError(null);
-      onVoiceFileChange(file);
+      onVoiceFileChange(file, durationSec);
     },
     onError: (message) => setError(message),
   });
@@ -43,7 +45,7 @@ export function AskAnswerVoiceInput({
   }, [voiceFile]);
 
   function handleRemove() {
-    onVoiceFileChange(null);
+    onVoiceFileChange(null, null);
     setError(null);
     if (fileRef.current) fileRef.current.value = "";
   }
@@ -102,7 +104,13 @@ export function AskAnswerVoiceInput({
           onChange={(event) => {
             const file = event.target.files?.[0] ?? null;
             setError(null);
-            onVoiceFileChange(file);
+            if (!file) {
+              onVoiceFileChange(null, null);
+              return;
+            }
+            void readAudioDurationFromFile(file).then((durationSec) => {
+              onVoiceFileChange(file, durationSec);
+            });
           }}
         />
         {recorder.isSupported ? (
@@ -140,7 +148,12 @@ export function AskAnswerVoiceInput({
       {voiceFile ? (
         <div className="rounded-xl bg-neutral-50 p-3">
           <p className="mb-2 truncate text-xs text-black/60">{voiceFile.name}</p>
-          {previewUrl ? <VoiceAnswerPlayer src={previewUrl} /> : null}
+          {previewUrl ? (
+            <VoiceAnswerPlayer
+              src={previewUrl}
+              durationSec={voiceDurationSec}
+            />
+          ) : null}
         </div>
       ) : null}
       {error ? <p className="text-xs text-[var(--color-brand-error)]">{error}</p> : null}

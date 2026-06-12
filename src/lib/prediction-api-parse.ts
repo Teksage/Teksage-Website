@@ -1,4 +1,4 @@
-import { mapPredictionApiStringError } from "@/lib/prediction-request-error";
+import { mapPredictionApiStringError, PREDICTION_NO_DATA } from "@/lib/prediction-request-error";
 import { resolvePredictionPositiveDay } from "@/lib/prediction-day-status";
 import { parseYearlyPredictionDetail } from "@/lib/prediction-yearly-parse";
 import type {
@@ -14,7 +14,7 @@ import type { MatchMakingExisting, MatchMakingResult } from "@/types/match-makin
 export type PredictionDetailError = { message: string };
 
 /** Returned when API `data` is null — yearly/life landing, not a user-facing error. */
-export const PREDICTION_PARSE_EMPTY = "No prediction data";
+export const PREDICTION_PARSE_EMPTY = PREDICTION_NO_DATA;
 
 function asRecord(v: unknown): Record<string, unknown> | null {
   if (v != null && typeof v === "object" && !Array.isArray(v)) {
