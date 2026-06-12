@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { WHATSAPP_UPDATES_ASSETS } from "@/lib/constants/assets";
+import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
 import { useI18nConstants } from "@/hooks/useT";
 import {
   WHATSAPP_UPDATES_SCREEN,
@@ -19,8 +20,35 @@ export function WhatsAppUpdatesCta({
   showStopNote = true,
   hintText,
   ctaLabel,
+  variant = "default",
 }: WhatsAppUpdatesCtaProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
+  const label = loading ? WU.ctaSending : ctaLabel ?? WU.ctaLabel;
+
+  if (variant === "flow") {
+    return (
+      <button
+        type="button"
+        disabled={disabled || loading}
+        onClick={onEnable}
+        className={cn(
+          CONSULTATION_BOOKING_LAYOUT.payBtn,
+          "inline-flex items-center justify-center gap-2",
+          className
+        )}
+      >
+        <Image
+          src={WHATSAPP_UPDATES_ASSETS.ctaWhatsapp}
+          alt=""
+          width={20}
+          height={20}
+          unoptimized
+          className="size-5 shrink-0 brightness-0 invert"
+        />
+        {label}
+      </button>
+    );
+  }
 
   return (
     <div className={cn("mt-6", className)}>
@@ -38,9 +66,7 @@ export function WhatsAppUpdatesCta({
           unoptimized
           className="size-[22px] brightness-0 invert"
         />
-        <span className="flex-1 text-center">
-          {loading ? WU.ctaSending : ctaLabel ?? WU.ctaLabel}
-        </span>
+        <span className="flex-1 text-center">{label}</span>
         <Image
           src={WHATSAPP_UPDATES_ASSETS.ctaChevron}
           alt=""

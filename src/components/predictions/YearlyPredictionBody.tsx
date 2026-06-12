@@ -25,9 +25,11 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     const controller = new AbortController();
     fetchYearlyPredictionInitial(controller.signal)
       .then((result) => {
+        if (cancelled) return;
         if (result.ready === "profile_incomplete") {
           setView("profile");
           return;
@@ -42,14 +44,18 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
           setView("detail");
           return;
         }
+        setErr(null);
         setView("landing");
       })
       .catch((e: unknown) => {
-        if (controller.signal.aborted) return;
+        if (cancelled) return;
         setErr(e instanceof Error ? e.message : "Request failed");
         setView("landing");
       });
-    return () => controller.abort();
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [languageVersion]);
 
   async function runGenerate() {

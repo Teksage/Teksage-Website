@@ -35,6 +35,15 @@ export const ROUTES = {
   predictionsLife: "/predictions/life",
   matchmaking: "/matchmaking",
   matchmakingDetails: "/matchmaking/details",
+
+  // Ask Astrologer flow
+  askAstrologerLanguages: "/ask-astrologer/languages",
+  askAstrologerCheckout: "/ask-astrologer/checkout",
+  askAstrologerWhatsappConsent: "/ask-astrologer/whatsapp-consent",
+  askAstrologerConfirmation: "/ask-astrologer/confirmation",
+
+  // Astrologer portal — Ask requests
+  astrologerAskRequests: "/astrologer/ask-requests",
 } as const;
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];

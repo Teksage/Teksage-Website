@@ -3,6 +3,26 @@ import { isAxiosError } from "axios";
 /** Mirrors Flutter `IncompleteProfileException` / horoscope `PROFILE_INCOMPLETE`. */
 export const PREDICTION_PROFILE_INCOMPLETE = "PROFILE_INCOMPLETE" as const;
 
+/** No cached yearly/life prediction — show Generate landing (Flutter returns null). */
+export const PREDICTION_NO_DATA = "No prediction data" as const;
+
+export function isRequestCanceled(error: unknown): boolean {
+  if (isAxiosError(error)) {
+    return error.code === "ERR_CANCELED" || error.name === "CanceledError";
+  }
+  if (error instanceof Error) {
+    return error.message === "canceled";
+  }
+  return false;
+}
+
+export function isNoPredictionDataMessage(message: string): boolean {
+  return (
+    message === PREDICTION_NO_DATA ||
+    /NoneType.*predictions_id/i.test(message)
+  );
+}
+
 export function isPredictionProfileIncompleteError(error: unknown): boolean {
   if (!isAxiosError(error)) return false;
   const body = error.response?.data as { detail?: string } | undefined;
@@ -38,11 +58,17 @@ export function mapPredictionApiStringError(message: string): string {
     if (profileFields.some((field) => trimmed.includes(field))) {
       return PREDICTION_PROFILE_INCOMPLETE;
     }
+    if (trimmed.includes("predictions_id")) {
+      return PREDICTION_NO_DATA;
+    }
   }
   return message;
 }
 
 export function predictionErrorMessage(error: unknown): string {
+  if (isRequestCanceled(error)) {
+    return PREDICTION_NO_DATA;
+  }
   if (isPredictionProfileIncompleteError(error)) {
     return PREDICTION_PROFILE_INCOMPLETE;
   }

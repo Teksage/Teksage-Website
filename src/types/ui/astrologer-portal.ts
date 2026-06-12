@@ -37,3 +37,10 @@ export interface AstrologerAnswerQuestionDialogProps {
   /** Called after each answer is persisted to the API. */
   onAnswerSaved: (updated: import("@/types/astrologer-portal").AstroQuestion) => void;
 }
+
+export interface AskAnswerVoiceInputProps {
+  voiceFile: File | null;
+  voiceDurationSec: number | null;
+  onVoiceFileChange: (file: File | null, durationSec?: number | null) => void;
+  disabled?: boolean;
+}

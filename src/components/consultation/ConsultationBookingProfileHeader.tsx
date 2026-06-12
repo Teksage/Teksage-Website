@@ -10,12 +10,15 @@ type ConsultationBookingProfileHeaderProps = {
   name: string;
   picture?: string | null;
   compact?: boolean;
+  /** Plain logo — no circular crop or background. */
+  imageVariant?: "avatar" | "logo";
 };
 
 export function ConsultationBookingProfileHeader({
   name,
   picture,
   compact,
+  imageVariant = "avatar",
 }: ConsultationBookingProfileHeaderProps) {
   const src = picture?.trim() || CONSULTATION_BOOKING_ASSETS.dummyAvatar;
 
@@ -43,7 +46,11 @@ export function ConsultationBookingProfileHeader({
         width={80}
         height={80}
         unoptimized
-        className={CONSULTATION_BOOKING_LAYOUT.avatar}
+        className={
+          imageVariant === "logo"
+            ? CONSULTATION_BOOKING_LAYOUT.brandLogo
+            : CONSULTATION_BOOKING_LAYOUT.avatar
+        }
       />
       <h2 className={CONSULTATION_BOOKING_LAYOUT.profileName}>{name}</h2>
     </div>

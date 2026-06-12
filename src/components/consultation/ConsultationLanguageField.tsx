@@ -18,6 +18,7 @@ export function ConsultationLanguageField({
   options,
   enabled,
   error,
+  compact = false,
   onChange,
 }: ConsultationLanguageFieldProps) {
   const C = useI18nConstants(CONSULTATION_SCREEN);
@@ -31,8 +32,14 @@ export function ConsultationLanguageField({
   }
 
   return (
-    <div>
-      <p className={CONSULTATION_LAYOUT.langFieldLabel}>{title}</p>
+    <div className="min-w-0">
+      <p
+        className={
+          compact ? CONSULTATION_LAYOUT.langFieldLabelCompact : CONSULTATION_LAYOUT.langFieldLabel
+        }
+      >
+        {title}
+      </p>
       <button
         type="button"
         disabled={!enabled}
@@ -41,7 +48,7 @@ export function ConsultationLanguageField({
           setOpen(true);
         }}
         className={cn(
-          CONSULTATION_LAYOUT.langField,
+          compact ? CONSULTATION_LAYOUT.langFieldCompact : CONSULTATION_LAYOUT.langField,
           filled ? CONSULTATION_LAYOUT.langFieldFilled : CONSULTATION_LAYOUT.langFieldEmpty
         )}
       >
@@ -49,15 +56,17 @@ export function ConsultationLanguageField({
           <Image
             src={CONSULTATION_ASSETS.categoryLanguage}
             alt=""
-            width={20}
-            height={20}
+            width={compact ? 16 : 20}
+            height={compact ? 16 : 20}
             unoptimized
-            className={CONSULTATION_LAYOUT.langIcon}
+            className={
+              compact ? CONSULTATION_LAYOUT.langIconCompact : CONSULTATION_LAYOUT.langIcon
+            }
             aria-hidden
           />
           <span
             className={cn(
-              CONSULTATION_LAYOUT.langFieldText,
+              compact ? CONSULTATION_LAYOUT.langFieldTextCompact : CONSULTATION_LAYOUT.langFieldText,
               filled
                 ? CONSULTATION_LAYOUT.langFieldValue
                 : CONSULTATION_LAYOUT.langFieldPlaceholder
@@ -69,9 +78,10 @@ export function ConsultationLanguageField({
         <Image
           src={CONSULTATION_ASSETS.dropDownArrow}
           alt=""
-          width={16}
-          height={16}
+          width={compact ? 14 : 16}
+          height={compact ? 14 : 16}
           unoptimized
+          className="shrink-0"
           aria-hidden
         />
       </button>

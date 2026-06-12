@@ -23,6 +23,7 @@ export function WhatsAppUpdatesPhoneChoice({
   onCountryCodeChange,
   onMobileChange,
   validationError,
+  variant = "default",
 }: WhatsAppUpdatesPhoneChoiceProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
   const dialValue =
@@ -43,8 +44,16 @@ export function WhatsAppUpdatesPhoneChoice({
   }
 
   return (
-    <div className="mt-4 space-y-3 text-left">
-      <label className={cn(WHATSAPP_UPDATES_UI.phoneChoiceRow, "cursor-pointer")}>
+    <div className={cn("space-y-3 text-left", variant === "default" && "mt-4")}>
+      <label
+        className={cn(
+          variant === "flow"
+            ? WHATSAPP_UPDATES_UI.phoneChoiceRowFlow
+            : WHATSAPP_UPDATES_UI.phoneChoiceRow,
+          variant === "flow" && mode === "profile" && WHATSAPP_UPDATES_UI.phoneChoiceRowFlowSelected,
+          "cursor-pointer"
+        )}
+      >
         <input
           type="radio"
           name="whatsapp-phone-mode"
@@ -61,7 +70,15 @@ export function WhatsAppUpdatesPhoneChoice({
         </span>
       </label>
 
-      <label className={cn(WHATSAPP_UPDATES_UI.phoneChoiceRow, "cursor-pointer")}>
+      <label
+        className={cn(
+          variant === "flow"
+            ? WHATSAPP_UPDATES_UI.phoneChoiceRowFlow
+            : WHATSAPP_UPDATES_UI.phoneChoiceRow,
+          variant === "flow" && mode === "different" && WHATSAPP_UPDATES_UI.phoneChoiceRowFlowSelected,
+          "cursor-pointer"
+        )}
+      >
         <input
           type="radio"
           name="whatsapp-phone-mode"
