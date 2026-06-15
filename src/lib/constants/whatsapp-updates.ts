@@ -21,8 +21,8 @@ export const WHATSAPP_UPDATES_SCREEN = {
   unsubscribeNote: "You can unsubscribe anytime by sending",
   unsubscribeKeyword: "STOP",
   unsubscribeSuffix: "on WhatsApp.",
-  pendingTitle: "Check your WhatsApp",
-  pendingBody: "We sent a confirmation message. Reply on WhatsApp to enable alerts.",
+  pendingTitle: "Confirm on WhatsApp",
+  pendingBody: "Open WhatsApp and reply to our message to turn on alerts.",
   grantedTitle: "WhatsApp alerts enabled",
   grantedBody: "You will receive astrology updates on WhatsApp.",
   disableCtaLabel: "Disable WhatsApp Alerts",
@@ -41,16 +41,16 @@ export const WHATSAPP_UPDATES_SCREEN = {
   phoneChoiceDifferentLabel: "Use a different WhatsApp number",
   phoneChoiceInvalidMobile: "Enter a valid mobile number.",
   sendConfirmationLabel: "Send confirmation message",
-  pendingSentToPrefix: "Message sent to",
-  resendCta: "Resend WhatsApp message",
+  pendingSentToPrefix: "Sent to",
+  resendCta: "Resend message",
   resendSending: "Resending…",
-  resendCooldownHint: "Resend available in",
-  resendCooldownActive: "Please wait before resending",
-  changeNumberLink: "Use a different number",
-  startOverLink: "Didn't get the message? Start over",
+  resendCooldownHint: "Try again in",
+  resendCooldownActive: "Please wait a moment before resending",
+  changeNumberLink: "Use another number",
+  startOverLink: "Start over",
   startOverSending: "Starting over…",
   resendDeliveryHint:
-    "If resend still doesn't arrive, start over or try a different WhatsApp number.",
+    "Message still missing? Try another number or start over below.",
 } as const;
 
 /** Poll consent status while waiting for the user to reply on WhatsApp. */
@@ -73,9 +73,30 @@ export const WHATSAPP_UPDATES_UI = {
   benefitTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
   benefitDesc: `${TYPO.bodySm} text-[var(--color-brand-black)]/65 mt-0.5`,
   footer: `${TYPO.bodySm} text-[var(--color-brand-primary)] text-center mt-4 px-2`,
-  statusBox: "mt-4 rounded-xl bg-white border border-black/10 p-4 text-center",
+  statusBox: "mt-4 rounded-2xl border border-black/5 bg-white p-5 shadow-sm ring-1 ring-black/5 lg:p-6",
   statusTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
   statusBody: `${TYPO.bodySm} text-[var(--color-brand-black)]/70 mt-1`,
+  pendingCard: "mt-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 lg:rounded-3xl",
+  pendingCardInner: "px-5 py-6 text-center lg:px-7 lg:py-8",
+  pendingIconWrap:
+    "mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-[var(--color-brand-primary)]/10 lg:mb-5 lg:size-16",
+  pendingTitle: `${TYPO.sizeLg} ${TYPO.weightSemibold} text-[var(--color-brand-black)] lg:text-xl`,
+  pendingBody: "mx-auto mt-2 max-w-sm text-sm leading-relaxed text-black/60 lg:text-base",
+  pendingPhoneChip:
+    "mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-neutral-50 px-4 py-2 text-sm ring-1 ring-black/5",
+  pendingPhoneLabel: `${TYPO.sizeXs} ${TYPO.weightMedium} uppercase tracking-wide text-black/40`,
+  pendingPhoneValue: `${TYPO.weightSemibold} text-[var(--color-brand-black)]`,
+  pendingCooldownBox:
+    "mx-auto mt-5 flex max-w-xs flex-col items-center rounded-xl bg-[var(--color-brand-primary)]/8 px-4 py-3",
+  pendingCooldownLabel: "text-xs text-black/55 lg:text-sm",
+  pendingCooldownTimer:
+    "mt-1 text-lg font-semibold tabular-nums text-[var(--color-brand-primary)] lg:text-xl",
+  pendingResendBtn:
+    "mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[var(--color-brand-primary)] text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45",
+  pendingHint: "mx-auto mt-4 max-w-sm text-xs leading-relaxed text-black/45 lg:text-sm",
+  pendingFooter: "mt-5 flex flex-col items-center gap-2 border-t border-black/5 pt-5",
+  pendingFooterLinks: "flex flex-wrap items-center justify-center gap-x-1 gap-y-1",
+  pendingFooterDivider: "text-black/25",
   disableBtn:
     "mt-4 flex h-11 w-full items-center justify-center rounded-xl border border-[var(--color-brand-error)]/40 bg-white text-base font-semibold text-[var(--color-brand-error)] hover:bg-[var(--color-brand-error)]/5 disabled:opacity-50",
   phoneChoiceRow: "flex items-start gap-3 rounded-lg border border-black/10 p-3 text-left",
@@ -98,7 +119,7 @@ export const WHATSAPP_UPDATES_UI = {
     "mt-4 flex h-11 w-full items-center justify-center rounded-xl bg-[var(--color-brand-primary)] text-base font-semibold text-white hover:bg-[var(--color-brand-primary)]/90 disabled:opacity-50",
   pendingLinkStack: "mt-3 flex w-full flex-col items-center gap-2",
   changeNumberBtn:
-    `${TYPO.bodySm} block w-full text-center font-medium text-[var(--color-brand-primary)] underline-offset-2 hover:underline`,
+    `${TYPO.bodySm} font-medium text-[var(--color-brand-primary)] underline-offset-2 transition-opacity hover:underline hover:opacity-80`,
   resendCountdown:
     `${TYPO.body} mt-3 font-semibold tabular-nums text-[var(--color-brand-primary)]`,
   resendCountdownHint: `${TYPO.bodySm} mt-1 text-[var(--color-brand-black)]/65`,
