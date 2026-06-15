@@ -155,13 +155,13 @@ export const ASK_NOTIFICATION_STATUS_COLOR: Record<string, string> = {
 export const ASK_ASTROLOGER_UI = {
   page: ASK_ASTROLOGER_LAYOUT.page,
   inner: ASK_ASTROLOGER_LAYOUT.contentColumn,
-  heading: CONSULTATION_LAYOUT.pageHeading,
+  heading: `${TYPO.sizeLg} ${TYPO.weightRegular} leading-tight text-[var(--color-brand-black)]`,
   subtitle: CONSULTATION_LAYOUT.pageSubtitle,
   slaBadge:
     "inline-flex items-center rounded-full bg-[var(--color-brand-primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--color-brand-primary)] lg:text-sm",
   languageIntro: "space-y-3",
   languageQuestionCard: "mb-4",
-  languageQuestionText: `${TYPO.sizeSm} leading-relaxed text-black/80 lg:text-base`,
+  languageQuestionText: `${TYPO.sizeBase} ${TYPO.weightSemibold} leading-relaxed text-black/80 lg:text-lg`,
   languageFields: "mt-4",
   languageNotesList: "mt-4 space-y-2 rounded-xl bg-neutral-50 p-4 ring-1 ring-black/5",
   languageNotesTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-black)]`,
