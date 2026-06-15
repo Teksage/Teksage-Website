@@ -21,12 +21,10 @@ export interface AskAstrologerCheckoutFeesProps {
 }
 
 export interface AskAstrologerLanguagesContentProps {
+  userQuestion: string;
   primary: string;
-  secondary: string;
   firstError: string | null;
-  secondError: string | null;
   onPrimaryChange: (value: string) => void;
-  onSecondaryChange: (value: string) => void;
 }
 
 export interface AskAstrologerCheckoutContentProps {

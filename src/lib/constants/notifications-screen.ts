@@ -17,6 +17,9 @@ export const NOTIFICATIONS_SCREEN = {
   backAria: "Go back",
 } as const;
 
+export const NOTIFICATIONS_TAB_GENERAL = "general" as const;
+export const NOTIFICATIONS_TAB_CONSULTATION = "consultation" as const;
+
 /** Backend push titles → user-facing labels (Flutter Android mapping). */
 export const NOTIFICATION_DISPLAY_TITLES = {
   dailyWisdom: "Daily Wisdom",

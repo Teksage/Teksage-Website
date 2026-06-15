@@ -1,9 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
-import { fetchAskAstrologerRequest } from "@/lib/services/ask-astrologer";
+import { NOTIFICATIONS_TAB_CONSULTATION } from "@/lib/constants/notifications-screen";
+import {
+  acknowledgeAnswerReady,
+  fetchAskAstrologerRequest,
+} from "@/lib/services/ask-astrologer";
 import { ROUTES } from "@/lib/constants/routes";
 import type { AskAstrologerRequest } from "@/types/ask-astrologer";
 import type { AskAstrologerNotificationItem } from "@/types/notifications";
@@ -16,6 +20,7 @@ export function useAskAnswerFromQuery(
   const searchParams = useSearchParams();
   const askParam = searchParams.get("ask");
   const askId = askParam ? Number(askParam) : null;
+  const acknowledgedAskRef = useRef<number | null>(null);
 
   const [askDetail, setAskDetail] = useState<AskAstrologerRequest | null>(null);
   const [askDetailLoading, setAskDetailLoading] = useState(false);
@@ -32,8 +37,18 @@ export function useAskAnswerFromQuery(
   const closeAskAnswer = useCallback(() => {
     setAskDetail(null);
     setAskDetailError(null);
-    router.replace(`${ROUTES.notifications}?tab=consultation`);
+    router.replace(`${ROUTES.notifications}?tab=${NOTIFICATIONS_TAB_CONSULTATION}`);
   }, [router]);
+
+  useEffect(() => {
+    if (askId == null || !Number.isFinite(askId)) {
+      acknowledgedAskRef.current = null;
+      return;
+    }
+    if (acknowledgedAskRef.current === askId) return;
+    acknowledgedAskRef.current = askId;
+    void acknowledgeAnswerReady(askId);
+  }, [askId]);
 
   useEffect(() => {
     if (askId == null || !Number.isFinite(askId)) {
@@ -82,6 +97,14 @@ export function useAskAnswerFromQuery(
       askFromList?.answer_voice_duration_sec ??
       null,
     answeredAt: askDetail?.answered_at ?? askFromList?.answered_at ?? null,
+    answeredByAstrologerName:
+      askDetail?.answered_by_astrologer_name ??
+      askFromList?.answered_by_astrologer_name ??
+      null,
+    answeredByAstrologerProfilePath:
+      askDetail?.answered_by_astrologer_profile_path ??
+      askFromList?.answered_by_astrologer_profile_path ??
+      null,
     loading: askDetailLoading && !askDetail && !askFromList,
     error: askDetailError,
     closeAskAnswer,

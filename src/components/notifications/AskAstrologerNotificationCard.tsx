@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/constants/routes";
+import { NOTIFICATIONS_TAB_CONSULTATION } from "@/lib/constants/notifications-screen";
 import {
   ASK_ASTROLOGER_SCREEN,
   ASK_ASTROLOGER_UI,
   ASK_NOTIFICATION_STATUS_COLOR,
   ASK_NOTIFICATION_STATUS_LABEL,
 } from "@/lib/constants/chat-ask-astrologer";
+import { acknowledgeAnswerReady } from "@/lib/services/ask-astrologer";
 import { cn } from "@/lib/utils";
 import type { AskAstrologerNotificationItem } from "@/types/notifications";
 
@@ -49,9 +51,12 @@ export function AskAstrologerNotificationCard({
           )}
           <button
             type="button"
-            onClick={() =>
-              router.push(`${ROUTES.notifications}?tab=consultation&ask=${item.id}`)
-            }
+            onClick={() => {
+              void acknowledgeAnswerReady(item.id);
+              router.push(
+                `${ROUTES.notifications}?tab=${NOTIFICATIONS_TAB_CONSULTATION}&ask=${item.id}`
+              );
+            }}
             className={ASK_ASTROLOGER_UI.notificationViewAnswer}
           >
             {ASK_ASTROLOGER_SCREEN.askViewAnswer}

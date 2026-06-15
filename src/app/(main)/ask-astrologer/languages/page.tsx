@@ -17,9 +17,7 @@ export default function AskAstrologerLanguagesPage() {
   const flow = useMemo(() => readAskAstrologerFlow(), []);
 
   const [primary, setPrimary] = useState("");
-  const [secondary, setSecondary] = useState("");
   const [firstError, setFirstError] = useState<string | null>(null);
-  const [secondError, setSecondError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!flow) {
@@ -30,32 +28,21 @@ export default function AskAstrologerLanguagesPage() {
   if (!flow) return null;
 
   const flowState = flow;
-
   const canSubmit = Boolean(primary);
-
-  function clearErrors() {
-    setFirstError(null);
-    setSecondError(null);
-  }
 
   function onContinue() {
     if (!primary) {
       setFirstError(ASK_ASTROLOGER_SCREEN.languageFieldError);
       return;
     }
-    if (primary && secondary && primary === secondary) {
-      setSecondError(ASK_ASTROLOGER_SCREEN.languageDuplicateError);
-      return;
-    }
     if (!flowState.user_question || !flowState.ai_response) {
       router.replace(ROUTES.chat);
       return;
     }
-    const languages = [primary, secondary].filter(Boolean);
     writeAskAstrologerFlow({
       user_question: flowState.user_question,
       ai_response: flowState.ai_response,
-      preferred_languages: languages,
+      preferred_languages: [primary],
     });
     router.push(ROUTES.askAstrologerCheckout);
   }
@@ -77,23 +64,12 @@ export default function AskAstrologerLanguagesPage() {
       }
     >
       <AskAstrologerLanguagesContent
+        userQuestion={flowState.user_question}
         primary={primary}
-        secondary={secondary}
         firstError={firstError}
-        secondError={secondError}
-        onPrimaryChange={(v) => {
-          setPrimary(v);
-          clearErrors();
-          if (secondary === v) setSecondary("");
-        }}
-        onSecondaryChange={(v) => {
-          if (v && v === primary) {
-            setSecondary("");
-            setSecondError(ASK_ASTROLOGER_SCREEN.languageDuplicateError);
-            return;
-          }
-          setSecondary(v);
-          clearErrors();
+        onPrimaryChange={(value) => {
+          setPrimary(value);
+          setFirstError(null);
         }}
       />
     </AskAstrologerShell>

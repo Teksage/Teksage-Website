@@ -1,15 +1,42 @@
 "use client";
 
+import Link from "next/link";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
 import { NOTIFICATIONS_UI } from "@/lib/constants/notifications-screen";
-import { ASK_ANSWERED_AT_LABEL } from "@/lib/constants/datetime";
 import {
   ASK_ASTROLOGER_SCREEN,
   ASK_ASTROLOGER_UI,
 } from "@/lib/constants/chat-ask-astrologer";
+import {
+  buildAstrologerPublicProfileDisplayUrl,
+  buildAstrologerPublicProfileUrl,
+} from "@/lib/astrologer-public-profile";
 import { formatDateTimeDMY } from "@/lib/format-datetime";
 import type { AskAstrologerAnswerDialogProps } from "@/types/ui/notifications";
+
+function AstrologerAnswerAttribution({
+  name,
+  profilePath,
+}: {
+  name: string;
+  profilePath: string;
+}) {
+  const profileUrl = buildAstrologerPublicProfileUrl(profilePath);
+  const profileLabel = buildAstrologerPublicProfileDisplayUrl(profilePath);
+  const linkClass = ASK_ASTROLOGER_UI.answerAttributionLink;
+
+  return (
+    <p className="mt-2 text-sm text-black/70 lg:text-base">
+      <span>{ASK_ASTROLOGER_SCREEN.askAnswerAnsweredByPrefix} </span>
+      <span>{name}</span>
+      <span>{ASK_ASTROLOGER_SCREEN.askAnswerAnsweredBySeparator}</span>
+      <Link href={profileUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+        {profileLabel}
+      </Link>
+    </p>
+  );
+}
 
 export function AskAstrologerAnswerDialog({
   open,
@@ -18,11 +45,14 @@ export function AskAstrologerAnswerDialog({
   answerVoiceUrl,
   answerVoiceDurationSec = null,
   answeredAt = null,
+  answeredByAstrologerName = null,
+  answeredByAstrologerProfilePath = null,
   loading = false,
   error = null,
   onClose,
 }: AskAstrologerAnswerDialogProps) {
   const answeredAtLabel = formatDateTimeDMY(answeredAt);
+  const showAttribution = Boolean(answeredByAstrologerName && answeredByAstrologerProfilePath);
 
   if (!open) return null;
 
@@ -83,6 +113,13 @@ export function AskAstrologerAnswerDialog({
               </div>
             ) : null}
 
+            {showAttribution ? (
+              <AstrologerAnswerAttribution
+                name={answeredByAstrologerName!}
+                profilePath={answeredByAstrologerProfilePath!}
+              />
+            ) : null}
+
             {!answerText && !answerVoiceUrl ? (
               <p className="text-sm text-black/60 lg:text-base">
                 {ASK_ASTROLOGER_SCREEN.askAnswerEmpty}
@@ -91,7 +128,7 @@ export function AskAstrologerAnswerDialog({
 
             {answeredAtLabel ? (
               <p className="text-xs text-black/40 lg:text-sm">
-                {ASK_ANSWERED_AT_LABEL} {answeredAtLabel}
+                {answeredAtLabel}
               </p>
             ) : null}
           </div>

@@ -14,20 +14,23 @@ export const ASK_ASTROLOGER_SCREEN = {
   languagePageTitle: "Ask Astrologer",
   /** Shown under the logo — product name (header uses `languagePageTitle`). */
   serviceProfileName: "Single Question",
-  languageHeading: "Select your preferred language(s)",
-  languageSubtitle: "We'll route your question to the best-matched astrologer.",
-  languageFirst: "Language 1",
-  languageSecond: "Language 2 (optional)",
+  languageHeading: "Select your preferred language",
+  languageSubtitle: "We'll match you with an astrologer who speaks your language.",
+  languageFieldLabel: "Language",
+  languageNotesHeading: "Notes",
+  languageNotes: [
+    "Your answer will be delivered within 4 hours.",
+    "An expert astrologer will review your question and horoscope, then reply with a personalized voice message.",
+    "You can view your answer anytime under Notifications → Consultation.",
+  ] as const,
   languageFieldError: "Please select a language",
-  languageDuplicateError: "Please choose two different languages",
   languageContinue: "Continue to Payment",
-  languageSection: "Language preferences",
   checkoutTitle: "Booking Details",
   checkoutQuestionSection: "Question details",
   checkoutPaymentSection: "Payment summary",
   checkoutLanguagesLabel: "Language",
   checkoutTurnaroundLabel: "Answer within",
-  checkoutTurnaroundValue: "12 hours",
+  checkoutTurnaroundValue: "4 hours",
   checkoutHeading: "Single question consultation",
   checkoutSubtitle: "Your question will be answered within 12 hours by an expert astrologer.",
   checkoutSlaHint: "Answer within 12 hours",
@@ -58,7 +61,7 @@ export const ASK_ASTROLOGER_SCREEN = {
   confirmationSection: "What's next",
   confirmationHeading: "You're all set!",
   confirmationBody:
-    "Your question is with our team. An expert astrologer will answer within 12 hours.",
+    "Your question is with our team. An expert astrologer will answer within 4 hours.",
   confirmationStatusLabel: "Status",
   confirmationStatusValue: "Received",
   confirmationNotificationsLink: "Track in Notifications → Consultation",
@@ -69,15 +72,24 @@ export const ASK_ASTROLOGER_SCREEN = {
   askStatusReceived: "Received",
   askStatusAssigned: "Assigned",
   askStatusAnswered: "Answer ready",
-  askSlaLabel: "Expected within 12 hours",
+  askSlaLabel: "Expected within 4 hours",
   askViewAnswer: "View Answer",
   askVoiceAnswerLabel: "Voice answer",
   askIncludesVoice: "Includes voice answer",
+  askAnswerAnsweredByPrefix: "Answered by:",
+  askAnswerAnsweredBySeparator: ", ",
   askAnswerDialogTitle: "Astrologer's Answer",
   askAnswerYourQuestion: "Your question",
   askAnswerLoadError: "Could not load answer. Please try again.",
   askAnswerEmpty: "No answer content available yet.",
   emptyAskRequests: "No Ask Astrologer requests yet.",
+
+  // Answer-ready popup (main layout)
+  answerReadyPopupTitle: "Your answer is ready",
+  answerReadyPopupBody: "An astrologer has replied to your question.",
+  answerReadyPopupHint: "Read or listen to the answer now — or find it later in Notifications.",
+  answerReadyPopupViewCta: "Open answer",
+  answerReadyPopupLaterCta: "Not now",
 
   // Astrologer portal — ask request cards
   astrologerPageTitle: "Ask Requests",
@@ -90,6 +102,10 @@ export const ASK_ASTROLOGER_SCREEN = {
   astrologerAnswerRequired: "Provide an answer (text and/or voice).",
   astrologerAiReference: "AI Answer (for reference)",
   astrologerYourAnswer: "Your Answer",
+  astrologerVoiceAnswerLead: "Record your answer (recommended)",
+  astrologerVoiceAnswerHint:
+    "Tap Record voice and share your personalized reply. You may add optional written notes below.",
+  astrologerTextAnswerOptional: "Optional written notes",
   astrologerDetailName: "Name",
   astrologerDetailDob: "DOB",
   astrologerDetailTob: "TOB",
@@ -144,8 +160,14 @@ export const ASK_ASTROLOGER_UI = {
   slaBadge:
     "inline-flex items-center rounded-full bg-[var(--color-brand-primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--color-brand-primary)] lg:text-sm",
   languageIntro: "space-y-3",
+  languageQuestionCard: "mb-4",
+  languageQuestionText: `${TYPO.sizeSm} leading-relaxed text-black/80 lg:text-base`,
   languageFields: "mt-4",
-  languageCardGrid: "grid grid-cols-2 gap-3",
+  languageNotesList: "mt-4 space-y-2 rounded-xl bg-neutral-50 p-4 ring-1 ring-black/5",
+  languageNotesTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-black)]`,
+  languageNotesItem: `${TYPO.sizeSm} leading-relaxed text-black/70`,
+  portalVoiceAnswerPrimary:
+    "rounded-xl border-2 border-[var(--color-brand-primary)]/35 bg-[var(--color-brand-primary)]/5 p-4 lg:p-5",
   waConsentBenefits: "space-y-2.5",
   waConsentBenefitRow: "flex items-start gap-2.5 text-sm text-black/70 lg:text-base",
   waConsentBenefitIcon: "mt-0.5 size-4 shrink-0 text-[var(--color-brand-primary)]",
@@ -168,6 +190,8 @@ export const ASK_ASTROLOGER_UI = {
   dialogPanel:
     "relative z-10 max-h-[85vh] w-full overflow-y-auto overflow-x-hidden rounded-t-2xl bg-white p-5 pb-[calc(var(--main-bottom-nav-clearance)+1.25rem)] shadow-lg sm:max-w-lg sm:rounded-2xl sm:p-6 sm:pb-6 lg:p-8",
   answerBlock: "rounded-xl bg-neutral-50 p-4 lg:p-5",
+  answerAttributionLink:
+    "font-semibold text-[var(--color-brand-primary)] underline underline-offset-2 hover:opacity-80",
   portalList: "mx-auto w-full max-w-2xl flex-1 px-4 py-5 lg:max-w-3xl lg:px-8 lg:py-8",
   portalCard:
     "overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 lg:rounded-2xl",
@@ -199,6 +223,20 @@ export const ASK_ASTROLOGER_UI = {
   portalFormPanel: "rounded-xl border border-black/10 bg-neutral-50/80 p-4 lg:p-5",
   portalTextarea:
     "w-full rounded-xl border border-black/15 bg-white px-3 py-3 text-sm leading-relaxed text-[var(--color-brand-black)] placeholder:text-black/35 focus:border-[var(--color-brand-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/20 lg:py-3.5 lg:text-base",
+  answerReadyPopupPanel:
+    "relative z-10 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 sm:p-7 lg:max-w-lg lg:rounded-3xl lg:p-8",
+  answerReadyPopupIcon:
+    "mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-[var(--color-brand-primary)]/12 text-xl font-bold text-[var(--color-brand-primary)] lg:mb-5 lg:size-14 lg:text-2xl",
+  answerReadyPopupTitle: `${TYPO.sizeLg} ${TYPO.weightSemibold} text-center text-[var(--color-brand-black)] lg:text-xl`,
+  answerReadyPopupBody: "mt-2 text-center text-sm leading-relaxed text-black/65 lg:text-base",
+  answerReadyPopupHint: "mt-1 text-center text-xs leading-relaxed text-black/45 lg:text-sm",
+  answerReadyPopupQuestion:
+    "mt-5 rounded-xl border-l-4 border-[var(--color-brand-primary)] bg-neutral-50 px-4 py-3 text-sm leading-snug text-[var(--color-brand-black)] lg:px-5 lg:py-4 lg:text-base",
+  answerReadyPopupActions: "mt-6 grid grid-cols-2 gap-2.5",
+  answerReadyPopupPrimaryBtn:
+    "inline-flex h-11 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 lg:h-12 lg:text-base",
+  answerReadyPopupSecondaryBtn:
+    "inline-flex h-11 items-center justify-center rounded-full border border-black/12 bg-white px-4 text-sm font-medium text-black/60 transition-colors hover:bg-neutral-50 lg:h-12 lg:text-base",
 } as const;
 
 export const ASK_ASTROLOGER_SESSION_KEY = "ask_astrologer_flow" as const;

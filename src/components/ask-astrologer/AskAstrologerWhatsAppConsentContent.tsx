@@ -1,11 +1,9 @@
 "use client";
 
-import { ConsultationBookingProfileHeader } from "@/components/consultation/ConsultationBookingProfileHeader";
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { WhatsAppUpdatesPhoneChoice } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneChoice";
 import { WhatsAppUpdatesPhoneGate } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneGate";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import {
   ASK_ASTROLOGER_SCREEN,
   ASK_ASTROLOGER_UI,
@@ -42,11 +40,6 @@ export function AskAstrologerWhatsAppConsentContent({
 }: AskAstrologerWhatsAppConsentContentProps) {
   return (
     <>
-      <ConsultationBookingProfileHeader
-        name={ASK_ASTROLOGER_SCREEN.serviceProfileName}
-        picture={PUBLIC_ASSETS.appLogo}
-        imageVariant="logo"
-      />
       <ConsultationBookingSectionDivider title={ASK_ASTROLOGER_SCREEN.waConsentSection} />
       <div className={ASK_ASTROLOGER_UI.languageIntro}>
         <h1 className={ASK_ASTROLOGER_UI.heading}>{ASK_ASTROLOGER_SCREEN.waConsentHeading}</h1>

@@ -38,3 +38,19 @@ export async function fetchAskAstrologerRequest(
   const res = await http.get(`${API_ENDPOINTS.askAstrologerRequest}/${requestId}`);
   return res.data as AskAstrologerRequest;
 }
+
+export async function fetchPendingAnswerPopup(): Promise<{
+  request: AskAstrologerRequest | null;
+}> {
+  const res = await http.get(API_ENDPOINTS.askAstrologerPendingAnswerPopup);
+  return res.data as { request: AskAstrologerRequest | null };
+}
+
+export async function acknowledgeAnswerReady(
+  requestId: number
+): Promise<{ status: string; request_id: number }> {
+  const res = await http.post(
+    `${API_ENDPOINTS.askAstrologerAcknowledgeAnswerReady}/${requestId}/acknowledge-answer-ready`
+  );
+  return res.data as { status: string; request_id: number };
+}
