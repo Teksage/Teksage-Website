@@ -128,7 +128,7 @@ export function AskAstrologerAnswerDialog({
 
             {answeredAtLabel ? (
               <p className="text-xs text-black/40 lg:text-sm">
-                 {answeredAtLabel}
+                {answeredAtLabel}
               </p>
             ) : null}
           </div>

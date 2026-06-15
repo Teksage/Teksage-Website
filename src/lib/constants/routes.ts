@@ -48,6 +48,20 @@ export const ROUTES = {
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];
 
+const ASK_ASTROLOGER_FLOW_PATHS = [
+  ROUTES.askAstrologerLanguages,
+  ROUTES.askAstrologerCheckout,
+  ROUTES.askAstrologerWhatsappConsent,
+  ROUTES.askAstrologerConfirmation,
+] as const;
+
+/** True while the customer is in the Ask Astrologer purchase / consent flow. */
+export function isAskAstrologerFlowPath(pathname: string): boolean {
+  return ASK_ASTROLOGER_FLOW_PATHS.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+}
+
 export function isPredictionsPath(pathname: string): boolean {
   return (
     pathname === ROUTES.predictions || pathname.startsWith(`${ROUTES.predictions}/`)

@@ -84,6 +84,13 @@ export const ASK_ASTROLOGER_SCREEN = {
   askAnswerEmpty: "No answer content available yet.",
   emptyAskRequests: "No Ask Astrologer requests yet.",
 
+  // Answer-ready popup (main layout)
+  answerReadyPopupTitle: "Your answer is ready",
+  answerReadyPopupBody: "An astrologer has replied to your question.",
+  answerReadyPopupHint: "Read or listen to the answer now — or find it later in Notifications.",
+  answerReadyPopupViewCta: "Open answer",
+  answerReadyPopupLaterCta: "Not now",
+
   // Astrologer portal — ask request cards
   astrologerPageTitle: "Ask Requests",
   astrologerLoadFailed: "Failed to load requests",
@@ -216,6 +223,20 @@ export const ASK_ASTROLOGER_UI = {
   portalFormPanel: "rounded-xl border border-black/10 bg-neutral-50/80 p-4 lg:p-5",
   portalTextarea:
     "w-full rounded-xl border border-black/15 bg-white px-3 py-3 text-sm leading-relaxed text-[var(--color-brand-black)] placeholder:text-black/35 focus:border-[var(--color-brand-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/20 lg:py-3.5 lg:text-base",
+  answerReadyPopupPanel:
+    "relative z-10 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 sm:p-7 lg:max-w-lg lg:rounded-3xl lg:p-8",
+  answerReadyPopupIcon:
+    "mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-[var(--color-brand-primary)]/12 text-xl font-bold text-[var(--color-brand-primary)] lg:mb-5 lg:size-14 lg:text-2xl",
+  answerReadyPopupTitle: `${TYPO.sizeLg} ${TYPO.weightSemibold} text-center text-[var(--color-brand-black)] lg:text-xl`,
+  answerReadyPopupBody: "mt-2 text-center text-sm leading-relaxed text-black/65 lg:text-base",
+  answerReadyPopupHint: "mt-1 text-center text-xs leading-relaxed text-black/45 lg:text-sm",
+  answerReadyPopupQuestion:
+    "mt-5 rounded-xl border-l-4 border-[var(--color-brand-primary)] bg-neutral-50 px-4 py-3 text-sm leading-snug text-[var(--color-brand-black)] lg:px-5 lg:py-4 lg:text-base",
+  answerReadyPopupActions: "mt-6 grid grid-cols-2 gap-2.5",
+  answerReadyPopupPrimaryBtn:
+    "inline-flex h-11 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 lg:h-12 lg:text-base",
+  answerReadyPopupSecondaryBtn:
+    "inline-flex h-11 items-center justify-center rounded-full border border-black/12 bg-white px-4 text-sm font-medium text-black/60 transition-colors hover:bg-neutral-50 lg:h-12 lg:text-base",
 } as const;
 
 export const ASK_ASTROLOGER_SESSION_KEY = "ask_astrologer_flow" as const;

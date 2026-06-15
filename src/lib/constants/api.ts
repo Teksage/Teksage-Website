@@ -125,6 +125,10 @@ export const API_ENDPOINTS = {
   askAstrologerCreate: "/api/ask-astrologer/create",
   askAstrologerVerify: "/api/ask-astrologer/verify",
   askAstrologerRequests: "/api/ask-astrologer/requests",
+  /** Most recent answered request pending the answer-ready popup. */
+  askAstrologerPendingAnswerPopup: "/api/ask-astrologer/pending-answer-popup",
+  /** Append `/{request_id}/acknowledge-answer-ready` — mark popup as seen. */
+  askAstrologerAcknowledgeAnswerReady: "/api/ask-astrologer",
   /** Append `/{request_id}` — single request detail for the logged-in customer. */
   askAstrologerRequest: "/api/ask-astrologer",
 

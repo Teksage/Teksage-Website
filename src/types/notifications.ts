@@ -33,4 +33,5 @@ export interface AskAstrologerNotificationItem {
   created_at: string | null;
   answered_by_astrologer_name?: string | null;
   answered_by_astrologer_profile_path?: string | null;
+  answer_ready_acknowledged?: boolean;
 }
