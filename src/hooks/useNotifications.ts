@@ -9,10 +9,12 @@ import {
   fetchConsultationNotificationEvents,
   markNotificationsRead,
 } from "@/lib/services/notifications";
+import { fetchMyAskRequests } from "@/lib/services/ask-astrologer";
 import { useAuthStore } from "@/store/auth.store";
 import { isAstrologerHomeSession } from "@/lib/utils";
 import type {
   AppNotification,
+  AskAstrologerNotificationItem,
   ConsultationNotificationEvent,
   NotificationTab,
 } from "@/types/notifications";
@@ -25,9 +27,8 @@ export function useNotifications(initialTab: NotificationTab = "general") {
 
   const [tab, setTab] = useState<NotificationTab>(initialTab);
   const [general, setGeneral] = useState<AppNotification[]>([]);
-  const [consultation, setConsultation] = useState<ConsultationNotificationEvent[]>(
-    []
-  );
+  const [consultation, setConsultation] = useState<ConsultationNotificationEvent[]>([]);
+  const [askRequests, setAskRequests] = useState<AskAstrologerNotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
@@ -37,12 +38,30 @@ export function useNotifications(initialTab: NotificationTab = "general") {
     setLoading(true);
     setError(null);
     try {
-      const [generalRows, consultationRows] = await Promise.all([
+      const [generalRows, consultationRows, askRows] = await Promise.all([
         fetchAppNotifications(),
         fetchConsultationNotificationEvents(user.id, isAstrologer),
+        isAstrologer ? Promise.resolve([]) : fetchMyAskRequests(),
       ]);
       setGeneral(generalRows);
       setConsultation(consultationRows);
+      setAskRequests(
+        askRows
+          .filter((r) => r.status !== "pending_payment" && r.status !== "cancelled")
+          .map((r) => ({
+            id: r.id,
+            status: r.status,
+            user_question: r.user_question,
+            answer_text: r.answer_text,
+            answer_voice_url: r.answer_voice_url,
+            answer_voice_duration_sec: r.answer_voice_duration_sec,
+            answered_at: r.answered_at,
+            paid_at: r.paid_at,
+            created_at: r.created_at,
+            answered_by_astrologer_name: r.answered_by_astrologer_name ?? null,
+            answered_by_astrologer_profile_path: r.answered_by_astrologer_profile_path ?? null,
+          }))
+      );
     } catch {
       setError("loadFailed");
     } finally {
@@ -79,6 +98,7 @@ export function useNotifications(initialTab: NotificationTab = "general") {
     setTab,
     general,
     consultation,
+    askRequests,
     loading,
     error,
     actionLoading,

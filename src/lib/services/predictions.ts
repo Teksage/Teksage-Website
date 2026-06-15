@@ -2,7 +2,10 @@ import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import {
   PREDICTION_PROFILE_INCOMPLETE,
+  PREDICTION_NO_DATA,
+  isNoPredictionDataMessage,
   isPredictionProfileIncompleteError,
+  isRequestCanceled,
   predictionErrorMessage,
 } from "@/lib/prediction-request-error";
 import type {
@@ -130,6 +133,9 @@ export async function fetchYearlyPredictionInitial(
       if (parsed.message === PREDICTION_PROFILE_INCOMPLETE) {
         return { ready: "profile_incomplete" };
       }
+      if (isNoPredictionDataMessage(parsed.message)) {
+        return { ready: "landing" };
+      }
       return { ready: "error", message: parsed.message };
     }
     const vm = toPredictionViewModel("yearly", parsed.data, parsed.predictionId);
@@ -144,10 +150,17 @@ export async function fetchYearlyPredictionInitial(
     }
     return { ready: "detail", data: vm };
   } catch (error) {
+    if (signal?.aborted || isRequestCanceled(error)) {
+      return { ready: "landing" };
+    }
     if (isPredictionProfileIncompleteError(error)) {
       return { ready: "profile_incomplete" };
     }
-    return { ready: "error", message: predictionErrorMessage(error) };
+    const message = predictionErrorMessage(error);
+    if (isNoPredictionDataMessage(message)) {
+      return { ready: "landing" };
+    }
+    return { ready: "error", message };
   }
 }
 
@@ -195,6 +208,9 @@ export async function fetchLifePredictionInitial(
       if (parsed.message === PREDICTION_PROFILE_INCOMPLETE) {
         return { ready: "profile_incomplete" };
       }
+      if (isNoPredictionDataMessage(parsed.message)) {
+        return { ready: "landing" };
+      }
       return { ready: "error", message: parsed.message };
     }
     const vm = toPredictionViewModel("life", parsed.data, parsed.predictionId);
@@ -209,10 +225,17 @@ export async function fetchLifePredictionInitial(
     }
     return { ready: "detail", data: vm };
   } catch (error) {
+    if (signal?.aborted || isRequestCanceled(error)) {
+      return { ready: "landing" };
+    }
     if (isPredictionProfileIncompleteError(error)) {
       return { ready: "profile_incomplete" };
     }
-    return { ready: "error", message: predictionErrorMessage(error) };
+    const message = predictionErrorMessage(error);
+    if (isNoPredictionDataMessage(message)) {
+      return { ready: "landing" };
+    }
+    return { ready: "error", message };
   }
 }
 

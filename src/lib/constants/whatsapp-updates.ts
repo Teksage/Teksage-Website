@@ -79,6 +79,9 @@ export const WHATSAPP_UPDATES_UI = {
   disableBtn:
     "mt-4 flex h-11 w-full items-center justify-center rounded-xl border border-[var(--color-brand-error)]/40 bg-white text-base font-semibold text-[var(--color-brand-error)] hover:bg-[var(--color-brand-error)]/5 disabled:opacity-50",
   phoneChoiceRow: "flex items-start gap-3 rounded-lg border border-black/10 p-3 text-left",
+  phoneChoiceRowFlow:
+    "flex items-start gap-3 rounded-xl border border-transparent bg-white p-4 text-left shadow-sm ring-1 ring-black/5",
+  phoneChoiceRowFlowSelected: "ring-2 ring-[var(--color-brand-primary)]/35",
   phoneChoiceRadioInput: "sr-only",
   phoneChoiceRadioIndicator:
     "mt-1 size-4 shrink-0 rounded-full border-2 border-[var(--color-brand-black)]/20 bg-white",

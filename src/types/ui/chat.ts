@@ -96,6 +96,12 @@ export interface ChatPageViewProps {
   embedHeader?: ReactNode;
 }
 
+export interface ChatMessageActionsProps {
+  userQuestion: string;
+  aiResponse: string;
+  className?: string;
+}
+
 export interface ChatPreferenceBarProps {
   styleFormat: ChatStyleFormat;
   avatarIndex: number;

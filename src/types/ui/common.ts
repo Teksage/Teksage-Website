@@ -43,3 +43,10 @@ export interface DesktopMainNavProps {
   /** Hide logo block — brand lives in `HomeDesktopTopHeader` on home. */
   hideBrand?: boolean;
 }
+
+export interface VoiceAnswerPlayerProps {
+  src: string;
+  className?: string;
+  /** Known duration from API (seconds) — used when WebM metadata is missing. */
+  durationSec?: number | null;
+}

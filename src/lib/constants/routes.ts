@@ -35,9 +35,32 @@ export const ROUTES = {
   predictionsLife: "/predictions/life",
   matchmaking: "/matchmaking",
   matchmakingDetails: "/matchmaking/details",
+
+  // Ask Astrologer flow
+  askAstrologerLanguages: "/ask-astrologer/languages",
+  askAstrologerCheckout: "/ask-astrologer/checkout",
+  askAstrologerWhatsappConsent: "/ask-astrologer/whatsapp-consent",
+  askAstrologerConfirmation: "/ask-astrologer/confirmation",
+
+  // Astrologer portal — Ask requests
+  astrologerAskRequests: "/astrologer/ask-requests",
 } as const;
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];
+
+const ASK_ASTROLOGER_FLOW_PATHS = [
+  ROUTES.askAstrologerLanguages,
+  ROUTES.askAstrologerCheckout,
+  ROUTES.askAstrologerWhatsappConsent,
+  ROUTES.askAstrologerConfirmation,
+] as const;
+
+/** True while the customer is in the Ask Astrologer purchase / consent flow. */
+export function isAskAstrologerFlowPath(pathname: string): boolean {
+  return ASK_ASTROLOGER_FLOW_PATHS.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+}
 
 export function isPredictionsPath(pathname: string): boolean {
   return (

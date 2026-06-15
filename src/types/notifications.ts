@@ -19,3 +19,19 @@ export interface ConsultationNotificationEvent {
 }
 
 export type NotificationTab = "general" | "consultation";
+
+/** Ask Astrologer request as shown in the Consultation notifications tab. */
+export interface AskAstrologerNotificationItem {
+  id: number;
+  status: string;
+  user_question: string;
+  answer_text: string | null;
+  answer_voice_url: string | null;
+  answer_voice_duration_sec: number | null;
+  answered_at: string | null;
+  paid_at: string | null;
+  created_at: string | null;
+  answered_by_astrologer_name?: string | null;
+  answered_by_astrologer_profile_path?: string | null;
+  answer_ready_acknowledged?: boolean;
+}

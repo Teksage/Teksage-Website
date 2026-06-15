@@ -17,6 +17,8 @@ export type WhatsAppUpdatesPhoneChoiceProps = {
   onCountryCodeChange: (value: string) => void;
   onMobileChange: (value: string) => void;
   validationError: string | null;
+  /** Ask Astrologer flow — card-style options inside gray panel. */
+  variant?: "default" | "flow";
 };
 
 export type WhatsAppUpdatesCtaProps = {
@@ -27,6 +29,8 @@ export type WhatsAppUpdatesCtaProps = {
   showStopNote?: boolean;
   hintText?: string;
   ctaLabel?: string;
+  /** Ask Astrologer flow — pay button style, no trailing chevron. */
+  variant?: "default" | "flow";
 };
 
 export type WhatsAppUpdatesSendSectionProps = {

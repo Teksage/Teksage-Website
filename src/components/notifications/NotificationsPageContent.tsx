@@ -1,14 +1,16 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
 import { PageLoadingCenter } from "@/components/common/Loader";
+import { AskAstrologerAnswerDialog } from "@/components/notifications/AskAstrologerAnswerDialog";
 import { NotificationConsultationList } from "@/components/notifications/NotificationConsultationList";
 import { NotificationDetailDialog } from "@/components/notifications/NotificationDetailDialog";
 import { NotificationGeneralList } from "@/components/notifications/NotificationGeneralList";
 import { NotificationsTabBar } from "@/components/notifications/NotificationsTabBar";
+import { useAskAnswerFromQuery } from "@/hooks/useAskAnswerFromQuery";
 import { useNotifications } from "@/hooks/useNotifications";
 import { notificationDisplayCopy, notificationPredictionRoute } from "@/lib/notification-display";
 import {
@@ -28,18 +30,26 @@ export function NotificationsPageContent({
 }: NotificationsPageContentProps) {
   const NS = useI18nConstants(NOTIFICATIONS_SCREEN);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const initialTabFromUrl: NotificationTab =
+    tabParam === "consultation" ? "consultation" : initialTab;
+
   const {
     tab,
     setTab,
     general,
     consultation,
+    askRequests,
     loading,
     error,
     actionLoading,
     isAstrologer,
     markRead,
     clearAll,
-  } = useNotifications(initialTab);
+  } = useNotifications(initialTabFromUrl);
+
+  const askAnswer = useAskAnswerFromQuery(askRequests, loading);
 
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
@@ -105,6 +115,7 @@ export function NotificationsPageContent({
           <NotificationConsultationList
             items={consultation}
             isAstrologer={isAstrologer}
+            askItems={askRequests}
           />
         )}
       </div>
@@ -114,6 +125,20 @@ export function NotificationsPageContent({
         title={dialog?.title ?? ""}
         message={dialog?.message ?? ""}
         onClose={() => setDialog(null)}
+      />
+
+      <AskAstrologerAnswerDialog
+        open={askAnswer.isOpen}
+        userQuestion={askAnswer.userQuestion}
+        answerText={askAnswer.answerText}
+        answerVoiceUrl={askAnswer.answerVoiceUrl}
+        answerVoiceDurationSec={askAnswer.answerVoiceDurationSec}
+        answeredAt={askAnswer.answeredAt}
+        answeredByAstrologerName={askAnswer.answeredByAstrologerName}
+        answeredByAstrologerProfilePath={askAnswer.answeredByAstrologerProfilePath}
+        loading={askAnswer.loading}
+        error={askAnswer.error}
+        onClose={askAnswer.closeAskAnswer}
       />
     </div>
   );

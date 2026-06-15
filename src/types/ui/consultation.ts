@@ -20,6 +20,7 @@ export interface ConsultationLanguageFieldProps {
   options: readonly { id: string; label: string }[];
   enabled: boolean;
   error?: string | null;
+  compact?: boolean;
   onChange: (languageId: string) => void;
 }
 

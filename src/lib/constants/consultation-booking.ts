@@ -46,6 +46,7 @@ export const CONSULTATION_BOOKING_LAYOUT = {
   profileWrap: "flex flex-col items-center pt-2",
   avatar:
     "size-20 overflow-hidden rounded-full bg-neutral-200 object-cover lg:size-[5.5rem]",
+  brandLogo: "size-20 object-contain lg:size-[5.5rem]",
   profileName: "mt-2 text-center text-2xl font-semibold text-[var(--color-brand-black)]",
   sectionTitle:
     "text-center text-sm font-semibold text-[var(--color-brand-black)]/60",
