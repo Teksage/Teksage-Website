@@ -134,6 +134,8 @@ export function NotificationsPageContent({
         answerVoiceUrl={askAnswer.answerVoiceUrl}
         answerVoiceDurationSec={askAnswer.answerVoiceDurationSec}
         answeredAt={askAnswer.answeredAt}
+        answeredByAstrologerName={askAnswer.answeredByAstrologerName}
+        answeredByAstrologerProfilePath={askAnswer.answeredByAstrologerProfilePath}
         loading={askAnswer.loading}
         error={askAnswer.error}
         onClose={askAnswer.closeAskAnswer}

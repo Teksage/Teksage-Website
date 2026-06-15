@@ -132,23 +132,38 @@ export function AskAstrologerRequestCard({
               <h3 className={ASK_ASTROLOGER_UI.portalSectionTitle}>
                 {ASK_ASTROLOGER_SCREEN.astrologerYourAnswer}
               </h3>
-              <div className="mt-3 space-y-4">
-                <textarea
-                  value={answerText}
-                  onChange={(event) => setAnswerText(event.target.value)}
-                  placeholder={ASK_ASTROLOGER_SCREEN.astrologerAnswerPlaceholder}
-                  rows={5}
-                  className={ASK_ASTROLOGER_UI.portalTextarea}
-                />
-                <AskAnswerVoiceInput
-                  voiceFile={voiceFile}
-                  voiceDurationSec={voiceDurationSec}
-                  onVoiceFileChange={(file, durationSec) => {
-                    setVoiceFile(file);
-                    setVoiceDurationSec(durationSec ?? null);
-                  }}
-                  disabled={submitting}
-                />
+              <p className={cn(ASK_ASTROLOGER_UI.portalBody, "mt-2")}>
+                {ASK_ASTROLOGER_SCREEN.astrologerVoiceAnswerHint}
+              </p>
+              <div className="mt-4 space-y-4">
+                <div className={ASK_ASTROLOGER_UI.portalVoiceAnswerPrimary}>
+                  <p className={ASK_ASTROLOGER_UI.portalSectionTitle}>
+                    {ASK_ASTROLOGER_SCREEN.astrologerVoiceAnswerLead}
+                  </p>
+                  <div className="mt-3">
+                    <AskAnswerVoiceInput
+                      voiceFile={voiceFile}
+                      voiceDurationSec={voiceDurationSec}
+                      onVoiceFileChange={(file, durationSec) => {
+                        setVoiceFile(file);
+                        setVoiceDurationSec(durationSec ?? null);
+                      }}
+                      disabled={submitting}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className={ASK_ASTROLOGER_UI.portalSectionTitle}>
+                    {ASK_ASTROLOGER_SCREEN.astrologerTextAnswerOptional}
+                  </p>
+                  <textarea
+                    value={answerText}
+                    onChange={(event) => setAnswerText(event.target.value)}
+                    placeholder={ASK_ASTROLOGER_SCREEN.astrologerAnswerPlaceholder}
+                    rows={5}
+                    className={cn(ASK_ASTROLOGER_UI.portalTextarea, "mt-2")}
+                  />
+                </div>
                 {error ? (
                   <p className="text-sm text-[var(--color-brand-error)]">{error}</p>
                 ) : null}

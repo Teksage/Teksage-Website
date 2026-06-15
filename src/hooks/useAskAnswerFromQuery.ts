@@ -82,6 +82,14 @@ export function useAskAnswerFromQuery(
       askFromList?.answer_voice_duration_sec ??
       null,
     answeredAt: askDetail?.answered_at ?? askFromList?.answered_at ?? null,
+    answeredByAstrologerName:
+      askDetail?.answered_by_astrologer_name ??
+      askFromList?.answered_by_astrologer_name ??
+      null,
+    answeredByAstrologerProfilePath:
+      askDetail?.answered_by_astrologer_profile_path ??
+      askFromList?.answered_by_astrologer_profile_path ??
+      null,
     loading: askDetailLoading && !askDetail && !askFromList,
     error: askDetailError,
     closeAskAnswer,

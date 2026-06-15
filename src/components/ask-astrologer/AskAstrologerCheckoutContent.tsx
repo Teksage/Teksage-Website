@@ -1,11 +1,9 @@
 "use client";
 
 import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
-import { ConsultationBookingProfileHeader } from "@/components/consultation/ConsultationBookingProfileHeader";
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { AskAstrologerCheckoutFees } from "@/components/ask-astrologer/AskAstrologerCheckoutFees";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
 import { formatConsultationLanguageList } from "@/lib/consultation-display";
 import type { AskAstrologerCheckoutContentProps } from "@/types/ui/ask-astrologer";
@@ -23,11 +21,6 @@ export function AskAstrologerCheckoutContent({
 
   return (
     <>
-      <ConsultationBookingProfileHeader
-        name={ASK_ASTROLOGER_SCREEN.serviceProfileName}
-        picture={PUBLIC_ASSETS.appLogo}
-        imageVariant="logo"
-      />
       <ConsultationBookingSectionDivider title={ASK_ASTROLOGER_SCREEN.checkoutQuestionSection} />
       <div className={CONSULTATION_BOOKING_LAYOUT.grayCard}>
         <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>

@@ -59,15 +59,7 @@ export function VoiceAnswerPlayer({
       audio.currentTime = 0;
     };
 
-    const onLoadedMetadata = () => {
-      syncDuration();
-      const value = audio.duration;
-      if (!Number.isFinite(value) || value <= 0) {
-        audio.currentTime = Number.MAX_SAFE_INTEGER;
-      }
-    };
-
-    audio.addEventListener("loadedmetadata", onLoadedMetadata);
+    audio.addEventListener("loadedmetadata", syncDuration);
     audio.addEventListener("durationchange", syncDuration);
     audio.addEventListener("canplaythrough", syncDuration);
     audio.addEventListener("timeupdate", onTime);
@@ -76,7 +68,7 @@ export function VoiceAnswerPlayer({
 
     return () => {
       audio.pause();
-      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+      audio.removeEventListener("loadedmetadata", syncDuration);
       audio.removeEventListener("durationchange", syncDuration);
       audio.removeEventListener("canplaythrough", syncDuration);
       audio.removeEventListener("timeupdate", onTime);
@@ -88,20 +80,28 @@ export function VoiceAnswerPlayer({
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
     if (playing) {
       audio.pause();
       setPlaying(false);
       return;
     }
+
     if (effectiveDuration > 0 && position >= effectiveDuration) {
       audio.currentTime = 0;
       setPosition(0);
     }
-    void audio.play().then(() => {
-      const next = readDuration(audio);
-      if (next > 0) setElementDuration(next);
-    });
-    setPlaying(true);
+
+    void audio
+      .play()
+      .then(() => {
+        setPlaying(true);
+        const next = readDuration(audio);
+        if (next > 0) setElementDuration(next);
+      })
+      .catch(() => {
+        setPlaying(false);
+      });
   }, [effectiveDuration, playing, position]);
 
   const seek = useCallback(

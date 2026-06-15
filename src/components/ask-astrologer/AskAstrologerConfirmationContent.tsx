@@ -2,10 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
-import { ConsultationBookingProfileHeader } from "@/components/consultation/ConsultationBookingProfileHeader";
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
 import {
   ASK_ASTROLOGER_SCREEN,
@@ -18,11 +16,6 @@ export function AskAstrologerConfirmationContent() {
 
   return (
     <>
-      <ConsultationBookingProfileHeader
-        name={ASK_ASTROLOGER_SCREEN.serviceProfileName}
-        picture={PUBLIC_ASSETS.appLogo}
-        imageVariant="logo"
-      />
       <ConsultationBookingSectionDivider title={ASK_ASTROLOGER_SCREEN.confirmationSection} />
       <div className={ASK_ASTROLOGER_UI.confirmationIntro}>
         <svg

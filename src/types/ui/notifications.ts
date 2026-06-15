@@ -35,6 +35,8 @@ export interface AskAstrologerAnswerDialogProps {
   answerVoiceUrl: string | null;
   answerVoiceDurationSec?: number | null;
   answeredAt?: string | null;
+  answeredByAstrologerName?: string | null;
+  answeredByAstrologerProfilePath?: string | null;
   loading?: boolean;
   error?: string | null;
   onClose: () => void;
