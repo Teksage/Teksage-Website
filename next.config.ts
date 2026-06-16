@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         destination: `${backendOrigin}/api/auth/register-token/`,
       },
       {
+        // Service catalog list — FastAPI route is `/service-catalogs/` (trailing slash required)
+        source: "/api/admin/service-catalogs",
+        destination: `${backendOrigin}/api/admin/service-catalogs/`,
+      },
+      {
         // Normalize ALL other /api/* paths: remove trailing slash to avoid 307 redirects
         // Exclude: places (Next.js route handlers) and register-token (handled above)
         source: "/api/:path((?!places/)(?!auth/register-token$).*)/",

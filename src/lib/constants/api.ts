@@ -98,7 +98,8 @@ export const API_ENDPOINTS = {
   paymentIosSubscription: "/api/payment/ios-subscription",
 
   // --- Plans — `admin/subscriptions.py`; public list GET ---
-  serviceCatalogs: "/api/admin/service-catalogs/",
+  /** Public list GET — no trailing slash (Vercel strips `/` before rewrite; backend route requires `/`). */
+  serviceCatalogs: "/api/admin/service-catalogs",
 
   // --- Share PDF — `share_predictions.py` ---
   shareDaily: "/api/share/daily",
