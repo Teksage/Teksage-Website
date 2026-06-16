@@ -13,9 +13,9 @@ export function ChatTypingIndicator() {
         )}
       >
         <span className="flex gap-1">
-          <span className="size-2 animate-bounce rounded-full bg-[var(--color-brand-primary)]/55 [animation-delay:0ms]" />
-          <span className="size-2 animate-bounce rounded-full bg-[var(--color-brand-primary)]/55 [animation-delay:150ms]" />
-          <span className="size-2 animate-bounce rounded-full bg-[var(--color-brand-primary)]/55 [animation-delay:300ms]" />
+          <span className="size-2 animate-bounce rounded-full bg-white/70 [animation-delay:0ms]" />
+          <span className="size-2 animate-bounce rounded-full bg-white/70 [animation-delay:150ms]" />
+          <span className="size-2 animate-bounce rounded-full bg-white/70 [animation-delay:300ms]" />
         </span>
       </div>
     </div>
