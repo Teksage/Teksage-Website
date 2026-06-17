@@ -40,9 +40,9 @@ export function NotificationConsultationList({
         <AskAstrologerNotificationCard key={`ask-${ask.id}`} item={ask} />
       ))}
       {items.map((event) => (
-        <li key={event.id} className={NOTIFICATIONS_UI.consultationCard}>
-          <div className="flex min-w-0 items-center gap-2.5">
-            <div className="relative size-10 shrink-0 overflow-hidden rounded-full border-2 border-[var(--color-brand-primary)]/30 bg-neutral-100">
+        <li key={event.id} className={NOTIFICATIONS_UI.listCard}>
+          <div className={NOTIFICATIONS_UI.notificationRow}>
+            <div className={NOTIFICATIONS_UI.notificationAvatar}>
               {event.astrologerPicture ? (
                 <Image
                   src={event.astrologerPicture}
@@ -58,27 +58,31 @@ export function NotificationConsultationList({
                   width={24}
                   height={24}
                   unoptimized
-                  className="absolute inset-0 m-auto size-6 object-contain opacity-40"
+                  className={NOTIFICATIONS_UI.notificationAvatarFallback}
                 />
               )}
             </div>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-black/80">{label}</p>
-              <p className="mt-0.5 text-sm font-semibold text-[var(--color-brand-black)]">
+
+            <div className={NOTIFICATIONS_UI.notificationContent}>
+              <p className="text-sm font-medium leading-none text-black/80 lg:text-base">
+                {label}
+              </p>
+              <p className="mt-1 text-sm font-semibold leading-none text-[var(--color-brand-black)] lg:text-base">
                 {formatEventDate(event.startDatetime)}
               </p>
             </div>
+
+            {event.eventLink ? (
+              <a
+                href={event.eventLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={NOTIFICATIONS_UI.consultationMeetBtn}
+              >
+                {NS.meetingLink}
+              </a>
+            ) : null}
           </div>
-          {event.eventLink ? (
-            <a
-              href={event.eventLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={NOTIFICATIONS_UI.consultationMeetBtn}
-            >
-              {NS.meetingLink}
-            </a>
-          ) : null}
         </li>
       ))}
     </ul>
