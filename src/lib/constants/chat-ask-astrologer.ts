@@ -181,7 +181,7 @@ export const ASK_ASTROLOGER_UI = {
   questionCard: CONSULTATION_BOOKING_LAYOUT.queryCard,
   sectionLabel: `${TYPO.sizeXs} ${TYPO.weightSemibold} uppercase tracking-wide text-black/40`,
   notificationCard:
-    "mb-3 space-y-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-black/5 lg:space-y-4 lg:p-5",
+    "mb-3 rounded-xl border border-black/[0.04] bg-[#f6f6f6] p-4 lg:p-5",
   notificationFooter: "flex flex-wrap items-center justify-between gap-2 pt-1",
   notificationViewAnswer:
     "inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-80 lg:text-base",
