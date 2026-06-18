@@ -6,6 +6,7 @@ import { AppSnackBarHost } from "@/components/common/AppSnackBarHost";
 import { AppLoaderProvider } from "@/contexts/AppLoaderContext";
 import { AppLanguageProvider } from "@/contexts/AppLanguageProvider";
 import { LoginPromptProvider } from "@/contexts/LoginPromptContext";
+import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { reconcileAuthSession } from "@/lib/auth-session";
 import { restoreUserTypeIfMissing, syncAuthStoreFromSession } from "@/lib/auth-user-type";
 import { isClientLoggedIn } from "@/lib/auth-session";
@@ -46,13 +47,15 @@ export function AppProviders({
   }, []);
 
   return (
-    <AppLanguageProvider initialLocale={initialLocale}>
-      <LoginPromptProvider>
-        <AppLoaderProvider>
-          {children}
-          <AppSnackBarHost />
-        </AppLoaderProvider>
-      </LoginPromptProvider>
-    </AppLanguageProvider>
+    <PostHogProvider>
+      <AppLanguageProvider initialLocale={initialLocale}>
+        <LoginPromptProvider>
+          <AppLoaderProvider>
+            {children}
+            <AppSnackBarHost />
+          </AppLoaderProvider>
+        </LoginPromptProvider>
+      </AppLanguageProvider>
+    </PostHogProvider>
   );
 }
