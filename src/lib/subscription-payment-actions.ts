@@ -40,12 +40,17 @@ export async function paySubscriptionOneTime(options: {
       description: plan.planName,
       prefill,
       onSuccess: async (response) => {
-        await verifySubscriptionPayment({
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_signature: response.razorpay_signature,
-        });
-        await onSuccess();
+        try {
+          await verifySubscriptionPayment({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          });
+          await onSuccess();
+        } catch {
+          onError("paymentFailed");
+          onBusyChange(false);
+        }
       },
       onDismiss: () => onBusyChange(false),
       onFailure: () => {
@@ -80,8 +85,13 @@ export async function paySubscriptionAutoRenew(options: {
       description: plan.planName,
       prefill,
       onSuccess: async (response) => {
-        await verifyAutoPayPayment(response);
-        await onSuccess();
+        try {
+          await verifyAutoPayPayment(response);
+          await onSuccess();
+        } catch {
+          onError("paymentFailed");
+          onBusyChange(false);
+        }
       },
       onDismiss: () => onBusyChange(false),
       onFailure: () => {

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
+import { useI18nConstants } from "@/hooks/useT";
 import { DOWNLOAD_FILENAMES } from "@/lib/constants";
 import {
   PREDICTION_PROFILE_INCOMPLETE,
@@ -13,6 +14,12 @@ import {
   fetchHoroscope,
   fetchHoroscopePdf,
 } from "@/lib/services/horoscope";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import { HOROSCOPE_SCREEN } from "@/lib/constants/horoscope-screen";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { HoroscopePayload } from "@/types";
 
 function horoscopeErrorMessage(err: unknown): string {
@@ -31,6 +38,7 @@ function horoscopeErrorMessage(err: unknown): string {
 
 export function useHoroscope() {
   const { version: languageVersion } = useAppLanguage();
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const { isAuthenticated } = useAuthStore();
   const [data, setData] = useState<HoroscopePayload | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,13 +70,18 @@ export function useHoroscope() {
   }, [isAuthenticated, load, languageVersion]);
 
   async function downloadPdf(): Promise<void> {
-    const blob = await fetchHoroscopePdf();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = DOWNLOAD_FILENAMES.horoscopePdf;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const blob = await fetchHoroscopePdf();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = DOWNLOAD_FILENAMES.horoscopePdf;
+      a.click();
+      URL.revokeObjectURL(url);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.downloadSuccess);
+    } catch {
+      showErrorAppSnackBar(H.downloadError);
+    }
   }
 
   return {

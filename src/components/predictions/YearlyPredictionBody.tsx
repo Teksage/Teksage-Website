@@ -13,6 +13,8 @@ import {
   fetchYearlyPredictionInitial,
   generateYearlyPrediction,
 } from "@/lib/services/predictions";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import type { YearlyPredictionDetail } from "@/types/prediction-yearly";
 
 type YearlyView = "loading" | "landing" | "detail" | "profile";
@@ -75,6 +77,7 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
     if (result.ready === "detail") {
       setData(result.data);
       setView("detail");
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.predictionRegenerated);
     }
   }
 

@@ -89,14 +89,15 @@ export async function verifyOtp(payload: OtpPayload): Promise<AuthResponse> {
   return auth;
 }
 
-export async function logout(): Promise<void> {
+export async function logout(): Promise<boolean> {
   try {
     const body = buildLogoutRequestBody();
     if (body) {
       await http.post(API_ENDPOINTS.logout, body);
     }
+    return true;
   } catch {
-    // Best-effort server revoke; always clear local session below
+    return false;
   } finally {
     clearAuthTokens();
   }

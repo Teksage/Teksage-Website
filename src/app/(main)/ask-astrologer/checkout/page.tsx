@@ -20,6 +20,11 @@ import { useAuthStore } from "@/store/auth.store";
 import { ROUTES } from "@/lib/constants/routes";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { AskAstrologerPricing } from "@/types/ask-astrologer";
 
 export default function AskAstrologerCheckoutPage() {
@@ -86,16 +91,25 @@ export default function AskAstrologerCheckoutPage() {
               ...flow,
               preferred_languages: flow.preferred_languages,
             });
+            showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.paymentSuccess);
             router.push(ROUTES.askAstrologerWhatsappConsent);
           } catch {
-            setPayError("Verification failed. Please contact support.");
+            const msg = APP_SNACKBAR_MESSAGES.paymentFailed;
+            setPayError(msg);
+            showErrorAppSnackBar(msg);
           }
         },
         onDismiss: () => setPaying(false),
-        onFailure: (msg) => setPayError(msg),
+        onFailure: (msg) => {
+          const failMsg = msg || APP_SNACKBAR_MESSAGES.paymentFailedGeneric;
+          setPayError(failMsg);
+          showErrorAppSnackBar(failMsg);
+        },
       });
     } catch {
-      setPayError("Could not initiate payment. Please try again.");
+      const msg = APP_SNACKBAR_MESSAGES.paymentFailedGeneric;
+      setPayError(msg);
+      showErrorAppSnackBar(msg);
     } finally {
       setPaying(false);
     }

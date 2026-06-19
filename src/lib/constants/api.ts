@@ -20,6 +20,8 @@ export const API_ENDPOINTS = {
   timezoneUpdate: "/api/auth/timezone/update",
   /** `GET` / `PUT` — chat history retention flag */
   maintainHistory: "/api/auth/maintain_history",
+  featureDiscoveryStatus: "/api/auth/feature-discovery",
+  featureDiscoveryDismiss: "/api/auth/feature-discovery/dismiss",
 
   // --- Profile — `api/endpoints/profile.py`, same `/auth` prefix ---
   profile: "/api/auth/profile",

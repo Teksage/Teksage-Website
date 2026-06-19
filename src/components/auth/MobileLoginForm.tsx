@@ -17,6 +17,11 @@ import {
   MOBILE_INPUT_MAX_DIGITS,
 } from "@/lib/constants";
 import { http } from "@/lib/services/http";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { MobileLoginFormProps } from "@/types";
 
 export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
@@ -49,9 +54,11 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
         mobile_number: mobile,
         country_code: countryCode.replace("+", ""),
       });
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
       onOtpSent(mobile, countryCode);
     } catch {
       setError(LOGIN_MOBILE_FORM.sendOtpError);
+      showErrorAppSnackBar(LOGIN_MOBILE_FORM.sendOtpError);
     } finally {
       setIsLoading(false);
     }

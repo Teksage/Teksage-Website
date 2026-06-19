@@ -8,6 +8,11 @@ import {
   SETTINGS_LANGUAGE_COPY,
 } from "@/lib/constants/settings-language";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import { languageCodeFromLocale } from "@/lib/i18n";
 import type { AppLanguageCode } from "@/types/settings";
 import { cn } from "@/lib/utils";
@@ -30,8 +35,10 @@ export function SettingsLanguageView() {
     try {
       await changeLanguage(code);
       setSelected(code);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.languageUpdated);
     } catch {
       setError(SL.saveFailed);
+      showErrorAppSnackBar(SL.saveFailed);
     } finally {
       setBusy(false);
     }

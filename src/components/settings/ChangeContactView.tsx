@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { OTP_LENGTH, ROUTES, SETTINGS_CHANGE_CONTACT } from "@/lib/constants";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import { sendAuthenticatedOtp, verifyAuthenticatedOtp } from "@/lib/services/profile-verify";
 import { showErrorAppSnackBar, showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { useProfile } from "@/hooks/useProfile";
@@ -57,9 +58,12 @@ export function ChangeContactView() {
             }
       );
       setOtpSent(true);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.contactOtpSent, { position: "top" });
     } catch (error) {
       setIsError(true);
-      setFeedback(error instanceof Error ? error.message : "Could not send OTP.");
+      const msg = error instanceof Error ? error.message : "Could not send OTP.";
+      setFeedback(msg);
+      showErrorAppSnackBar(msg, { position: "top" });
     } finally {
       setSending(false);
     }

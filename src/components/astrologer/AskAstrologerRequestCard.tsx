@@ -5,6 +5,8 @@ import { AskAnswerVoiceInput } from "@/components/astrologer/AskAnswerVoiceInput
 import { AskRequestCustomerSection } from "@/components/astrologer/AskRequestCustomerSection";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
 import { submitAskAnswer } from "@/lib/services/astrologer-ask-requests";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import {
   ASK_ASTROLOGER_LAYOUT,
   ASK_ASTROLOGER_SCREEN,
@@ -48,6 +50,7 @@ export function AskAstrologerRequestCard({
     setError(null);
     try {
       await submitAskAnswer(req.id, answerText || null, voiceFile, voiceDurationSec);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.answerSubmitted);
       onAnswered();
     } catch {
       setError(ASK_ASTROLOGER_SCREEN.astrologerSubmitFailed);

@@ -16,7 +16,11 @@ export interface RawProfileResponse {
   chat_languages?: string | null;
   rashi?: string | null;
   nakshatra?: string | null;
-  subscription?: { plan_status?: string | null } | null;
+  subscription?: {
+    plan_status?: string | null;
+    subscription_end_date?: string | null;
+  } | null;
+  plan_details?: Record<string, unknown> | null;
   user_type?: string | null;
   app_language?: string | null;
 }
@@ -32,8 +36,25 @@ export function mapRawProfileToUserProfile(raw: RawProfileResponse): UserProfile
 
   let isPremium = false;
   const sub = raw.subscription;
+  const hasPlanDetails =
+    raw.plan_details != null && typeof raw.plan_details === "object";
   if (sub && typeof sub === "object") {
-    isPremium = (sub.plan_status ?? "").toLowerCase().trim() === "active";
+    const status = (sub.plan_status ?? "").toLowerCase().trim();
+    if (status === "active") {
+      isPremium = true;
+    } else if (
+      status !== "expired" &&
+      status !== "upgraded" &&
+      hasPlanDetails
+    ) {
+      if (sub.subscription_end_date) {
+        const end = new Date(sub.subscription_end_date);
+        end.setHours(23, 59, 59, 999);
+        isPremium = end.getTime() >= Date.now();
+      } else {
+        isPremium = true;
+      }
+    }
   }
 
   const dob = raw.date_of_birth?.includes("T")

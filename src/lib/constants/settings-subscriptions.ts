@@ -30,6 +30,11 @@ export const SETTINGS_SUBSCRIPTIONS_COPY = {
   processing: "Processing…",
   paymentFailed: "Payment failed. Please try again.",
   paymentSuccess: "Subscription activated. Enjoy premium features!",
+  paymentSuccessDialogTitle: "Payment Successful",
+  paymentSuccessDialogConfirm: "OK",
+  paymentActivating: "Activating your premium plan…",
+  activatingPending:
+    "Payment received. Premium is activating — check Subscriptions in a moment.",
   activating:
     "Payment received. Activating your premium plan… refresh in a moment if this stays.",
   noPlans: "No plans available for your region.",

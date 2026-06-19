@@ -52,5 +52,5 @@ export const CONSULTATION_ASTRO_CARD = {
   priceUnit: "text-lg font-semibold text-[var(--color-consult-user-text)]",
   priceSuffix: "text-sm font-semibold text-[var(--color-brand-black)]/30",
   bookBtn:
-    "w-full rounded-full bg-[var(--color-brand-primary)] py-1.5 text-center text-sm font-semibold text-white",
+    "w-full rounded-full bg-[var(--color-consult-user-text)] py-1.5 text-center text-sm font-semibold text-white",
 } as const;

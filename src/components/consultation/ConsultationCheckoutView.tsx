@@ -48,6 +48,11 @@ import {
 } from "@/lib/consultation-pricing";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { ConsultationBookingDraft, ConsultationCouponResult } from "@/types/consultation";
 import type { UserProfile } from "@/types";
 import { isAxiosError } from "axios";
@@ -180,34 +185,42 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         orderId: order.id,
         prefill: { email: user?.email ?? undefined, contact: user?.mobile ?? undefined },
         onSuccess: async (response) => {
-          const verified = await verifyConsultationPayment({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          });
-          const ev = verified.data;
-          if (ev?.id) {
-            writeConsultationSummary({
-              eventId: ev.id,
-              eventLink: ev.event_link ?? null,
-              startDatetime: ev.start_datetime ?? booking.slotStart,
-              endDatetime: ev.end_datetime ?? booking.slotEnd,
-              categories: ev.category ?? booking.categories,
-              languages: ev.languages ?? booking.languages,
-              consultationFee: Number(ev.consultation_fee ?? totals.final_price),
-              currency: ev.currency ?? currency,
-              astrologerName: booking.astrologerName,
-              astrologerPicture: booking.astrologerPicture,
+          try {
+            const verified = await verifyConsultationPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
             });
+            const ev = verified.data;
+            if (ev?.id) {
+              writeConsultationSummary({
+                eventId: ev.id,
+                eventLink: ev.event_link ?? null,
+                startDatetime: ev.start_datetime ?? booking.slotStart,
+                endDatetime: ev.end_datetime ?? booking.slotEnd,
+                categories: ev.category ?? booking.categories,
+                languages: ev.languages ?? booking.languages,
+                consultationFee: Number(ev.consultation_fee ?? totals.final_price),
+                currency: ev.currency ?? currency,
+                astrologerName: booking.astrologerName,
+                astrologerPicture: booking.astrologerPicture,
+              });
+            }
+            clearConsultationDraft();
+            showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.paymentSuccess);
+            router.push(ROUTES.consultationSummary);
+          } catch {
+            showErrorAppSnackBar(APP_SNACKBAR_MESSAGES.paymentFailed);
+            setBusy(false);
           }
-          clearConsultationDraft();
-          router.push(ROUTES.consultationSummary);
         },
         onDismiss: () => setBusy(false),
         onFailure: (message) => {
           const hint =
             currency === "USD" ? ` ${CC.paymentUsdHint}` : "";
-          setError(`${message || CC.paymentFailed}${hint}`);
+          const failMsg = `${message || CC.paymentFailed}${hint}`;
+          setError(failMsg);
+          showErrorAppSnackBar(failMsg);
           setBusy(false);
         },
       });

@@ -56,6 +56,7 @@ export * from "./chat-assets";
 export * from "./notifications-screen";
 export * from "./settings-change-contact";
 export * from "./auth-http";
+export * from "./feature-discovery";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";

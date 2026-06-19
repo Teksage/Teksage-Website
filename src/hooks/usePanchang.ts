@@ -9,6 +9,11 @@ import {
   fetchPanchang,
   fetchPanchangSharePdf,
 } from "@/lib/services/panchang";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { PanchangPayload } from "@/types";
 
 export function usePanchang() {
@@ -49,13 +54,18 @@ export function usePanchang() {
 
   async function sharePdf(): Promise<void> {
     if (!data?.panchangId) return;
-    const blob = await fetchPanchangSharePdf(data.panchangId);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = DOWNLOAD_FILENAMES.panchangPdf;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const blob = await fetchPanchangSharePdf(data.panchangId);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = DOWNLOAD_FILENAMES.panchangPdf;
+      a.click();
+      URL.revokeObjectURL(url);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.downloadSuccess);
+    } catch {
+      showErrorAppSnackBar(P.sharePdfError);
+    }
   }
 
   return {

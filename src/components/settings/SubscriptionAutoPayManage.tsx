@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import { SETTINGS_SUBSCRIPTIONS_AUTO_PAY } from "@/lib/constants/settings-subscriptions";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import { cn } from "@/lib/utils";
 
 type SubscriptionAutoPayManageProps = {
@@ -38,8 +43,10 @@ export function SubscriptionAutoPayManage({
     setError(null);
     try {
       await onCancel();
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.autoRenewCancelled);
     } catch {
       setError(copy.cancelFailed);
+      showErrorAppSnackBar(copy.cancelFailed);
     } finally {
       setBusy(false);
     }

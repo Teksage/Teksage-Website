@@ -9,6 +9,11 @@ import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { LOGIN_EMAIL_FORM, LOGIN_EMAIL_REGEX } from "@/lib/constants";
 import { http } from "@/lib/services/http";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { EmailLoginFormProps } from "@/types";
 
 export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
@@ -37,9 +42,11 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
     setError(null);
     try {
       await http.post(API_ENDPOINTS.sendOtp, { email: email.trim() });
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
       onOtpSent(email.trim());
     } catch {
       setError(LOGIN_EMAIL_FORM.sendOtpError);
+      showErrorAppSnackBar(LOGIN_EMAIL_FORM.sendOtpError);
     } finally {
       setIsLoading(false);
     }
