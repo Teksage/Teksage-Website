@@ -35,6 +35,8 @@ export interface ProfileLocationFieldProps {
   onBlurCommit?: () => void;
   hasError?: boolean;
   errorMessage?: string;
+  /** Return false to block focus (e.g. premium gate). */
+  onFocusAttempt?: () => boolean;
 }
 
 export interface ProfileDetailsFormProps {
@@ -69,6 +71,8 @@ export interface ProfileFieldProps {
   errorMessage?: string;
   className?: string;
   onBlurCommit?: () => void;
+  /** Return false to block focus (e.g. premium gate). */
+  onFocusAttempt?: () => boolean;
 }
 
 export interface ProfilePhoneRowProps {

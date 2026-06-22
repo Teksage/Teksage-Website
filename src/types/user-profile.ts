@@ -24,6 +24,11 @@ export interface UserProfile {
   avatarUrl?: string;
   isPremium: boolean;
   /**
+   * Backend `is_profile_updated`. When false, birth fields are editable without premium
+   * (first-time profile completion — mirrors Flutter `ProfilePage(isProfileUpdated: false)`).
+   */
+  isProfileUpdated?: boolean;
+  /**
    * Backend `user_type` (e.g. `customer`, `astrologer`). When missing, web treats user as customer for home chrome.
    * Mirrors Flutter `saveUserType(result['user_type'] == 'customer')` used for consultation banner vs astrologer flow.
    */

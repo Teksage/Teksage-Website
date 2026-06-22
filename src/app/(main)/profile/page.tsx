@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { ProfileDetailsForm } from "@/components/settings/ProfileDetailsForm";
@@ -25,6 +25,12 @@ export default function ProfilePage() {
   const { user, isLoading, isSaving, error, saveProfile, refetchProfile } =
     useProfile();
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (user?.isProfileUpdated === false) {
+      setIsEditing(true);
+    }
+  }, [user?.isProfileUpdated]);
 
   if (!user && !isLoading) {
     return (
@@ -53,7 +59,7 @@ export default function ProfilePage() {
         onBackClick={() => router.back()}
         className={PAGE_SHELL.contentLayer}
         action={
-          user && !isEditing ? (
+          user && !isEditing && user.isProfileUpdated !== false ? (
             <button
               type="button"
               onClick={() => setIsEditing(true)}

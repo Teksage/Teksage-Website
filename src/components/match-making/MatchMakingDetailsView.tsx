@@ -12,6 +12,8 @@ import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
 import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { cn } from "@/lib/utils";
+import { DOWNLOAD_FILENAMES } from "@/lib/constants/downloads";
+import { downloadMatchMakingPdf } from "@/lib/services/match-making";
 import { http } from "@/lib/services/http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { parseCompatibilityGet } from "@/lib/prediction-api-parse";
@@ -24,6 +26,7 @@ export function MatchMakingDetailsView() {
   const { isAuthenticated } = useAuthStore();
   const [existing, setExisting] = useState<MatchMakingExisting | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pdfBusy, setPdfBusy] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -45,6 +48,17 @@ export function MatchMakingDetailsView() {
       c = true;
     };
   }, [isAuthenticated]);
+
+  function handleDownloadPdf() {
+    if (!existing?.matchMakingId) return;
+    const boy = existing.boyName?.trim() || "Partner1";
+    const girl = existing.girlName?.trim() || "Partner2";
+    const filename = `${boy} & ${girl}_${DOWNLOAD_FILENAMES.matchMakingPdf}`;
+    setPdfBusy(true);
+    void downloadMatchMakingPdf(existing.matchMakingId, filename).finally(() =>
+      setPdfBusy(false)
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -85,6 +99,8 @@ export function MatchMakingDetailsView() {
           onBackClick={() => router.back()}
           onRegenerate={() => router.push(ROUTES.matchmaking)}
           onExpertConnect={() => router.push(ROUTES.consultation)}
+          onDownloadPdf={handleDownloadPdf}
+          pdfBusy={pdfBusy}
         />
       ) : (
         <MatchMakingShell className="min-h-dvh">{null}</MatchMakingShell>

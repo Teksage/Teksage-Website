@@ -16,6 +16,7 @@ import { fetchPredictionDetail, isPredictionError } from "@/lib/services/predict
 import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import { PAGE_SHELL, ROUTES } from "@/lib/constants";
 import { LoginPromptButton } from "@/components/common/LoginPromptButton";
+import { PredictionPremiumGate } from "@/components/predictions/PredictionPremiumGate";
 import { PredictionProfilePrompt } from "@/components/predictions/PredictionProfilePrompt";
 import { isPredictionProfileIncompleteMessage } from "@/lib/prediction-request-error";
 import { cn } from "@/lib/utils";
@@ -118,16 +119,20 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
 
   if (kind === "yearly") {
     return (
-      <div className={cn(PAGE_SHELL.column, PAGE_SHELL.flutterFullBleed, "w-full min-w-0")}>
-        <YearlyPredictionBody onBackClick={() => router.back()} />
-      </div>
+      <PredictionPremiumGate onBack={() => router.back()}>
+        <div className={cn(PAGE_SHELL.column, PAGE_SHELL.flutterFullBleed, "w-full min-w-0")}>
+          <YearlyPredictionBody onBackClick={() => router.back()} />
+        </div>
+      </PredictionPremiumGate>
     );
   }
   if (kind === "life") {
     return (
-      <div className={cn(PAGE_SHELL.column, PAGE_SHELL.flutterFullBleed, "w-full min-w-0")}>
-        <LifePredictionBody onBackClick={() => router.back()} />
-      </div>
+      <PredictionPremiumGate onBack={() => router.back()}>
+        <div className={cn(PAGE_SHELL.column, PAGE_SHELL.flutterFullBleed, "w-full min-w-0")}>
+          <LifePredictionBody onBackClick={() => router.back()} />
+        </div>
+      </PredictionPremiumGate>
     );
   }
 

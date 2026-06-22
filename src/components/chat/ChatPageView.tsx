@@ -12,6 +12,8 @@ import { ChatMessageList } from "@/components/chat/ChatMessageList";
 import { ChatPreferenceBar } from "@/components/chat/ChatPreferenceBar";
 import { ChatRelatedQueries } from "@/components/chat/ChatRelatedQueries";
 import { ChatStyleOnboarding } from "@/components/chat/ChatStyleOnboarding";
+import { ChatSubscribeStrip } from "@/components/chat/ChatSubscribeStrip";
+import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
@@ -26,6 +28,7 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
   const [composerPlaceholder, setComposerPlaceholder] = useState<string>(
     CS.composerPlaceholder
   );
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
 
   const prefs = useChatPreferences();
   const {
@@ -39,6 +42,11 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
     showBanner,
     userInitials,
     canSendMore,
+    isPrime,
+    messageCount,
+    maintainHistory,
+    subscribeMessage,
+    planStatus,
     sessionReady,
     wsConnected,
     chatUnavailableReason,
@@ -152,7 +160,13 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
           {embedHeader ?? <ChatEmbedHeader />}
         </div>
       ) : (
-        <ChatAppBar />
+        <ChatAppBar
+          isPremium={isPrime}
+          messageCount={messageCount}
+          maintainHistory={maintainHistory}
+          planStatus={planStatus}
+          onToast={showToast}
+        />
       )}
       {embedded ? null : <ChatConsultStrip />}
 
@@ -205,27 +219,41 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
           />
         ) : null}
 
-        <ChatComposer
-          value={input}
-          onChange={(value) => {
-            noteVoiceHybridMode();
-            setInput(value);
-          }}
-          onSend={() => void sendQuery(input)}
-          disabled={!enableInput || !sessionReady || voice.isTranscribing}
-          placeholder={composerPlaceholder}
-          onMicPress={voice.toggleRecording}
-          isRecording={voice.isRecording}
-          isTranscribing={voice.isTranscribing}
-          recordingElapsedSec={voice.elapsedSec}
-          recordingAmplitudes={voice.amplitudes}
-          onCancelRecording={voice.cancelRecording}
-          onStopRecording={voice.stopRecording}
-          micDisabled={!enableInput || !sessionReady}
-          preferenceBar={preferenceBar}
-          embedded={embedded}
-        />
+        {sessionReady && canSendMore ? (
+          <ChatComposer
+            value={input}
+            onChange={(value) => {
+              noteVoiceHybridMode();
+              setInput(value);
+            }}
+            onSend={() => void sendQuery(input)}
+            disabled={!enableInput || !sessionReady || voice.isTranscribing}
+            placeholder={composerPlaceholder}
+            onMicPress={voice.toggleRecording}
+            isRecording={voice.isRecording}
+            isTranscribing={voice.isTranscribing}
+            recordingElapsedSec={voice.elapsedSec}
+            recordingAmplitudes={voice.amplitudes}
+            onCancelRecording={voice.cancelRecording}
+            onStopRecording={voice.stopRecording}
+            micDisabled={!enableInput || !sessionReady}
+            preferenceBar={preferenceBar}
+            embedded={embedded}
+          />
+        ) : sessionReady ? (
+          <ChatSubscribeStrip
+            message={subscribeMessage}
+            onPlansClick={() => setSubscribeOpen(true)}
+          />
+        ) : null}
       </div>
+      <SubscribePromptDialog
+        open={subscribeOpen}
+        onClose={() => setSubscribeOpen(false)}
+        planStatus={
+          planStatus.trim().toLowerCase() === "expired" ? "expired" : "default"
+        }
+      />
       <LoadingOverlay open={!sessionReady} />
     </div>
   );

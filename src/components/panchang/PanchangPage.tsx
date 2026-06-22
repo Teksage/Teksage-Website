@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
@@ -21,7 +22,9 @@ import { usePanchang } from "@/hooks/usePanchang";
 /** Mirrors Flutter `PanchangPage` + `PanchangSubscriptionCheckPage` (premium gate). */
 export function PanchangPage() {
   const P = useI18nConstants(PANCHANG_SCREEN);
-  const { isAuthenticated, isPremium, data, isLoading, error, reload } = usePanchang();
+  const { isAuthenticated, isPremium, data, isLoading, error, reload, sharePdf } =
+    usePanchang();
+  const [pdfBusy, setPdfBusy] = useState(false);
 
   const showPersonalizedShell =
     isAuthenticated && isPremium && Boolean(data) && !isLoading && !error;
@@ -48,7 +51,14 @@ export function PanchangPage() {
       ) : null}
 
       {showPersonalizedShell && data ? (
-        <PanchangDetailView panchang={data.panchang} />
+        <PanchangDetailView
+          panchang={data.panchang}
+          pdfBusy={pdfBusy}
+          onDownloadPdf={() => {
+            setPdfBusy(true);
+            void sharePdf().finally(() => setPdfBusy(false));
+          }}
+        />
       ) : (
         <div
           className={cn(

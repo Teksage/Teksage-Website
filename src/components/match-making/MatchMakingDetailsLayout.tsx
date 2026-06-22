@@ -20,6 +20,8 @@ export function MatchMakingDetailsLayout({
   onBackClick,
   onRegenerate,
   onExpertConnect,
+  onDownloadPdf,
+  pdfBusy = false,
 }: MatchMakingDetailsLayoutProps) {
   const MM = useI18nConstants(MATCH_MAKING_SCREEN);
   const kutas = data.result.kutas ?? [];
@@ -63,6 +65,16 @@ export function MatchMakingDetailsLayout({
             </article>
           ) : null}
           <div className={cn("hidden lg:flex", PREDICTION_DESKTOP_LAYOUT.sideBySideCtaRow)}>
+            {onDownloadPdf ? (
+              <button
+                type="button"
+                disabled={pdfBusy}
+                onClick={onDownloadPdf}
+                className="flex flex-1 items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)]"
+              >
+                {pdfBusy ? "…" : MM.downloadPdfCta}
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={onRegenerate}
@@ -82,7 +94,12 @@ export function MatchMakingDetailsLayout({
           </div>
         </div>
 
-        <MatchMakingDetailsFab onRegenerate={onRegenerate} onExpertConnect={onExpertConnect} />
+        <MatchMakingDetailsFab
+          onRegenerate={onRegenerate}
+          onExpertConnect={onExpertConnect}
+          onDownloadPdf={onDownloadPdf}
+          pdfBusy={pdfBusy}
+        />
       </div>
     </MatchMakingShell>
   );

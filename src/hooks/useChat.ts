@@ -19,6 +19,7 @@ import {
 } from "@/lib/services/chat";
 import { ChatWebSocketClient } from "@/lib/services/chat-websocket-client";
 import { fetchProfile } from "@/lib/services/profile";
+import { fetchProfileSettings } from "@/lib/services/settings-profile";
 import { useChatStream } from "@/hooks/useChatStream";
 import type { ChatMessage } from "@/types/chat";
 
@@ -40,6 +41,8 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
   const [userInitials, setUserInitials] = useState("AP");
   const [isPrime, setIsPrime] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
+  const [maintainHistory, setMaintainHistory] = useState(false);
+  const [planStatus, setPlanStatus] = useState("");
   const [chatLanguage, setChatLanguage] = useState<string>(CHAT_DEFAULTS.language);
   const [sessionReady, setSessionReady] = useState(false);
   const [wsConnected, setWsConnected] = useState(false);
@@ -226,10 +229,11 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
 
     async function boot() {
       try {
-        const [profile, pref, history] = await Promise.all([
+        const [profile, pref, history, settings] = await Promise.all([
           fetchProfile(),
           fetchChatPreference(),
           fetchChatHistory(),
+          fetchProfileSettings(),
         ]);
         if (cancelled) return;
 
@@ -239,6 +243,8 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         setChatLanguage(profile.chatLanguages?.toLowerCase() || CHAT_DEFAULTS.language);
         setIsPrime(pref.isPrimeCustomer);
         setMessageCount(pref.chatCountLast7Days);
+        setMaintainHistory(pref.maintainHistory);
+        setPlanStatus(settings.subscription?.planStatus ?? "");
         if (history.length > 0) {
           setMessages(historyToChatMessages(history));
           setShowBanner(false);
@@ -279,6 +285,11 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     };
   }, [CS.bootError, CS.wsConnectError, enabled, resetComposerAfterSendFailure]);
 
+  const subscribeMessage =
+    planStatus.trim().toLowerCase() === "expired"
+      ? CS.subscribeExpired
+      : CS.subscribeLimit;
+
   return {
     messages,
     input,
@@ -290,6 +301,11 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     showBanner,
     userInitials,
     canSendMore,
+    isPrime,
+    messageCount,
+    maintainHistory,
+    subscribeMessage,
+    planStatus,
     sessionReady,
     wsConnected,
     chatUnavailableReason,

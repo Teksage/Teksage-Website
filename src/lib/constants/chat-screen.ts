@@ -26,6 +26,14 @@ export const CHAT_SCREEN = {
   wsProfileIncomplete:
     "Complete your birth details in Profile to use AI chat.",
   connecting: "Connecting…",
+  downloadChat: "Download Chat",
+  sendToMail: "Send to Mail",
+  chatDownloadSuccess: "Chat downloaded successfully",
+  mailSentSuccess: "Mail sent successfully",
+  chatExportEmpty:
+    "Your astrological insights haven't begun. Start a chat to unlock the stars!",
+  chatExportFailed: "Could not complete this action. Please try again.",
+  chatMenuAria: "Chat actions",
   consultBannerTitle: "Consult Astrologer",
   styleLabel: "Explanatory",
   avatarLabel: "The Seeker",

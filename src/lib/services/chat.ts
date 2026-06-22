@@ -50,10 +50,19 @@ export async function fetchRelatedQueries(query: string): Promise<string[]> {
 }
 
 export async function downloadChatPdf(maintainHistory: boolean): Promise<Blob> {
-  const { data } = await http.post<Blob>(
+  const { data } = await http.get<Blob>(API_ENDPOINTS.downloadChatPdf, {
+    params: { maintain_history: maintainHistory },
+    responseType: "blob",
+  });
+  return data;
+}
+
+export async function sendChatHistoryMail(
+  maintainHistory: boolean
+): Promise<{ message: string }> {
+  const { data } = await http.post<{ message: string }>(
     API_ENDPOINTS.chatHistoryDownload,
-    { maintain_history: maintainHistory },
-    { responseType: "blob" }
+    { maintain_history: maintainHistory }
   );
   return data;
 }

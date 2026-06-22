@@ -5,6 +5,8 @@ export type MatchMakingDetailsLayoutProps = {
   onBackClick: () => void;
   onRegenerate: () => void;
   onExpertConnect: () => void;
+  onDownloadPdf?: () => void;
+  pdfBusy?: boolean;
 };
 
 export type MatchMakingPartnerColumnProps = {

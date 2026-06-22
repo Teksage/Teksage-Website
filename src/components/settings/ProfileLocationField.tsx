@@ -21,6 +21,7 @@ export function ProfileLocationField({
   onBlurCommit,
   hasError,
   errorMessage,
+  onFocusAttempt,
 }: ProfileLocationFieldProps) {
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -131,6 +132,7 @@ export function ProfileLocationField({
           setOpen(true);
         }}
         onFocus={() => {
+          if (onFocusAttempt && !onFocusAttempt()) return;
           setOpen(true);
           scheduleSuggestions(value);
           syncMenuPos();

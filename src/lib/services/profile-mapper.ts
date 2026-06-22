@@ -23,9 +23,13 @@ export interface RawProfileResponse {
   plan_details?: Record<string, unknown> | null;
   user_type?: string | null;
   app_language?: string | null;
+  is_profile_updated?: boolean | null;
 }
 
-export function mapRawProfileToUserProfile(raw: RawProfileResponse): UserProfile {
+export function mapRawProfileToUserProfile(
+  raw: RawProfileResponse,
+  options?: { isProfileUpdated?: boolean }
+): UserProfile {
   const first = raw.first_name?.trim() ?? "";
   const last = raw.last_name?.trim() ?? "";
   const name =
@@ -86,6 +90,9 @@ export function mapRawProfileToUserProfile(raw: RawProfileResponse): UserProfile
     rashi: raw.rashi ?? undefined,
     nakshatra: raw.nakshatra ?? undefined,
     isPremium,
+    isProfileUpdated:
+      options?.isProfileUpdated ??
+      (raw.is_profile_updated != null ? Boolean(raw.is_profile_updated) : true),
     userType: raw.user_type?.trim() || undefined,
     language: raw.app_language?.trim().toLowerCase() || undefined,
   };

@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useI18nConstants } from "@/hooks/useT";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/common/Loader";
+import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { ProfileChatLanguageField } from "@/components/settings/ProfileChatLanguageField";
 import { ProfileField } from "@/components/settings/ProfileField";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
+import { usePremiumAccess } from "@/hooks/usePremiumAccess";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { useProfileRashiNakshatra } from "@/hooks/useProfileRashiNakshatra";
 import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
@@ -21,6 +24,8 @@ export function ProfileDetailsFields({
   onProfileRefresh,
 }: ProfileDetailsFieldsProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
+  const { hasPremiumAccess, planStatus } = usePremiumAccess();
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
   const {
     watch,
     setValue,
@@ -43,6 +48,15 @@ export function ProfileDetailsFields({
   });
 
   const touch = { shouldDirty: true as const };
+
+  function guardBirthEdit(): boolean {
+    if (!isEditing) return true;
+    // First-time profile save — Flutter skips premium gate when !isProfileUpdated
+    if (user.isProfileUpdated === false) return true;
+    if (hasPremiumAccess) return true;
+    setSubscribeOpen(true);
+    return false;
+  }
 
   return (
     <div className="flex flex-col gap-3.5">
@@ -110,6 +124,7 @@ export function ProfileDetailsFields({
         onChange={(v) => setValue("dateOfBirth", v, touch)}
         isEditable={isEditing}
         onBlurCommit={() => void refreshRashi()}
+        onFocusAttempt={guardBirthEdit}
         hasError={Boolean(errors.dateOfBirth)}
         errorMessage={errors.dateOfBirth?.message}
       />
@@ -122,6 +137,7 @@ export function ProfileDetailsFields({
         onChange={(v) => setValue("timeOfBirth", v, touch)}
         isEditable={isEditing}
         onBlurCommit={() => void refreshRashi()}
+        onFocusAttempt={guardBirthEdit}
         hasError={Boolean(errors.timeOfBirth)}
         errorMessage={errors.timeOfBirth?.message}
       />
@@ -138,6 +154,7 @@ export function ProfileDetailsFields({
           setValue("birthLocationFull", full, touch);
         }}
         onBlurCommit={() => void refreshRashi()}
+        onFocusAttempt={guardBirthEdit}
         hasError={Boolean(errors.placeOfBirth)}
         errorMessage={errors.placeOfBirth?.message}
       />
@@ -152,6 +169,7 @@ export function ProfileDetailsFields({
           setValue("preferredLocation", city, touch);
           setValue("preferredLocationFull", full, touch);
         }}
+        onFocusAttempt={guardBirthEdit}
         hasError={Boolean(errors.preferredLocation)}
         errorMessage={errors.preferredLocation?.message}
       />
@@ -197,6 +215,13 @@ export function ProfileDetailsFields({
           {isSaving ? <Loader variant="inline" size="sm" /> : PD.save}
         </Button>
       ) : null}
+      <SubscribePromptDialog
+        open={subscribeOpen}
+        onClose={() => setSubscribeOpen(false)}
+        planStatus={
+          planStatus.trim().toLowerCase() === "expired" ? "expired" : "default"
+        }
+      />
     </div>
   );
 }

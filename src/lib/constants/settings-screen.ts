@@ -50,14 +50,14 @@ export const SETTINGS_PRIMARY_LINKS: readonly SettingsPrimaryLink[] = [
     iconKey: "whatsapp",
     gateLogin: true,
   },
-  // P4 — Change email / mobile (hidden until product enables; route: ROUTES.settingsChangeContact)
-  // {
-  //   id: "change-contact",
-  //   label: "Change Email / Mobile",
-  //   href: ROUTES.settingsChangeContact,
-  //   iconKey: "profile",
-  //   gateLogin: true,
-  // },
+  // P4 — Change email / mobile
+  {
+    id: "change-contact",
+    label: "Change Email / Mobile",
+    href: ROUTES.settingsChangeContact,
+    iconKey: "profile",
+    gateLogin: true,
+  },
   {
     id: "language",
     label: "Language",
