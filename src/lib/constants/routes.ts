@@ -14,6 +14,8 @@ export const ROUTES = {
   settingsSubscriptionPayment: "/settings/subscriptions/payment",
   profile: "/profile",
   login: "/login",
+  welcome: "/welcome",
+  onboarding: "/onboarding",
   notifications: "/notifications",
   whatsappUpdates: "/whatsapp-updates",
   chat: "/chat",

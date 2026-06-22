@@ -68,4 +68,5 @@ export interface HoroscopeLoadedViewProps {
   data: HoroscopePayload;
   chartVariant: HoroscopeChartVariant;
   onChartVariantChange: (next: HoroscopeChartVariant) => void;
+  onDownloadPdf?: () => Promise<void>;
 }

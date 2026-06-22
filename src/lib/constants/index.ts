@@ -57,6 +57,7 @@ export * from "./notifications-screen";
 export * from "./settings-change-contact";
 export * from "./auth-http";
 export * from "./feature-discovery";
+export * from "./welcome-onboarding";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";
