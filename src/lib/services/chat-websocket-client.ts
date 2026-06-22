@@ -1,5 +1,5 @@
 import { buildChatWebSocketUrl } from "@/lib/chat-websocket-url";
-import { CHAT_WS_END_MARKER } from "@/lib/constants/chat-screen";
+import { CHAT_WS_END_MARKER, CHAT_WS_FATAL_PROFILE_CLOSE_CODES } from "@/lib/constants/chat-screen";
 import { STORAGE_KEYS } from "@/lib/constants";
 import { refreshAccessToken } from "@/lib/services/http";
 
@@ -121,12 +121,20 @@ export class ChatWebSocketClient {
             );
           }
           if (this.intentionalClose) return;
-          if (event.code === 1008 || event.code === 4003) {
-            try {
-              token = await refreshAccessToken();
-              await this.openSocket();
-            } catch (err) {
-              this.handlers?.onError?.(err);
+          if (
+            event.code === 1008 ||
+            event.code === 4003 ||
+            CHAT_WS_FATAL_PROFILE_CLOSE_CODES.includes(
+              event.code as (typeof CHAT_WS_FATAL_PROFILE_CLOSE_CODES)[number]
+            )
+          ) {
+            if (event.code === 1008 || event.code === 4003) {
+              try {
+                token = await refreshAccessToken();
+                await this.openSocket();
+              } catch (err) {
+                this.handlers?.onError?.(err);
+              }
             }
             return;
           }

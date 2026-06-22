@@ -9,8 +9,10 @@ import {
   CHAT_FREE_MESSAGE_LIMIT,
   CHAT_SCREEN,
   CHAT_WS_CONNECT_TIMEOUT_MS,
+  CHAT_WS_FATAL_PROFILE_CLOSE_CODES,
 } from "@/lib/constants/chat-screen";
 import { historyToChatMessages, newChatMessageId, userInitialsFromProfile } from "@/lib/chat-helpers";
+import { isAstrologerHomeSession } from "@/lib/utils";
 import {
   fetchChatHistory,
   fetchChatPreference,
@@ -42,6 +44,8 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
   const [sessionReady, setSessionReady] = useState(false);
   const [wsConnected, setWsConnected] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [chatUnavailableReason, setChatUnavailableReason] = useState<string | null>(null);
+  const [chatStatusSuppressed, setChatStatusSuppressed] = useState(false);
 
   const clientRef = useRef<ChatWebSocketClient | null>(null);
   const messagesRef = useRef<ChatMessage[]>([]);
@@ -185,6 +189,14 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         onClose: (event: CloseEvent) => {
           if (!cancelled) {
             setWsConnected(false);
+            const isFatalProfile = CHAT_WS_FATAL_PROFILE_CLOSE_CODES.includes(
+              event.code as (typeof CHAT_WS_FATAL_PROFILE_CLOSE_CODES)[number]
+            );
+            if (isFatalProfile) {
+              setChatUnavailableReason(CS.wsProfileIncomplete);
+              client.disconnect();
+              return;
+            }
             const stillStreaming = streamRef.current.isStreamingActive();
             if (
               awaitingResponseRef.current &&
@@ -233,6 +245,17 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         }
         setSessionReady(true);
 
+        const profileIncomplete = !profile.dateOfBirth?.trim();
+        const isAstrologer = isAstrologerHomeSession(profile);
+        if (isAstrologer) {
+          setChatStatusSuppressed(true);
+          return;
+        }
+        if (profileIncomplete) {
+          setChatUnavailableReason(CS.wsProfileIncomplete);
+          return;
+        }
+
         try {
           await connectSocket();
         } catch {
@@ -269,6 +292,8 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     canSendMore,
     sessionReady,
     wsConnected,
+    chatUnavailableReason,
+    chatStatusSuppressed,
     toast,
     clearToast: () => setToast(null),
     showToast: (message: string) => setToast(message),

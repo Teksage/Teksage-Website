@@ -15,10 +15,12 @@ import {
 } from "@/lib/constants/consultation-routes";
 import { useAuthStore } from "@/store/auth.store";
 import { cn } from "@/lib/utils";
+import { useSyncAuthProfileRole } from "@/hooks/useSyncAuthProfileRole";
 
 export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  useSyncAuthProfileRole();
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);

@@ -41,6 +41,8 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
     canSendMore,
     sessionReady,
     wsConnected,
+    chatUnavailableReason,
+    chatStatusSuppressed,
     toast,
     clearToast,
     showToast,
@@ -176,7 +178,11 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
               ) : (
                 <div ref={listEndRef} className="h-px shrink-0" aria-hidden />
               )}
-              {sessionReady && !wsConnected ? (
+              {sessionReady && !chatStatusSuppressed && chatUnavailableReason ? (
+                <p className="px-5 py-2 text-center text-sm text-black/60">
+                  {chatUnavailableReason}
+                </p>
+              ) : sessionReady && !chatStatusSuppressed && !wsConnected ? (
                 <p className="px-5 py-2 text-center text-sm text-black/50">
                   {CS.connecting}
                 </p>
