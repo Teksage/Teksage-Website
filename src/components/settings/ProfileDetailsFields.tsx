@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/common/Loader";
 import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { ProfileChatLanguageField } from "@/components/settings/ProfileChatLanguageField";
+import { ProfileDateOfBirthField } from "@/components/settings/ProfileDateOfBirthField";
 import { ProfileField } from "@/components/settings/ProfileField";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
@@ -115,11 +116,9 @@ export function ProfileDetailsFields({
         errorMessage={errors.chatLanguages?.message}
       />
 
-      <ProfileField
-        appearance="profile"
+      <ProfileDateOfBirthField
         required
         label={PD.dateOfBirth}
-        type="date"
         value={form.dateOfBirth}
         onChange={(v) => setValue("dateOfBirth", v, touch)}
         isEditable={isEditing}

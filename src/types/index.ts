@@ -119,6 +119,8 @@ export type {
   ProfileDetailsFormProps,
   ProfileAvatarProps,
   ProfileFieldProps,
+  ProfileDateOfBirthFieldProps,
+  ProfileBirthDateCalendarProps,
   ProfilePhoneRowProps,
   ProfileLocationFieldProps,
   ChangeContactMode,

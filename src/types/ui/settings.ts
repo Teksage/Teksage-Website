@@ -56,6 +56,28 @@ export interface ProfileAvatarProps {
   className?: string;
 }
 
+export interface ProfileDateOfBirthFieldProps {
+  label: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  isEditable?: boolean;
+  required?: boolean;
+  hasError?: boolean;
+  errorMessage?: string;
+  className?: string;
+  onBlurCommit?: () => void;
+  /** Return false to block opening the picker (e.g. premium gate). */
+  onFocusAttempt?: () => boolean;
+}
+
+export interface ProfileBirthDateCalendarProps {
+  focusedMonth: Date;
+  selectedDate: Date;
+  today: Date;
+  onFocusedMonthChange: (month: Date) => void;
+  onSelectDate: (date: Date) => void;
+}
+
 export interface ProfileFieldProps {
   label: string;
   value?: string;
