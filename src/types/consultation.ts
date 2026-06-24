@@ -105,3 +105,22 @@ export interface ConsultationCompletedBooking {
   astrologerName: string;
   astrologerPicture?: string | null;
 }
+
+/** User consultation home — mirrors Flutter `AstroConsultationEventModel`. */
+export interface ConsultationUserEvent {
+  id: number;
+  astrologerId: number;
+  status: "confirmed" | "completed" | string;
+  startDatetime: string;
+  endDatetime: string;
+  eventLink?: string | null;
+  queriesAnswered?: boolean | null;
+  astrologerFirstName?: string | null;
+  astrologerLastName?: string | null;
+  astrologerPicture?: string | null;
+  categories: string[];
+  languages: string[];
+  consultationFee: number;
+  currency: string;
+  rating?: number | null;
+}

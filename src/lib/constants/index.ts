@@ -12,6 +12,7 @@ export * from "./nav-ui";
 export * from "./home-dashboard-sidebar";
 export * from "./desktop-sidebar-nav";
 export * from "./desktop-sidebar-panchang";
+export * from "./consultation-home";
 export * from "./consultation-screen";
 export * from "./consultation-languages";
 export * from "./consultation-listing";

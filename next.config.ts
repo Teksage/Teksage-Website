@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        // FastAPI routes defined with trailing slash — must not strip (POST 307 loses body)
+        source: "/api/payment/verify-payment",
+        destination: `${backendOrigin}/api/payment/verify-payment/`,
+      },
+      {
+        source: "/api/payment/verify-auto-payment",
+        destination: `${backendOrigin}/api/payment/verify-auto-payment/`,
+      },
+      {
         // Special case: register-token REQUIRES trailing slash (FastAPI route definition)
         source: "/api/auth/register-token",
         destination: `${backendOrigin}/api/auth/register-token/`,

@@ -150,6 +150,15 @@ export async function verifyConsultationPayment(body: {
   return data ?? {};
 }
 
+export async function fetchConsultationEvent(
+  eventId: number
+): Promise<ConsultationEventSummary | null> {
+  const { data } = await http.get<ConsultationEventSummary>(
+    `${API_ENDPOINTS.astroEvents}/${eventId}`
+  );
+  return data?.id ? data : null;
+}
+
 export async function fetchConsultationQuestions(
   eventId: number
 ): Promise<ConsultationQuestion[]> {

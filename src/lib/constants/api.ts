@@ -88,12 +88,12 @@ export const API_ENDPOINTS = {
   chatHistoryDownload: "/api/chat-history/download",
 
   // --- Payment — `payment.py`, mount `/payment` ---
-  paymentVerify: "/api/payment/verify-payment/",
+  paymentVerify: "/api/payment/verify-payment",
   paymentSubscribe: "/api/payment/subscribe",
   /** `POST` — Razorpay subscription (auto-renew); body `plan_id`, `currency`. */
   paymentSubscribeAuto: "/api/payment/subscribe-auto",
   /** `POST` — verify Razorpay subscription payment signature. */
-  paymentVerifyAutoPay: "/api/payment/verify-auto-payment/",
+  paymentVerifyAutoPay: "/api/payment/verify-auto-payment",
   /** `POST` — cancel active auto-renew subscription. */
   paymentCancelAutoPay: "/api/payment/cancel-auto-pay",
   paymentApplyCoupon: "/api/payment/apply-coupon",
