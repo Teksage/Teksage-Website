@@ -78,6 +78,7 @@ export const ASK_ASTROLOGER_SCREEN = {
   askIncludesVoice: "Includes voice answer",
   askAnswerAnsweredByPrefix: "Answered by:",
   askAnswerAnsweredBySeparator: ", ",
+  askAnswerViewProfileLink: "View profile",
   askAnswerDialogTitle: "Astrologer's Answer",
   askAnswerYourQuestion: "Your question",
   askAnswerLoadError: "Could not load answer. Please try again.",
