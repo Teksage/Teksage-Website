@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
 import { NOTIFICATIONS_UI } from "@/lib/constants/notifications-screen";
@@ -9,7 +8,6 @@ import {
   ASK_ASTROLOGER_UI,
 } from "@/lib/constants/chat-ask-astrologer";
 import {
-  buildAstrologerPublicProfileDisplayUrl,
   buildAstrologerPublicProfileUrl,
 } from "@/lib/astrologer-public-profile";
 import { formatDateTimeDMY } from "@/lib/format-datetime";
@@ -23,7 +21,6 @@ function AstrologerAnswerAttribution({
   profilePath: string;
 }) {
   const profileUrl = buildAstrologerPublicProfileUrl(profilePath);
-  const profileLabel = buildAstrologerPublicProfileDisplayUrl(profilePath);
   const linkClass = ASK_ASTROLOGER_UI.answerAttributionLink;
 
   return (
@@ -31,9 +28,9 @@ function AstrologerAnswerAttribution({
       <span>{ASK_ASTROLOGER_SCREEN.askAnswerAnsweredByPrefix} </span>
       <span>{name}</span>
       <span>{ASK_ASTROLOGER_SCREEN.askAnswerAnsweredBySeparator}</span>
-      <Link href={profileUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
-        {profileLabel}
-      </Link>
+      <a href={profileUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+        {ASK_ASTROLOGER_SCREEN.askAnswerViewProfileLink}
+      </a>
     </p>
   );
 }
