@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
+import { useHydratedLoggedIn } from "@/hooks/useHydratedLoggedIn";
 import { EmailLoginForm } from "@/components/auth/EmailLoginForm";
 import { LoginMethodTabs } from "@/components/auth/LoginMethodTabs";
 import { MobileLoginForm } from "@/components/auth/MobileLoginForm";
@@ -12,7 +13,7 @@ import { PageLoadingCenter } from "@/components/common/Loader";
 import { LoginBackButton, LoginOrSignupHeading } from "@/components/auth/LoginChrome";
 import { DEFAULT_COUNTRY_CALLING_CODE, LOGIN_SCREEN } from "@/lib/constants";
 import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
-import { hasClientAuthToken, reconcileAuthSession } from "@/lib/auth-session";
+import { reconcileAuthSession } from "@/lib/auth-session";
 import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
 import type { LoginMethodTab, LoginStep } from "@/types";
 import { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "@/types";
@@ -31,17 +32,17 @@ function LoginPageInner() {
     DEFAULT_COUNTRY_CALLING_CODE
   );
 
-  const hasSession = hasClientAuthToken();
+  const { ready, loggedIn } = useHydratedLoggedIn();
 
   useEffect(() => {
     reconcileAuthSession();
   }, []);
 
   useEffect(() => {
-    if (!hasSession) return;
+    if (!ready || !loggedIn) return;
     const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
     router.replace(dest);
-  }, [hasSession, router, searchParams]);
+  }, [ready, loggedIn, router, searchParams]);
 
   function handleEmailOtpSent(email: string) {
     setContact(email);
@@ -54,7 +55,7 @@ function LoginPageInner() {
     setStep("otp");
   }
 
-  if (hasSession) return <PageLoadingCenter className="min-h-dvh" />;
+  if (!ready || loggedIn) return <PageLoadingCenter className="min-h-dvh" />;
 
   if (step === "otp") {
     return (
@@ -98,7 +99,7 @@ function LoginPageInner() {
 
 export function LoginPageContent() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageLoadingCenter className="min-h-dvh" />}>
       <LoginPageInner />
     </Suspense>
   );

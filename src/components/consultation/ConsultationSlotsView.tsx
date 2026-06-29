@@ -13,6 +13,7 @@ import { toIsoDate } from "@/lib/consultation-calendar";
 import { consultationFeeForAstrologer } from "@/lib/consultation-currency";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { consultationAstrologerName } from "@/lib/consultation-display";
+import { ensureConsultationFilter } from "@/lib/consultation-default-filter";
 import { readConsultationFilter, writeConsultationDraft } from "@/lib/consultation-session";
 import { fetchAstrologerDetail, fetchAstrologerSlots } from "@/lib/services/consultation";
 import type { ConsultationSlot } from "@/types/consultation";
@@ -40,10 +41,7 @@ export function ConsultationSlotsView({ astrologerId }: ConsultationSlotsViewPro
   const isoDate = toIsoDate(selectedDate);
 
   useEffect(() => {
-    if (!readConsultationFilter()) {
-      router.replace(ROUTES.consultation);
-      return;
-    }
+    ensureConsultationFilter();
     let cancelled = false;
     (async () => {
       try {

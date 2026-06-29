@@ -1,4 +1,10 @@
+import type { ConsultationHubTab } from "@/lib/constants/consultation-routes";
 import type { ConsultationUserEvent } from "@/types/consultation";
+
+export interface ConsultationHubTabsProps {
+  activeTab: ConsultationHubTab;
+  onChange: (tab: ConsultationHubTab) => void;
+}
 
 export interface ConsultationMeetingsTabsProps {
   isUpcoming: boolean;
