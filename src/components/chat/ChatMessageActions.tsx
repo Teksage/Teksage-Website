@@ -30,18 +30,18 @@ export function ChatMessageActions({
   }
 
   return (
-    <div className={cn("mt-2 flex flex-nowrap items-stretch gap-2", className)}>
+    <div className={cn("mt-2 flex flex-wrap items-center gap-2", className)}>
       <button
         type="button"
         onClick={handleAskAstrologer}
-        className="min-w-0 flex-1 rounded-full border border-[var(--color-brand-primary)] px-2 py-1.5 text-center text-[10px] font-semibold leading-tight text-[var(--color-brand-primary)] transition-colors hover:bg-[var(--color-brand-primary)]/10 active:bg-[var(--color-brand-primary)]/20 sm:px-3 sm:text-xs"
+        className="inline-flex shrink-0 items-center justify-center rounded-full border border-[var(--color-brand-primary)] px-3 py-1.5 text-center text-[10px] font-semibold leading-tight text-[var(--color-brand-primary)] transition-colors hover:bg-[var(--color-brand-primary)]/10 active:bg-[var(--color-brand-primary)]/20 sm:text-xs"
       >
         {AA.askAstrologerLabel}
       </button>
       <button
         type="button"
         onClick={handleBookConsultation}
-        className="min-w-0 flex-1 rounded-full border border-black/20 px-2 py-1.5 text-center text-[10px] font-medium leading-tight text-black/70 transition-colors hover:border-black/40 hover:text-black active:bg-black/5 sm:px-3 sm:text-xs"
+        className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/20 px-3 py-1.5 text-center text-[10px] font-medium leading-tight text-black/70 transition-colors hover:border-black/40 hover:text-black active:bg-black/5 sm:text-xs"
       >
         {AA.bookConsultationLabel}
       </button>
