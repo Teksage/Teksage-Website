@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { ConsultationLanguageField } from "@/components/consultation/ConsultationLanguageField";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
 import { CONSULTATION_LANGUAGES } from "@/lib/constants";
@@ -13,25 +14,27 @@ export function AskAstrologerLanguagesContent({
   firstError,
   onPrimaryChange,
 }: AskAstrologerLanguagesContentProps) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+
   return (
     <>
       <div className={cn(CONSULTATION_BOOKING_LAYOUT.grayCard, ASK_ASTROLOGER_UI.languageQuestionCard)}>
         <p className={ASK_ASTROLOGER_UI.sectionLabel}>
-          {ASK_ASTROLOGER_SCREEN.checkoutYourQuestion}
+          {AA.checkoutYourQuestion}
         </p>
         <p className={cn(ASK_ASTROLOGER_UI.languageQuestionText, "mt-2")}>{userQuestion}</p>
       </div>
       <div className={ASK_ASTROLOGER_UI.languageIntro}>
         <h1 className={ASK_ASTROLOGER_UI.heading}>
-          {ASK_ASTROLOGER_SCREEN.languageHeading}
+          {AA.languageHeading}
         </h1>
         <p className={ASK_ASTROLOGER_UI.subtitle}>
-          {ASK_ASTROLOGER_SCREEN.languageSubtitle}
+          {AA.languageSubtitle}
         </p>
       </div>
       <div className={cn(CONSULTATION_BOOKING_LAYOUT.grayCard, ASK_ASTROLOGER_UI.languageFields)}>
         <ConsultationLanguageField
-          title={ASK_ASTROLOGER_SCREEN.languageFieldLabel}
+          title={AA.languageFieldLabel}
           value={primary}
           options={CONSULTATION_LANGUAGES}
           enabled
@@ -42,10 +45,10 @@ export function AskAstrologerLanguagesContent({
       </div>
       <div className={ASK_ASTROLOGER_UI.languageNotesList}>
         <p className={ASK_ASTROLOGER_UI.languageNotesTitle}>
-          {ASK_ASTROLOGER_SCREEN.languageNotesHeading}
+          {AA.languageNotesHeading}
         </p>
         <ul className="mt-2 list-disc space-y-2 pl-5">
-          {ASK_ASTROLOGER_SCREEN.languageNotes.map((note) => (
+          {AA.languageNotes.map((note) => (
             <li key={note} className={ASK_ASTROLOGER_UI.languageNotesItem}>
               {note}
             </li>

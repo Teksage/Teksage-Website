@@ -9,12 +9,14 @@ import {
   writeAskAstrologerFlow,
 } from "@/lib/ask-astrologer-session";
 import { ROUTES } from "@/lib/constants/routes";
+import { useI18nConstants } from "@/hooks/useT";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
 
 export default function AskAstrologerLanguagesPage() {
   const router = useRouter();
   const flow = useMemo(() => readAskAstrologerFlow(), []);
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
 
   const [primary, setPrimary] = useState("");
   const [firstError, setFirstError] = useState<string | null>(null);
@@ -32,7 +34,7 @@ export default function AskAstrologerLanguagesPage() {
 
   function onContinue() {
     if (!primary) {
-      setFirstError(ASK_ASTROLOGER_SCREEN.languageFieldError);
+      setFirstError(AA.languageFieldError);
       return;
     }
     if (!flowState.user_question || !flowState.ai_response) {
@@ -49,7 +51,7 @@ export default function AskAstrologerLanguagesPage() {
 
   return (
     <AskAstrologerShell
-      title={ASK_ASTROLOGER_SCREEN.languagePageTitle}
+      title={AA.languagePageTitle}
       onBack={() => router.back()}
       centered
       footer={
@@ -59,7 +61,7 @@ export default function AskAstrologerLanguagesPage() {
           onClick={onContinue}
           className={CONSULTATION_BOOKING_LAYOUT.payBtn}
         >
-          {ASK_ASTROLOGER_SCREEN.languageContinue}
+          {AA.languageContinue}
         </button>
       }
     >

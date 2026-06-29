@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { AskAstrologerCheckoutFees } from "@/components/ask-astrologer/AskAstrologerCheckoutFees";
@@ -17,28 +18,29 @@ export function AskAstrologerCheckoutContent({
   total,
   isINR,
 }: AskAstrologerCheckoutContentProps) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const languagesLabel = formatConsultationLanguageList(preferredLanguages);
 
   return (
     <>
-      <ConsultationBookingSectionDivider title={ASK_ASTROLOGER_SCREEN.checkoutQuestionSection} />
+      <ConsultationBookingSectionDivider title={AA.checkoutQuestionSection} />
       <div className={CONSULTATION_BOOKING_LAYOUT.grayCard}>
         <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>
           <ConsultationBookingDetailRow
-            label={ASK_ASTROLOGER_SCREEN.checkoutYourQuestion}
+            label={AA.checkoutYourQuestion}
             value={userQuestion}
           />
           <ConsultationBookingDetailRow
-            label={ASK_ASTROLOGER_SCREEN.checkoutLanguagesLabel}
+            label={AA.checkoutLanguagesLabel}
             value={languagesLabel}
           />
           <ConsultationBookingDetailRow
-            label={ASK_ASTROLOGER_SCREEN.checkoutTurnaroundLabel}
-            value={ASK_ASTROLOGER_SCREEN.checkoutTurnaroundValue}
+            label={AA.checkoutTurnaroundLabel}
+            value={AA.checkoutTurnaroundValue}
           />
         </div>
       </div>
-      <ConsultationBookingSectionDivider title={ASK_ASTROLOGER_SCREEN.checkoutPaymentSection} />
+      <ConsultationBookingSectionDivider title={AA.checkoutPaymentSection} />
       <AskAstrologerCheckoutFees
         pricing={pricing}
         currency={currency}

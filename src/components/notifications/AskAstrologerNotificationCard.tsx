@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { useI18nConstants } from "@/hooks/useT";
 import { ROUTES } from "@/lib/constants/routes";
 import {
   NOTIFICATIONS_TAB_CONSULTATION,
@@ -33,7 +34,9 @@ export function AskAstrologerNotificationCard({
   item: AskAstrologerNotificationItem;
 }) {
   const router = useRouter();
-  const statusLabel = ASK_NOTIFICATION_STATUS_LABEL[item.status] ?? item.status;
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+  const statusLabels = useI18nConstants(ASK_NOTIFICATION_STATUS_LABEL);
+  const statusLabel = statusLabels[item.status] ?? item.status;
   const statusColor =
     ASK_NOTIFICATION_STATUS_COLOR[item.status] ?? "bg-neutral-100 text-black/60";
   const isAnswered = item.status === "answered";
@@ -55,7 +58,7 @@ export function AskAstrologerNotificationCard({
         <div className={NOTIFICATIONS_UI.notificationContent}>
           <div className={NOTIFICATIONS_UI.notificationHeaderRow}>
             <span className={NOTIFICATIONS_UI.notificationSectionLabel}>
-              {ASK_ASTROLOGER_SCREEN.askCardLabel}
+              {AA.askCardLabel}
             </span>
             <span className={cn(ASK_ASTROLOGER_UI.statusBadge, statusColor, "shrink-0")}>
               {statusLabel}
@@ -71,13 +74,13 @@ export function AskAstrologerNotificationCard({
             {item.user_question}
           </p>
 
-          {!isAnswered ? (
+            {!isAnswered ? (
             <p className={cn(NOTIFICATIONS_UI.notificationMeta, "mt-1")}>
-              {ASK_ASTROLOGER_SCREEN.askSlaLabel}
+              {AA.askSlaLabel}
             </p>
           ) : item.answer_voice_url ? (
             <p className={cn(NOTIFICATIONS_UI.notificationMeta, "mt-1")}>
-              {ASK_ASTROLOGER_SCREEN.askIncludesVoice}
+              {AA.askIncludesVoice}
             </p>
           ) : null}
 
@@ -99,7 +102,7 @@ export function AskAstrologerNotificationCard({
                 }}
                 className={NOTIFICATIONS_UI.consultationMeetBtn}
               >
-                {ASK_ASTROLOGER_SCREEN.askViewAnswer}
+                {AA.askViewAnswer}
               </button>
             </div>
           ) : null}
