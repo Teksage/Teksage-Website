@@ -1,4 +1,5 @@
 import { categoriesForApi } from "@/lib/consultation-categories";
+import { writeConsultationFilter, readConsultationFilter } from "@/lib/consultation-session";
 import { CONSULTATION_CATEGORIES } from "@/lib/constants/consultation-screen";
 import type { ConsultationFilter } from "@/types/consultation";
 
@@ -10,4 +11,13 @@ export function defaultConsultationFilter(): ConsultationFilter {
     ),
     languages: ["english"],
   };
+}
+
+/** Ensures session filter exists — supports deep links such as `/consultation/astrologer/:id`. */
+export function ensureConsultationFilter(): ConsultationFilter {
+  const existing = readConsultationFilter();
+  if (existing) return existing;
+  const filter = defaultConsultationFilter();
+  writeConsultationFilter(filter);
+  return filter;
 }

@@ -10,6 +10,7 @@ import {
   readConsultationCategories,
   writeConsultationFilter,
 } from "@/lib/consultation-session";
+import { consultationHubPath } from "@/lib/constants/consultation-routes";
 import {
   CONSULTATION_LANGUAGES,
   CONSULTATION_LAYOUT,
@@ -56,7 +57,7 @@ export function ConsultationLanguageView() {
     }
     const languages = [first, second].filter(Boolean);
     writeConsultationFilter({ categories, languages });
-    router.push(ROUTES.consultationAstrologers);
+    router.push(consultationHubPath());
   }
 
   if (!categories?.length) return null;
