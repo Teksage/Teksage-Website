@@ -75,7 +75,7 @@ export default function HomePage() {
 
             <div
               className={cn(
-                "flex min-h-0 min-w-0",
+                "flex min-h-0 min-w-0 items-stretch",
                 HOME_LAYOUT.featureGridGap,
               )}
             >

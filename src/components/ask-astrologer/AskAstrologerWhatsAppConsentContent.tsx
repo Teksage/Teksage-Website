@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { WhatsAppUpdatesPhoneChoice } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneChoice";
 import { WhatsAppUpdatesPhoneGate } from "@/components/whatsapp-updates/WhatsAppUpdatesPhoneGate";
@@ -38,16 +39,18 @@ export function AskAstrologerWhatsAppConsentContent({
   verified,
   phoneChoiceProps,
 }: AskAstrologerWhatsAppConsentContentProps) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+
   return (
     <>
-      <ConsultationBookingSectionDivider title={ASK_ASTROLOGER_SCREEN.waConsentSection} />
+      <ConsultationBookingSectionDivider title={AA.waConsentSection} />
       <div className={ASK_ASTROLOGER_UI.languageIntro}>
-        <h1 className={ASK_ASTROLOGER_UI.heading}>{ASK_ASTROLOGER_SCREEN.waConsentHeading}</h1>
-        <p className={ASK_ASTROLOGER_UI.subtitle}>{ASK_ASTROLOGER_SCREEN.waConsentSubtitle}</p>
+        <h1 className={ASK_ASTROLOGER_UI.heading}>{AA.waConsentHeading}</h1>
+        <p className={ASK_ASTROLOGER_UI.subtitle}>{AA.waConsentSubtitle}</p>
       </div>
       <ul className={ASK_ASTROLOGER_UI.waConsentBenefits} aria-label="WhatsApp alert benefits">
-        <WaConsentBenefit text={ASK_ASTROLOGER_SCREEN.waConsentBenefitAnswer} />
-        <WaConsentBenefit text={ASK_ASTROLOGER_SCREEN.waConsentBenefitStatus} />
+        <WaConsentBenefit text={AA.waConsentBenefitAnswer} />
+        <WaConsentBenefit text={AA.waConsentBenefitStatus} />
       </ul>
       {!verified ? (
         <div className={ASK_ASTROLOGER_UI.waConsentPhoneCard}>

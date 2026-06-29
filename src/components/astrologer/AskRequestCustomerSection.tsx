@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18nConstants } from "@/hooks/useT";
 import { ASK_ASTROLOGER_SCREEN, ASK_ASTROLOGER_UI } from "@/lib/constants/chat-ask-astrologer";
 import {
   askRequestInitials,
@@ -7,6 +10,7 @@ import { AskRequestDetailField } from "@/components/astrologer/AskRequestDetailF
 import type { AskAstrologerRequest } from "@/types/ask-astrologer";
 
 export function AskRequestCustomerSection({ req }: { req: AskAstrologerRequest }) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const languages = formatAskRequestLanguages(req.preferred_languages);
 
   return (
@@ -20,7 +24,7 @@ export function AskRequestCustomerSection({ req }: { req: AskAstrologerRequest }
             {req.customer_name ?? "Client"}
           </p>
           <p className="mt-0.5 text-sm text-black/50">
-            {ASK_ASTROLOGER_SCREEN.astrologerCustomerSection}
+            {AA.astrologerCustomerSection}
           </p>
         </div>
       </div>
@@ -28,37 +32,37 @@ export function AskRequestCustomerSection({ req }: { req: AskAstrologerRequest }
       <div className={ASK_ASTROLOGER_UI.portalDetailGrid}>
         {req.date_of_birth ? (
           <AskRequestDetailField
-            label={ASK_ASTROLOGER_SCREEN.astrologerDetailDob}
+            label={AA.astrologerDetailDob}
             value={req.date_of_birth}
           />
         ) : null}
         {req.time_of_birth ? (
           <AskRequestDetailField
-            label={ASK_ASTROLOGER_SCREEN.astrologerDetailTob}
+            label={AA.astrologerDetailTob}
             value={req.time_of_birth}
           />
         ) : null}
         {req.place_of_birth ? (
           <AskRequestDetailField
-            label={ASK_ASTROLOGER_SCREEN.astrologerDetailPob}
+            label={AA.astrologerDetailPob}
             value={req.place_of_birth}
           />
         ) : null}
         {req.rashi ? (
           <AskRequestDetailField
-            label={ASK_ASTROLOGER_SCREEN.astrologerDetailRasi}
+            label={AA.astrologerDetailRasi}
             value={req.rashi}
           />
         ) : null}
         {req.nakshatra ? (
           <AskRequestDetailField
-            label={ASK_ASTROLOGER_SCREEN.astrologerDetailNakshatra}
+            label={AA.astrologerDetailNakshatra}
             value={req.nakshatra}
           />
         ) : null}
         {languages !== "—" ? (
           <AskRequestDetailField
-            label={ASK_ASTROLOGER_SCREEN.astrologerDetailLanguage}
+            label={AA.astrologerDetailLanguage}
             value={languages}
           />
         ) : null}

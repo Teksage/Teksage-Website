@@ -10,6 +10,7 @@ import { useWhatsAppConsent } from "@/hooks/useWhatsAppConsent";
 import { useWhatsAppConsentForm } from "@/hooks/useWhatsAppConsentForm";
 import { useAuthStore } from "@/store/auth.store";
 import { normalizePhoneParts } from "@/lib/phone-utils";
+import { useI18nConstants } from "@/hooks/useT";
 import { ROUTES } from "@/lib/constants/routes";
 import {
   ASK_ASTROLOGER_LAYOUT,
@@ -19,6 +20,7 @@ import type { WhatsAppConsentRequestPayload } from "@/types/whatsapp-updates";
 
 export default function AskAstrologerWhatsAppConsentPage() {
   const router = useRouter();
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const user = useAuthStore((s) => s.user);
   const { consent, loading, sending, requestConsent } = useWhatsAppConsent();
   const profile = normalizePhoneParts(user?.countryCode, user?.mobile);
@@ -36,7 +38,7 @@ export default function AskAstrologerWhatsAppConsentPage() {
 
   if (loading) {
     return (
-      <AskAstrologerShell title={ASK_ASTROLOGER_SCREEN.waConsentTitle} showBack={false}>
+      <AskAstrologerShell title={AA.waConsentTitle} showBack={false}>
         <PageLoadingCenter />
       </AskAstrologerShell>
     );
@@ -60,7 +62,7 @@ export default function AskAstrologerWhatsAppConsentPage() {
 
   return (
     <AskAstrologerShell
-      title={ASK_ASTROLOGER_SCREEN.waConsentTitle}
+      title={AA.waConsentTitle}
       onBack={() => router.back()}
       centered
       footer={
@@ -72,11 +74,7 @@ export default function AskAstrologerWhatsAppConsentPage() {
               onEnable={onSendClick}
               variant="flow"
               showStopNote={false}
-              ctaLabel={
-                sending
-                  ? ASK_ASTROLOGER_SCREEN.waConsentSending
-                  : ASK_ASTROLOGER_SCREEN.waConsentCta
-              }
+              ctaLabel={sending ? AA.waConsentSending : AA.waConsentCta}
             />
           ) : null}
           <button
@@ -84,7 +82,7 @@ export default function AskAstrologerWhatsAppConsentPage() {
             onClick={() => router.push(ROUTES.askAstrologerConfirmation)}
             className={ASK_ASTROLOGER_LAYOUT.skipLink}
           >
-            {ASK_ASTROLOGER_SCREEN.waConsentSkip}
+            {AA.waConsentSkip}
           </button>
         </>
       }

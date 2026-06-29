@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import {
   ASK_ASTROLOGER_SCREEN,
   ASK_ASTROLOGER_UI,
@@ -12,6 +13,7 @@ export function AskAnswerReadyDialog({
   onViewAnswer,
   onLater,
 }: AskAnswerReadyDialogProps) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   if (!open || !request) return null;
 
   return (
@@ -32,13 +34,13 @@ export function AskAnswerReadyDialog({
           ✓
         </div>
         <h2 id="answer-ready-title" className={ASK_ASTROLOGER_UI.answerReadyPopupTitle}>
-          {ASK_ASTROLOGER_SCREEN.answerReadyPopupTitle}
+          {AA.answerReadyPopupTitle}
         </h2>
         <p className={ASK_ASTROLOGER_UI.answerReadyPopupBody}>
-          {ASK_ASTROLOGER_SCREEN.answerReadyPopupBody}
+          {AA.answerReadyPopupBody}
         </p>
         <p className={ASK_ASTROLOGER_UI.answerReadyPopupHint}>
-          {ASK_ASTROLOGER_SCREEN.answerReadyPopupHint}
+          {AA.answerReadyPopupHint}
         </p>
         <p className={ASK_ASTROLOGER_UI.answerReadyPopupQuestion}>{request.user_question}</p>
         <div className={ASK_ASTROLOGER_UI.answerReadyPopupActions}>
@@ -47,14 +49,14 @@ export function AskAnswerReadyDialog({
             onClick={onLater}
             className={ASK_ASTROLOGER_UI.answerReadyPopupSecondaryBtn}
           >
-            {ASK_ASTROLOGER_SCREEN.answerReadyPopupLaterCta}
+            {AA.answerReadyPopupLaterCta}
           </button>
           <button
             type="button"
             onClick={onViewAnswer}
             className={ASK_ASTROLOGER_UI.answerReadyPopupPrimaryBtn}
           >
-            {ASK_ASTROLOGER_SCREEN.answerReadyPopupViewCta}
+            {AA.answerReadyPopupViewCta}
           </button>
         </div>
       </div>

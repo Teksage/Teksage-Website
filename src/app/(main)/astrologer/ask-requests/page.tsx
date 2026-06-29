@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -17,6 +18,7 @@ import type { AskAstrologerRequest } from "@/types/ask-astrologer";
 
 export default function AstrologerAskRequestsPage() {
   const router = useRouter();
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const [requests, setRequests] = useState<AskAstrologerRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,11 +30,11 @@ export default function AstrologerAskRequestsPage() {
       const data = await fetchAstrologerAskRequests();
       setRequests(data);
     } catch {
-      setError(ASK_ASTROLOGER_SCREEN.astrologerLoadFailed);
+      setError(AA.astrologerLoadFailed);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [AA]);
 
   useEffect(() => {
     void load();
@@ -41,13 +43,13 @@ export default function AstrologerAskRequestsPage() {
   return (
     <div className={ASK_ASTROLOGER_LAYOUT.page}>
       <AppHeader
-        title={ASK_ASTROLOGER_SCREEN.astrologerPageTitle}
+        title={AA.astrologerPageTitle}
         showBack
         onBackClick={() => router.push(ROUTES.astrologer)}
         blend
       />
       <div className={ASK_ASTROLOGER_UI.portalList}>
-        <p className={cnSubtitle}>{ASK_ASTROLOGER_SCREEN.astrologerPageSubtitle}</p>
+        <p className={ASK_ASTROLOGER_UI.subtitle}>{AA.astrologerPageSubtitle}</p>
         {loading ? (
           <PageLoadingCenter />
         ) : error ? (
@@ -56,7 +58,7 @@ export default function AstrologerAskRequestsPage() {
           </p>
         ) : requests.length === 0 ? (
           <EmptyState
-            title={ASK_ASTROLOGER_SCREEN.emptyAskRequests}
+            title={AA.emptyAskRequests}
             className="py-16"
           />
         ) : (
@@ -74,5 +76,3 @@ export default function AstrologerAskRequestsPage() {
     </div>
   );
 }
-
-const cnSubtitle = ASK_ASTROLOGER_UI.subtitle;

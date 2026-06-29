@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useI18nConstants } from "@/hooks/useT";
 import {
   CONSULTATION_BOOKING_ASSETS,
   CONSULTATION_BOOKING_LAYOUT,
@@ -17,23 +18,25 @@ export function AskAstrologerCheckoutFees({
   total,
   isINR,
 }: AskAstrologerCheckoutFeesProps) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+
   return (
     <div className="space-y-3">
       <div className={CONSULTATION_BOOKING_LAYOUT.feeRow}>
-        <span>{ASK_ASTROLOGER_SCREEN.checkoutFeeLabel}</span>
+        <span>{AA.checkoutFeeLabel}</span>
         <span>{formatConsultationFee(baseAmount, currency)}</span>
       </div>
       {isINR ? (
         <>
           <div className={CONSULTATION_BOOKING_LAYOUT.feeRow}>
             <span>
-              {ASK_ASTROLOGER_SCREEN.checkoutCgstLabel} ({pricing.cgst_percentage}%)
+              {AA.checkoutCgstLabel} ({pricing.cgst_percentage}%)
             </span>
             <span>{formatConsultationFee(pricing.cgst, currency)}</span>
           </div>
           <div className={CONSULTATION_BOOKING_LAYOUT.feeRow}>
             <span>
-              {ASK_ASTROLOGER_SCREEN.checkoutSgstLabel} ({pricing.sgst_percentage}%)
+              {AA.checkoutSgstLabel} ({pricing.sgst_percentage}%)
             </span>
             <span>{formatConsultationFee(pricing.sgst, currency)}</span>
           </div>
@@ -49,7 +52,7 @@ export function AskAstrologerCheckoutFees({
         aria-hidden
       />
       <div className={CONSULTATION_BOOKING_LAYOUT.feeTotalRow}>
-        <span>{ASK_ASTROLOGER_SCREEN.checkoutTotalLabel}</span>
+        <span>{AA.checkoutTotalLabel}</span>
         <span>{formatConsultationFee(total, currency)}</span>
       </div>
     </div>
