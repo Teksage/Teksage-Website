@@ -9,6 +9,8 @@ export const CONSULTATION_HOME_SCREEN = {
   findConsultTitle: "Find & Consult Astrologers",
   findConsultCount: "100+ Astrologers",
   findConsultHint: "Explore and find your perfect match",
+  tabAstrologer: "Astrologer",
+  tabMeeting: "Meeting",
   tabUpcoming: "Upcoming",
   tabCompleted: "Completed",
   emptyUpcoming: "You have no upcoming meetings at the moment.",
@@ -57,8 +59,11 @@ export const CONSULTATION_HOME_LAYOUT = {
   avatarStackItem: "absolute top-0 overflow-hidden rounded-full",
   findCount: "text-base font-semibold leading-snug text-[var(--color-brand-black)]",
   findHint: "text-sm font-medium leading-snug text-[var(--color-brand-black)]/60",
+  hubTabsWrap: "sticky top-0 z-30 bg-white px-4 pb-2 pt-4",
+  meetingTabsWrap: "bg-white px-4 pb-3 pt-2",
   tabsWrap: "sticky top-0 z-30 bg-white px-4 pb-3 pt-4",
   tabsRow: "flex items-center gap-2",
+  astrologerGrid: "grid grid-cols-2 gap-x-5 gap-y-2.5 pb-10 pt-2 xl:grid-cols-3",
   tab:
     "inline-flex items-center gap-2.5 rounded-full px-3 py-1.5 text-base font-semibold transition-colors",
   tabActive: "bg-[var(--color-consult-user-bg)] text-white",
@@ -68,10 +73,10 @@ export const CONSULTATION_HOME_LAYOUT = {
   tabBadgeActive: "bg-white text-[var(--color-consult-user-bg)]",
   tabBadgeInactive: "bg-[var(--color-consult-user-bg)] text-white",
   body: "flex-1 px-4 pb-10",
-  empty: "pt-12 text-center text-sm font-medium text-[var(--color-brand-black)]/50",
+  empty: "pt-12 text-center text-sm font-medium text-[var(--color-brand-black)]/50 ",
   meetingCard:
-    "mb-4 rounded-xl border border-black/[0.04] bg-[#f8f8f8] px-3 py-5",
-  meetingCardCompleted: "border-white bg-white",
+    "mb-4 rounded-xl border border-black/[0.04] px-3 py-5",
+  meetingCardCompleted: "border-black/[0.04] bg-white",
   meetingRow: "flex items-start gap-2",
   meetingAvatar:
     "size-[41px] shrink-0 overflow-hidden rounded-full border-[2.6px] border-[var(--color-consult-user-bg)]/30 bg-neutral-200",
@@ -79,7 +84,7 @@ export const CONSULTATION_HOME_LAYOUT = {
   meetingDate: "mt-1 text-base font-semibold text-[var(--color-brand-black)]",
   answersBanner:
     "mt-3 rounded-[20px] bg-[#DDE8A9] py-2.5 text-center text-sm font-medium text-[#4B5909]",
-  actionRow: "mt-3 flex gap-1.5",
+  actionRow: "mt-3 flex flex-wrap items-center gap-2 ",
   actionBtn:
-    "flex-1 rounded-md border border-[#87AE0E] py-2 text-center text-base font-semibold text-[#87AE0E] transition-opacity hover:opacity-90",
+    "inline-flex shrink-0 items-center justify-center rounded-md border border-[#87AE0E] px-3 py-1.5 text-center text-sm font-semibold text-[#87AE0E] transition-opacity hover:opacity-90",
 } as const;

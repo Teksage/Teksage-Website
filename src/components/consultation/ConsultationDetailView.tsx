@@ -14,9 +14,9 @@ import {
   CONSULTATION_DETAIL_LAYOUT,
   CONSULTATION_DETAIL_SCREEN,
 } from "@/lib/constants/consultation-detail";
-import { CONSULTATION_SCREEN, ROUTES } from "@/lib/constants";
+import { CONSULTATION_SCREEN } from "@/lib/constants";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
-import { readConsultationFilter } from "@/lib/consultation-session";
+import { ensureConsultationFilter } from "@/lib/consultation-default-filter";
 import { fetchAstrologerDetail } from "@/lib/services/consultation";
 import type { ConsultationAstrologerDetail } from "@/types/consultation";
 
@@ -35,10 +35,7 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
   const currency = useConsultationCurrency();
 
   useEffect(() => {
-    if (!readConsultationFilter()) {
-      router.replace(ROUTES.consultation);
-      return;
-    }
+    ensureConsultationFilter();
     let cancelled = false;
     (async () => {
       try {
@@ -53,7 +50,7 @@ export function ConsultationDetailView({ astrologerId }: ConsultationDetailViewP
     return () => {
       cancelled = true;
     };
-  }, [astrologerId, router]);
+  }, [astrologerId, C.loadError]);
 
   if (error || (!loading && !data)) {
     return (

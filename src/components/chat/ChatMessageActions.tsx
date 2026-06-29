@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import { writeAskAstrologerFlow } from "@/lib/ask-astrologer-session";
+import { consultationHubPath } from "@/lib/constants/consultation-routes";
 import { ROUTES } from "@/lib/constants/routes";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
 import type { ChatMessageActionsProps } from "@/types/ui/chat";
@@ -26,7 +27,7 @@ export function ChatMessageActions({
   }
 
   function handleBookConsultation() {
-    router.push(ROUTES.consultation);
+    router.push(consultationHubPath());
   }
 
   return (
