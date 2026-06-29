@@ -88,7 +88,7 @@ export function ChatComposer({
             type="submit"
             disabled={!canSend}
             className={cn(
-              "mb-1.5 flex size-10 shrink-0 items-center justify-center rounded-full",
+              "mb-0.8 flex size-10 shrink-0 items-center justify-center rounded-full",
               "bg-[var(--color-brand-primary)] disabled:bg-black/20"
             )}
             aria-label={CS.sendAria}

@@ -7,6 +7,7 @@ import {
   clearSubscriptionActivating,
   isSubscriptionActivatingRecent,
 } from "@/lib/subscription-checkout-session";
+import { isPremiumProfileActivated } from "@/lib/subscription-activation-wait";
 import { isActiveAutoPaySubscription } from "@/lib/subscription-auto-pay";
 import { fetchProfileSettings } from "@/lib/services/settings-profile";
 import {
@@ -101,7 +102,7 @@ export function useSubscriptionPage(currency: "INR" | "USD") {
     async function load() {
       try {
         const settings = await loadSettings();
-        if (settings.isPremium) {
+        if (isPremiumProfileActivated(settings)) {
           clearSubscriptionActivating();
           setActivatingPremium(false);
         } else if (isSubscriptionActivatingRecent()) {
@@ -123,12 +124,12 @@ export function useSubscriptionPage(currency: "INR" | "USD") {
     if (!activatingPremium || isPremium) return;
     const timer = window.setInterval(() => {
       void loadSettings().then((settings) => {
-        if (settings.isPremium) {
+        if (isPremiumProfileActivated(settings)) {
           clearSubscriptionActivating();
           setActivatingPremium(false);
         }
       });
-    }, 3000);
+    }, 2000);
     return () => window.clearInterval(timer);
   }, [activatingPremium, isPremium, loadSettings]);
 

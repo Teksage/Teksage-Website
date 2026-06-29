@@ -2,11 +2,11 @@ import { TYPO } from "./typography";
 
 /** Home dashboard typography — use in home feature components. */
 export const HOME_DASHBOARD_UI = {
-  dailyCardTitle: `text-center ${TYPO.h3Bold} text-white`,
-  dailyCardDate: `${TYPO.labelSemibold} text-white/75`,
-  dailyHint: `py-1 text-center ${TYPO.caption} text-[var(--color-brand-primary)]`,
-  dailyBalaValue: `${TYPO.badgeMicro} text-neutral-900`,
-  dailyBalaLabel: `${TYPO.badge3xs} text-[var(--color-brand-primary)]`,
+  dailyCardTitle: `text-center text-sm font-bold leading-tight text-white lg:text-base`,
+  dailyCardDate: `text-center text-3xs font-semibold leading-tight text-white/75`,
+  dailyHint: `py-0.5 text-center text-3xs font-semibold text-[var(--color-brand-primary)]`,
+  dailyBalaValue: `text-micro font-semibold leading-none text-neutral-900`,
+  dailyBalaLabel: `px-0.5 text-center text-3xs font-semibold leading-none text-[var(--color-brand-primary)]`,
   consultBannerRow:
     "relative z-10 flex w-full items-center gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-2.5",
   consultBannerPortraitWrap:

@@ -19,6 +19,7 @@ const AUTH_PATH_PREFIXES = [
   ROUTES.notifications,
   ROUTES.whatsappUpdates,
   ROUTES.settingsSubscriptions,
+  ROUTES.askAstrologerLanguages,
   ROUTES.astrologer,
 ] as const;
 

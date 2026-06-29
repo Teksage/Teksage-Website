@@ -19,6 +19,10 @@ type ConsultationQueryDialogProps = {
   onSaved: () => void;
 };
 
+function emptyAnswers(): string[] {
+  return Array.from({ length: CONSULTATION_QUERY_LIMIT }, () => "");
+}
+
 export function ConsultationQueryDialog({
   eventId,
   initialIndex = 0,
@@ -27,46 +31,63 @@ export function ConsultationQueryDialog({
 }: ConsultationQueryDialogProps) {
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const [index, setIndex] = useState(initialIndex);
-  const [text, setText] = useState("");
+  const [answers, setAnswers] = useState(emptyAnswers);
+  const [savedAnswers, setSavedAnswers] = useState<Record<number, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  async function persist(advance: boolean) {
+  const isLastStep = index >= CONSULTATION_QUERY_LIMIT - 1;
+  const text = answers[index] ?? "";
+
+  function updateText(value: string) {
+    setAnswers((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  }
+
+  function goPrevious() {
+    if (index <= 0) return;
+    setError(null);
+    setIndex(index - 1);
+  }
+
+  async function handleNextOrSubmit() {
     const question = text.trim();
     if (!question) {
       setError(CB.queryEmpty);
       return;
     }
-    setBusy(true);
     setError(null);
-    try {
-      await addConsultationQuestion(eventId, question, index);
-      onSaved();
-      setText("");
-      if (advance) {
-        if (index >= CONSULTATION_QUERY_LIMIT - 1) {
-          onClose();
+
+    if (savedAnswers[index] !== question) {
+      setBusy(true);
+      try {
+        await addConsultationQuestion(eventId, question, index);
+        setSavedAnswers((prev) => ({ ...prev, [index]: question }));
+        onSaved();
+      } catch (err) {
+        const isServerError = isAxiosError(err) && err.response?.status === 500;
+        if (isServerError) {
+          setSavedAnswers((prev) => ({ ...prev, [index]: question }));
+          onSaved();
+          setError(CB.querySavedMailFailed);
+        } else {
+          setError(CB.queryEmpty);
+          setBusy(false);
           return;
         }
-        setIndex(index + 1);
+      } finally {
+        setBusy(false);
       }
-    } catch (err) {
-      const isServerError = isAxiosError(err) && err.response?.status === 500;
-      if (isServerError) {
-        onSaved();
-        setError(CB.querySavedMailFailed);
-        if (advance && index >= CONSULTATION_QUERY_LIMIT - 1) {
-          onClose();
-        } else if (advance) {
-          setIndex(index + 1);
-          setText("");
-        }
-        return;
-      }
-      setError(CB.queryEmpty);
-    } finally {
-      setBusy(false);
     }
+
+    if (isLastStep) {
+      onClose();
+      return;
+    }
+    setIndex(index + 1);
   }
 
   return (
@@ -96,7 +117,7 @@ export function ConsultationQueryDialog({
             value={text}
             maxLength={250}
             rows={5}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => updateText(e.target.value)}
             placeholder={CB.queryPlaceholder}
             className="mt-3 w-full resize-none rounded-lg border border-[var(--color-consult-user-bg)] px-3 py-2.5 text-base outline-none"
           />
@@ -108,29 +129,29 @@ export function ConsultationQueryDialog({
             {CB.queryMaxHint}
           </p>
           <div className="mt-4 flex gap-2.5">
+            {index > 0 ? (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={goPrevious}
+                className={cn(
+                  "flex-1 rounded-lg bg-[var(--color-consult-user-bg)] py-3 text-base font-semibold text-white",
+                  busy && "opacity-50"
+                )}
+              >
+                {CB.queryPrevious}
+              </button>
+            ) : null}
             <button
               type="button"
               disabled={busy}
-              onClick={() => void persist(false)}
+              onClick={() => void handleNextOrSubmit()}
               className={cn(
                 "flex-1 rounded-lg bg-[var(--color-consult-user-bg)] py-3 text-base font-semibold text-white",
                 busy && "opacity-50"
               )}
             >
-              {CB.querySave}
-            </button>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => void persist(true)}
-              className={cn(
-                "flex-1 rounded-lg bg-[var(--color-consult-user-bg)] py-3 text-base font-semibold text-white",
-                busy && "opacity-50"
-              )}
-            >
-              {index >= CONSULTATION_QUERY_LIMIT - 1
-                ? CB.querySubmit
-                : CB.queryAddNext}
+              {isLastStep ? CB.querySubmit : CB.queryNext}
             </button>
           </div>
           <p className="mt-4 text-center text-xs font-semibold text-[var(--color-brand-error)]">

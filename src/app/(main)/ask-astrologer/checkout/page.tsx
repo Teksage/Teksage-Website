@@ -17,14 +17,21 @@ import {
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { useAuthStore } from "@/store/auth.store";
+import { useI18nConstants } from "@/hooks/useT";
 import { ROUTES } from "@/lib/constants/routes";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { AskAstrologerPricing } from "@/types/ask-astrologer";
 
 export default function AskAstrologerCheckoutPage() {
   const router = useRouter();
   const flow = useMemo(() => readAskAstrologerFlow(), []);
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const currency = useConsultationCurrency();
   const user = useAuthStore((s) => s.user);
 
@@ -86,16 +93,25 @@ export default function AskAstrologerCheckoutPage() {
               ...flow,
               preferred_languages: flow.preferred_languages,
             });
+            showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.paymentSuccess);
             router.push(ROUTES.askAstrologerWhatsappConsent);
           } catch {
-            setPayError("Verification failed. Please contact support.");
+            const msg = APP_SNACKBAR_MESSAGES.paymentFailed;
+            setPayError(msg);
+            showErrorAppSnackBar(msg);
           }
         },
         onDismiss: () => setPaying(false),
-        onFailure: (msg) => setPayError(msg),
+        onFailure: (msg) => {
+          const failMsg = msg || APP_SNACKBAR_MESSAGES.paymentFailedGeneric;
+          setPayError(failMsg);
+          showErrorAppSnackBar(failMsg);
+        },
       });
     } catch {
-      setPayError("Could not initiate payment. Please try again.");
+      const msg = APP_SNACKBAR_MESSAGES.paymentFailedGeneric;
+      setPayError(msg);
+      showErrorAppSnackBar(msg);
     } finally {
       setPaying(false);
     }
@@ -103,7 +119,7 @@ export default function AskAstrologerCheckoutPage() {
 
   return (
     <AskAstrologerShell
-      title={ASK_ASTROLOGER_SCREEN.checkoutTitle}
+      title={AA.checkoutTitle}
       onBack={() => router.back()}
       centered
       footer={
@@ -120,7 +136,7 @@ export default function AskAstrologerCheckoutPage() {
               onClick={() => void handlePay()}
               className={CONSULTATION_BOOKING_LAYOUT.payBtn}
             >
-              {paying ? ASK_ASTROLOGER_SCREEN.checkoutProcessing : ASK_ASTROLOGER_SCREEN.checkoutPay}
+              {paying ? AA.checkoutProcessing : AA.checkoutPay}
             </button>
           </>
         ) : undefined
@@ -128,7 +144,7 @@ export default function AskAstrologerCheckoutPage() {
     >
       {loadError ? (
         <p className="text-center text-sm text-[var(--color-brand-error)]">
-          {ASK_ASTROLOGER_SCREEN.checkoutLoadError}
+          {AA.checkoutLoadError}
         </p>
       ) : !pricing ? (
         <PageLoadingCenter />

@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { SettingsSubpageHeader } from "@/components/settings/SettingsSubpageHeader";
+import { SettingsModalDialog } from "@/components/settings/SettingsModalDialog";
 import { SubscriptionPaymentFees } from "@/components/settings/SubscriptionPaymentFees";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
@@ -17,13 +19,17 @@ import { PageLoadingCenter } from "@/components/common/Loader";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
 import {
+  clearSubscriptionActivating,
   clearSubscriptionCheckout,
-  markSubscriptionActivating,
   readSubscriptionCheckout,
 } from "@/lib/subscription-checkout-session";
-import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import { SETTINGS_SUBSCRIPTIONS_COPY } from "@/lib/constants/settings-subscriptions";
 import {
+  isPremiumProfileActivated,
   refreshAuthProfileAfterSubscription,
   waitForPremiumActivation,
 } from "@/lib/subscription-activation-wait";
@@ -49,6 +55,7 @@ type Props = { onBack: () => void };
 
 export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const P = useI18nConstants(SETTINGS_SUBSCRIPTION_PAYMENT);
+  const SUB = useI18nConstants(SETTINGS_SUBSCRIPTIONS_COPY);
   const defaultCurrency = useConsultationCurrency();
   const user = useAuthStore((s) => s.user);
   const router = useRouter();
@@ -58,6 +65,8 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const [promo, setPromo] = useState("");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [finishing, setFinishing] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [autoPayEnabled, setAutoPayEnabled] = useState(false);
 
@@ -125,14 +134,34 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     }
   }, [plan, promo, currency, isInr, P.paymentFailed, autoPayEnabled]);
 
-  async function finishPayment() {
+  const finishPayment = useCallback(async () => {
+    setFinishing(true);
+    setBusy(true);
     clearSubscriptionCheckout();
-    markSubscriptionActivating();
-    await waitForPremiumActivation();
-    await refreshAuthProfileAfterSubscription();
-    showSuccessAppSnackBar(SETTINGS_SUBSCRIPTIONS_COPY.paymentSuccess);
+    try {
+      const profile = await waitForPremiumActivation();
+      if (!isPremiumProfileActivated(profile)) {
+        showErrorAppSnackBar(SUB.activatingPending);
+        router.replace(ROUTES.settingsSubscriptions);
+        return;
+      }
+      clearSubscriptionActivating();
+      await refreshAuthProfileAfterSubscription();
+      setSuccessOpen(true);
+    } catch {
+      showErrorAppSnackBar(P.paymentFailed);
+      router.replace(ROUTES.settingsSubscriptions);
+    } finally {
+      setFinishing(false);
+      setBusy(false);
+    }
+  }, [P.paymentFailed, SUB.activatingPending, router]);
+
+  const onSuccessDialogConfirm = useCallback(() => {
+    setSuccessOpen(false);
+    showSuccessAppSnackBar(SUB.paymentSuccess);
     router.replace(ROUTES.settingsSubscriptions);
-  }
+  }, [SUB.paymentSuccess, router]);
 
   function onPayError(code: string) {
     setError(code === "paymentFailed" ? P.paymentFailed : P.paymentFailed);
@@ -185,6 +214,14 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
 
   return (
     <div className={SETTINGS_UI.subscriptionPageShell}>
+      <LoadingOverlay open={finishing} />
+      <SettingsModalDialog
+        open={successOpen}
+        onClose={onSuccessDialogConfirm}
+        message={SUB.paymentSuccessDialogTitle}
+        confirmLabel={SUB.paymentSuccessDialogConfirm}
+        onConfirm={onSuccessDialogConfirm}
+      />
       <Image
         src={SETTINGS_PAGE_ASSETS.subscriptionBg}
         alt=""

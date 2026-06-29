@@ -2,12 +2,27 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
+import { ChatAppBarMenu } from "@/components/chat/ChatAppBarMenu";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { cn } from "@/lib/utils";
 
-/** Flutter `ChatAppBarWithDownload` — green header + subtitle pill. */
-export function ChatAppBar() {
+type ChatAppBarProps = {
+  isPremium?: boolean;
+  messageCount?: number;
+  maintainHistory?: boolean;
+  planStatus?: string;
+  onToast?: (message: string) => void;
+};
+
+/** Flutter `ChatAppBarWithDownload` — green header + actions menu. */
+export function ChatAppBar({
+  isPremium = false,
+  messageCount = 0,
+  maintainHistory = false,
+  planStatus = "",
+  onToast = () => {},
+}: ChatAppBarProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const router = useRouter();
 
@@ -25,7 +40,13 @@ export function ChatAppBar() {
         <h1 className="flex-1 text-center text-lg font-bold leading-tight text-white">
           {CS.title}
         </h1>
-        <span className="size-10 shrink-0" aria-hidden />
+        <ChatAppBarMenu
+          isPremium={isPremium}
+          messageCount={messageCount}
+          maintainHistory={maintainHistory}
+          planStatus={planStatus}
+          onToast={onToast}
+        />
       </div>
     </header>
   );

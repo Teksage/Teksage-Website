@@ -7,6 +7,7 @@ import { DesktopMainNav } from "@/components/common/DesktopMainNav";
 import { HomeDesktopTopHeader } from "@/components/home/HomeDesktopTopHeader";
 import { ProtectedRoutePrompt } from "@/components/common/ProtectedRoutePrompt";
 import { AskAnswerReadyPrompt } from "@/components/common/AskAnswerReadyPrompt";
+import { FeatureDiscoveryPrompt } from "@/components/common/FeatureDiscoveryPrompt";
 import { HOME_LAYOUT, ROUTES, isPredictionsPath } from "@/lib/constants";
 import {
   isConsultationCheckoutPath,
@@ -14,10 +15,12 @@ import {
 } from "@/lib/constants/consultation-routes";
 import { useAuthStore } from "@/store/auth.store";
 import { cn } from "@/lib/utils";
+import { useSyncAuthProfileRole } from "@/hooks/useSyncAuthProfileRole";
 
 export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  useSyncAuthProfileRole();
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
@@ -50,6 +53,7 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
       <Suspense fallback={null}>
         <ProtectedRoutePrompt />
         <AskAnswerReadyPrompt />
+        <FeatureDiscoveryPrompt />
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">
         {isAuthenticated ? <HomeDesktopTopHeader /> : null}

@@ -18,7 +18,8 @@ export const CONSULTATION_BOOKING_SCREEN = {
   rasi: "Rasi",
   nakshatram: "Nakshatram",
   shareHoroscope:
-    "I agree to share the above personal details & horoscope with the astrologer.",
+    "I consent to share my personal information & horoscope with the astrologer.",
+  meetingLinkPending: "Meeting link is being prepared…",
   payCta: "Confirm & Proceed to Pay",
   meetingLink: "Meeting Link",
   queriesTitle: "Queries you asked",
@@ -31,8 +32,8 @@ export const CONSULTATION_BOOKING_SCREEN = {
   queryEmpty: "Question cannot be empty",
   querySavedMailFailed:
     "Your question was saved. Email to the astrologer failed because horoscope data is missing on this booking — see steps below.",
-  querySave: "Save",
-  queryAddNext: "Add Next",
+  queryPrevious: "Previous",
+  queryNext: "Next",
   querySubmit: "Submit",
 } as const;
 
@@ -60,6 +61,7 @@ export const CONSULTATION_BOOKING_LAYOUT = {
     "mb-3 flex items-center justify-center gap-3 rounded-xl bg-[#f3f3f3] py-2.5",
   profileChipAvatar: "size-10 overflow-hidden rounded-full bg-neutral-200 object-cover",
   profileChipName: "text-base font-semibold text-[var(--color-brand-black)]",
+  consentRow: "mt-4 flex items-start gap-2 text-sm text-[var(--color-brand-black)]/70",
   meetingBtn:
     "rounded-md border border-[#87AE0E] px-3.5 py-2 text-base font-semibold text-[#87AE0E]",
   queryCard:

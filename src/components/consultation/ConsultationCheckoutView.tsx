@@ -3,10 +3,9 @@
 import { useI18nConstants } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
+import { ConsultationBookingDetailsCard } from "@/components/consultation/ConsultationBookingDetailsCard";
 import { ConsultationBookingFeesBlock } from "@/components/consultation/ConsultationBookingFeesBlock";
 import { ConsultationBookingProfileHeader } from "@/components/consultation/ConsultationBookingProfileHeader";
-import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
 import { ConsultationCheckoutShell } from "@/components/consultation/ConsultationCheckoutShell";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { consultationSlotsPath } from "@/lib/constants/consultation-routes";
@@ -19,9 +18,6 @@ import { CONSULTATION_SCREEN, ROUTES } from "@/lib/constants";
 import {
   formatConsultationBookingDate,
   formatConsultationBookingTimeRange,
-  formatFeeSlash,
-  formatProfileDateOfBirth,
-  formatProfileTimeOfBirth,
 } from "@/lib/consultation-booking-format";
 import {
   formatConsultationCategoryLabel,
@@ -48,6 +44,11 @@ import {
 } from "@/lib/consultation-pricing";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { ConsultationBookingDraft, ConsultationCouponResult } from "@/types/consultation";
 import type { UserProfile } from "@/types";
 import { isAxiosError } from "axios";
@@ -163,6 +164,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
     setBusy(true);
     setError(null);
     try {
+      const paymentAmount = consultationBookPaymentAmount(totals);
       const order = await bookConsultation({
         start_datetime: booking.slotStart,
         end_datetime: booking.slotEnd,
@@ -170,7 +172,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         languages: booking.languages,
         category: booking.categories,
         astrologer_id: astrologerId,
-        payment_amount: consultationBookPaymentAmount(totals),
+        payment_amount: paymentAmount,
         currency,
         coupon_id: appliedCouponId,
       });
@@ -178,36 +180,45 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         key: order.key,
         currency: order.currency,
         orderId: order.id,
+        amount: order.amount,
         prefill: { email: user?.email ?? undefined, contact: user?.mobile ?? undefined },
         onSuccess: async (response) => {
-          const verified = await verifyConsultationPayment({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          });
-          const ev = verified.data;
-          if (ev?.id) {
-            writeConsultationSummary({
-              eventId: ev.id,
-              eventLink: ev.event_link ?? null,
-              startDatetime: ev.start_datetime ?? booking.slotStart,
-              endDatetime: ev.end_datetime ?? booking.slotEnd,
-              categories: ev.category ?? booking.categories,
-              languages: ev.languages ?? booking.languages,
-              consultationFee: Number(ev.consultation_fee ?? totals.final_price),
-              currency: ev.currency ?? currency,
-              astrologerName: booking.astrologerName,
-              astrologerPicture: booking.astrologerPicture,
+          try {
+            const verified = await verifyConsultationPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
             });
+            const ev = verified.data;
+            if (ev?.id) {
+              writeConsultationSummary({
+                eventId: ev.id,
+                eventLink: ev.event_link ?? null,
+                startDatetime: ev.start_datetime ?? booking.slotStart,
+                endDatetime: ev.end_datetime ?? booking.slotEnd,
+                categories: ev.category ?? booking.categories,
+                languages: ev.languages ?? booking.languages,
+                consultationFee: Number(ev.consultation_fee ?? totals.final_price),
+                currency: ev.currency ?? currency,
+                astrologerName: booking.astrologerName,
+                astrologerPicture: booking.astrologerPicture,
+              });
+            }
+            clearConsultationDraft();
+            showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.paymentSuccess);
+            router.push(ROUTES.consultationSummary);
+          } catch {
+            showErrorAppSnackBar(APP_SNACKBAR_MESSAGES.paymentFailed);
+            setBusy(false);
           }
-          clearConsultationDraft();
-          router.push(ROUTES.consultationSummary);
         },
         onDismiss: () => setBusy(false),
         onFailure: (message) => {
           const hint =
             currency === "USD" ? ` ${CC.paymentUsdHint}` : "";
-          setError(`${message || CC.paymentFailed}${hint}`);
+          const failMsg = `${message || CC.paymentFailed}${hint}`;
+          setError(failMsg);
+          showErrorAppSnackBar(failMsg);
           setBusy(false);
         },
       });
@@ -226,6 +237,18 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
       onBack={() => router.back()}
       footer={
         <>
+          <label className={CONSULTATION_BOOKING_LAYOUT.consentRow}>
+            <input
+              type="checkbox"
+              checked={shareHoroscope}
+              onChange={(e) => {
+                setShareHoroscope(e.target.checked);
+                setError(null);
+              }}
+              className="mt-1 accent-[#A2C14D]"
+            />
+            <span>{CB.shareHoroscope}</span>
+          </label>
           {error ? <p className="text-sm text-[var(--color-brand-error)]">{error}</p> : null}
           <button
             type="button"
@@ -241,67 +264,26 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
       <ConsultationBookingProfileHeader
         name={booking.astrologerName}
         picture={booking.astrologerPicture}
+        compact
       />
-      <ConsultationBookingSectionDivider title={CB.consultationSection} />
-      <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>
-        <ConsultationBookingDetailRow
-          label={CB.date}
-          value={formatConsultationBookingDate(booking.slotStart)}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.time}
-          value={formatConsultationBookingTimeRange(booking.slotStart, booking.slotEnd)}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.consultingOn}
-          value={categoriesLabel}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.language}
-          value={languagesLabel}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.consultationFee}
-          value={formatFeeSlash(totals.final_price, currency)}
-        />
-      </div>
-      <ConsultationBookingSectionDivider title={CB.personalSection} />
-      <div className={CONSULTATION_BOOKING_LAYOUT.grayCard}>
-        <ConsultationBookingDetailRow
-          label={CB.dob}
-          value={formatProfileDateOfBirth(profile?.dateOfBirth)}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.tob}
-          value={formatProfileTimeOfBirth(profile?.timeOfBirth)}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.pob}
-          value={profile?.placeOfBirth?.trim() || "—"}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.rasi}
-          value={profile?.rashi?.trim() || "—"}
-        />
-        <ConsultationBookingDetailRow
-          label={CB.nakshatram}
-          value={profile?.nakshatra?.trim() || "—"}
-        />
-        <label className="mt-4 flex items-start gap-2 border-t border-black/10 pt-4 text-sm">
-          <input
-            type="checkbox"
-            checked={shareHoroscope}
-            onChange={(e) => {
-              setShareHoroscope(e.target.checked);
-              setError(null);
-            }}
-            className="mt-1 accent-[#A2C14D]"
-          />
-          <span className="text-[var(--color-brand-black)]/70">
-            {CB.shareHoroscope}
-          </span>
-        </label>
-      </div>
+      <ConsultationBookingDetailsCard
+        date={formatConsultationBookingDate(booking.slotStart)}
+        time={formatConsultationBookingTimeRange(booking.slotStart, booking.slotEnd)}
+        consultingOn={categoriesLabel}
+        language={languagesLabel}
+        profile={profile}
+        labels={{
+          date: CB.date,
+          time: CB.time,
+          consultingOn: CB.consultingOn,
+          language: CB.language,
+          dob: CB.dob,
+          tob: CB.tob,
+          pob: CB.pob,
+          rasi: CB.rasi,
+          nakshatram: CB.nakshatram,
+        }}
+      />
       <ConsultationBookingFeesBlock
         totals={totals}
         currency={currency}

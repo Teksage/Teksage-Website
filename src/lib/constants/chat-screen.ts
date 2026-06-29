@@ -23,7 +23,17 @@ export const CHAT_SCREEN = {
   sendLabel: "Send",
   bootError: "Could not start chat. Please try again.",
   wsConnectError: "Could not connect to chat. Check your network and try again.",
-  connecting: "Connecting to astrologer…",
+  wsProfileIncomplete:
+    "Complete your birth details in Profile to use AI chat.",
+  connecting: "Connecting…",
+  downloadChat: "Download Chat",
+  sendToMail: "Send to Mail",
+  chatDownloadSuccess: "Chat downloaded successfully",
+  mailSentSuccess: "Mail sent successfully",
+  chatExportEmpty:
+    "Your astrological insights haven't begun. Start a chat to unlock the stars!",
+  chatExportFailed: "Could not complete this action. Please try again.",
+  chatMenuAria: "Chat actions",
   consultBannerTitle: "Consult Astrologer",
   styleLabel: "Explanatory",
   avatarLabel: "The Seeker",
@@ -70,3 +80,6 @@ export const CHAT_RESPONSE_TIMEOUT_MS = 30_000;
 export const CHAT_WS_CONNECT_TIMEOUT_MS = 15_000;
 
 export const CHAT_WS_END_MARKER = "[END]";
+
+/** Backend `chat.py` closes with these when customer horoscope is missing (no reconnect). */
+export const CHAT_WS_FATAL_PROFILE_CLOSE_CODES = [4000, 4001] as const;

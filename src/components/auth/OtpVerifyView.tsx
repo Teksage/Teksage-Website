@@ -19,6 +19,11 @@ import {
 } from "@/lib/constants";
 import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
 import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import {
+  showErrorAppSnackBar,
+  showSuccessAppSnackBar,
+} from "@/lib/app-snackbar";
 import type { OtpVerifyViewProps } from "@/types";
 import { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "@/types";
 
@@ -60,6 +65,7 @@ export function OtpVerifyView({
             }
       );
       setAuth(response.user, response.token);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpVerified);
       // Fire-and-forget — push registration is non-fatal
       void import("@/lib/services/push-notifications").then(({ initWebPush }) =>
         initWebPush()
@@ -68,6 +74,7 @@ export function OtpVerifyView({
       router.replace(dest);
     } catch {
       setError(OV.invalidOtp);
+      showErrorAppSnackBar(OV.invalidOtp);
       setOtpCells(emptyOtpCells());
     } finally {
       setIsLoading(false);
@@ -88,8 +95,10 @@ export function OtpVerifyView({
         });
       }
       setOtpCells(emptyOtpCells());
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
     } catch {
       setError(OV.resendError);
+      showErrorAppSnackBar(OV.resendError);
     } finally {
       setIsResending(false);
     }

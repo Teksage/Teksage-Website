@@ -17,6 +17,7 @@ export function ProfileField({
   errorMessage,
   className,
   onBlurCommit,
+  onFocusAttempt,
 }: ProfileFieldProps) {
   const disabled = isReadOnly || !isEditable;
   const isProfile = appearance === "profile";
@@ -40,6 +41,11 @@ export function ProfileField({
         type={type}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        onFocus={(e) => {
+          if (onFocusAttempt && !onFocusAttempt()) {
+            e.target.blur();
+          }
+        }}
         onBlur={() => onBlurCommit?.()}
         placeholder={placeholder ?? label}
         disabled={disabled}

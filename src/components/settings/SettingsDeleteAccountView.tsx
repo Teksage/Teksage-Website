@@ -12,6 +12,7 @@ import {
   DELETE_ACCOUNT_REASONS,
   SETTINGS_DELETE_COPY,
 } from "@/lib/constants/settings-delete";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import {
   confirmDeleteAccount,
   requestDeleteAccountOtp,
@@ -70,8 +71,7 @@ export function SettingsDeleteAccountView() {
     setError(null);
     try {
       await confirmDeleteAccount(otp, reason);
-      await logout();
-      router.replace(ROUTES.home);
+      await logout({ successMessage: APP_SNACKBAR_MESSAGES.deleteAccountFarewell });
     } catch {
       setError(SD.failed);
     } finally {

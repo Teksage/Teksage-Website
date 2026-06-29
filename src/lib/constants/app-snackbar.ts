@@ -10,6 +10,21 @@ export const APP_SNACKBAR_MESSAGES = {
   profileUpdated: "Profile updated successfully",
   profileSaveFailed: "Failed to save profile. Please try again.",
   genericError: "Something went wrong. Please try again.",
+  logoutSuccess: "Logged out successfully",
+  logoutFailed: "Logout failed. Please try again.",
+  deleteAccountFarewell: "Thanks for using Teksage",
+  otpSent: "OTP sent successfully",
+  otpVerified: "OTP Verified",
+  paymentSuccess: "Payment successful!",
+  paymentFailed: "Payment verification failed. Please try again.",
+  paymentFailedGeneric: "Payment failed. Please try again.",
+  languageUpdated: "Language updated successfully",
+  predictionRegenerated: "Prediction regenerated successfully",
+  shareSuccess: "Shared successfully",
+  downloadSuccess: "Downloaded successfully",
+  answerSubmitted: "Answer submitted",
+  autoRenewCancelled: "Auto-renewal cancelled successfully",
+  contactOtpSent: "OTP sent successfully",
 } as const;
 
 export const APP_SNACKBAR_UI = {

@@ -21,8 +21,8 @@ import {
   formatFeeSlash,
 } from "@/lib/consultation-booking-format";
 import { formatConsultationCategoryLabel, formatConsultationLanguageList } from "@/lib/consultation-display";
-import { readConsultationSummary } from "@/lib/consultation-session";
-import { fetchConsultationQuestions } from "@/lib/services/consultation";
+import { readConsultationSummary, writeConsultationSummary } from "@/lib/consultation-session";
+import { fetchConsultationEvent, fetchConsultationQuestions } from "@/lib/services/consultation";
 import type { ConsultationCompletedBooking, ConsultationQuestion } from "@/types/consultation";
 
 export function ConsultationSummaryView() {
@@ -49,6 +49,23 @@ export function ConsultationSummaryView() {
     }
     setSummary(data);
     (async () => {
+      const refreshed = await fetchConsultationEvent(data.eventId);
+      if (refreshed) {
+        const next = {
+          ...data,
+          eventLink: refreshed.event_link ?? data.eventLink,
+          consultationFee: Number(
+            refreshed.consultation_fee ?? data.consultationFee
+          ),
+          startDatetime: refreshed.start_datetime ?? data.startDatetime,
+          endDatetime: refreshed.end_datetime ?? data.endDatetime,
+          categories: refreshed.category ?? data.categories,
+          languages: refreshed.languages ?? data.languages,
+          currency: refreshed.currency ?? data.currency,
+        };
+        setSummary(next);
+        writeConsultationSummary(next);
+      }
       const list = await loadQuestions(data.eventId);
       setLoading(false);
       if (list.length < CONSULTATION_QUERY_LIMIT) {
@@ -61,7 +78,7 @@ export function ConsultationSummaryView() {
   if (!summary) {
     return (
       <>
-        <ConsultationCheckoutShell title={CB.title} onBack={() => router.push(ROUTES.home)}>
+        <ConsultationCheckoutShell title={CB.title} onBack={() => router.push(ROUTES.consultation)}>
           {null}
         </ConsultationCheckoutShell>
         <LoadingOverlay open />
@@ -77,7 +94,7 @@ export function ConsultationSummaryView() {
     <>
       <ConsultationCheckoutShell
         title={CB.title}
-        onBack={() => router.push(ROUTES.home)}
+        onBack={() => router.push(ROUTES.consultation)}
       >
         <ConsultationBookingProfileHeader
           name={summary.astrologerName}
@@ -92,7 +109,11 @@ export function ConsultationSummaryView() {
           >
             {CB.meetingLink}
           </a>
-        ) : null}
+        ) : (
+          <p className="mx-auto mt-2 w-fit text-sm text-[var(--color-brand-black)]/50">
+            {CB.meetingLinkPending}
+          </p>
+        )}
         <ConsultationBookingSectionDivider title={CB.consultationSection} />
         <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>
           <ConsultationBookingDetailRow

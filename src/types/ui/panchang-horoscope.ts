@@ -11,6 +11,8 @@ export interface HoroscopeChartFrameProps {
 
 export interface PanchangDetailViewProps {
   panchang: PanchangDetail;
+  onDownloadPdf?: () => void;
+  pdfBusy?: boolean;
 }
 
 export interface PanchangPremiumGateProps {
@@ -68,4 +70,5 @@ export interface HoroscopeLoadedViewProps {
   data: HoroscopePayload;
   chartVariant: HoroscopeChartVariant;
   onChartVariantChange: (next: HoroscopeChartVariant) => void;
+  onDownloadPdf?: () => Promise<void>;
 }

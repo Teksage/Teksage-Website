@@ -40,7 +40,11 @@ function PanchangInfoIcon() {
  * Premium Personalized Panchang — mirrors Flutter `panchangPage.dart`: gradient under
  * **`public/flutter-assets/images/panchangBG.png`** (`PANCHANG_ASSETS.personalizedBackground`, `BoxFit.cover`).
  */
-export function PanchangDetailView({ panchang }: PanchangDetailViewProps) {
+export function PanchangDetailView({
+  panchang,
+  onDownloadPdf,
+  pdfBusy = false,
+}: PanchangDetailViewProps) {
   const P = useI18nConstants(PANCHANG_SCREEN);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const L = PANCHANG_LAYOUT;
@@ -66,7 +70,20 @@ export function PanchangDetailView({ panchang }: PanchangDetailViewProps) {
 
       <header className={L.heroHeader}>
         <h1 className={L.heroTitle}>{P.personalizedTitle}</h1>
-        <Button
+        <div className="flex items-center gap-1">
+          {onDownloadPdf ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10"
+              disabled={pdfBusy}
+              onClick={onDownloadPdf}
+            >
+              {pdfBusy ? "…" : P.downloadPdfCta}
+            </Button>
+          ) : null}
+          <Button
           type="button"
           variant="ghost"
           size="icon-sm"
@@ -76,6 +93,7 @@ export function PanchangDetailView({ panchang }: PanchangDetailViewProps) {
         >
           <PanchangInfoIcon />
         </Button>
+        </div>
       </header>
 
       <dialog ref={dialogRef} className={L.infoDialog}>

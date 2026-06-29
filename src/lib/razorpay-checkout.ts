@@ -70,6 +70,8 @@ export async function openRazorpayCheckout(options: {
   key: string;
   currency: string;
   orderId: string;
+  /** Razorpay order amount in paise — mirrors Flutter `response.amount`. */
+  amount?: number;
   name?: string;
   description?: string;
   prefill?: { email?: string; contact?: string };
@@ -89,6 +91,7 @@ export async function openRazorpayCheckout(options: {
   const rzp = new window.Razorpay({
     key: options.key,
     currency: options.currency,
+    ...(options.amount != null ? { amount: options.amount } : {}),
     name: options.name ?? "Teksage",
     description: options.description ?? "Consultation",
     order_id: options.orderId,

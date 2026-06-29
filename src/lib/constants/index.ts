@@ -12,6 +12,7 @@ export * from "./nav-ui";
 export * from "./home-dashboard-sidebar";
 export * from "./desktop-sidebar-nav";
 export * from "./desktop-sidebar-panchang";
+export * from "./consultation-home";
 export * from "./consultation-screen";
 export * from "./consultation-languages";
 export * from "./consultation-listing";
@@ -37,6 +38,7 @@ export * from "./login-email-form";
 export * from "./login-mobile-form";
 export * from "./login-screen";
 export * from "./otp-verify-screen";
+export * from "./prediction-premium-gate";
 export * from "./prediction-detail-screen";
 export * from "./prediction-share";
 export * from "./prediction-assets";
@@ -56,6 +58,8 @@ export * from "./chat-assets";
 export * from "./notifications-screen";
 export * from "./settings-change-contact";
 export * from "./auth-http";
+export * from "./feature-discovery";
+export * from "./welcome-onboarding";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";

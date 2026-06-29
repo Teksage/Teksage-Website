@@ -70,14 +70,30 @@ function mapPlanDetails(raw?: Record<string, unknown> | null): PlanDetailsSnapsh
   };
 }
 
+function resolveIsPremium(
+  subscription: UserSubscriptionSnapshot | null,
+  planDetails: PlanDetailsSnapshot | null
+): boolean {
+  if (!subscription || !planDetails) return false;
+  const status = (subscription.planStatus ?? "").toLowerCase().trim();
+  if (status === "active") return true;
+  if (status === "expired" || status === "upgraded") return false;
+  if (subscription.subscriptionEndDate) {
+    const end = new Date(subscription.subscriptionEndDate);
+    end.setHours(23, 59, 59, 999);
+    return end.getTime() >= Date.now();
+  }
+  return true;
+}
+
 function bundleFromRaw(raw: RawProfileBundle): ProfileSettingsPayload {
   const subscription = mapSubscription(raw.subscription);
-  const isPremium =
-    (subscription?.planStatus ?? "").toLowerCase().trim() === "active";
+  const planDetails = mapPlanDetails(raw.plan_details);
+  const isPremium = resolveIsPremium(subscription, planDetails);
   return {
     notificationPrefs: mapNotify(raw.user_notify),
     subscription,
-    planDetails: mapPlanDetails(raw.plan_details),
+    planDetails,
     isPremium,
   };
 }

@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useI18nConstants } from "@/hooks/useT";
 import { AskAnswerVoiceInput } from "@/components/astrologer/AskAnswerVoiceInput";
 import { AskRequestCustomerSection } from "@/components/astrologer/AskRequestCustomerSection";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
 import { submitAskAnswer } from "@/lib/services/astrologer-ask-requests";
+import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
+import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import {
   ASK_ASTROLOGER_LAYOUT,
   ASK_ASTROLOGER_SCREEN,
@@ -12,12 +15,6 @@ import {
 } from "@/lib/constants/chat-ask-astrologer";
 import { cn } from "@/lib/utils";
 import type { AskAstrologerRequest } from "@/types/ask-astrologer";
-
-function statusLabel(status: string): string {
-  if (status === "assigned") return ASK_ASTROLOGER_SCREEN.astrologerStatusAssigned;
-  if (status === "answered") return ASK_ASTROLOGER_SCREEN.astrologerStatusAnswered;
-  return status;
-}
 
 function statusClass(status: string): string {
   if (status === "assigned") return ASK_ASTROLOGER_UI.portalStatusAssigned;
@@ -32,6 +29,7 @@ export function AskAstrologerRequestCard({
   req: AskAstrologerRequest;
   onAnswered: () => void;
 }) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const [expanded, setExpanded] = useState(false);
   const [answerText, setAnswerText] = useState("");
   const [voiceFile, setVoiceFile] = useState<File | null>(null);
@@ -39,18 +37,25 @@ export function AskAstrologerRequestCard({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function getStatusLabel(status: string): string {
+    if (status === "assigned") return AA.astrologerStatusAssigned;
+    if (status === "answered") return AA.astrologerStatusAnswered;
+    return status;
+  }
+
   async function handleSubmit() {
     if (!answerText.trim() && !voiceFile) {
-      setError(ASK_ASTROLOGER_SCREEN.astrologerAnswerRequired);
+      setError(AA.astrologerAnswerRequired);
       return;
     }
     setSubmitting(true);
     setError(null);
     try {
       await submitAskAnswer(req.id, answerText || null, voiceFile, voiceDurationSec);
+      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.answerSubmitted);
       onAnswered();
     } catch {
-      setError(ASK_ASTROLOGER_SCREEN.astrologerSubmitFailed);
+      setError(AA.astrologerSubmitFailed);
     } finally {
       setSubmitting(false);
     }
@@ -69,7 +74,7 @@ export function AskAstrologerRequestCard({
                   statusClass(req.status)
                 )}
               >
-                {statusLabel(req.status)}
+                {getStatusLabel(req.status)}
               </span>
             </div>
             <p className={ASK_ASTROLOGER_UI.portalQuestion}>{req.user_question}</p>
@@ -85,8 +90,8 @@ export function AskAstrologerRequestCard({
               }
             >
               {expanded
-                ? ASK_ASTROLOGER_SCREEN.astrologerCancelBtn
-                : ASK_ASTROLOGER_SCREEN.astrologerAnswerBtn}
+                ? AA.astrologerCancelBtn
+                : AA.astrologerAnswerBtn}
             </button>
           ) : null}
         </header>
@@ -99,7 +104,7 @@ export function AskAstrologerRequestCard({
 
         <section>
           <h3 className={ASK_ASTROLOGER_UI.portalSectionTitle}>
-            {ASK_ASTROLOGER_SCREEN.astrologerAiReference}
+            {AA.astrologerAiReference}
           </h3>
           <p className={cn(ASK_ASTROLOGER_UI.portalBody, "mt-2")}>{req.ai_response}</p>
         </section>
@@ -109,7 +114,7 @@ export function AskAstrologerRequestCard({
             <div className={ASK_ASTROLOGER_UI.portalSectionDivider} />
             <section className={ASK_ASTROLOGER_UI.portalAnswerPanel}>
               <h3 className={ASK_ASTROLOGER_UI.portalAnswerTitle}>
-                {ASK_ASTROLOGER_SCREEN.astrologerYourAnswer}
+                {AA.astrologerYourAnswer}
               </h3>
               {req.answer_text ? (
                 <p className={cn(ASK_ASTROLOGER_UI.portalBody, "mt-2")}>{req.answer_text}</p>
@@ -130,15 +135,15 @@ export function AskAstrologerRequestCard({
             <div className={ASK_ASTROLOGER_UI.portalSectionDivider} />
             <section className={ASK_ASTROLOGER_UI.portalFormPanel}>
               <h3 className={ASK_ASTROLOGER_UI.portalSectionTitle}>
-                {ASK_ASTROLOGER_SCREEN.astrologerYourAnswer}
+                {AA.astrologerYourAnswer}
               </h3>
               <p className={cn(ASK_ASTROLOGER_UI.portalBody, "mt-2")}>
-                {ASK_ASTROLOGER_SCREEN.astrologerVoiceAnswerHint}
+                {AA.astrologerVoiceAnswerHint}
               </p>
               <div className="mt-4 space-y-4">
                 <div className={ASK_ASTROLOGER_UI.portalVoiceAnswerPrimary}>
                   <p className={ASK_ASTROLOGER_UI.portalSectionTitle}>
-                    {ASK_ASTROLOGER_SCREEN.astrologerVoiceAnswerLead}
+                    {AA.astrologerVoiceAnswerLead}
                   </p>
                   <div className="mt-3">
                     <AskAnswerVoiceInput
@@ -154,12 +159,12 @@ export function AskAstrologerRequestCard({
                 </div>
                 <div>
                   <p className={ASK_ASTROLOGER_UI.portalSectionTitle}>
-                    {ASK_ASTROLOGER_SCREEN.astrologerTextAnswerOptional}
+                    {AA.astrologerTextAnswerOptional}
                   </p>
                   <textarea
                     value={answerText}
                     onChange={(event) => setAnswerText(event.target.value)}
-                    placeholder={ASK_ASTROLOGER_SCREEN.astrologerAnswerPlaceholder}
+                    placeholder={AA.astrologerAnswerPlaceholder}
                     rows={5}
                     className={cn(ASK_ASTROLOGER_UI.portalTextarea, "mt-2")}
                   />
@@ -174,8 +179,8 @@ export function AskAstrologerRequestCard({
                   className={ASK_ASTROLOGER_LAYOUT.primaryBtn}
                 >
                   {submitting
-                    ? ASK_ASTROLOGER_SCREEN.astrologerSubmitting
-                    : ASK_ASTROLOGER_SCREEN.astrologerSubmitAnswer}
+                    ? AA.astrologerSubmitting
+                    : AA.astrologerSubmitAnswer}
                 </button>
               </div>
             </section>

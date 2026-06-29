@@ -9,14 +9,17 @@ import {
   CHAT_FREE_MESSAGE_LIMIT,
   CHAT_SCREEN,
   CHAT_WS_CONNECT_TIMEOUT_MS,
+  CHAT_WS_FATAL_PROFILE_CLOSE_CODES,
 } from "@/lib/constants/chat-screen";
 import { historyToChatMessages, newChatMessageId, userInitialsFromProfile } from "@/lib/chat-helpers";
+import { isAstrologerHomeSession } from "@/lib/utils";
 import {
   fetchChatHistory,
   fetchChatPreference,
 } from "@/lib/services/chat";
 import { ChatWebSocketClient } from "@/lib/services/chat-websocket-client";
 import { fetchProfile } from "@/lib/services/profile";
+import { fetchProfileSettings } from "@/lib/services/settings-profile";
 import { useChatStream } from "@/hooks/useChatStream";
 import type { ChatMessage } from "@/types/chat";
 
@@ -38,10 +41,14 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
   const [userInitials, setUserInitials] = useState("AP");
   const [isPrime, setIsPrime] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
+  const [maintainHistory, setMaintainHistory] = useState(false);
+  const [planStatus, setPlanStatus] = useState("");
   const [chatLanguage, setChatLanguage] = useState<string>(CHAT_DEFAULTS.language);
   const [sessionReady, setSessionReady] = useState(false);
   const [wsConnected, setWsConnected] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [chatUnavailableReason, setChatUnavailableReason] = useState<string | null>(null);
+  const [chatStatusSuppressed, setChatStatusSuppressed] = useState(false);
 
   const clientRef = useRef<ChatWebSocketClient | null>(null);
   const messagesRef = useRef<ChatMessage[]>([]);
@@ -185,6 +192,14 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         onClose: (event: CloseEvent) => {
           if (!cancelled) {
             setWsConnected(false);
+            const isFatalProfile = CHAT_WS_FATAL_PROFILE_CLOSE_CODES.includes(
+              event.code as (typeof CHAT_WS_FATAL_PROFILE_CLOSE_CODES)[number]
+            );
+            if (isFatalProfile) {
+              setChatUnavailableReason(CS.wsProfileIncomplete);
+              client.disconnect();
+              return;
+            }
             const stillStreaming = streamRef.current.isStreamingActive();
             if (
               awaitingResponseRef.current &&
@@ -214,10 +229,11 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
 
     async function boot() {
       try {
-        const [profile, pref, history] = await Promise.all([
+        const [profile, pref, history, settings] = await Promise.all([
           fetchProfile(),
           fetchChatPreference(),
           fetchChatHistory(),
+          fetchProfileSettings(),
         ]);
         if (cancelled) return;
 
@@ -227,11 +243,24 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         setChatLanguage(profile.chatLanguages?.toLowerCase() || CHAT_DEFAULTS.language);
         setIsPrime(pref.isPrimeCustomer);
         setMessageCount(pref.chatCountLast7Days);
+        setMaintainHistory(pref.maintainHistory);
+        setPlanStatus(settings.subscription?.planStatus ?? "");
         if (history.length > 0) {
           setMessages(historyToChatMessages(history));
           setShowBanner(false);
         }
         setSessionReady(true);
+
+        const profileIncomplete = !profile.dateOfBirth?.trim();
+        const isAstrologer = isAstrologerHomeSession(profile);
+        if (isAstrologer) {
+          setChatStatusSuppressed(true);
+          return;
+        }
+        if (profileIncomplete) {
+          setChatUnavailableReason(CS.wsProfileIncomplete);
+          return;
+        }
 
         try {
           await connectSocket();
@@ -256,6 +285,11 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     };
   }, [CS.bootError, CS.wsConnectError, enabled, resetComposerAfterSendFailure]);
 
+  const subscribeMessage =
+    planStatus.trim().toLowerCase() === "expired"
+      ? CS.subscribeExpired
+      : CS.subscribeLimit;
+
   return {
     messages,
     input,
@@ -267,8 +301,15 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     showBanner,
     userInitials,
     canSendMore,
+    isPrime,
+    messageCount,
+    maintainHistory,
+    subscribeMessage,
+    planStatus,
     sessionReady,
     wsConnected,
+    chatUnavailableReason,
+    chatStatusSuppressed,
     toast,
     clearToast: () => setToast(null),
     showToast: (message: string) => setToast(message),

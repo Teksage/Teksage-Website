@@ -43,7 +43,8 @@ export function useProfile() {
       fetchProfile()
         .then((data) => {
           if (!cancelled) {
-            useAuthStore.getState().updateUser(data);
+            const updates: Partial<typeof data> = { ...data };
+            useAuthStore.getState().updateUser(updates);
             setIsFetched(true);
           }
         })

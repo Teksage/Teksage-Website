@@ -1,15 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
+import { useI18nConstants } from "@/hooks/useT";
 import { NOTIFICATIONS_UI } from "@/lib/constants/notifications-screen";
 import {
   ASK_ASTROLOGER_SCREEN,
   ASK_ASTROLOGER_UI,
 } from "@/lib/constants/chat-ask-astrologer";
 import {
-  buildAstrologerPublicProfileDisplayUrl,
   buildAstrologerPublicProfileUrl,
 } from "@/lib/astrologer-public-profile";
 import { formatDateTimeDMY } from "@/lib/format-datetime";
@@ -22,18 +21,18 @@ function AstrologerAnswerAttribution({
   name: string;
   profilePath: string;
 }) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const profileUrl = buildAstrologerPublicProfileUrl(profilePath);
-  const profileLabel = buildAstrologerPublicProfileDisplayUrl(profilePath);
   const linkClass = ASK_ASTROLOGER_UI.answerAttributionLink;
 
   return (
     <p className="mt-2 text-sm text-black/70 lg:text-base">
-      <span>{ASK_ASTROLOGER_SCREEN.askAnswerAnsweredByPrefix} </span>
+      <span>{AA.askAnswerAnsweredByPrefix} </span>
       <span>{name}</span>
       <span>{ASK_ASTROLOGER_SCREEN.askAnswerAnsweredBySeparator}</span>
-      <Link href={profileUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
-        {profileLabel}
-      </Link>
+      <a href={profileUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+        {AA.askAnswerViewProfileLink}
+      </a>
     </p>
   );
 }
@@ -51,6 +50,7 @@ export function AskAstrologerAnswerDialog({
   error = null,
   onClose,
 }: AskAstrologerAnswerDialogProps) {
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const answeredAtLabel = formatDateTimeDMY(answeredAt);
   const showAttribution = Boolean(answeredByAstrologerName && answeredByAstrologerProfilePath);
 
@@ -74,7 +74,7 @@ export function AskAstrologerAnswerDialog({
           ×
         </button>
         <h2 className={NOTIFICATIONS_UI.dialogTitle}>
-          {ASK_ASTROLOGER_SCREEN.askAnswerDialogTitle}
+          {AA.askAnswerDialogTitle}
         </h2>
 
         {loading ? (
@@ -87,7 +87,7 @@ export function AskAstrologerAnswerDialog({
           <div className="mt-4 space-y-4 lg:mt-5 lg:space-y-5">
             <div>
               <p className={ASK_ASTROLOGER_UI.sectionLabel}>
-                {ASK_ASTROLOGER_SCREEN.askAnswerYourQuestion}
+                {AA.askAnswerYourQuestion}
               </p>
               <p className="mt-1 text-sm text-black/80 lg:text-base">{userQuestion}</p>
             </div>
@@ -103,7 +103,7 @@ export function AskAstrologerAnswerDialog({
             {answerVoiceUrl ? (
               <div>
                 <p className={ASK_ASTROLOGER_UI.sectionLabel}>
-                  {ASK_ASTROLOGER_SCREEN.askVoiceAnswerLabel}
+                  {AA.askVoiceAnswerLabel}
                 </p>
                 <VoiceAnswerPlayer
                   src={answerVoiceUrl}
@@ -122,7 +122,7 @@ export function AskAstrologerAnswerDialog({
 
             {!answerText && !answerVoiceUrl ? (
               <p className="text-sm text-black/60 lg:text-base">
-                {ASK_ASTROLOGER_SCREEN.askAnswerEmpty}
+                {AA.askAnswerEmpty}
               </p>
             ) : null}
 

@@ -7,11 +7,8 @@ import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationAstroCard } from "@/components/consultation/ConsultationAstroCard";
 import { consultationAstrologerPath } from "@/lib/constants/consultation-routes";
 import { consultationRouteUserId } from "@/lib/consultation-display";
-import {
-  CONSULTATION_LISTING_LAYOUT,
-  CONSULTATION_LISTING_SCREEN,
-} from "@/lib/constants/consultation-listing";
-import { CONSULTATION_SCREEN } from "@/lib/constants";
+import { CONSULTATION_LISTING_LAYOUT, CONSULTATION_LISTING_SCREEN } from "@/lib/constants/consultation-listing";
+import { CONSULTATION_SCREEN, ROUTES } from "@/lib/constants";
 import { useConsultationListing } from "@/hooks/useConsultationListing";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +23,7 @@ export function ConsultationListingView() {
       <AppHeader
         title={CL.appBarTitle}
         showBack
-        onBackClick={() => router.back()}
+        onBackClick={() => router.push(ROUTES.consultation)}
         className={cn(
           CONSULTATION_LISTING_LAYOUT.header,
           "[&_button]:text-white [&_button_svg]:text-white"

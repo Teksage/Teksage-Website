@@ -23,7 +23,7 @@ import type { HoroscopeChartVariant } from "@/types";
 /** Mirrors Flutter `HoroscopePage` (login gate + `horoscopePage.dart` split shell + charts). */
 export function HoroscopePage() {
   const H = useI18nConstants(HOROSCOPE_SCREEN);
-  const { isAuthenticated, data, isLoading, error, profileIncomplete, reload } =
+  const { isAuthenticated, data, isLoading, error, profileIncomplete, reload, downloadPdf } =
     useHoroscope();
   const [chartVariant, setChartVariant] = useState<HoroscopeChartVariant>("south");
 
@@ -48,6 +48,7 @@ export function HoroscopePage() {
           data={data}
           chartVariant={chartVariant}
           onChartVariantChange={setChartVariant}
+          onDownloadPdf={downloadPdf}
         />
       ) : (
         <div className={PAGE_SHELL.contentLayer}>

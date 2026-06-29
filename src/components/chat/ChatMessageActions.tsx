@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useI18nConstants } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import { writeAskAstrologerFlow } from "@/lib/ask-astrologer-session";
 import { ROUTES } from "@/lib/constants/routes";
@@ -17,6 +18,7 @@ export function ChatMessageActions({
   className,
 }: ChatMessageActionsProps) {
   const router = useRouter();
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
 
   function handleAskAstrologer() {
     writeAskAstrologerFlow({ user_question: userQuestion, ai_response: aiResponse });
@@ -28,20 +30,20 @@ export function ChatMessageActions({
   }
 
   return (
-    <div className={cn("mt-2 flex flex-wrap gap-2", className)}>
+    <div className={cn("mt-2 flex flex-wrap items-center gap-2", className)}>
       <button
         type="button"
         onClick={handleAskAstrologer}
-        className="rounded-full border border-[var(--color-brand-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-brand-primary)] transition-colors hover:bg-[var(--color-brand-primary)]/10 active:bg-[var(--color-brand-primary)]/20"
+        className="inline-flex shrink-0 items-center justify-center rounded-full border border-[var(--color-brand-primary)] px-3 py-1.5 text-center text-[10px] font-semibold leading-tight text-[var(--color-brand-primary)] transition-colors hover:bg-[var(--color-brand-primary)]/10 active:bg-[var(--color-brand-primary)]/20 sm:text-xs"
       >
-        {ASK_ASTROLOGER_SCREEN.askAstrologerLabel}
+        {AA.askAstrologerLabel}
       </button>
       <button
         type="button"
         onClick={handleBookConsultation}
-        className="rounded-full border border-black/20 px-3 py-1.5 text-xs font-medium text-black/70 transition-colors hover:border-black/40 hover:text-black active:bg-black/5"
+        className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/20 px-3 py-1.5 text-center text-[10px] font-medium leading-tight text-black/70 transition-colors hover:border-black/40 hover:text-black active:bg-black/5 sm:text-xs"
       >
-        {ASK_ASTROLOGER_SCREEN.bookConsultationLabel}
+        {AA.bookConsultationLabel}
       </button>
     </div>
   );

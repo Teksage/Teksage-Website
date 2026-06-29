@@ -47,17 +47,14 @@ export function DailyPredictionCard({
           </div>
         </div>
 
-        <div className="relative flex flex-col items-center gap-1 px-3 pb-2 pt-5">
+        <div className="relative flex h-full flex-col justify-evenly px-3 py-3">
           <p className={HOME_DASHBOARD_UI.dailyCardTitle}>{HD.dailyPrediction}</p>
           <p className={HOME_DASHBOARD_UI.dailyCardDate}>{currentDate}</p>
 
-          <div className="mt-2 w-full rounded-[1.05rem] bg-white px-2 py-2.5 shadow-sm">
+          <div className="flex min-h-[2.75rem] w-full items-center rounded-[1.05rem] bg-white px-2 py-2 shadow-sm">
             {isLoading ? (
-              <div className="flex flex-col items-center gap-1 py-0.5">
+              <div className="flex items-center justify-center py-0.5">
                 <Loader variant="brand" size="sm" label="Loading daily prediction" />
-                <p className="text-center text-xs text-neutral-400">
-                  {HD.loadingEllipsis}
-                </p>
               </div>
             ) : !isLoggedIn ? (
               <p className={HOME_DASHBOARD_UI.dailyHint}>{HD.clickToView}</p>
@@ -66,15 +63,15 @@ export function DailyPredictionCard({
                 {HD.dailyPredictionUnavailable}
               </p>
             ) : data ? (
-              <div className="flex items-stretch justify-around">
-                <div className="flex flex-1 flex-col items-center justify-center text-center">
+              <div className="flex items-center justify-around gap-1">
+                <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 text-center">
                   <p className={HOME_DASHBOARD_UI.dailyBalaValue}>
                     {data.tharaBala ?? "N/A"}
                   </p>
                   <p className={HOME_DASHBOARD_UI.dailyBalaLabel}>{HD.tharaBala}</p>
                 </div>
-                <div className="w-px self-stretch bg-neutral-200" />
-                <div className="flex flex-1 flex-col items-center justify-center text-center">
+                <div className="w-px shrink-0 self-stretch bg-neutral-200" />
+                <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 text-center">
                   <p className={HOME_DASHBOARD_UI.dailyBalaValue}>
                     {data.chandraBala ?? "N/A"}
                   </p>
@@ -90,7 +87,7 @@ export function DailyPredictionCard({
 
           <div
             className={cn(
-              "mt-1 transition-transform duration-500 ease-in-out",
+              "transition-transform duration-500 ease-in-out",
               "group-hover:translate-y-1"
             )}
           >

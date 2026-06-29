@@ -1,8 +1,12 @@
 "use client";
 
-import { useI18nConstants } from "@/hooks/useT";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useI18nConstants } from "@/hooks/useT";
+import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
+import { usePremiumAccess } from "@/hooks/usePremiumAccess";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { cn } from "@/lib/utils";
 import {
@@ -10,6 +14,7 @@ import {
   HOME_DASHBOARD_UI,
   HOME_LAYOUT,
   PREDICTION_CIRCLE_LINKS,
+  ROUTES,
 } from "@/lib/constants";
 import type { PredictionCirclesProps } from "@/types";
 
@@ -25,10 +30,30 @@ function ExploreRuleLine() {
   );
 }
 
+function isPremiumPredictionHref(href: string): boolean {
+  return href === ROUTES.predictionsYearly || href === ROUTES.predictionsLife;
+}
+
 export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
   const predictionLinks = useI18nConstants(PREDICTION_CIRCLE_LINKS);
   const { guardNavigation } = useAuthNavigation();
+  const router = useRouter();
+  const { hasPremiumAccess, planStatus } = usePremiumAccess();
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
+
+  function openCircle(href: string) {
+    if (!isLoggedIn) {
+      guardNavigation(href, { redirectHomeOnClose: true });
+      return;
+    }
+    if (isPremiumPredictionHref(href) && !hasPremiumAccess) {
+      setSubscribeOpen(true);
+      return;
+    }
+    router.push(href);
+  }
+
   return (
     <div className={cn("flex flex-col", HOME_LAYOUT.exploreSectionGap, className)}>
       <div className="flex items-center gap-2 sm:gap-3">
@@ -69,7 +94,7 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
             </>
           );
 
-          if (isLoggedIn) {
+          if (isLoggedIn && !isPremiumPredictionHref(item.href)) {
             return (
               <Link
                 key={item.label}
@@ -85,7 +110,7 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
             <button
               key={item.label}
               type="button"
-              onClick={() => guardNavigation(item.href, { redirectHomeOnClose: true })}
+              onClick={() => openCircle(item.href)}
               className="flex max-w-[33%] flex-1 flex-col items-center gap-2"
             >
               {content}
@@ -93,6 +118,13 @@ export function PredictionCircles({ isLoggedIn, className }: PredictionCirclesPr
           );
         })}
       </div>
+      <SubscribePromptDialog
+        open={subscribeOpen}
+        onClose={() => setSubscribeOpen(false)}
+        planStatus={
+          planStatus.trim().toLowerCase() === "expired" ? "expired" : "default"
+        }
+      />
     </div>
   );
 }

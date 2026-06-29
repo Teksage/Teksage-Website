@@ -26,12 +26,14 @@ function isIncompleteProfileBody(
 export async function fetchProfileFromApi(): Promise<UserProfile> {
   try {
     const { data } = await http.get<RawProfileResponse>(API_ENDPOINTS.profile);
-    return mapRawProfileToUserProfile(data);
+    return mapRawProfileToUserProfile(data, { isProfileUpdated: true });
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 400) {
       const body = error.response.data;
       if (isIncompleteProfileBody(body)) {
-        return mapRawProfileToUserProfile(body.profile_data);
+        return mapRawProfileToUserProfile(body.profile_data, {
+          isProfileUpdated: false,
+        });
       }
     }
     throw error;
