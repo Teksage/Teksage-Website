@@ -21,6 +21,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
   panchangam: "Panchang",
   horoscope: "Horoscope",
   settings: "Settings",
+  gettingStarted: "Getting Started",
   unlockPremium: "Unlock Premium",
   unlockPremiumHint: "Get advanced insights and personalized guidance",
   upgradeNow: "Upgrade Now",
@@ -42,6 +43,7 @@ export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
   panchang: DASHBOARD_ASSETS.navPanchangOff,
   horoscope: DASHBOARD_ASSETS.navHoroscopeOff,
   settings: DASHBOARD_ASSETS.navSettingsOff,
+  gettingStarted: DASHBOARD_ASSETS.sidebarGettingStarted,
   premiumCrown: DASHBOARD_ASSETS.sidebarPremiumCrown,
   predictionsChevron: DASHBOARD_ASSETS.sidebarChevronDown,
 } as const;

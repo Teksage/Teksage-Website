@@ -41,6 +41,7 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
     loading,
     error,
     planPrice,
+    planOriginalPrice,
     isAutoPayActive,
     nextBillingDate,
     cancelAutoPay,
@@ -134,6 +135,7 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
             recommendedId={recommendedId}
             symbol={symbol}
             priceOf={planPrice}
+            originalPriceOf={planOriginalPrice}
             onSelect={setSelectedId}
           />
           <SubscriptionPlanBenefits selectedPlan={selectedPlan} />

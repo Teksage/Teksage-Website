@@ -22,6 +22,7 @@ export * from "./consultation-checkout";
 export * from "./consultation-booking";
 export * from "./consultation-currency";
 export * from "./consultation-routes";
+export * from "./getting-started";
 export * from "./settings-screen";
 export * from "./routes";
 export * from "./default-region";

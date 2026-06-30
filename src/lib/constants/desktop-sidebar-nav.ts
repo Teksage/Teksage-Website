@@ -51,4 +51,9 @@ export const DESKTOP_SIDEBAR_SETTINGS_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.settings,
 } as const;
 
+export const DESKTOP_SIDEBAR_GETTING_STARTED_LINK = {
+  href: ROUTES.gettingStarted,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.gettingStarted,
+} as const;
+
 export const DESKTOP_SIDEBAR_AI_CHAT_HREF = ROUTES.home;

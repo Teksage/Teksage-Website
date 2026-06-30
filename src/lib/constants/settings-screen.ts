@@ -96,6 +96,12 @@ export const SETTINGS_PRIMARY_LINKS: readonly SettingsPrimaryLink[] = [
     href: `${ROUTES.settings}/faq`,
     iconKey: "faq",
   },
+  {
+    id: "getting-started",
+    label: "Getting Started",
+    href: ROUTES.gettingStarted,
+    iconKey: "gettingStarted",
+  },
 ] as const;
 
 /** Sub-pages under `settings/[section]`. */
