@@ -19,6 +19,7 @@ import {
   DESKTOP_SIDEBAR_WHATSAPP_LINK,
   DESKTOP_SIDEBAR_PANCHANG_LINK,
   DESKTOP_SIDEBAR_SETTINGS_LINK,
+  DESKTOP_SIDEBAR_GETTING_STARTED_LINK,
   DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK,
 } from "@/lib/constants/desktop-sidebar-nav";
 import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
@@ -176,6 +177,13 @@ export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavP
           iconSrc={DESKTOP_SIDEBAR_SETTINGS_LINK.icon}
           label={HDS.settings}
           active={pathname.startsWith(DESKTOP_SIDEBAR_SETTINGS_LINK.href)}
+        />
+
+        <DesktopNavItem
+          href={DESKTOP_SIDEBAR_GETTING_STARTED_LINK.href}
+          iconSrc={DESKTOP_SIDEBAR_GETTING_STARTED_LINK.icon}
+          label={HDS.gettingStarted}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_GETTING_STARTED_LINK.href)}
         />
 
         {showPremiumUpsell ? (

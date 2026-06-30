@@ -12,6 +12,7 @@ export const ROUTES = {
   settingsChangeContact: "/settings/change-contact",
   settingsSubscriptions: "/settings/subscriptions",
   settingsSubscriptionPayment: "/settings/subscriptions/payment",
+  gettingStarted: "/getting-started",
   profile: "/profile",
   login: "/login",
   welcome: "/welcome",
