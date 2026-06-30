@@ -43,7 +43,7 @@ export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
   panchang: DASHBOARD_ASSETS.navPanchangOff,
   horoscope: DASHBOARD_ASSETS.navHoroscopeOff,
   settings: DASHBOARD_ASSETS.navSettingsOff,
-  gettingStarted: DASHBOARD_ASSETS.sidebarFolder,
+  gettingStarted: DASHBOARD_ASSETS.sidebarGettingStarted,
   premiumCrown: DASHBOARD_ASSETS.sidebarPremiumCrown,
   predictionsChevron: DASHBOARD_ASSETS.sidebarChevronDown,
 } as const;

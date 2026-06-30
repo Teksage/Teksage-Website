@@ -73,6 +73,7 @@ export const DASHBOARD_ASSETS = {
   sidebarProfile: flutterSvg("sidebar-profile.svg"),
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
+  sidebarGettingStarted: flutterSvg("sidebar-getting-started.svg"),
 } as const;
 
 /** Daily prediction — `dailyPrediction.dart`, `predictionContainer.dart`, `imageConstant.dart`. */
@@ -120,6 +121,7 @@ export const SETTINGS_ASSETS = {
   privacy: flutterSvg("privacy.svg"),
   support: flutterSvg("support.svg"),
   faq: flutterSvg("faq.svg"),
+  gettingStarted: flutterSvg("getting-started.svg"),
   rating: flutterSvg("rating.svg"),
   deleteAccount: flutterSvg("deleteAcc.svg"),
   logout: flutterSvg("logout.svg"),

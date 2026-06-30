@@ -100,7 +100,7 @@ export const SETTINGS_PRIMARY_LINKS: readonly SettingsPrimaryLink[] = [
     id: "getting-started",
     label: "Getting Started",
     href: ROUTES.gettingStarted,
-    iconKey: "faq",
+    iconKey: "gettingStarted",
   },
 ] as const;
 
