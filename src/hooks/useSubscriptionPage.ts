@@ -2,7 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
-import { SETTINGS_SUBSCRIPTIONS_COPY } from "@/lib/constants/settings-subscriptions";
+import {
+  SETTINGS_SUBSCRIPTIONS_COPY,
+  SETTINGS_SUBSCRIPTION_MONTHLY_INR,
+} from "@/lib/constants/settings-subscriptions";
 import {
   clearSubscriptionActivating,
   isSubscriptionActivatingRecent,
@@ -18,6 +21,17 @@ import type { SubscriptionPlan } from "@/types/settings";
 
 function planPrice(plan: SubscriptionPlan, currency: "INR" | "USD"): number {
   return currency === "INR" ? plan.localPlanPrice : plan.foreignPlanPrice;
+}
+
+function planOriginalPrice(
+  plan: SubscriptionPlan,
+  currency: "INR" | "USD"
+): number | null {
+  if (currency !== "INR") return null;
+  if (plan.tenureValue !== 1) return null;
+  const current = Math.round(plan.localPlanPrice);
+  if (current !== SETTINGS_SUBSCRIPTION_MONTHLY_INR.introPrice) return null;
+  return SETTINGS_SUBSCRIPTION_MONTHLY_INR.originalPrice;
 }
 
 export function useSubscriptionPage(currency: "INR" | "USD") {
@@ -187,6 +201,7 @@ export function useSubscriptionPage(currency: "INR" | "USD") {
     loading,
     error,
     planPrice: (p: SubscriptionPlan) => planPrice(p, currency),
+    planOriginalPrice: (p: SubscriptionPlan) => planOriginalPrice(p, currency),
     isAutoPayActive,
     nextBillingDate,
     cancelAutoPay,
