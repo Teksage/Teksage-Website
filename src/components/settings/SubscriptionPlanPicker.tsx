@@ -15,6 +15,7 @@ type SubscriptionPlanPickerProps = {
   recommendedId: number | null;
   symbol: string;
   priceOf: (plan: SubscriptionPlan) => number;
+  originalPriceOf?: (plan: SubscriptionPlan) => number | null;
   onSelect: (planId: number) => void;
 };
 
@@ -24,6 +25,7 @@ export function SubscriptionPlanPicker({
   recommendedId,
   symbol,
   priceOf,
+  originalPriceOf,
   onSelect,
 }: SubscriptionPlanPickerProps) {
   const SUB = useI18nConstants(SETTINGS_SUBSCRIPTIONS_COPY);
@@ -36,6 +38,7 @@ export function SubscriptionPlanPicker({
         const selected = plan.planId === selectedId;
         const recommended = plan.planId === recommendedId;
         const showSelectedStyle = selected && recommendedId != null;
+        const originalPrice = originalPriceOf?.(plan) ?? null;
 
         return (
           <button
@@ -61,6 +64,12 @@ export function SubscriptionPlanPicker({
                 !showSelectedStyle && SETTINGS_UI.subscriptionPlanCardIdle
               )}
             >
+              {originalPrice != null ? (
+                <p className="mb-1 text-xs leading-none text-white/55 line-through">
+                  {symbol}
+                  {Math.round(originalPrice)}
+                </p>
+              ) : null}
               <p className="text-price font-semibold leading-none">
                 {symbol}
                 {Math.round(priceOf(plan))}

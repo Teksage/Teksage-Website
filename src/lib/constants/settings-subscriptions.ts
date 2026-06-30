@@ -42,3 +42,12 @@ export const SETTINGS_SUBSCRIPTIONS_COPY = {
   comparePlans: "Compare the plans",
   planBenefitsTitle: "Included with this plan",
 } as const;
+
+/**
+ * Intro offer pricing:
+ * show MRP strike-off for INR monthly plan card in picker.
+ */
+export const SETTINGS_SUBSCRIPTION_MONTHLY_INR = {
+  introPrice: 99,
+  originalPrice: 199,
+} as const;
