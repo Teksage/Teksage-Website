@@ -142,6 +142,7 @@ export const SETTINGS_PAGE_ASSETS = {
   subscriptionPro: flutterSvg("subscriptionProIcon.svg"),
   planSelected: flutterSvg("subSelect.svg"),
   planCheck: flutterSvg("selectCheckBox.svg"),
+  planUncheck: flutterSvg("unSelectCheckBox.svg"),
   dialogClose: flutterSvg("close.svg"),
 } as const;
 

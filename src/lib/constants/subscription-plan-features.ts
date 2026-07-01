@@ -14,3 +14,33 @@ export const SUBSCRIPTION_PLAN_FEATURE_ROWS = [
   { label: PREMIUM_PLAN_FEATURES[9], serviceId: 6 },
   { label: PREMIUM_PLAN_FEATURES[10], serviceId: 7 },
 ] as const;
+
+/** Flutter `subscriptionComponent.dart` / `subscription_home_page.dart` — Pro column. */
+export const MOBILE_ANDROID_PRO_FEATURE_FLAGS = [
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+] as const;
+
+/** Flutter `subscriptionComponent.dart` — Free column. */
+export const MOBILE_ANDROID_FREE_FEATURE_FLAGS = [
+  true,
+  true,
+  true,
+  true,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+] as const;
