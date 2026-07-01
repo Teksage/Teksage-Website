@@ -11,6 +11,8 @@ export interface HoroscopeChartFrameProps {
 
 export interface PanchangDetailViewProps {
   panchang: PanchangDetail;
+  selectedDate: Date;
+  onSelectDate: (date: Date) => void;
   onDownloadPdf?: () => void;
   pdfBusy?: boolean;
 }
@@ -27,10 +29,13 @@ export interface PanchangDottedRowProps {
 
 export interface PanchangPersonalizedSectionsProps {
   panchang: PanchangDetail;
+  selectedDate: Date;
+  onSelectDate: (date: Date) => void;
 }
 
 export interface PanchangDateRibbonProps {
   panchang: PanchangDetail;
+  onOpenCalendar: () => void;
 }
 
 export interface PanchangBalaPairProps {

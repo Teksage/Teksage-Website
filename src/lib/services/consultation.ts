@@ -187,7 +187,7 @@ export async function applyConsultationCoupon(body: {
 }): Promise<ConsultationCouponResult> {
   const { data } = await http.post<ConsultationCouponResult>(
     API_ENDPOINTS.paymentApplyCoupon,
-    { ...body, plan_id: null }
+    body
   );
   return data;
 }

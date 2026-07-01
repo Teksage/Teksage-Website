@@ -15,6 +15,7 @@ export const PANCHANG_SCREEN = {
   loadErrorFallback: "Failed to load Panchang.",
   tryAgainCta: "Try again",
   todayLabel: "Today",
+  changeDateHint: "Tap to change date",
   downloadPdfCta: "Download PDF",
   sharePdfError: "Could not download Panchang PDF. Please try again.",
   detailSeparator: " · ",

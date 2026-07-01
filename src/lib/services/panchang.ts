@@ -20,8 +20,10 @@ function parsePanchangBody(body: PanchangApiBody): PanchangPayload {
   return { panchangId: id, panchang: raw as PanchangDetail };
 }
 
-export async function fetchPanchang(): Promise<PanchangPayload> {
-  const { data } = await http.get<PanchangApiBody>(API_ENDPOINTS.panchang);
+export async function fetchPanchang(forDate?: string): Promise<PanchangPayload> {
+  const { data } = await http.get<PanchangApiBody>(API_ENDPOINTS.panchang, {
+    params: forDate ? { date: forDate } : undefined,
+  });
   return parsePanchangBody(data);
 }
 

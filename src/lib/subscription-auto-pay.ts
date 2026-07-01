@@ -16,3 +16,11 @@ export function isActiveAutoPaySubscription(
   if (!subscription?.isAutoPay) return false;
   return (subscription.autoPayStatus ?? "").toLowerCase() === "active";
 }
+
+/** Flutter `paymentSummary.dart` — no promo on monthly plan or auto-renew checkout. */
+export function isSubscriptionCouponAllowed(
+  planId: number,
+  autoPayEnabled: boolean
+): boolean {
+  return planId !== SUBSCRIPTION_AUTO_PAY_PLAN_ID && !autoPayEnabled;
+}

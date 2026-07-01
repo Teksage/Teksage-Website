@@ -37,7 +37,7 @@ export function SubscriptionPlanPicker({
       {plans.map((plan) => {
         const selected = plan.planId === selectedId;
         const recommended = plan.planId === recommendedId;
-        const showSelectedStyle = selected && recommendedId != null;
+
         const originalPrice = originalPriceOf?.(plan) ?? null;
 
         return (
@@ -47,7 +47,7 @@ export function SubscriptionPlanPicker({
             onClick={() => onSelect(plan.planId)}
             className="relative min-w-0 flex-1"
           >
-            {showSelectedStyle ? (
+            {selected ? (
               <Image
                 src={SETTINGS_PAGE_ASSETS.planSelected}
                 alt=""
@@ -60,8 +60,8 @@ export function SubscriptionPlanPicker({
             <div
               className={cn(
                 SETTINGS_UI.subscriptionPlanCard,
-                showSelectedStyle && SETTINGS_UI.subscriptionPlanCardSelected,
-                !showSelectedStyle && SETTINGS_UI.subscriptionPlanCardIdle
+                selected && SETTINGS_UI.subscriptionPlanCardSelected,
+                !selected && SETTINGS_UI.subscriptionPlanCardIdle
               )}
             >
               {originalPrice != null ? (
