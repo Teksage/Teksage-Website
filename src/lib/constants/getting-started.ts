@@ -9,7 +9,6 @@ export const GETTING_STARTED_SCREEN = {
   subtitle:
     "Learn how to get the most out of Teksage with short guided videos. New tutorials will appear here over time.",
   videosSectionTitle: "Tutorial videos",
-  watchOnYoutube: "Watch on YouTube",
 } as const;
 
 /** Ordered list — append new videos here as they are produced. */
@@ -17,18 +16,12 @@ export const GETTING_STARTED_VIDEOS: readonly GettingStartedVideo[] = [
   {
     id: "intro",
     title: "Welcome to Teksage",
-    description:
-      "A quick walkthrough of the app and how to begin your astrology journey.",
     youtubeVideoId: GETTING_STARTED_YOUTUBE_VIDEO_ID_INTRO,
   },
 ] as const;
 
 export function youtubeEmbedUrl(videoId: string): string {
   return `https://www.youtube-nocookie.com/embed/${videoId}`;
-}
-
-export function youtubeWatchUrl(videoId: string): string {
-  return `https://www.youtube.com/watch?v=${videoId}`;
 }
 
 export const GETTING_STARTED_LAYOUT = {
@@ -41,14 +34,10 @@ export const GETTING_STARTED_LAYOUT = {
   heroTitle: `${TYPO.h2Semibold} text-[var(--color-brand-black)]`,
   heroSubtitle: `mt-2 max-w-3xl ${TYPO.bodySm} text-[var(--color-brand-black)]/60`,
   sectionTitle: `mb-4 ${TYPO.labelSemibold} text-[var(--color-brand-black)]/80`,
-  videoList: "flex w-full flex-col gap-6",
-  videoCard:
-    "w-full overflow-hidden rounded-2xl border border-[var(--color-home-dashboard-rule)] bg-white shadow-[0_2px_16px_rgb(0_0_0_/0.06)] lg:shadow-[0_4px_24px_rgb(0_0_0_/0.05)]",
-  videoFrameWrap: "relative aspect-video w-full bg-[var(--color-brand-black)]",
+  videoGrid:
+    "grid w-full grid-cols-1 gap-6 rounded-xl border border-[var(--color-home-dashboard-rule)] bg-[var(--color-brand-bg)]/35 p-4 sm:p-6 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-8",
+  videoCell: "flex min-w-0 flex-col gap-3",
+  videoTitle: `${TYPO.labelSemibold} text-[var(--color-brand-primary)]`,
+  videoFrameWrap: "relative aspect-video w-full overflow-hidden rounded-lg bg-[var(--color-brand-black)]",
   videoFrame: "absolute inset-0 size-full border-0",
-  videoBody: "flex flex-col gap-3 px-4 py-4 sm:px-6 sm:py-5",
-  videoTitle: `${TYPO.h3} text-[var(--color-brand-black)]`,
-  videoDescription: `${TYPO.bodySm} text-[var(--color-brand-black)]/65`,
-  videoLink:
-    "inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-80",
 } as const;
