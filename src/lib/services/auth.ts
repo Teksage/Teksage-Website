@@ -18,6 +18,7 @@ interface LoginVerifyApiResponse {
   user_id: number | string;
   premium_member?: boolean;
   user_type?: string | null;
+  profile_updated?: boolean | null;
 }
 
 function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthResponse {
@@ -39,6 +40,8 @@ function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthRespons
       mobile: data.mobile_number ?? undefined,
       isPremium: Boolean(data.premium_member),
       userType: data.user_type?.trim() || undefined,
+      isProfileUpdated:
+        data.profile_updated != null ? Boolean(data.profile_updated) : undefined,
     },
   };
 }
