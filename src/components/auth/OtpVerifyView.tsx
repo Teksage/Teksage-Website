@@ -70,7 +70,10 @@ export function OtpVerifyView({
       void import("@/lib/services/push-notifications").then(({ initWebPush }) =>
         initWebPush()
       );
-      const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
+      const dest = resolvePostLoginRedirectPath(
+        searchParams.get(LOGIN_REDIRECT_QUERY),
+        { profileUpdated: response.user.isProfileUpdated }
+      );
       router.replace(dest);
     } catch {
       setError(OV.invalidOtp);

@@ -15,6 +15,7 @@ import { DEFAULT_COUNTRY_CALLING_CODE, LOGIN_SCREEN } from "@/lib/constants";
 import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
 import { reconcileAuthSession } from "@/lib/auth-session";
 import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
+import { useAuthStore } from "@/store/auth.store";
 import type { LoginMethodTab, LoginStep } from "@/types";
 import { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "@/types";
 
@@ -33,6 +34,7 @@ function LoginPageInner() {
   );
 
   const { ready, loggedIn } = useHydratedLoggedIn();
+  const profileUpdated = useAuthStore((s) => s.user?.isProfileUpdated);
 
   useEffect(() => {
     reconcileAuthSession();
@@ -40,9 +42,12 @@ function LoginPageInner() {
 
   useEffect(() => {
     if (!ready || !loggedIn) return;
-    const dest = resolvePostLoginRedirectPath(searchParams.get(LOGIN_REDIRECT_QUERY));
+    const dest = resolvePostLoginRedirectPath(
+      searchParams.get(LOGIN_REDIRECT_QUERY),
+      { profileUpdated }
+    );
     router.replace(dest);
-  }, [ready, loggedIn, router, searchParams]);
+  }, [ready, loggedIn, profileUpdated, router, searchParams]);
 
   function handleEmailOtpSent(email: string) {
     setContact(email);

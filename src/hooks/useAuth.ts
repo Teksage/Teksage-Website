@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth.store";
 import { clearAuthSession } from "@/lib/auth-session";
 import { ROUTES } from "@/lib/constants/routes";
+import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import {
   showErrorAppSnackBar,
@@ -47,7 +48,11 @@ export function useAuth() {
       const response = await verifyOtp(payload);
       setAuth(response.user, response.token);
       showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpVerified);
-      router.push(ROUTES.home);
+      router.push(
+        resolvePostLoginRedirectPath(null, {
+          profileUpdated: response.user.isProfileUpdated,
+        })
+      );
     } catch {
       const msg = "Invalid OTP. Please try again.";
       setError(msg);

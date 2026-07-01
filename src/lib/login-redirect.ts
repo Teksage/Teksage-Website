@@ -15,16 +15,21 @@ export function isSafeInAppRedirectPath(path: string): boolean {
   return true;
 }
 
-/** Resolve `?redirect=` after OTP login; defaults to home. */
+/** Resolve post-OTP destination — mirrors Flutter `password.dart` login navigation. */
 export function resolvePostLoginRedirectPath(
   raw: string | null | undefined,
-  fallback: string = ROUTES.home
+  options?: { profileUpdated?: boolean }
 ): string {
-  if (!raw?.trim()) return fallback;
+  if (options?.profileUpdated === false) {
+    return ROUTES.profile;
+  }
+
+  if (!raw?.trim()) return ROUTES.home;
+
   try {
     const decoded = decodeURIComponent(raw.trim());
-    return isSafeInAppRedirectPath(decoded) ? decoded : fallback;
+    return isSafeInAppRedirectPath(decoded) ? decoded : ROUTES.home;
   } catch {
-    return fallback;
+    return ROUTES.home;
   }
 }
