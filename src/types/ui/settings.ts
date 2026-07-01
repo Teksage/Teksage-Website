@@ -1,5 +1,6 @@
 import type { UserProfile } from "../user-profile";
 import type { PaymentTotals } from "@/lib/subscription-payment-totals";
+import type { SubscriptionPlan } from "@/types/settings";
 
 export type ProfileDetailsFormState = {
   firstName: string;
@@ -148,4 +149,10 @@ export interface SubscriptionPaymentFeesProps {
   busy: boolean;
   onPromoChange: (value: string) => void;
   onApplyPromo: () => void;
+}
+
+export interface SubscriptionPlanBenefitsProps {
+  selectedPlan: SubscriptionPlan | null | undefined;
+  isPremium: boolean;
+  className?: string;
 }

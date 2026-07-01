@@ -68,7 +68,7 @@ export const SETTINGS_UI = {
     "relative z-10 flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-black text-white",
   subscriptionScroll: "relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain",
   subscriptionContent: "mx-auto w-full max-w-lg px-5 pt-2 lg:max-w-2xl lg:px-8",
-  subscriptionContentAboveFooter: "pb-6",
+  subscriptionContentAboveFooter: "pb-28 lg:pb-8",
   subscriptionFooter:
     "sticky bottom-0 z-20 mt-auto flex w-full shrink-0 justify-center border-t border-white/10 bg-black px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] shadow-[0_-12px_32px_rgb(0_0_0_/0.65)] lg:px-8 lg:pb-6",
   subscriptionPrimaryBtn:
@@ -79,6 +79,11 @@ export const SETTINGS_UI = {
     "shrink-0 rounded-md bg-[color-mix(in_srgb,var(--color-brand-black)_55%,transparent)] px-[15px] py-5 text-center ring-1 ring-white/15",
   subscriptionFeatureLabel:
     "text-sm font-medium leading-snug text-[var(--color-subscription-feature-text)]",
+  subscriptionCompareHeader:
+    "flex items-center justify-between gap-3 text-base font-semibold text-white",
+  subscriptionCompareCol:
+    "w-10 shrink-0 text-center text-sm font-medium text-white",
+  subscriptionCompareRow: "flex items-center justify-between gap-3",
   subscriptionPlanRow: "relative z-10 mt-2.5 flex gap-2.5 lg:max-w-xl lg:mx-auto",
   subscriptionPlanCard:
     "relative mt-2.5 flex w-full flex-col items-center justify-center rounded border-[1.5px] px-1 py-2",
