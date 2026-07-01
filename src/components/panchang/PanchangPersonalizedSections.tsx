@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
+import { PanchangDatePicker } from "@/components/panchang/PanchangDatePicker";
 import { PanchangBalaPair } from "@/components/panchang/PanchangBalaPair";
 import { PanchangDateRibbon } from "@/components/panchang/PanchangDateRibbon";
 import { PanchangDottedRow } from "@/components/panchang/PanchangDottedRow";
@@ -15,6 +17,8 @@ import type { PanchangPersonalizedSectionsProps } from "@/types";
 
 export function PanchangPersonalizedSections({
   panchang,
+  selectedDate,
+  onSelectDate,
 }: PanchangPersonalizedSectionsProps) {
   const P = useI18nConstants(PANCHANG_SCREEN);
   const L = P.mainCardLabels;
@@ -28,10 +32,20 @@ export function PanchangPersonalizedSections({
     { label: L.yoga, value: formatPanchangSegmentValue(panchang.yoga, P) },
   ].filter((r) => r.value?.trim());
   const visibleMain = mainRows.length;
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   return (
     <div className={S.stack}>
-      <PanchangDateRibbon panchang={panchang} />
+      <PanchangDateRibbon
+        panchang={panchang}
+        onOpenCalendar={() => setCalendarOpen(true)}
+      />
+      <PanchangDatePicker
+        open={calendarOpen}
+        onOpenChange={setCalendarOpen}
+        selectedDate={selectedDate}
+        onSelectDate={onSelectDate}
+      />
 
       <div className={S.upperGrid}>
         <div className={S.columnStack}>

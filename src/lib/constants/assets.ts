@@ -103,6 +103,7 @@ export const PANCHANG_ASSETS = {
    */
   personalizedBackground: DASHBOARD_ASSETS.panchangHero,
   timeRibbon: flutterSvg("panchangTimeContainer.svg"),
+  datePickerIcon: flutterSvg("sidebar-calendar.svg"),
   sunrise: flutterSvg("sunrise.svg"),
   sunset: flutterSvg("sunset.svg"),
   timeDivider: flutterSvg("dashLine.svg"),
