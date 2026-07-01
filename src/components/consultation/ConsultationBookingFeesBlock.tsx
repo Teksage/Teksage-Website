@@ -2,54 +2,50 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
+import { PromoCodeField } from "@/components/common/PromoCodeField";
 import {
   CONSULTATION_BOOKING_ASSETS,
   CONSULTATION_BOOKING_LAYOUT,
   CONSULTATION_BOOKING_SCREEN,
 } from "@/lib/constants/consultation-booking";
 import { CONSULTATION_SCREEN } from "@/lib/constants";
+import { COUPON_PROMO_COPY } from "@/lib/constants/coupon-promo";
 import { formatFeeSlash } from "@/lib/consultation-booking-format";
-import type { ConsultationCouponResult } from "@/types/consultation";
-
-type ConsultationBookingFeesBlockProps = {
-  totals: ConsultationCouponResult;
-  currency: string;
-  couponCode: string;
-  busy: boolean;
-  onCouponChange: (value: string) => void;
-  onApplyCoupon: () => void;
-};
+import type { ConsultationBookingFeesBlockProps } from "@/types/ui/consultation";
 
 export function ConsultationBookingFeesBlock({
   totals,
   currency,
   couponCode,
+  couponApplied,
+  promoError,
   busy,
   onCouponChange,
   onApplyCoupon,
 }: ConsultationBookingFeesBlockProps) {
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const C = useI18nConstants(CONSULTATION_SCREEN);
+  const PROMO = useI18nConstants(COUPON_PROMO_COPY);
+  const currencySymbol = currency === "INR" ? "\u20b9" : "$";
+
   return (
     <div className="space-y-3">
       <div className={CONSULTATION_BOOKING_LAYOUT.promoCard}>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={couponCode}
-            onChange={(e) => onCouponChange(e.target.value)}
-            placeholder={C.couponPlaceholder}
-            className="min-w-0 flex-1 rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm"
-          />
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onApplyCoupon}
-            className="shrink-0 rounded-xl border border-[var(--color-consult-user-bg)] px-4 py-2.5 text-sm font-semibold text-[var(--color-consult-user-bg)]"
-          >
-            {C.applyCoupon}
-          </button>
-        </div>
+        <PromoCodeField
+          variant="consultation"
+          value={couponCode}
+          applied={couponApplied}
+          error={promoError}
+          busy={busy}
+          placeholder={C.couponPlaceholder}
+          applyLabel={C.applyCoupon}
+          appliedLabel={PROMO.applied}
+          savingsLabel={PROMO.consultationSaved}
+          savingsAmount={couponApplied ? totals.discount : null}
+          currencySymbol={currencySymbol}
+          onChange={onCouponChange}
+          onApply={onApplyCoupon}
+        />
       </div>
       <div className={CONSULTATION_BOOKING_LAYOUT.feeRow}>
         <span>{CB.consultationFee}</span>

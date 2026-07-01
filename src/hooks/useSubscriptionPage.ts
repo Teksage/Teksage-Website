@@ -171,10 +171,15 @@ export function useSubscriptionPage(currency: "INR" | "USD") {
   );
 
   const recommendedId = useMemo(() => {
-    if (pickerPlans.length === 0 || !hasUpgradePath) return null;
+    if (pickerPlans.length === 0) return null;
+    if (!isPremium) {
+      const mid = pickerPlans[Math.floor(pickerPlans.length / 2)];
+      return mid?.planId ?? pickerPlans[0]?.planId ?? null;
+    }
+    if (!hasUpgradePath) return null;
     const mid = pickerPlans[Math.floor(pickerPlans.length / 2)];
     return mid?.planId ?? null;
-  }, [pickerPlans, hasUpgradePath]);
+  }, [pickerPlans, hasUpgradePath, isPremium]);
 
   const selectedPlan = pickerPlans.find((p) => p.planId === selectedId);
 

@@ -14,6 +14,7 @@ import {
   CONSULTATION_BOOKING_SCREEN,
 } from "@/lib/constants/consultation-booking";
 import { CONSULTATION_CHECKOUT_SCREEN } from "@/lib/constants/consultation-checkout";
+import { COUPON_PROMO_COPY } from "@/lib/constants/coupon-promo";
 import { CONSULTATION_SCREEN, ROUTES } from "@/lib/constants";
 import {
   formatConsultationBookingDate,
@@ -69,6 +70,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
   const C = useI18nConstants(CONSULTATION_SCREEN);
+  const PROMO = useI18nConstants(COUPON_PROMO_COPY);
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const currency = useConsultationCurrency();
@@ -76,6 +78,9 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [shareHoroscope, setShareHoroscope] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [appliedCouponCode, setAppliedCouponCode] = useState("");
+  const [promoError, setPromoError] = useState<string | null>(null);
   const [appliedCouponId, setAppliedCouponId] = useState<number | null>(null);
   const [pricing, setPricing] = useState<ConsultationCouponResult | null>(null);
   const [busy, setBusy] = useState(false);
@@ -136,10 +141,25 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
   const booking = draft;
   const totals = pricing;
 
+  function onCouponChange(value: string) {
+    setCouponCode(value);
+    if (
+      (couponApplied || promoError) &&
+      value.trim() !== appliedCouponCode
+    ) {
+      setCouponApplied(false);
+      setPromoError(null);
+      setAppliedCouponId(null);
+      if (booking.fee != null) {
+        setPricing(initialConsultationPricing(booking.fee, currency));
+      }
+    }
+  }
+
   async function onApplyCoupon() {
     if (!couponCode.trim()) return;
     setBusy(true);
-    setError(null);
+    setPromoError(null);
     try {
       const result = await applyConsultationCoupon({
         coupon_name: couponCode.trim(),
@@ -148,9 +168,18 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         amount: booking.fee ?? 0,
       });
       setPricing(result);
-      setAppliedCouponId(result.coupon_id && result.coupon_id > 0 ? result.coupon_id : null);
+      const couponId =
+        result.coupon_id && result.coupon_id > 0 ? result.coupon_id : null;
+      setAppliedCouponId(couponId);
+      setCouponApplied(true);
+      setAppliedCouponCode(couponCode.trim());
     } catch {
-      setError(C.loadError);
+      setCouponApplied(false);
+      setAppliedCouponId(null);
+      setPromoError(PROMO.invalidPromo);
+      if (booking.fee != null) {
+        setPricing(initialConsultationPricing(booking.fee, currency));
+      }
     } finally {
       setBusy(false);
     }
@@ -288,8 +317,10 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         totals={totals}
         currency={currency}
         couponCode={couponCode}
+        couponApplied={couponApplied}
+        promoError={promoError}
         busy={busy}
-        onCouponChange={setCouponCode}
+        onCouponChange={onCouponChange}
         onApplyCoupon={() => void onApplyCoupon()}
       />
     </ConsultationCheckoutShell>

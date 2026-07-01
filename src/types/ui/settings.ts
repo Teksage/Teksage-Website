@@ -1,4 +1,5 @@
 import type { UserProfile } from "../user-profile";
+import type { PaymentTotals } from "@/lib/subscription-payment-totals";
 
 export type ProfileDetailsFormState = {
   firstName: string;
@@ -134,4 +135,17 @@ export interface SettingsRateDialogProps {
   open: boolean;
   onClose: () => void;
   onRateNow: () => void;
+}
+
+export interface SubscriptionPaymentFeesProps {
+  totals: PaymentTotals;
+  symbol: string;
+  isInr: boolean;
+  showPromo: boolean;
+  promo: string;
+  promoApplied: boolean;
+  promoError: string | null;
+  busy: boolean;
+  onPromoChange: (value: string) => void;
+  onApplyPromo: () => void;
 }
