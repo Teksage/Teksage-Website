@@ -92,3 +92,14 @@ export interface ConsultationCheckoutActionsProps {
   onShareChange: (checked: boolean) => void;
   onPay: () => void;
 }
+
+export interface ConsultationBookingFeesBlockProps {
+  totals: ConsultationCouponResult;
+  currency: string;
+  couponCode: string;
+  couponApplied: boolean;
+  promoError: string | null;
+  busy: boolean;
+  onCouponChange: (value: string) => void;
+  onApplyCoupon: () => void;
+}

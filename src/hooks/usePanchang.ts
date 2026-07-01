@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import { useI18nConstants } from "@/hooks/useT";
 import { DOWNLOAD_FILENAMES, PANCHANG_SCREEN } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth.store";
+import { toIsoDate } from "@/lib/panchang-calendar";
 import {
   fetchPanchang,
   fetchPanchangSharePdf,
@@ -23,6 +24,9 @@ export function usePanchang() {
   const isPremium = Boolean(user?.isPremium);
   const mayFetch = isAuthenticated && isPremium;
 
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  const selectedIso = useMemo(() => toIsoDate(selectedDate), [selectedDate]);
+
   const [data, setData] = useState<PanchangPayload | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,13 +35,13 @@ export function usePanchang() {
     if (!mayFetch) return;
     setIsLoading(true);
     setError(null);
-    fetchPanchang()
+    fetchPanchang(selectedIso)
       .then(setData)
       .catch((e: Error) => {
         setError(e.message || P.loadErrorFallback);
       })
       .finally(() => setIsLoading(false));
-  }, [P.loadErrorFallback, mayFetch]);
+  }, [P.loadErrorFallback, mayFetch, selectedIso]);
 
   useEffect(() => {
     if (!mayFetch) {
@@ -75,6 +79,8 @@ export function usePanchang() {
     data,
     isLoading,
     error,
+    selectedDate,
+    setSelectedDate,
     reload: load,
     sharePdf,
   };

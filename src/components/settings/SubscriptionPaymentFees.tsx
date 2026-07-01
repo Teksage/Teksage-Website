@@ -1,33 +1,29 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
+import { PromoCodeField } from "@/components/common/PromoCodeField";
+import { COUPON_PROMO_COPY } from "@/lib/constants/coupon-promo";
 import {
   SETTINGS_SUBSCRIPTION_PAYMENT,
   SUBSCRIPTION_PAYMENT_LAYOUT,
 } from "@/lib/constants/settings-subscription-payment";
-import type { PaymentTotals } from "@/lib/subscription-payment-totals";
+import type { SubscriptionPaymentFeesProps } from "@/types/ui/settings";
 import { cn } from "@/lib/utils";
-
-type SubscriptionPaymentFeesProps = {
-  totals: PaymentTotals;
-  symbol: string;
-  isInr: boolean;
-  promo: string;
-  busy: boolean;
-  onPromoChange: (value: string) => void;
-  onApplyPromo: () => void;
-};
 
 export function SubscriptionPaymentFees({
   totals,
   symbol,
   isInr,
+  showPromo,
   promo,
+  promoApplied,
+  promoError,
   busy,
   onPromoChange,
   onApplyPromo,
 }: SubscriptionPaymentFeesProps) {
   const P = useI18nConstants(SETTINGS_SUBSCRIPTION_PAYMENT);
+  const promoCopy = useI18nConstants(COUPON_PROMO_COPY);
 
   return (
     <>
@@ -69,24 +65,23 @@ export function SubscriptionPaymentFees({
           </div>
         </>
       ) : null}
-      <div className={SUBSCRIPTION_PAYMENT_LAYOUT.dashed} />
-      <div className={SUBSCRIPTION_PAYMENT_LAYOUT.promoWrap}>
-        <input
-          type="text"
-          value={promo}
-          onChange={(e) => onPromoChange(e.target.value)}
-          placeholder={P.promoPlaceholder}
-          className={SUBSCRIPTION_PAYMENT_LAYOUT.promoInput}
-        />
-        <button
-          type="button"
-          disabled={busy}
-          onClick={onApplyPromo}
-          className={SUBSCRIPTION_PAYMENT_LAYOUT.promoApply}
-        >
-          {P.apply}
-        </button>
-      </div>
+      {showPromo ? (
+        <>
+          <div className={SUBSCRIPTION_PAYMENT_LAYOUT.dashed} />
+          <PromoCodeField
+            variant="subscription"
+            value={promo}
+            applied={promoApplied}
+            error={promoError}
+            busy={busy}
+            placeholder={P.promoPlaceholder}
+            applyLabel={P.apply}
+            appliedLabel={promoCopy.applied}
+            onChange={onPromoChange}
+            onApply={onApplyPromo}
+          />
+        </>
+      ) : null}
       <div className={SUBSCRIPTION_PAYMENT_LAYOUT.dashed} />
       <div className={SUBSCRIPTION_PAYMENT_LAYOUT.feeTotalRow}>
         <span className="text-base">{P.totalCost}</span>

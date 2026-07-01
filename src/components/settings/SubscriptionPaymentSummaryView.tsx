@@ -33,7 +33,7 @@ import {
   refreshAuthProfileAfterSubscription,
   waitForPremiumActivation,
 } from "@/lib/subscription-activation-wait";
-import { isAutoPayEligiblePlan } from "@/lib/subscription-auto-pay";
+import { isAutoPayEligiblePlan, isSubscriptionCouponAllowed } from "@/lib/subscription-auto-pay";
 import {
   paySubscriptionAutoRenew,
   paySubscriptionOneTime,
@@ -50,12 +50,14 @@ import {
 import { useAuthStore } from "@/store/auth.store";
 import type { SubscriptionPlan } from "@/types/settings";
 import { cn } from "@/lib/utils";
+import { COUPON_PROMO_COPY } from "@/lib/constants/coupon-promo";
 
 type Props = { onBack: () => void };
 
 export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const P = useI18nConstants(SETTINGS_SUBSCRIPTION_PAYMENT);
   const SUB = useI18nConstants(SETTINGS_SUBSCRIPTIONS_COPY);
+  const PROMO = useI18nConstants(COUPON_PROMO_COPY);
   const defaultCurrency = useConsultationCurrency();
   const user = useAuthStore((s) => s.user);
   const router = useRouter();
@@ -63,6 +65,9 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const [currency, setCurrency] = useState<"INR" | "USD">(defaultCurrency);
   const [totals, setTotals] = useState<PaymentTotals | null>(null);
   const [promo, setPromo] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [appliedPromoCode, setAppliedPromoCode] = useState("");
+  const [promoError, setPromoError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [finishing, setFinishing] = useState(false);
@@ -111,12 +116,33 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     if (!plan || !autoPayEnabled) return;
     setTotals(totalsFromPlan(plan, currency));
     setPromo("");
+    setPromoApplied(false);
+    setAppliedPromoCode("");
+    setPromoError(null);
   }, [autoPayEnabled, plan, currency]);
+
+  const showPromo =
+    plan != null && isSubscriptionCouponAllowed(plan.planId, autoPayEnabled);
+
+  const onPromoChange = useCallback(
+    (value: string) => {
+      setPromo(value);
+      if (
+        (promoApplied || promoError) &&
+        value.trim() !== appliedPromoCode
+      ) {
+        setPromoApplied(false);
+        setPromoError(null);
+        if (plan) setTotals(totalsFromPlan(plan, currency));
+      }
+    },
+    [promoApplied, promoError, appliedPromoCode, plan, currency]
+  );
 
   const applyPromo = useCallback(async () => {
     if (!plan || !promo.trim() || autoPayEnabled) return;
     setBusy(true);
-    setError(null);
+    setPromoError(null);
     try {
       const base = isInr ? plan.localPlanPrice : plan.foreignPlanPrice;
       const result = await applySubscriptionCoupon({
@@ -126,13 +152,16 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
         amount: base,
       });
       setTotals(totalsFromCoupon(result));
+      setPromoApplied(true);
+      setAppliedPromoCode(promo.trim());
     } catch {
-      setError(P.paymentFailed);
-      if (plan) setTotals(totalsFromPlan(plan, currency));
+      setPromoApplied(false);
+      setPromoError(PROMO.invalidPromo);
+      setTotals(totalsFromPlan(plan, currency));
     } finally {
       setBusy(false);
     }
-  }, [plan, promo, currency, isInr, P.paymentFailed, autoPayEnabled]);
+  }, [plan, promo, currency, isInr, PROMO.invalidPromo, autoPayEnabled]);
 
   const finishPayment = useCallback(async () => {
     setFinishing(true);
@@ -262,9 +291,12 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
             totals={totals}
             symbol={symbol}
             isInr={isInr}
+            showPromo={showPromo}
             promo={promo}
+            promoApplied={promoApplied}
+            promoError={promoError}
             busy={busy || autoPayEnabled}
-            onPromoChange={setPromo}
+            onPromoChange={onPromoChange}
             onApplyPromo={() => void applyPromo()}
           />
           {error ? <p className="mt-4 text-sm text-red-400">{error}</p> : null}

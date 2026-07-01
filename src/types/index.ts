@@ -128,6 +128,7 @@ export type {
   SettingsRowProps,
   SettingsModalDialogProps,
   SettingsRateDialogProps,
+  SubscriptionPaymentFeesProps,
 } from "./ui/settings";
 
 export type {
@@ -200,6 +201,7 @@ export type {
   ConsultationAuthGateProps,
   ConsultationLanguageFieldProps,
   ConsultationCategoryChipsProps,
+  ConsultationBookingFeesBlockProps,
 } from "./ui/consultation";
 
 export type {

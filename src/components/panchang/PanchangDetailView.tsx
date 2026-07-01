@@ -42,6 +42,8 @@ function PanchangInfoIcon() {
  */
 export function PanchangDetailView({
   panchang,
+  selectedDate,
+  onSelectDate,
   onDownloadPdf,
   pdfBusy = false,
 }: PanchangDetailViewProps) {
@@ -108,7 +110,11 @@ export function PanchangDetailView({
 
       <div className={L.content}>
         <div className={L.contentColumn}>
-          <PanchangPersonalizedSections panchang={panchang} />
+          <PanchangPersonalizedSections
+            panchang={panchang}
+            selectedDate={selectedDate}
+            onSelectDate={onSelectDate}
+          />
         </div>
       </div>
     </div>

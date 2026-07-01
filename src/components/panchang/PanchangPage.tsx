@@ -22,7 +22,7 @@ import { usePanchang } from "@/hooks/usePanchang";
 /** Mirrors Flutter `PanchangPage` + `PanchangSubscriptionCheckPage` (premium gate). */
 export function PanchangPage() {
   const P = useI18nConstants(PANCHANG_SCREEN);
-  const { isAuthenticated, isPremium, data, isLoading, error, reload, sharePdf } =
+  const { isAuthenticated, isPremium, data, isLoading, error, reload, sharePdf, selectedDate, setSelectedDate } =
     usePanchang();
   const [pdfBusy, setPdfBusy] = useState(false);
 
@@ -53,6 +53,8 @@ export function PanchangPage() {
       {showPersonalizedShell && data ? (
         <PanchangDetailView
           panchang={data.panchang}
+          selectedDate={selectedDate}
+          onSelectDate={setSelectedDate}
           pdfBusy={pdfBusy}
           onDownloadPdf={() => {
             setPdfBusy(true);
