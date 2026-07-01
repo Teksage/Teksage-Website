@@ -41,16 +41,14 @@ export function GettingStartedView() {
           >
             {GS.videosSectionTitle}
           </h2>
-          <div className={GETTING_STARTED_LAYOUT.videoList}>
+          <div className={GETTING_STARTED_LAYOUT.videoGrid}>
             {GETTING_STARTED_VIDEOS.map((video) => (
               <GettingStartedVideoCard
                 key={video.id}
                 video={{
                   ...video,
                   title: t(video.title),
-                  description: t(video.description),
                 }}
-                watchOnYoutubeLabel={GS.watchOnYoutube}
               />
             ))}
           </div>
