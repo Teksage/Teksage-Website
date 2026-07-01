@@ -129,6 +129,7 @@ export type {
   SettingsModalDialogProps,
   SettingsRateDialogProps,
   SubscriptionPaymentFeesProps,
+  SubscriptionPlanBenefitsProps,
 } from "./ui/settings";
 
 export type {

@@ -40,6 +40,8 @@ export const SETTINGS_SUBSCRIPTIONS_COPY = {
   noPlans: "No plans available for your region.",
   premiumFeatures: "Premium unlocks daily, weekly, and yearly prediction notifications.",
   comparePlans: "Compare the plans",
+  comparePro: "Pro",
+  compareFree: "Free",
   planBenefitsTitle: "Included with this plan",
 } as const;
 

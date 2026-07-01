@@ -138,7 +138,10 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
             originalPriceOf={planOriginalPrice}
             onSelect={setSelectedId}
           />
-          <SubscriptionPlanBenefits selectedPlan={selectedPlan} />
+          <SubscriptionPlanBenefits
+            selectedPlan={selectedPlan}
+            isPremium={isPremium}
+          />
           {autoPayEligible && showUpgradeBtn ? (
             <SubscriptionAutoPayToggle
               enabled={autoPayEnabled}
