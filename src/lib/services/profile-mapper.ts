@@ -14,6 +14,7 @@ export interface RawProfileResponse {
   birth_location?: string | null;
   preferred_location?: string | null;
   chat_languages?: string | null;
+  referral_source?: string | null;
   rashi?: string | null;
   nakshatra?: string | null;
   subscription?: {
@@ -87,6 +88,7 @@ export function mapRawProfileToUserProfile(
     placeOfBirth: raw.birth_location ?? undefined,
     preferredLocation: raw.preferred_location ?? undefined,
     chatLanguages: raw.chat_languages ?? undefined,
+    referralSource: raw.referral_source ?? undefined,
     rashi: raw.rashi ?? undefined,
     nakshatra: raw.nakshatra ?? undefined,
     isPremium,
@@ -139,5 +141,8 @@ export function mapProfileUpdatesToApiBody(
     body.preferred_location = updates.preferredLocation || null;
   }
   if (updates.chatLanguages !== undefined) body.chat_languages = updates.chatLanguages || null;
+  if (updates.referralSource !== undefined) {
+    body.referral_source = updates.referralSource || null;
+  }
   return body;
 }

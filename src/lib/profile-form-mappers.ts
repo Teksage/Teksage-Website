@@ -32,6 +32,7 @@ export function userToProfileFormValues(user: UserProfile): ProfileDetailsFormVa
     mobile: phone.mobile,
     countryCode: phone.countryCode,
     chatLanguages: user.chatLanguages ?? DEFAULT_CHAT_LANGUAGE,
+    referralSource: user.referralSource ?? "",
     dateOfBirth: user.dateOfBirth ?? "",
     timeOfBirth: user.timeOfBirth ?? "",
     placeOfBirth: extractCityFromLocation(birthFull),
@@ -62,5 +63,8 @@ export function profileFormValuesToUpdate(
     placeOfBirth: data.birthLocationFull.trim() || data.placeOfBirth.trim(),
     preferredLocation:
       data.preferredLocationFull.trim() || data.preferredLocation.trim(),
+    ...(data.referralSource.trim()
+      ? { referralSource: data.referralSource.trim() }
+      : {}),
   };
 }

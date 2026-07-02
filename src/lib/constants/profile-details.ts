@@ -9,6 +9,7 @@ export const PROFILE_DETAILS = {
   email: "Email",
   phone: "Phone Number",
   chatLanguage: "AI Chat Language",
+  referralSource: "How did you first hear about Teksage?",
   dateOfBirth: "Date of Birth",
   timeOfBirth: "Time of Birth",
   placeOfBirth: "Place of Birth",

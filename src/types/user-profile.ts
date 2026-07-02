@@ -15,6 +15,8 @@ export interface UserProfile {
   timeOfBirth?: string;
   /** Maps API `chat_languages`. */
   chatLanguages?: string;
+  /** Maps API `referral_source` — first-time profile attribution. */
+  referralSource?: string;
   /** Maps API `preferred_location`. */
   preferredLocation?: string;
   rashi?: string;
