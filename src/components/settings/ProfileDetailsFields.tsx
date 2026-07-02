@@ -11,6 +11,7 @@ import { ProfileDateOfBirthField } from "@/components/settings/ProfileDateOfBirt
 import { ProfileField } from "@/components/settings/ProfileField";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
+import { ProfileReferralSourceField } from "@/components/settings/ProfileReferralSourceField";
 import { usePremiumAccess } from "@/hooks/usePremiumAccess";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { useProfileRashiNakshatra } from "@/hooks/useProfileRashiNakshatra";
@@ -201,6 +202,16 @@ export function ProfileDetailsFields({
         isEditable={false}
         placeholder="Nakshatram"
       />
+
+      {user.isProfileUpdated === false ? (
+        <ProfileReferralSourceField
+          value={form.referralSource}
+          onChange={(v) => setValue("referralSource", v, touch)}
+          isEditing={isEditing}
+          hasError={Boolean(errors.referralSource)}
+          errorMessage={errors.referralSource?.message}
+        />
+      ) : null}
 
       {isEditing ? (
         <Button

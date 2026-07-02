@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfileDetailsFields } from "@/components/settings/ProfileDetailsFields";
 import { showErrorAppSnackBar } from "@/lib/app-snackbar";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
 import {
-  profileDetailsFormSchema,
+  createProfileDetailsFormSchema,
   type ProfileDetailsFormValues,
 } from "@/lib/profile-form-schema";
 import {
@@ -25,8 +25,13 @@ export function ProfileDetailsForm({
   onProfileRefresh,
   className,
 }: ProfileDetailsFormProps) {
+  const requireReferralSource = user.isProfileUpdated === false;
+  const schema = useMemo(
+    () => createProfileDetailsFormSchema(requireReferralSource),
+    [requireReferralSource]
+  );
   const methods = useForm<ProfileDetailsFormValues>({
-    resolver: zodResolver(profileDetailsFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: userToProfileFormValues(user),
     mode: "onSubmit",
   });
