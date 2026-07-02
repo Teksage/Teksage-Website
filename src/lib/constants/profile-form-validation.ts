@@ -8,6 +8,7 @@ export const PROFILE_FORM_VALIDATION = {
   emailInvalid: "Please enter a valid Email",
   emailNotVerified: "Please verify your Email",
   chatLanguageRequired: "Please select a chat language",
+  referralSourceRequired: "Please select one value",
   dateOfBirthRequired: "Date of birth is required",
   timeOfBirthRequired: "Time of birth is required",
   placeOfBirthRequired: "Place of birth is required",
