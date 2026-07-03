@@ -10,6 +10,7 @@ import { ProfileChatLanguageField } from "@/components/settings/ProfileChatLangu
 import { ProfileDateOfBirthField } from "@/components/settings/ProfileDateOfBirthField";
 import { ProfileField } from "@/components/settings/ProfileField";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
+import { ProfileEmailRow } from "@/components/settings/ProfileEmailRow";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
 import { ProfileReferralSourceField } from "@/components/settings/ProfileReferralSourceField";
 import { usePremiumAccess } from "@/hooks/usePremiumAccess";
@@ -84,15 +85,12 @@ export function ProfileDetailsFields({
         hasError={Boolean(errors.lastName)}
         errorMessage={errors.lastName?.message}
       />
-      <ProfileField
-        appearance="profile"
-        required
-        label={PD.email}
-        type="email"
-        value={form.email}
-        onChange={(v) => setValue("email", v, touch)}
-        isEditable={isEditing}
-        placeholder="Email"
+      <ProfileEmailRow
+        email={form.email}
+        onEmailChange={(v) => setValue("email", v, touch)}
+        isEmailVerified={user.isEmailVerified}
+        isEditing={isEditing}
+        onVerificationSuccess={onProfileRefresh}
         hasError={Boolean(errors.email)}
         errorMessage={errors.email?.message}
       />

@@ -10,6 +10,8 @@ export interface UserProfile {
   mobile?: string;
   countryCode?: string;
   isMobileVerified?: boolean;
+  /** Backend `is_email_verified`. */
+  isEmailVerified?: boolean;
   dateOfBirth?: string;
   placeOfBirth?: string;
   timeOfBirth?: string;

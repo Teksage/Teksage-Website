@@ -6,29 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
-import {
-  OTP_LENGTH,
-  LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS,
-  LOGIN_MOBILE_FORM,
-} from "@/lib/constants";
+import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
+import { OTP_LENGTH } from "@/lib/constants";
+import { LOGIN_EMAIL_REGEX } from "@/lib/constants/validation-patterns";
 import {
   sendAuthenticatedOtp,
   verifyAuthenticatedOtp,
 } from "@/lib/services/profile-verify";
 import { cn } from "@/lib/utils";
-import type { ProfilePhoneRowProps } from "@/types";
+import type { ProfileEmailRowProps } from "@/types";
 
-export function ProfilePhoneRow({
-  countryCode,
-  mobile,
-  onCountryCodeChange,
-  onMobileChange,
-  isMobileVerified,
+export function ProfileEmailRow({
+  email,
+  onEmailChange,
+  isEmailVerified,
   isEditing,
   onVerificationSuccess,
   hasError,
   errorMessage,
-}: ProfilePhoneRowProps) {
+}: ProfileEmailRowProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
   const [otpPhase, setOtpPhase] = useState(false);
   const [otp, setOtp] = useState("");
@@ -36,24 +32,18 @@ export function ProfilePhoneRow({
   const [verifyBusy, setVerifyBusy] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  const cc = (countryCode || "91").replace(/\D/g, "") || "91";
-  const dialValue =
-    LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.find((o) => o.dial.replace("+", "") === cc)?.dial ??
-    `+${cc}`;
-  const digits = mobile.replace(/\D/g, "");
+  const cleanEmail = email.trim().toLowerCase();
+  const canEdit = isEditing && !isEmailVerified;
 
   async function handleSendOtp() {
     setFeedback(null);
-    if (digits.length < 10) {
-      setFeedback("Enter a valid 10-digit mobile number to verify.");
+    if (!LOGIN_EMAIL_REGEX.test(cleanEmail)) {
+      setFeedback(PROFILE_FORM_VALIDATION.emailInvalid);
       return;
     }
     setSendBusy(true);
     try {
-      await sendAuthenticatedOtp({
-        mobile_number: digits,
-        country_code: cc,
-      });
+      await sendAuthenticatedOtp({ email: cleanEmail });
       setOtpPhase(true);
       setOtp("");
     } catch (e) {
@@ -65,20 +55,16 @@ export function ProfilePhoneRow({
 
   async function handleConfirmOtp() {
     setFeedback(null);
-    const clean = otp.replace(/\D/g, "");
-    if (clean.length !== OTP_LENGTH) {
+    const cleanOtp = otp.replace(/\D/g, "");
+    if (cleanOtp.length !== OTP_LENGTH) {
       setFeedback(`Enter the ${OTP_LENGTH}-digit OTP.`);
       return;
     }
     setVerifyBusy(true);
     try {
       const res = await verifyAuthenticatedOtp(
-        {
-          mobile_number: digits,
-          country_code: cc,
-          otp: clean,
-        },
-        { update: false }
+        { email: cleanEmail, otp: cleanOtp },
+        { update: true }
       );
       if (res.error) {
         setFeedback(res.error);
@@ -97,7 +83,8 @@ export function ProfilePhoneRow({
   return (
     <div className="flex flex-col gap-1.5">
       <span className="text-sm font-medium text-[var(--color-brand-black)]">
-        {PD.phone}
+        {PD.email}
+        <span className="text-[var(--color-brand-error)]">*</span>
       </span>
       <div
         className={cn(
@@ -106,50 +93,22 @@ export function ProfilePhoneRow({
           hasError
             ? "border-[var(--color-brand-error)]"
             : "border-black/15",
-          !isEditing && "opacity-90"
+          !canEdit && "opacity-90"
         )}
       >
-        <div
-          className={cn(
-            "flex w-[4.5rem] shrink-0 items-center justify-center border-r border-black/15",
-            "text-sm font-semibold text-neutral-800"
-          )}
-        >
-          {isEditing ? (
-            <select
-              value={dialValue}
-              onChange={(e) =>
-                onCountryCodeChange(e.target.value.replace(/\D/g, "") || "91")
-              }
-              disabled={Boolean(isMobileVerified)}
-              className="w-full border-none bg-transparent text-center text-sm font-semibold outline-none"
-              aria-label={LOGIN_MOBILE_FORM.countryCodeAria}
-            >
-              {LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.map((o) => (
-                <option key={o.dial} value={o.dial}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          ) : (
-            `+${cc}`
-          )}
-        </div>
         <Input
-          type="tel"
-          value={mobile}
-          onChange={(e) =>
-            onMobileChange(e.target.value.replace(/\D/g, "").slice(0, 10))
-          }
-          disabled={!isEditing || Boolean(isMobileVerified)}
-          placeholder="Mobile"
+          type="email"
+          value={email}
+          onChange={(e) => onEmailChange(e.target.value)}
+          disabled={!canEdit}
+          placeholder="Email"
           className={cn(
             "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-4 text-sm font-medium shadow-none",
             "focus-visible:ring-0 focus-visible:ring-offset-0",
-            !isEditing && "cursor-not-allowed"
+            !canEdit && "cursor-not-allowed"
           )}
         />
-        {!isMobileVerified ? (
+        {canEdit ? (
           <>
             <div className="w-px shrink-0 self-stretch bg-black/15" aria-hidden />
             <button
@@ -161,18 +120,16 @@ export function ProfilePhoneRow({
               )}
               onClick={handleSendOtp}
             >
-              {sendBusy ? (
-                <Loader variant="inline" size="sm" />
-              ) : null}
+              {sendBusy ? <Loader variant="inline" size="sm" /> : null}
               {PD.verify}
             </button>
           </>
         ) : null}
       </div>
 
-      {!isMobileVerified && otpPhase ? (
+      {canEdit && otpPhase ? (
         <div className="flex flex-col gap-2 rounded-xl border border-black/15 bg-neutral-50 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-700">{PD.otpHint}</p>
+          <p className="text-xs font-medium text-neutral-700">{PD.otpHintEmail}</p>
           <Input
             inputMode="numeric"
             autoComplete="one-time-code"
@@ -215,4 +172,3 @@ export function ProfilePhoneRow({
     </div>
   );
 }
-

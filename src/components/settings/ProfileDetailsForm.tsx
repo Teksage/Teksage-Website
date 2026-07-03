@@ -44,6 +44,12 @@ export function ProfileDetailsForm({
 
   const onValidSubmit = handleSubmit(
     async (data) => {
+      if (!user.isEmailVerified) {
+        showErrorAppSnackBar(PROFILE_FORM_VALIDATION.emailNotVerified, {
+          position: "top",
+        });
+        return;
+      }
       const ok = await onSave(profileFormValuesToUpdate(data, user));
       if (ok) onDoneEditing();
     },
