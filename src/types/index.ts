@@ -122,6 +122,7 @@ export type {
   ProfileDateOfBirthFieldProps,
   ProfileBirthDateCalendarProps,
   ProfilePhoneRowProps,
+  ProfileEmailRowProps,
   ProfileLocationFieldProps,
   ChangeContactMode,
   SettingsRowVariant,

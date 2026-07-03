@@ -9,6 +9,7 @@ export interface RawProfileResponse {
   mobile_number?: string | null;
   country_code?: string | null;
   is_mobile_verified?: boolean;
+  is_email_verified?: boolean | null;
   date_of_birth?: string | null;
   time_of_birth?: string | null;
   birth_location?: string | null;
@@ -83,6 +84,8 @@ export function mapRawProfileToUserProfile(
     mobile: raw.mobile_number ?? undefined,
     countryCode: raw.country_code ?? undefined,
     isMobileVerified: Boolean(raw.is_mobile_verified),
+    isEmailVerified:
+      raw.is_email_verified != null ? Boolean(raw.is_email_verified) : undefined,
     dateOfBirth: dob,
     timeOfBirth: tob,
     placeOfBirth: raw.birth_location ?? undefined,
