@@ -111,6 +111,16 @@ export interface ProfilePhoneRowProps {
   errorMessage?: string;
 }
 
+export interface ProfileEmailRowProps {
+  email: string;
+  onEmailChange: (value: string) => void;
+  isEmailVerified?: boolean;
+  isEditing: boolean;
+  onVerificationSuccess?: () => void | Promise<void>;
+  hasError?: boolean;
+  errorMessage?: string;
+}
+
 export type ChangeContactMode = "email" | "mobile";
 
 export type SettingsRowVariant = "default" | "logout";

@@ -21,6 +21,7 @@ export const PROFILE_DETAILS = {
   edit: "Edit",
   discard: "Discard",
   otpHint: "We sent a 6-digit code to your mobile.",
+  otpHintEmail: "We sent a 6-digit code to your email.",
   otpLabel: "OTP",
   confirmOtp: "Confirm",
   resentPrompt: "Did not receive a code? Tap Verify again.",
