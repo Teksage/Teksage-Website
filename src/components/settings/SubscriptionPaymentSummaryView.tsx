@@ -27,7 +27,10 @@ import {
   showErrorAppSnackBar,
   showSuccessAppSnackBar,
 } from "@/lib/app-snackbar";
-import { SETTINGS_SUBSCRIPTIONS_COPY } from "@/lib/constants/settings-subscriptions";
+import {
+  SETTINGS_SUBSCRIPTIONS_COPY,
+  SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED,
+} from "@/lib/constants/settings-subscriptions";
 import {
   isPremiumProfileActivated,
   refreshAuthProfileAfterSubscription,
@@ -73,7 +76,9 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const [finishing, setFinishing] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [autoPayEnabled, setAutoPayEnabled] = useState(false);
+  const [autoPayEnabled, setAutoPayEnabled] = useState(
+    SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -85,7 +90,9 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
         return;
       }
       setCurrency(session.currency);
-      setAutoPayEnabled(Boolean(session.autoPay));
+      setAutoPayEnabled(
+        session.autoPay ?? SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED
+      );
       try {
         const fetched = await fetchPremiumPlanById(session.planId);
         if (cancelled) return;
