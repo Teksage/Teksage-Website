@@ -1,6 +1,9 @@
 /** Monthly plan — backend auto-pay webhook activates `plan_id` 1 only. */
 export const SUBSCRIPTION_AUTO_PAY_PLAN_ID = 1;
 
+/** Default checked state for the auto-renewal toggle on subscription checkout. */
+export const SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED = true;
+
 export const SETTINGS_SUBSCRIPTIONS_AUTO_PAY = {
   toggleLabel: "Enable auto-renewal",
   toggleHint: "Renews monthly. Cancel anytime from this page.",
