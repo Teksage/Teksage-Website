@@ -14,6 +14,7 @@ import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { useSubscriptionPage } from "@/hooks/useSubscriptionPage";
 import { ROUTES } from "@/lib/constants/routes";
+import { SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED } from "@/lib/constants/settings-subscriptions";
 import { isAutoPayEligiblePlan } from "@/lib/subscription-auto-pay";
 import { writeSubscriptionCheckout } from "@/lib/subscription-checkout-session";
 import { PageLoadingCenter } from "@/components/common/Loader";
@@ -47,7 +48,9 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
     cancelAutoPay,
     activatingPremium,
   } = useSubscriptionPage(currency);
-  const [autoPayEnabled, setAutoPayEnabled] = useState(false);
+  const [autoPayEnabled, setAutoPayEnabled] = useState(
+    SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED
+  );
 
   const autoPayEligible =
     selectedPlan != null && isAutoPayEligiblePlan(selectedPlan.planId, currency);
