@@ -135,7 +135,7 @@
   /* Panchang white cards — mirrors `colorConstant.dart` + `panchangPage.dart` (see `COLORS.panchangRowDivider`, `COLORS.panchangCardMutedText`). */
   --color-panchang-row-divider: rgb(0 0 0 / 0.3);
   --color-panchang-card-muted-text: rgb(0 0 0 / 0.6);
-  --horoscope-chart-iframe-min-h: 260px;
+  --horoscope-chart-iframe-min-h: 305px;
   /** Top green band — Flutter `horoscopePage.dart` `responsiveHeight(0.4226)` (viewport, not document %). */
   --horoscope-green-band-height: 42.26vh;
   --brand-login-max-display: 280px;
@@ -424,7 +424,7 @@
 @media (min-width: 1024px) {
   :root {
     --horoscope-green-band-height: 10.5rem;
-    --horoscope-chart-iframe-min-h: 300px;
+    --horoscope-chart-iframe-min-h: 305px;
   }
 }
 
