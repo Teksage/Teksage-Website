@@ -35,7 +35,9 @@ export function HoroscopeChartFrame({
       if (event.source !== iframeRef.current?.contentWindow) return;
       const next = event.data.height;
       if (typeof next === "number" && next > 0) {
-        setFrameHeight(next);
+        setFrameHeight(
+          Math.max(next, HOROSCOPE_CHART_FRAME.frameHeightPx)
+        );
       }
     };
     window.addEventListener("message", onMessage);
@@ -57,6 +59,7 @@ export function HoroscopeChartFrame({
           ref={iframeRef}
           title={title}
           className={HOROSCOPE_LAYOUT.chartIframe}
+          style={{ minHeight: HOROSCOPE_CHART_FRAME.frameHeightPx }}
           sandbox="allow-scripts allow-same-origin"
           srcDoc={srcDoc}
         />
