@@ -80,7 +80,7 @@ export function MuhurthaPage() {
             description={M.loginDescription}
             action={
               <LoginPromptButton
-                returnPath={ROUTES.muhurtha}
+                returnPath={ROUTES.eventPlanner}
                 redirectHomeOnClose
                 className={cn(buttonVariants(), "rounded-full")}
               >

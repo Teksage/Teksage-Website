@@ -4,6 +4,7 @@ import type { MuhurthaPayload, MuhurthaResult, MuhurthaSearchParams } from "@/ty
 
 interface MuhurthaApiBody {
   data?: unknown;
+  event_planner_id?: number;
   muhurtha_id?: number;
 }
 
@@ -13,7 +14,8 @@ function parseMuhurthaBody(body: MuhurthaApiBody): MuhurthaPayload {
     const msg = typeof raw === "string" ? raw : "Unable to load Muhurtha.";
     throw new Error(msg);
   }
-  const id = Number(body.muhurtha_id);
+  const rawId = body.event_planner_id ?? body.muhurtha_id;
+  const id = Number(rawId);
   return {
     muhurthaId: Number.isFinite(id) ? id : 0,
     result: raw as MuhurthaResult,
@@ -23,7 +25,7 @@ function parseMuhurthaBody(body: MuhurthaApiBody): MuhurthaPayload {
 export async function fetchMuhurtha(
   params: MuhurthaSearchParams
 ): Promise<MuhurthaPayload> {
-  const { data } = await http.get<MuhurthaApiBody>(API_ENDPOINTS.muhurtha, {
+  const { data } = await http.get<MuhurthaApiBody>(API_ENDPOINTS.eventPlanner, {
     params: {
       event: params.event,
       start_date: params.startDate,

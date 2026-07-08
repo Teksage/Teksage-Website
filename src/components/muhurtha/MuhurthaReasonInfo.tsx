@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { MUHURTHA_LAYOUT } from "@/lib/constants";
 
 function InfoIcon() {
@@ -32,16 +33,21 @@ export function MuhurthaReasonInfo({
   ariaLabel: string;
 }) {
   const L = MUHURTHA_LAYOUT;
+  const tooltipId = useId();
 
   if (!tooltip.trim()) return <span />;
 
   return (
-    <span className="flex items-center">
+    <span className={`group ${L.reasonTooltipWrap}`}>
+      <span role="tooltip" id={tooltipId} className={L.reasonTooltipPanel}>
+        {tooltip}
+        <span className={L.reasonTooltipArrow} />
+      </span>
       <button
         type="button"
         className={L.reasonInfoBtn}
-        title={tooltip}
         aria-label={ariaLabel}
+        aria-describedby={tooltipId}
       >
         <InfoIcon />
       </button>

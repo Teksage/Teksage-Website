@@ -1,7 +1,7 @@
 /** Muhurtha feature copy — keep strings out of TSX. */
 
 export const MUHURTHA_SCREEN = {
-  headerTitle: "Find Muhurtha",
+  headerTitle: "Find Event Planner",
   formTitle: "Plan an auspicious time",
   formSubtitle:
     "Select a life event and start date. We scan the next 7 days using your birth chart and Panchang.",
@@ -11,17 +11,17 @@ export const MUHURTHA_SCREEN = {
   locationLabel: "Location",
   locationFromProfile: "From your profile",
   findCta: "Find Auspicious Dates",
-  loginTitle: "Sign in to find Muhurtha",
+  loginTitle: "Sign in to find Event Planner",
   loginDescription: "Use your email or mobile OTP on the login screen.",
   loginCta: "Go to login",
-  premiumTitle: "Muhurtha is a premium feature",
+  premiumTitle: "Event Planner is a premium feature",
   premiumDescription:
     "Subscribe to unlock personalized auspicious dates for your life events — same as the Teksage app.",
   upgradeCta: "Upgrade Now",
-  loadErrorTitle: "Could not load Muhurtha",
+  loadErrorTitle: "Could not load Event Planner",
   loadErrorFallback: "Failed to find auspicious dates.",
   tryAgainCta: "Try again",
-  resultsTitle: "Muhurtha results",
+  resultsTitle: "Event Planner results",
   backToFormCta: "New search",
   emptyTitle: "No auspicious dates found",
   emptyDescription:
@@ -35,7 +35,7 @@ export const MUHURTHA_SCREEN = {
   locationRequired: "Location is required",
   reasonInfoAria: "Why this day is not suitable",
   windowColumn: "Auspicious window",
-  panchangCta: "Find Muhurtha for your event",
+  panchangCta: "Find Event Planner for your event",
   panchangCtaHint: "Personalized 7-day scan for life events",
   detailLabels: {
     weekday: "Weekday",

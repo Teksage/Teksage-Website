@@ -14,7 +14,7 @@ import type { MuhurthaCardProps } from "@/types";
 
 export function MuhurthaCard({ className }: MuhurthaCardProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
-  const href = ROUTES.muhurtha;
+  const href = ROUTES.eventPlanner;
 
   return (
     <AuthGatedLink
@@ -32,7 +32,7 @@ export function MuhurthaCard({ className }: MuhurthaCardProps) {
         )}
       >
         <div className="relative z-10 flex shrink-0 justify-center px-2 pt-5">
-          <p className={HOME_DASHBOARD_UI.matchCardTitle}>{HD.muhurthaLines}</p>
+          <p className={HOME_DASHBOARD_UI.matchCardTitle}>{HD.eventPlannerLines}</p>
         </div>
         <div className="relative mt-auto flex flex-1 items-end justify-center pb-2 pt-2">
           <img

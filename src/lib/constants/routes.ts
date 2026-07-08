@@ -38,6 +38,7 @@ export const ROUTES = {
   predictionsLife: "/predictions/life",
   matchmaking: "/matchmaking",
   matchmakingDetails: "/matchmaking/details",
+  eventPlanner: "/event-planner",
   muhurtha: "/muhurtha",
 
   // Ask Astrologer flow

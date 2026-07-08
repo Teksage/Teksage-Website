@@ -10,7 +10,7 @@ export function PanchangMuhurthaCta() {
 
   return (
     <div className={L.panchangCtaWrap}>
-      <Link href={ROUTES.muhurtha} className={L.panchangCtaLink}>
+      <Link href={ROUTES.eventPlanner} className={L.panchangCtaLink}>
         <span>
           <span className="block">{M.panchangCta}</span>
           <span className="mt-0.5 block text-xs font-normal text-[var(--color-brand-black)]/60">

@@ -46,9 +46,9 @@ export const DESKTOP_SIDEBAR_PANCHANG_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.panchang,
 } as const;
 
-export const DESKTOP_SIDEBAR_MUHURTHA_LINK = {
-  href: ROUTES.muhurtha,
-  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.muhurtha,
+export const DESKTOP_SIDEBAR_EVENT_PLANNER_LINK = {
+  href: ROUTES.eventPlanner,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.eventPlanner,
 } as const;
 
 export const DESKTOP_SIDEBAR_SETTINGS_LINK = {

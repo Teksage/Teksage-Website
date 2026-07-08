@@ -14,8 +14,8 @@ export const HOME_DASHBOARD = {
   loveCompatibility: "Love Compatibility",
   /** Two-line title on home card. */
   loveCompatibilityLines: "Love\nCompatibility",
-  muhurtha: "Find Muhurtha",
-  muhurthaLines: "Find\nMuhurtha",
+  eventPlanner: "Find Event Planner",
+  eventPlannerLines: "Find\nEvent Planner",
   dailyPrediction: "Daily Prediction",
   tharaBala: "Thara Bala",
   chandraBala: "Chandra Bala",

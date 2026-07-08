@@ -15,7 +15,7 @@ export const MUHURTHA_LAYOUT = {
   resultsHeader: "flex flex-col gap-1",
   resultsTitle: `${TYPO.h3Bold} text-[var(--color-brand-black)]`,
   resultsRange: `${TYPO.bodySm} text-[var(--color-brand-black)]/65`,
-  tableCard: "overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.05]",
+  tableCard: "overflow-visible rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.05]",
   tableHead: "grid grid-cols-[1fr_1fr_1.2fr] gap-2 border-b border-neutral-100 bg-neutral-50 px-4 py-3",
   tableHeadCell: `${TYPO.caption} font-semibold text-[var(--color-brand-black)]/70`,
   dayRowButton:
@@ -27,7 +27,12 @@ export const MUHURTHA_LAYOUT = {
   statusSuitable: "text-sm font-semibold text-[var(--color-brand-primary)]",
   statusUnsuitable: "text-sm font-semibold text-[var(--color-brand-black)]/55",
   reasonInfoBtn:
-    "inline-flex size-8 items-center justify-center rounded-full border border-neutral-200 text-[var(--color-brand-black)]/70 hover:bg-neutral-50",
+    "inline-flex size-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-[var(--color-brand-black)]/70 shadow-sm transition-colors hover:border-[var(--color-brand-primary)]/35 hover:bg-[var(--color-brand-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/30",
+  reasonTooltipWrap: "relative inline-flex items-center",
+  reasonTooltipPanel:
+    "pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-72 -translate-x-1/2 whitespace-normal break-words rounded-xl border border-black/10 bg-white px-3 py-2 text-xs font-medium leading-5 text-[var(--color-brand-black)] shadow-xl opacity-0 translate-y-1 transition duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100",
+  reasonTooltipArrow:
+    "pointer-events-none absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45 border-r border-b border-black/10 bg-white",
   detailPanel: "border-b border-neutral-100 bg-[var(--color-brand-bg)] px-4 py-3",
   premiumGateRoot: "relative flex min-h-0 flex-1 flex-col",
   premiumGateBackdrop: "absolute inset-0 overflow-hidden",

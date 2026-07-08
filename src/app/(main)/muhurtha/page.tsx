@@ -1,5 +1,5 @@
-import { MuhurthaPage } from "@/components/muhurtha/MuhurthaPage";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <MuhurthaPage />;
+  redirect("/event-planner");
 }
