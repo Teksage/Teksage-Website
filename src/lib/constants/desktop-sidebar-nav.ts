@@ -46,6 +46,11 @@ export const DESKTOP_SIDEBAR_PANCHANG_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.panchang,
 } as const;
 
+export const DESKTOP_SIDEBAR_MUHURTHA_LINK = {
+  href: ROUTES.muhurtha,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.muhurtha,
+} as const;
+
 export const DESKTOP_SIDEBAR_SETTINGS_LINK = {
   href: ROUTES.settings,
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.settings,

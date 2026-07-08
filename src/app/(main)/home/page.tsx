@@ -6,6 +6,7 @@ import { ConsultationBanner } from "@/components/home/ConsultationBanner";
 import { PredictionCircles } from "@/components/home/PredictionCircles";
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
+import { MuhurthaCard } from "@/components/muhurtha/MuhurthaCard";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
 import { HomePanchangTimingMobileCard } from "@/components/home/HomePanchangTimingMobileCard";
@@ -75,7 +76,7 @@ export default function HomePage() {
 
             <div
               className={cn(
-                "flex min-h-0 min-w-0 items-stretch",
+                "flex min-h-0 min-w-0 flex-col items-stretch sm:flex-row",
                 HOME_LAYOUT.featureGridGap,
               )}
             >
@@ -83,6 +84,7 @@ export default function HomePage() {
                 isLoggedIn={isAuthenticated}
                 hasExistingMatch={hasExistingMatch}
               />
+              <MuhurthaCard />
               <DailyPredictionCard
                 data={dailyPrediction ?? undefined}
                 isLoading={isLoading}

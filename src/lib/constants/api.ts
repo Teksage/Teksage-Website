@@ -58,6 +58,7 @@ export const API_ENDPOINTS = {
   yearlyPrediction: "/api/prediction/yearly",
   lifePrediction: "/api/prediction/life",
   panchang: "/api/prediction/panchang",
+  muhurtha: "/api/prediction/muhurtha",
   relatedQueries: "/api/prediction/related_queries",
   /** `GET` | `POST` — match-making compatibility */
   matchMakingCompatibility: "/api/prediction/compatibility",

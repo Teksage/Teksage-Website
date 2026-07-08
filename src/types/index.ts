@@ -152,6 +152,14 @@ export type {
 } from "./ui/panchang-horoscope";
 
 export type {
+  MuhurthaPremiumGateProps,
+  MuhurthaFormViewProps,
+  MuhurthaResultsViewProps,
+  MuhurthaDayRowProps,
+  MuhurthaCardProps,
+} from "./ui/muhurtha";
+
+export type {
   LoaderVariant,
   LoaderSize,
   LoaderProps,
@@ -196,6 +204,14 @@ export type {
   RashiOption,
   NakshatraOption,
 } from "./match-making";
+
+export type {
+  MuhurthaDayResult,
+  MuhurthaEventType,
+  MuhurthaPayload,
+  MuhurthaResult,
+  MuhurthaSearchParams,
+} from "./muhurtha";
 
 export type {
   ConsultationShellProps,
