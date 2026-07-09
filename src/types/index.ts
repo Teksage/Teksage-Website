@@ -214,6 +214,10 @@ export type {
   MuhurthaResult,
   MuhurthaSearchParams,
 } from "./muhurtha";
+export type {
+  EventPlannerCacheEntry,
+  EventPlannerCacheKeyInput,
+} from "./event-planner-cache";
 
 export type {
   ConsultationShellProps,
