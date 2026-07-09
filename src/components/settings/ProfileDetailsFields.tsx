@@ -93,6 +93,7 @@ export function ProfileDetailsFields({
         onVerificationSuccess={onProfileRefresh}
         hasError={Boolean(errors.email)}
         errorMessage={errors.email?.message}
+        required={user.isMobileVerified !== true}
       />
 
       <ProfilePhoneRow

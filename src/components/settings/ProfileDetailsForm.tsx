@@ -26,9 +26,10 @@ export function ProfileDetailsForm({
   className,
 }: ProfileDetailsFormProps) {
   const requireReferralSource = user.isProfileUpdated === false;
+  const emailOptional = user.isMobileVerified === true;
   const schema = useMemo(
-    () => createProfileDetailsFormSchema(requireReferralSource),
-    [requireReferralSource]
+    () => createProfileDetailsFormSchema(requireReferralSource, emailOptional),
+    [requireReferralSource, emailOptional]
   );
   const methods = useForm<ProfileDetailsFormValues>({
     resolver: zodResolver(schema),
@@ -44,7 +45,7 @@ export function ProfileDetailsForm({
 
   const onValidSubmit = handleSubmit(
     async (data) => {
-      if (!user.isEmailVerified) {
+      if (!user.isEmailVerified && !user.isMobileVerified) {
         showErrorAppSnackBar(PROFILE_FORM_VALIDATION.emailNotVerified, {
           position: "top",
         });
