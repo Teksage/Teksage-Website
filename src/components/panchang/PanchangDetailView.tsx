@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { PanchangPersonalizedSections } from "@/components/panchang/PanchangPersonalizedSections";
+import { PanchangMuhurthaCta } from "@/components/muhurtha/PanchangMuhurthaCta";
 import {
   MAIN_TAB_VIEWPORT_BACKDROP,
   PAGE_SHELL,
@@ -115,6 +116,7 @@ export function PanchangDetailView({
             selectedDate={selectedDate}
             onSelectDate={onSelectDate}
           />
+          <PanchangMuhurthaCta />
         </div>
       </div>
     </div>

@@ -24,6 +24,12 @@ export const HOME_DASHBOARD_UI = {
   sidebarGreeting: `${TYPO.h3Bold} ${TYPO.leadingTight} text-[color:var(--color-home-dashboard-heading)]`,
   chatBannerTitle: `min-w-0 shrink whitespace-pre-line text-left ${TYPO.bannerCta} text-white lg:text-lg`,
   chatBannerCta: `${TYPO.bannerFine} text-[var(--color-brand-banner-font)]`,
+  eventPlannerBannerTitle: `min-w-0 shrink whitespace-pre-line text-left ${TYPO.bodyBold} leading-tight text-[var(--color-brand-panchang)]`,
+  eventPlannerBannerCta: `${TYPO.caption} font-semibold leading-snug text-[var(--color-brand-primary)]`,
+  eventPlannerBannerGlow:
+    "pointer-events-none absolute -right-8 top-1/2 size-28 -translate-y-1/2 rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_14%,white)] opacity-80",
+  eventPlannerBannerCtaPill:
+    "flex h-9 shrink-0 items-center justify-evenly gap-1.5 rounded-full bg-white px-3 py-1.5 shadow-sm ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_18%,transparent)] transition-opacity group-hover:opacity-95 sm:h-10 sm:min-w-[8.75rem] sm:gap-2 sm:px-4",
   notificationBadge: `absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-brand-error)] px-1 ${TYPO.badgeMicro} ${TYPO.weightBold} text-white`,
   matchCardTitle: `whitespace-pre-line text-center ${TYPO.bodyBold} leading-tight text-[var(--color-brand-marriage)]`,
 } as const;

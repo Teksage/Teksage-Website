@@ -95,6 +95,7 @@ export type { AuthGatedLinkProps } from "./ui/auth-gated-link";
 
 export type {
   ChatBannerProps,
+  MuhurthaBannerProps,
   ConsultationBannerProps,
   MatchMakingCardProps,
   PredictionCirclesProps,
@@ -152,6 +153,15 @@ export type {
 } from "./ui/panchang-horoscope";
 
 export type {
+  MuhurthaPremiumGateProps,
+  MuhurthaFormViewProps,
+  MuhurthaResultsViewProps,
+  MuhurthaDayRowProps,
+  MuhurthaCardProps,
+  MuhurthaFeatureHeroProps,
+} from "./ui/muhurtha";
+
+export type {
   LoaderVariant,
   LoaderSize,
   LoaderProps,
@@ -196,6 +206,14 @@ export type {
   RashiOption,
   NakshatraOption,
 } from "./match-making";
+
+export type {
+  MuhurthaDayResult,
+  MuhurthaEventType,
+  MuhurthaPayload,
+  MuhurthaResult,
+  MuhurthaSearchParams,
+} from "./muhurtha";
 
 export type {
   ConsultationShellProps,
