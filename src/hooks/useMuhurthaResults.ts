@@ -8,7 +8,14 @@ import { useMuhurthaAccess } from "@/hooks/useMuhurthaAccess";
 import { MUHURTHA_QUERY } from "@/lib/constants/muhurtha-query";
 import { MUHURTHA_SCREEN } from "@/lib/constants/muhurtha-screen";
 import { ROUTES } from "@/lib/constants/routes";
+import {
+  eventPlannerCacheKey,
+  readEventPlannerCache,
+  writeEventPlannerCache,
+} from "@/lib/event-planner-cache";
+import { getStoredAppLanguageName } from "@/lib/settings-language-storage";
 import { fetchMuhurtha } from "@/lib/services/muhurtha";
+import { useAuthStore } from "@/store/auth.store";
 import {
   MUHURTHA_EVENT_TYPES,
   type MuhurthaEventType,
@@ -22,6 +29,7 @@ function isEventType(value: string | null): value is MuhurthaEventType {
 export function useMuhurthaResults() {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const { version: languageVersion } = useAppLanguage();
+  const userId = useAuthStore((state) => state.user?.id ?? "guest");
   const router = useRouter();
   const searchParams = useSearchParams();
   const { maySearch } = useMuhurthaAccess();
@@ -45,14 +53,36 @@ export function useMuhurthaResults() {
       return;
     }
 
+    const trimmedLocation = location.trim();
+    const language = getStoredAppLanguageName();
+    const cacheKey = eventPlannerCacheKey({
+      userId,
+      event,
+      startDate,
+      location: trimmedLocation,
+      language,
+    });
+
     let cancelled = false;
-    setIsLoading(true);
     setError(null);
+
+    const cached = retryToken === 0 ? readEventPlannerCache(cacheKey) : null;
+    if (cached) {
+      setData(cached);
+      setIsLoading(false);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    setIsLoading(true);
     setData(null);
 
-    fetchMuhurtha({ event, startDate, location: location.trim() })
+    fetchMuhurtha({ event, startDate, location: trimmedLocation })
       .then((payload) => {
-        if (!cancelled) setData(payload);
+        if (cancelled) return;
+        writeEventPlannerCache(cacheKey, payload);
+        setData(payload);
       })
       .catch((e: Error) => {
         if (!cancelled) {
@@ -67,7 +97,17 @@ export function useMuhurthaResults() {
     return () => {
       cancelled = true;
     };
-  }, [M.loadErrorFallback, event, languageVersion, location, maySearch, retryToken, router, startDate]);
+  }, [
+    M.loadErrorFallback,
+    event,
+    languageVersion,
+    location,
+    maySearch,
+    retryToken,
+    router,
+    startDate,
+    userId,
+  ]);
 
   const retry = () => setRetryToken((token) => token + 1);
 
