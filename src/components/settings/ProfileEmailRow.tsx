@@ -24,6 +24,7 @@ export function ProfileEmailRow({
   onVerificationSuccess,
   hasError,
   errorMessage,
+  required = true,
 }: ProfileEmailRowProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
   const [otpPhase, setOtpPhase] = useState(false);
@@ -84,7 +85,9 @@ export function ProfileEmailRow({
     <div className="flex flex-col gap-1.5">
       <span className="text-sm font-medium text-[var(--color-brand-black)]">
         {PD.email}
-        <span className="text-[var(--color-brand-error)]">*</span>
+        {required ? (
+          <span className="text-[var(--color-brand-error)]">*</span>
+        ) : null}
       </span>
       <div
         className={cn(

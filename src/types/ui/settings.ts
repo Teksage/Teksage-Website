@@ -119,6 +119,7 @@ export interface ProfileEmailRowProps {
   onVerificationSuccess?: () => void | Promise<void>;
   hasError?: boolean;
   errorMessage?: string;
+  required?: boolean;
 }
 
 export type ChangeContactMode = "email" | "mobile";
