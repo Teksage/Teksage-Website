@@ -44,4 +44,7 @@ export const HOME_LAYOUT = {
   exploreFeatureStackGap: "gap-5 sm:gap-6 lg:gap-8",
   /** Match making + daily cards — shared height rhythm. */
   featureCardHeight: "h-[11rem] lg:h-[12.5rem]",
+  /** Event Planner home strip — soft mint gradient (not consultation lime or chat dark). */
+  eventPlannerBannerShell:
+    "border-2 border-[color-mix(in_srgb,var(--color-brand-primary)_24%,transparent)] bg-[linear-gradient(135deg,var(--color-brand-horoscope-bg)_0%,color-mix(in_srgb,var(--color-brand-primary)_10%,white)_52%,color-mix(in_srgb,var(--color-home-screen-mint)_70%,white)_100%)] shadow-md",
 } as const;

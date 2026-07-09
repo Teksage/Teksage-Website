@@ -20,6 +20,11 @@ export type MuhurthaReasonCode =
   | "chandra_bala_excluded"
   | "no_auspicious_window";
 
+export interface MuhurthaReasonInfoProps {
+  reasons: string[];
+  ariaLabel: string;
+}
+
 export interface MuhurthaDayResult {
   date: string;
   iso_date: string;

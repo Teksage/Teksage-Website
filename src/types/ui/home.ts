@@ -3,6 +3,10 @@ export interface ChatBannerProps {
   className?: string;
 }
 
+export interface MuhurthaBannerProps {
+  className?: string;
+}
+
 export interface ConsultationBannerProps {
   isLoggedIn?: boolean;
   isAstrologer?: boolean;

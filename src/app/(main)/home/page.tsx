@@ -6,7 +6,7 @@ import { ConsultationBanner } from "@/components/home/ConsultationBanner";
 import { PredictionCircles } from "@/components/home/PredictionCircles";
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
-import { MuhurthaCard } from "@/components/muhurtha/MuhurthaCard";
+import { MuhurthaBanner } from "@/components/home/MuhurthaBanner";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
 import { HomePanchangTimingMobileCard } from "@/components/home/HomePanchangTimingMobileCard";
@@ -74,25 +74,23 @@ export default function HomePage() {
           >
             <PredictionCircles isLoggedIn={isAuthenticated} />
 
-            <div
-              className={cn(
-                "flex min-h-0 min-w-0 flex-col items-stretch sm:flex-row",
-                HOME_LAYOUT.featureGridGap,
-              )}
-            >
+            <div className={cn("flex flex-row", HOME_LAYOUT.featureGridGap)}>
               <MatchMakingCard
                 isLoggedIn={isAuthenticated}
                 hasExistingMatch={hasExistingMatch}
+                className="min-w-0 flex-1"
               />
-              <MuhurthaCard />
               <DailyPredictionCard
                 data={dailyPrediction ?? undefined}
                 isLoading={isLoading}
                 isLoggedIn={isAuthenticated}
                 fetchError={dashboardError}
                 currentDate={formatHomeDashboardDate(new Date(), locale)}
+                className="min-w-0 flex-1"
               />
             </div>
+
+            <MuhurthaBanner />
           </div>
 
           <ChatBanner isLoggedIn={isAuthenticated} />

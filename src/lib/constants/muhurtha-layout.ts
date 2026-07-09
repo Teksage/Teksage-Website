@@ -1,45 +1,86 @@
 import { TYPO } from "@/lib/constants/typography";
-import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
+
+const panchangCard =
+  "rounded-[20px] border-[3px] border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-white";
+
+const tableGridCols =
+  "grid-cols-[minmax(4.5rem,0.95fr)_minmax(4.25rem,0.8fr)_minmax(5.25rem,1.25fr)] sm:grid-cols-[minmax(6.5rem,1fr)_minmax(6.5rem,1fr)_minmax(10rem,1.5fr)]";
+
+const primaryCta =
+  "inline-flex min-h-12 min-w-[12rem] items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-8 text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45";
 
 export const MUHURTHA_LAYOUT = {
-  formRoot: `${PREDICTION_DESKTOP_LAYOUT.contentColumn} ${PREDICTION_DESKTOP_LAYOUT.contentGutter} mx-auto w-full max-w-lg space-y-5 py-6`,
-  formCard: "space-y-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/[0.05]",
+  featureBackdrop: "absolute inset-0 bg-[var(--color-brand-horoscope-bg)]",
+  contentShell: "relative z-10",
+  featurePageMain:
+    "relative z-10 mx-auto flex w-full max-w-sm flex-1 flex-col px-4 pb-6 pt-1 lg:max-w-md lg:px-6",
+  featurePageMainForm: "justify-start mt-20 lg:justify-center lg:mt-0",
+  featurePageMainResults: "max-w-lg lg:max-w-2xl",
+  heroHeader:
+    "relative z-10 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top,0px))] lg:px-8 lg:pb-5 lg:pt-5",
+  heroCopy: "mx-auto max-w-xl text-center",
+  heroTitle:
+    "text-center text-xl font-bold leading-tight tracking-tight text-[var(--color-brand-black)] lg:text-2xl",
+  heroSubtitle: `${TYPO.captionMedium} mx-auto mt-2 max-w-md text-center text-[var(--color-brand-black)]/70`,
+  heroNotification:
+    "absolute right-4 top-[max(0.75rem,env(safe-area-inset-top,0px))] rounded-full p-2 text-[var(--color-brand-black)] transition-colors hover:bg-black/5 lg:right-8 lg:top-5",
+  heroBackBtn:
+    "absolute left-4 top-[max(0.75rem,env(safe-area-inset-top,0px))] rounded-full p-2 text-[var(--color-brand-black)] transition-colors hover:bg-black/5 lg:left-8 lg:top-5",
+  formRoot: "mx-auto w-full space-y-4",
+  formCard: `space-y-5 ${panchangCard} p-5 sm:p-6`,
   fieldLabel: `${TYPO.labelSemibold} text-sm text-[var(--color-brand-black)]`,
+  selectWrap: "relative mt-1.5",
   select:
-    "mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-800",
+    "h-12 w-full appearance-none rounded-xl border border-neutral-200 bg-white px-4 pr-11 text-sm font-medium text-neutral-800 focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/20",
+  selectChevron:
+    "pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-brand-black)]/70",
   dateInput:
-    "mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-800",
-  locationText: `${TYPO.bodySm} mt-1 text-[var(--color-brand-black)]/70`,
-  submitCta: "w-full rounded-full",
-  resultsRoot: `${PREDICTION_DESKTOP_LAYOUT.contentColumn} ${PREDICTION_DESKTOP_LAYOUT.contentGutter} mx-auto w-full max-w-2xl space-y-4 py-6`,
-  resultsHeader: "flex flex-col gap-1",
+    "mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-800 focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/20",
+  locationInput: "bg-white",
+  submitWrap: "flex justify-center pt-2",
+  submitCta: primaryCta,
+  resultsRoot: "mx-auto w-full space-y-4",
+  resultsHeaderCard: `${panchangCard} p-4 sm:p-5`,
+  resultsHeaderTop: "flex flex-col items-stretch gap-3 sm:flex-row sm:items-start sm:justify-between",
+  resultsHeaderCopy: "min-w-0 space-y-2 text-center sm:text-left",
   resultsTitle: `${TYPO.h3Bold} text-[var(--color-brand-black)]`,
-  resultsRange: `${TYPO.bodySm} text-[var(--color-brand-black)]/65`,
-  tableCard: "overflow-visible rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.05]",
-  tableHead: "grid grid-cols-[1fr_1fr_1.2fr] gap-2 border-b border-neutral-100 bg-neutral-50 px-4 py-3",
-  tableHeadCell: `${TYPO.caption} font-semibold text-[var(--color-brand-black)]/70`,
-  dayRowButton:
-    "grid w-full grid-cols-[1fr_1fr_1.2fr] gap-2 border-b border-neutral-100 px-4 py-3 text-left transition-colors hover:bg-neutral-50/80",
-  dayRowStatic:
-    "grid w-full grid-cols-[1fr_1fr_1.2fr] gap-2 border-b border-neutral-100 px-4 py-3 text-left",
-  dayRowDate: `${TYPO.bodySm} font-semibold text-[var(--color-brand-black)]`,
-  dayRowWindow: `${TYPO.bodySm} text-[var(--color-brand-primary)]`,
-  statusSuitable: "text-sm font-semibold text-[var(--color-brand-primary)]",
-  statusUnsuitable: "text-sm font-semibold text-[var(--color-brand-black)]/55",
+  resultsSubtitle: `${TYPO.bodySm} text-[var(--color-brand-black)]/65`,
+  resultsMetaRow: "flex flex-wrap justify-center gap-2 sm:justify-start",
+  metaChip:
+    "inline-flex items-center rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] px-2.5 py-0.5 text-xs font-medium text-[var(--color-brand-black)]/75 ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_15%,transparent)]",
+  backCta:
+    "ml-auto inline-flex min-h-9 min-w-[8.5rem] shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 sm:ml-0 sm:min-h-12 sm:min-w-[12rem] sm:px-8 sm:text-base",
+  tableCard: `overflow-visible ${panchangCard}`,
+  tableHead: `grid gap-1.5 border-b border-neutral-100 bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] px-3 py-2 sm:gap-3 sm:px-4 sm:py-3 ${tableGridCols}`,
+  tableHeadCell: `${TYPO.caption} font-semibold uppercase tracking-wide text-[var(--color-brand-black)]/55`,
+  tableHeadDetails: `${TYPO.caption} font-semibold uppercase tracking-wide text-[var(--color-brand-black)]/55 text-right`,
+  dayRowStatic: `grid items-center gap-1.5 border-b border-neutral-100 px-3 py-2.5 last:border-b-0 sm:gap-3 sm:px-4 sm:py-3 ${tableGridCols}`,
+  tableColDate: "min-w-0",
+  tableColStatus: "min-w-0",
+  tableColDetails: "flex min-w-0 items-center justify-end",
+  dayRowDate: "text-xs font-semibold text-[var(--color-brand-black)] sm:text-sm",
+  dayRowWeekday: "text-[10px] text-[var(--color-brand-black)]/50 sm:text-xs",
+  statusBadgeBase:
+    "inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[10px] font-semibold sm:px-2.5 sm:text-xs",
+  statusSuitable:
+    "bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] text-[var(--color-brand-primary)] ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_22%,transparent)]",
+  statusUnsuitable:
+    "bg-neutral-100 text-[var(--color-brand-black)]/60 ring-1 ring-neutral-200/80",
+  detailsTimeBlock: "flex min-w-0 flex-col items-end gap-0.5 text-right",
+  detailsRating: "text-[10px] font-semibold text-[var(--color-brand-primary)] sm:text-xs",
+  dayRowWindow: "text-[10px] font-medium leading-tight text-[var(--color-brand-black)]/80 sm:text-sm",
   reasonInfoBtn:
-    "inline-flex size-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-[var(--color-brand-black)]/70 shadow-sm transition-colors hover:border-[var(--color-brand-primary)]/35 hover:bg-[var(--color-brand-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/30",
-  reasonTooltipWrap: "relative inline-flex items-center",
-  reasonTooltipPanel:
-    "pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-72 -translate-x-1/2 whitespace-normal break-words rounded-xl border border-black/10 bg-white px-3 py-2 text-xs font-medium leading-5 text-[var(--color-brand-black)] shadow-xl opacity-0 translate-y-1 transition duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100",
-  reasonTooltipArrow:
-    "pointer-events-none absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rotate-45 border-r border-b border-black/10 bg-white",
-  detailPanel: "border-b border-neutral-100 bg-[var(--color-brand-bg)] px-4 py-3",
+    "inline-flex size-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-[var(--color-brand-black)]/65 shadow-sm transition-colors hover:border-[var(--color-brand-primary)]/35 hover:bg-[var(--color-brand-bg)] hover:text-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/30",
+  reasonTooltipWrap: "relative inline-flex items-center justify-end",
+  reasonTooltipPanelFixed:
+    "rounded-xl border border-black/10 bg-white p-3 text-left text-xs font-medium leading-5 text-[var(--color-brand-black)] shadow-xl",
+  reasonList: "m-0 list-disc space-y-1 pl-4",
   premiumGateRoot: "relative flex min-h-0 flex-1 flex-col",
   premiumGateBackdrop: "absolute inset-0 overflow-hidden",
-  premiumGateDesktopMint: "absolute inset-0 hidden bg-[var(--color-brand-bg)] lg:block",
+  premiumGateDesktopMint: "absolute inset-0 bg-[var(--color-brand-horoscope-bg)]",
   premiumGateGradient:
-    "absolute inset-0 bg-gradient-to-b from-[var(--color-brand-panchang)]/90 to-[var(--color-brand-primary)]/80",
-  premiumGateScrim: "absolute inset-0 bg-black/20",
+    "absolute inset-0 bg-gradient-to-b from-[var(--color-panchang-hero-top)]/95 to-[var(--color-panchang-hero-bottom)]/90",
+  premiumGateScrim: "absolute inset-0 bg-black/25 lg:bg-black/10",
   premiumGateContent:
     "relative z-10 flex flex-1 flex-col items-center justify-center px-5 py-10",
   premiumGateCard:

@@ -50,6 +50,7 @@ export function AppHeader({
   className,
   style,
   foregroundColor,
+  titleClassName,
 }: AppHeaderProps) {
   const fg = foregroundColor ?? undefined;
   return (
@@ -79,7 +80,10 @@ export function AppHeader({
       </div>
 
       <h1
-        className="max-w-[min(100%,18rem)] truncate px-10 text-center text-lg font-bold sm:max-w-[min(100%,22rem)]"
+        className={cn(
+          "max-w-[min(100%,18rem)] truncate px-10 text-center text-lg font-bold sm:max-w-[min(100%,22rem)]",
+          titleClassName
+        )}
         style={{ color: fg ?? undefined }}
       >
         {title}

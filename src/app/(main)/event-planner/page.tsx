@@ -1,5 +1,5 @@
-import { MuhurthaPage } from "@/components/muhurtha/MuhurthaPage";
+import { MuhurthaFormPage } from "@/components/muhurtha/MuhurthaFormPage";
 
 export default function Page() {
-  return <MuhurthaPage />;
+  return <MuhurthaFormPage />;
 }

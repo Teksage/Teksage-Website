@@ -10,8 +10,6 @@ export interface MuhurthaFormViewProps {
   location: string;
   locationFull: string;
   locationError: string | null;
-  busy: boolean;
-  error: string | null;
   onEventChange: (value: string) => void;
   onStartDateChange: (value: string) => void;
   onLocationChange: (selected: string, full: string) => void;
@@ -20,7 +18,6 @@ export interface MuhurthaFormViewProps {
 
 export interface MuhurthaResultsViewProps {
   result: MuhurthaResult;
-  onBack: () => void;
 }
 
 export interface MuhurthaDayRowProps {
@@ -29,4 +26,12 @@ export interface MuhurthaDayRowProps {
 
 export interface MuhurthaCardProps {
   className?: string;
+}
+
+export interface MuhurthaFeatureHeroProps {
+  title: string;
+  subtitle?: string;
+  showNotification?: boolean;
+  showBack?: boolean;
+  backHref?: string;
 }

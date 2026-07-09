@@ -95,6 +95,7 @@ export type { AuthGatedLinkProps } from "./ui/auth-gated-link";
 
 export type {
   ChatBannerProps,
+  MuhurthaBannerProps,
   ConsultationBannerProps,
   MatchMakingCardProps,
   PredictionCirclesProps,
@@ -157,6 +158,7 @@ export type {
   MuhurthaResultsViewProps,
   MuhurthaDayRowProps,
   MuhurthaCardProps,
+  MuhurthaFeatureHeroProps,
 } from "./ui/muhurtha";
 
 export type {
