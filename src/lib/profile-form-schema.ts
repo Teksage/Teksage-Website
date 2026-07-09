@@ -2,7 +2,24 @@ import { z } from "zod";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
 import { LOGIN_EMAIL_REGEX, LOGIN_MOBILE_DIGITS_REGEX } from "@/lib/constants/validation-patterns";
 
-export function createProfileDetailsFormSchema(requireReferralSource: boolean) {
+export function createProfileDetailsFormSchema(
+  requireReferralSource: boolean,
+  emailOptional = false
+) {
+  const emailField = emailOptional
+    ? z
+        .string()
+        .trim()
+        .refine(
+          (value) => !value || LOGIN_EMAIL_REGEX.test(value),
+          PROFILE_FORM_VALIDATION.emailInvalid
+        )
+    : z
+        .string()
+        .trim()
+        .min(1, PROFILE_FORM_VALIDATION.emailRequired)
+        .regex(LOGIN_EMAIL_REGEX, PROFILE_FORM_VALIDATION.emailInvalid);
+
   return z
     .object({
       firstName: z
@@ -13,11 +30,7 @@ export function createProfileDetailsFormSchema(requireReferralSource: boolean) {
         .string()
         .trim()
         .min(1, PROFILE_FORM_VALIDATION.lastNameRequired),
-      email: z
-        .string()
-        .trim()
-        .min(1, PROFILE_FORM_VALIDATION.emailRequired)
-        .regex(LOGIN_EMAIL_REGEX, PROFILE_FORM_VALIDATION.emailInvalid),
+      email: emailField,
       mobile: z.string(),
       countryCode: z.string(),
       chatLanguages: z
