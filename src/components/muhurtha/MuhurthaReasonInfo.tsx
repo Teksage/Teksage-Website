@@ -47,7 +47,12 @@ function measurePanel(anchor: HTMLElement): PanelPos {
   return { top: belowTop, left, width, placement: "below" };
 }
 
-export function MuhurthaReasonInfo({ reasons, ariaLabel }: MuhurthaReasonInfoProps) {
+export function MuhurthaReasonInfo({
+  reasons,
+  ariaLabel,
+  triggerLabel,
+  triggerClassName,
+}: MuhurthaReasonInfoProps) {
   const L = MUHURTHA_LAYOUT;
   const tooltipId = useId();
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -56,6 +61,7 @@ export function MuhurthaReasonInfo({ reasons, ariaLabel }: MuhurthaReasonInfoPro
   const [panelPos, setPanelPos] = useState<PanelPos | null>(null);
   const filtered = reasons.map((r) => r.trim()).filter(Boolean);
   const open = pinned || hovered;
+  const useTextTrigger = Boolean(triggerLabel);
 
   const syncPanel = () => {
     if (!btnRef.current) return;
@@ -135,8 +141,9 @@ export function MuhurthaReasonInfo({ reasons, ariaLabel }: MuhurthaReasonInfoPro
           ref={btnRef}
           type="button"
           className={cn(
-            L.reasonInfoBtn,
-            open &&
+            useTextTrigger ? triggerClassName : L.reasonInfoBtn,
+            !useTextTrigger &&
+              open &&
               "border-[var(--color-brand-primary)]/35 bg-[var(--color-brand-bg)] text-[var(--color-brand-primary)]"
           )}
           aria-label={ariaLabel}
@@ -157,7 +164,7 @@ export function MuhurthaReasonInfo({ reasons, ariaLabel }: MuhurthaReasonInfoPro
             setPinned((value) => !value);
           }}
         >
-          <InfoIcon />
+          {useTextTrigger ? triggerLabel : <InfoIcon />}
         </button>
       </span>
       {panel}

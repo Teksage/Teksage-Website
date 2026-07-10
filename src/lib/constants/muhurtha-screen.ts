@@ -1,7 +1,7 @@
 /** Muhurtha feature copy — keep strings out of TSX. */
 
 export const MUHURTHA_SCREEN = {
-  headerTitle: "Find Event Planner",
+  headerTitle: "Event Planner (Muhurtha)",
   formTitle: "Plan an auspicious time",
   formSubtitle:
     "Select a life event and start date. We scan the next 7 days using your birth chart and Panchang.",

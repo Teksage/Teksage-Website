@@ -3,6 +3,7 @@
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
+import { EventPlannerCtaArrow } from "@/components/home/EventPlannerCtaArrow";
 import { cn } from "@/lib/utils";
 import {
   DASHBOARD_ASSETS,
@@ -55,15 +56,7 @@ export function MuhurthaBanner({ className }: MuhurthaBannerProps) {
 
           <div className={HOME_DASHBOARD_UI.eventPlannerBannerCtaPill}>
             <span className={HOME_DASHBOARD_UI.eventPlannerBannerCta}>{HD.eventPlannerBannerCta}</span>
-            <Image
-              src={DASHBOARD_ASSETS.chatStripArrow}
-              alt=""
-              width={14}
-              height={14}
-              unoptimized
-              className="shrink-0"
-              aria-hidden
-            />
+            <EventPlannerCtaArrow />
           </div>
         </div>
       </div>

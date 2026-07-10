@@ -25,14 +25,15 @@ export function MuhurthaCard({ className }: MuhurthaCardProps) {
     >
       <div
         className={cn(
-          "relative flex flex-col overflow-hidden bg-white",
+          "relative flex flex-col overflow-hidden",
           HOME_LAYOUT.featureCardHeight,
           HOME_LAYOUT.homeCardRadius,
-          "shadow-[0_4px_20px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.05]"
+          HOME_LAYOUT.eventPlannerCardShell,
+          "shadow-md"
         )}
       >
         <div className="relative z-10 flex shrink-0 justify-center px-2 pt-5">
-          <p className={HOME_DASHBOARD_UI.matchCardTitle}>{HD.eventPlannerLines}</p>
+          <p className={HOME_DASHBOARD_UI.eventPlannerCardTitle}>{HD.eventPlannerLines}</p>
         </div>
         <div className="relative mt-auto flex flex-1 items-end justify-center pb-2 pt-2">
           <img
