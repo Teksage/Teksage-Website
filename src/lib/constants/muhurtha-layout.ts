@@ -61,19 +61,30 @@ export const MUHURTHA_LAYOUT = {
   dayRowDate: "text-xs font-semibold text-[var(--color-brand-black)] sm:text-sm",
   dayRowWeekday: "text-[10px] text-[var(--color-brand-black)]/50 sm:text-xs",
   statusBadgeBase:
-    "inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[10px] font-semibold sm:px-2.5 sm:text-xs",
+    "inline-flex w-fit max-w-full flex-wrap items-center gap-x-0.5 rounded-full px-2 py-0.5 text-[10px] font-semibold leading-tight sm:px-2.5 sm:text-xs",
   statusSuitable:
-    "bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] text-[var(--color-brand-primary)] ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_22%,transparent)]",
+    "bg-[var(--color-muhurtha-suitable-bg)] text-[var(--color-muhurtha-suitable-text)] ring-1 ring-[var(--color-muhurtha-suitable-ring)]",
+  statusSuitableVeryGood:
+    "bg-[var(--color-muhurtha-status-very-good-bg)] text-[var(--color-muhurtha-status-very-good-text)] ring-1 ring-[var(--color-muhurtha-status-very-good-ring)]",
+  statusSuitableGood:
+    "bg-[var(--color-muhurtha-status-good-bg)] text-[var(--color-muhurtha-status-good-text)] ring-1 ring-[var(--color-muhurtha-status-good-ring)]",
+  statusSuitableAverage:
+    "bg-[var(--color-muhurtha-status-average-bg)] text-[var(--color-muhurtha-status-average-text)] ring-1 ring-[var(--color-muhurtha-status-average-ring)]",
   statusUnsuitable:
-    "bg-neutral-100 text-[var(--color-brand-black)]/60 ring-1 ring-neutral-200/80",
+    "bg-[var(--color-muhurtha-unsuitable-bg)] text-[var(--color-muhurtha-unsuitable-text)] ring-1 ring-[var(--color-muhurtha-unsuitable-ring)]",
+  statusSeparator: "font-semibold opacity-80",
   detailsTimeBlock: "flex min-w-0 flex-col items-end gap-0.5 text-right",
-  detailsRating: "text-[10px] font-semibold text-[var(--color-brand-primary)] sm:text-xs",
   dayRowWindow: "text-[10px] font-medium leading-tight text-[var(--color-brand-black)]/80 sm:text-sm",
+  reasonPreviewText:
+    "max-w-full text-right text-[10px] font-semibold leading-snug text-[var(--color-brand-black)] sm:text-xs",
+  reasonMoreBtn:
+    "text-[10px] font-semibold text-[var(--color-brand-black)] underline underline-offset-2 hover:opacity-70 sm:text-xs",
+  reasonPreviewWrap: "flex min-w-0 flex-col items-end gap-0.5 text-right",
   reasonInfoBtn:
     "inline-flex size-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-[var(--color-brand-black)]/65 shadow-sm transition-colors hover:border-[var(--color-brand-primary)]/35 hover:bg-[var(--color-brand-bg)] hover:text-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/30",
   reasonTooltipWrap: "relative inline-flex items-center justify-end",
   reasonTooltipPanelFixed:
-    "rounded-xl border border-black/10 bg-white p-3 text-left text-xs font-medium leading-5 text-[var(--color-brand-black)] shadow-xl",
+    "rounded-xl border border-neutral-200 bg-white p-3 text-left text-xs font-medium leading-5 text-[var(--color-brand-black)] shadow-xl",
   reasonList: "m-0 list-disc space-y-1 pl-4",
   premiumGateRoot: "relative flex min-h-0 flex-1 flex-col",
   premiumGateBackdrop: "absolute inset-0 overflow-hidden",

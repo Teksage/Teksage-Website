@@ -96,6 +96,7 @@ export type { AuthGatedLinkProps } from "./ui/auth-gated-link";
 export type {
   ChatBannerProps,
   MuhurthaBannerProps,
+  EventPlannerCtaArrowProps,
   ConsultationBannerProps,
   MatchMakingCardProps,
   PredictionCirclesProps,

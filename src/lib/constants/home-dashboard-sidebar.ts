@@ -19,7 +19,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
   notifications: "Notifications",
   whatsappUpdates: "WhatsApp Updates",
   panchangam: "Panchang",
-  eventPlanner: "Event Planner",
+  eventPlanner: "Event Planner (Muhurtha)",
   horoscope: "Horoscope",
   settings: "Settings",
   gettingStarted: "Getting Started",

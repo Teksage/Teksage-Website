@@ -23,6 +23,9 @@ export type MuhurthaReasonCode =
 export interface MuhurthaReasonInfoProps {
   reasons: string[];
   ariaLabel: string;
+  /** When set, shows this label instead of the info icon (e.g. "+2 more"). */
+  triggerLabel?: string;
+  triggerClassName?: string;
 }
 
 export interface MuhurthaDayResult {
@@ -33,6 +36,7 @@ export interface MuhurthaDayResult {
   reason_codes?: MuhurthaReasonCode[];
   rating?: string;
   window?: string;
+  windows?: string[];
   weekday?: string;
   nakshatra?: string;
   thithi?: string;

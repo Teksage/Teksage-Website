@@ -14,9 +14,9 @@ export const HOME_DASHBOARD = {
   loveCompatibility: "Love Compatibility",
   /** Two-line title on home card. */
   loveCompatibilityLines: "Love\nCompatibility",
-  eventPlanner: "Find Event Planner",
-  eventPlannerLines: "Find\nEvent Planner",
-  eventPlannerBannerTitle: "Find Event\nPlanner",
+  eventPlanner: "Find Event Planner (Muhurtha)",
+  eventPlannerLines: "Event Planner\n(Muhurtha)",
+  eventPlannerBannerTitle: "Event Planner\n(Muhurtha)",
   eventPlannerBannerCta: "Plan Now",
   dailyPrediction: "Daily Prediction",
   tharaBala: "Thara Bala",

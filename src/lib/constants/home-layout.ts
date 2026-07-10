@@ -44,7 +44,10 @@ export const HOME_LAYOUT = {
   exploreFeatureStackGap: "gap-5 sm:gap-6 lg:gap-8",
   /** Match making + daily cards — shared height rhythm. */
   featureCardHeight: "h-[11rem] lg:h-[12.5rem]",
-  /** Event Planner home strip — soft mint gradient (not consultation lime or chat dark). */
+  /** Event Planner (Muhurtha) home strip — warm gold gradient (distinct from mint horoscope). */
   eventPlannerBannerShell:
-    "border-2 border-[color-mix(in_srgb,var(--color-brand-primary)_24%,transparent)] bg-[linear-gradient(135deg,var(--color-brand-horoscope-bg)_0%,color-mix(in_srgb,var(--color-brand-primary)_10%,white)_52%,color-mix(in_srgb,var(--color-home-screen-mint)_70%,white)_100%)] shadow-md",
+    "border-2 border-[color-mix(in_srgb,var(--color-muhurtha-card-accent)_35%,transparent)] bg-[linear-gradient(135deg,var(--color-muhurtha-banner-top)_0%,var(--color-muhurtha-banner-mid)_48%,var(--color-muhurtha-banner-bottom)_100%)] shadow-md",
+  /** Event Planner mobile grid card shell */
+  eventPlannerCardShell:
+    "bg-[linear-gradient(160deg,var(--color-muhurtha-card-top)_0%,var(--color-muhurtha-card-bottom)_100%)] ring-1 ring-[color-mix(in_srgb,var(--color-muhurtha-card-accent)_28%,transparent)]",
 } as const;

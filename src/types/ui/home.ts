@@ -7,6 +7,10 @@ export interface MuhurthaBannerProps {
   className?: string;
 }
 
+export interface EventPlannerCtaArrowProps {
+  className?: string;
+}
+
 export interface ConsultationBannerProps {
   isLoggedIn?: boolean;
   isAstrologer?: boolean;
