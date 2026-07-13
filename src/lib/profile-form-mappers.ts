@@ -68,3 +68,38 @@ export function profileFormValuesToUpdate(
       : {}),
   };
 }
+
+/** Keep typed profile edits after verify refetch; fill only empty fields from server. */
+export function mergeProfileFormAfterUserRefresh(
+  current: ProfileDetailsFormValues,
+  fromUser: ProfileDetailsFormValues
+): ProfileDetailsFormValues {
+  const pick = (cur: string, next: string) =>
+    cur.trim() !== "" ? cur : next;
+  return {
+    firstName: pick(current.firstName, fromUser.firstName),
+    lastName: pick(current.lastName, fromUser.lastName),
+    email: pick(current.email, fromUser.email),
+    mobile: pick(current.mobile, fromUser.mobile),
+    countryCode: pick(current.countryCode, fromUser.countryCode),
+    chatLanguages: pick(current.chatLanguages, fromUser.chatLanguages),
+    referralSource: pick(current.referralSource, fromUser.referralSource),
+    dateOfBirth: pick(current.dateOfBirth, fromUser.dateOfBirth),
+    timeOfBirth: pick(current.timeOfBirth, fromUser.timeOfBirth),
+    placeOfBirth: pick(current.placeOfBirth, fromUser.placeOfBirth),
+    birthLocationFull: pick(
+      current.birthLocationFull,
+      fromUser.birthLocationFull
+    ),
+    preferredLocation: pick(
+      current.preferredLocation,
+      fromUser.preferredLocation
+    ),
+    preferredLocationFull: pick(
+      current.preferredLocationFull,
+      fromUser.preferredLocationFull
+    ),
+    rashi: pick(current.rashi, fromUser.rashi),
+    nakshatra: pick(current.nakshatra, fromUser.nakshatra),
+  };
+}

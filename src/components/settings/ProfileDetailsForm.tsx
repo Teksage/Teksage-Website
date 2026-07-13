@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfileDetailsFields } from "@/components/settings/ProfileDetailsFields";
@@ -11,6 +11,7 @@ import {
   type ProfileDetailsFormValues,
 } from "@/lib/profile-form-schema";
 import {
+  mergeProfileFormAfterUserRefresh,
   profileFormValuesToUpdate,
   userToProfileFormValues,
 } from "@/lib/profile-form-mappers";
@@ -37,11 +38,19 @@ export function ProfileDetailsForm({
     mode: "onSubmit",
   });
 
-  const { reset, handleSubmit } = methods;
+  const { reset, handleSubmit, getValues } = methods;
+  const hasHydratedRef = useRef(false);
 
   useEffect(() => {
-    reset(userToProfileFormValues(user));
-  }, [user, reset]);
+    const fromUser = userToProfileFormValues(user);
+    if (!hasHydratedRef.current) {
+      reset(fromUser);
+      hasHydratedRef.current = true;
+      return;
+    }
+    // After email/mobile verify refetch: keep typed edits, fill only empty fields.
+    reset(mergeProfileFormAfterUserRefresh(getValues(), fromUser));
+  }, [user, reset, getValues]);
 
   const onValidSubmit = handleSubmit(
     async (data) => {
@@ -52,7 +61,10 @@ export function ProfileDetailsForm({
         return;
       }
       const ok = await onSave(profileFormValuesToUpdate(data, user));
-      if (ok) onDoneEditing();
+      if (ok) {
+        reset(data);
+        onDoneEditing();
+      }
     },
     () => {
       showErrorAppSnackBar(PROFILE_FORM_VALIDATION.fillAllRequired, {
