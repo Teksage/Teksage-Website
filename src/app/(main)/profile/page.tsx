@@ -78,7 +78,7 @@ export default function ProfilePage() {
         <div className={PROFILE_LAYOUT.desktopPanel}>
           {user ? (
             <ProfileDetailsForm
-              key={`${user.id}-${user.email ?? ""}-${user.mobile ?? ""}`}
+              key={user.id}
               user={user}
               isEditing={isEditing}
               onSave={saveProfile}
