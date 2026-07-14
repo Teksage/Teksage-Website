@@ -1,16 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { CountryDialPicker } from "@/components/common/CountryDialPicker";
 import { useI18nConstants } from "@/hooks/useT";
 import {
-  LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS,
-  LOGIN_MOBILE_DIGITS_REGEX,
-  MOBILE_INPUT_MAX_DIGITS,
+  DEFAULT_COUNTRY_CODE_NUMERIC,
 } from "@/lib/constants";
 import {
   WHATSAPP_UPDATES_SCREEN,
   WHATSAPP_UPDATES_UI,
 } from "@/lib/constants/whatsapp-updates";
+import { fetchCountries, findCountryByDial } from "@/lib/services/countries";
+import {
+  isValidNationalMobile,
+  nationalMobileMaxLength,
+} from "@/lib/mobile-validation";
 import { cn } from "@/lib/utils";
 import type { WhatsAppUpdatesPhoneChoiceProps } from "@/types/whatsapp-updates";
 
@@ -26,10 +31,20 @@ export function WhatsAppUpdatesPhoneChoice({
   variant = "default",
 }: WhatsAppUpdatesPhoneChoiceProps) {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
-  const dialValue =
-    LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.find(
-      (o) => o.dial.replace("+", "") === countryCode.replace(/\D/g, "")
-    )?.dial ?? `+${countryCode.replace(/\D/g, "") || "91"}`;
+  const [mobileLength, setMobileLength] = useState(10);
+  const cc =
+    countryCode.replace(/\D/g, "") || DEFAULT_COUNTRY_CODE_NUMERIC;
+  const dialValue = `+${cc}`;
+  const maxDigits = nationalMobileMaxLength(mobileLength);
+
+  useEffect(() => {
+    void fetchCountries().then(() => {
+      const matched = findCountryByDial(cc);
+      if (matched?.mobile_number_length) {
+        setMobileLength(matched.mobile_number_length);
+      }
+    });
+  }, [cc]);
 
   function renderRadio(checked: boolean) {
     return (
@@ -94,27 +109,29 @@ export function WhatsAppUpdatesPhoneChoice({
           {mode === "different" ? (
             <div className={WHATSAPP_UPDATES_UI.phoneInputWrap}>
               <div className={WHATSAPP_UPDATES_UI.phoneDialSelect}>
-                <select
-                  value={dialValue}
-                  onChange={(e) => onCountryCodeChange(e.target.value.replace("+", ""))}
-                  className="w-full border-none bg-transparent text-sm font-bold outline-none"
-                  aria-label={WU.phoneChoiceDifferentLabel}
-                >
-                  {LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.map((o) => (
-                    <option key={o.dial} value={o.dial}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
+                <CountryDialPicker
+                  valueDial={dialValue}
+                  ariaLabel={WU.phoneChoiceDifferentLabel}
+                  onSelect={(country) => {
+                    onCountryCodeChange(
+                      country.dial_code.replace(/\D/g, "") ||
+                        DEFAULT_COUNTRY_CODE_NUMERIC
+                    );
+                    setMobileLength(country.mobile_number_length);
+                    onMobileChange("");
+                  }}
+                />
               </div>
               <Input
                 type="tel"
                 value={mobile}
                 onChange={(e) => {
-                  const digits = e.target.value.replace(/\D/g, "").slice(0, MOBILE_INPUT_MAX_DIGITS);
+                  const digits = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, maxDigits);
                   onMobileChange(digits);
                 }}
-                maxLength={MOBILE_INPUT_MAX_DIGITS}
+                maxLength={maxDigits}
                 inputMode="numeric"
                 className={cn(
                   WHATSAPP_UPDATES_UI.phoneMobileInput,
@@ -130,8 +147,12 @@ export function WhatsAppUpdatesPhoneChoice({
       {validationError ? (
         <p className="text-sm text-[var(--color-brand-error)]">{validationError}</p>
       ) : null}
-      {mode === "different" && mobile && !LOGIN_MOBILE_DIGITS_REGEX.test(mobile) ? (
-        <p className="text-sm text-[var(--color-brand-error)]">{WU.phoneChoiceInvalidMobile}</p>
+      {mode === "different" &&
+      mobile &&
+      !isValidNationalMobile(mobile, mobileLength) ? (
+        <p className="text-sm text-[var(--color-brand-error)]">
+          {WU.phoneChoiceInvalidMobile}
+        </p>
       ) : null}
     </div>
   );

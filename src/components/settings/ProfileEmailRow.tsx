@@ -1,12 +1,15 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
+import { ProfileContactActionButton } from "@/components/settings/ProfileContactActionButton";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
+import { buildChangeContactPath } from "@/lib/constants/settings-change-contact";
 import { OTP_LENGTH } from "@/lib/constants";
 import { LOGIN_EMAIL_REGEX } from "@/lib/constants/validation-patterns";
 import {
@@ -27,6 +30,7 @@ export function ProfileEmailRow({
   required = true,
 }: ProfileEmailRowProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
+  const router = useRouter();
   const [otpPhase, setOtpPhase] = useState(false);
   const [otp, setOtp] = useState("");
   const [sendBusy, setSendBusy] = useState(false);
@@ -35,6 +39,7 @@ export function ProfileEmailRow({
 
   const cleanEmail = email.trim().toLowerCase();
   const canEdit = isEditing && !isEmailVerified;
+  const showChange = Boolean(isEmailVerified) && isEditing;
 
   async function handleSendOtp() {
     setFeedback(null);
@@ -96,7 +101,7 @@ export function ProfileEmailRow({
           hasError
             ? "border-[var(--color-brand-error)]"
             : "border-black/15",
-          !canEdit && "opacity-90"
+          !canEdit && !showChange && "opacity-90"
         )}
       >
         <Input
@@ -112,21 +117,19 @@ export function ProfileEmailRow({
           )}
         />
         {canEdit ? (
-          <>
-            <div className="w-px shrink-0 self-stretch bg-black/15" aria-hidden />
-            <button
-              type="button"
-              disabled={sendBusy}
-              className={cn(
-                "flex shrink-0 items-center gap-1.5 px-3.5 text-sm font-semibold text-[var(--color-brand-primary)]",
-                "hover:bg-black/[0.04] disabled:opacity-60"
-              )}
-              onClick={handleSendOtp}
-            >
-              {sendBusy ? <Loader variant="inline" size="sm" /> : null}
-              {PD.verify}
-            </button>
-          </>
+          <ProfileContactActionButton
+            label={PD.verify}
+            onClick={handleSendOtp}
+            disabled={sendBusy}
+            busy={sendBusy}
+            busySlot={<Loader variant="inline" size="sm" />}
+          />
+        ) : null}
+        {showChange ? (
+          <ProfileContactActionButton
+            label={PD.change}
+            onClick={() => router.push(buildChangeContactPath("email"))}
+          />
         ) : null}
       </div>
 

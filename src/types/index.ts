@@ -113,6 +113,8 @@ export type {
   LoginBackButtonProps,
 } from "./ui/auth";
 
+export type { CountryDialInfo, CountryDialPickerProps } from "./country";
+
 export type {
   ProfileDetailsFormState,
   ProfileDetailsFieldsProps,

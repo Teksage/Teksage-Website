@@ -1,20 +1,29 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
+import { CountryDialPicker } from "@/components/common/CountryDialPicker";
+import { ProfileContactActionButton } from "@/components/settings/ProfileContactActionButton";
+import { ProfilePhoneOtpPanel } from "@/components/settings/ProfilePhoneOtpPanel";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import {
   OTP_LENGTH,
-  LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS,
+  DEFAULT_COUNTRY_CODE_NUMERIC,
   LOGIN_MOBILE_FORM,
 } from "@/lib/constants";
+import { buildChangeContactPath } from "@/lib/constants/settings-change-contact";
 import {
   sendAuthenticatedOtp,
   verifyAuthenticatedOtp,
 } from "@/lib/services/profile-verify";
+import { fetchCountries, findCountryByDial } from "@/lib/services/countries";
+import {
+  isValidNationalMobile,
+  nationalMobileMaxLength,
+} from "@/lib/mobile-validation";
 import { cn } from "@/lib/utils";
 import type { ProfilePhoneRowProps } from "@/types";
 
@@ -30,30 +39,40 @@ export function ProfilePhoneRow({
   errorMessage,
 }: ProfilePhoneRowProps) {
   const PD = useI18nConstants(PROFILE_DETAILS);
+  const router = useRouter();
   const [otpPhase, setOtpPhase] = useState(false);
   const [otp, setOtp] = useState("");
   const [sendBusy, setSendBusy] = useState(false);
   const [verifyBusy, setVerifyBusy] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [mobileLength, setMobileLength] = useState(10);
 
-  const cc = (countryCode || "91").replace(/\D/g, "") || "91";
-  const dialValue =
-    LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.find((o) => o.dial.replace("+", "") === cc)?.dial ??
-    `+${cc}`;
+  const cc =
+    (countryCode || DEFAULT_COUNTRY_CODE_NUMERIC).replace(/\D/g, "") ||
+    DEFAULT_COUNTRY_CODE_NUMERIC;
   const digits = mobile.replace(/\D/g, "");
+  const maxDigits = nationalMobileMaxLength(mobileLength);
+  const canEdit = isEditing && !isMobileVerified;
+  const showChange = Boolean(isMobileVerified) && isEditing;
+
+  useEffect(() => {
+    void fetchCountries().then(() => {
+      const matched = findCountryByDial(cc);
+      if (matched?.mobile_number_length) {
+        setMobileLength(matched.mobile_number_length);
+      }
+    });
+  }, [cc]);
 
   async function handleSendOtp() {
     setFeedback(null);
-    if (digits.length < 10) {
-      setFeedback("Enter a valid 10-digit mobile number to verify.");
+    if (!isValidNationalMobile(digits, mobileLength)) {
+      setFeedback(LOGIN_MOBILE_FORM.invalidMobile);
       return;
     }
     setSendBusy(true);
     try {
-      await sendAuthenticatedOtp({
-        mobile_number: digits,
-        country_code: cc,
-      });
+      await sendAuthenticatedOtp({ mobile_number: digits, country_code: cc });
       setOtpPhase(true);
       setOtp("");
     } catch (e) {
@@ -73,11 +92,7 @@ export function ProfilePhoneRow({
     setVerifyBusy(true);
     try {
       const res = await verifyAuthenticatedOtp(
-        {
-          mobile_number: digits,
-          country_code: cc,
-          otp: clean,
-        },
+        { mobile_number: digits, country_code: cc, otp: clean },
         { update: false }
       );
       if (res.error) {
@@ -103,34 +118,24 @@ export function ProfilePhoneRow({
         className={cn(
           "flex h-12 items-stretch overflow-hidden rounded-xl border bg-neutral-100",
           "transition-colors focus-within:border-[var(--color-brand-primary)]",
-          hasError
-            ? "border-[var(--color-brand-error)]"
-            : "border-black/15",
-          !isEditing && "opacity-90"
+          hasError ? "border-[var(--color-brand-error)]" : "border-black/15",
+          !canEdit && !showChange && "opacity-90"
         )}
       >
-        <div
-          className={cn(
-            "flex w-[4.5rem] shrink-0 items-center justify-center border-r border-black/15",
-            "text-sm font-semibold text-neutral-800"
-          )}
-        >
-          {isEditing ? (
-            <select
-              value={dialValue}
-              onChange={(e) =>
-                onCountryCodeChange(e.target.value.replace(/\D/g, "") || "91")
-              }
-              disabled={Boolean(isMobileVerified)}
-              className="w-full border-none bg-transparent text-center text-sm font-semibold outline-none"
-              aria-label={LOGIN_MOBILE_FORM.countryCodeAria}
-            >
-              {LOGIN_MOBILE_COUNTRY_DIAL_OPTIONS.map((o) => (
-                <option key={o.dial} value={o.dial}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
+        <div className="flex w-[5.5rem] shrink-0 items-center justify-center border-r border-black/15 text-sm font-semibold text-neutral-800">
+          {isEditing && !isMobileVerified ? (
+            <CountryDialPicker
+              valueDial={`+${cc}`}
+              ariaLabel={LOGIN_MOBILE_FORM.countryCodeAria}
+              onSelect={(country) => {
+                onCountryCodeChange(
+                  country.dial_code.replace(/\D/g, "") ||
+                    DEFAULT_COUNTRY_CODE_NUMERIC
+                );
+                setMobileLength(country.mobile_number_length);
+                onMobileChange("");
+              }}
+            />
           ) : (
             `+${cc}`
           )}
@@ -139,80 +144,51 @@ export function ProfilePhoneRow({
           type="tel"
           value={mobile}
           onChange={(e) =>
-            onMobileChange(e.target.value.replace(/\D/g, "").slice(0, 10))
+            onMobileChange(e.target.value.replace(/\D/g, "").slice(0, maxDigits))
           }
-          disabled={!isEditing || Boolean(isMobileVerified)}
+          disabled={!canEdit}
           placeholder="Mobile"
+          maxLength={maxDigits}
           className={cn(
             "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-4 text-sm font-medium shadow-none",
             "focus-visible:ring-0 focus-visible:ring-offset-0",
-            !isEditing && "cursor-not-allowed"
+            !canEdit && "cursor-not-allowed"
           )}
         />
-        {!isMobileVerified ? (
-          <>
-            <div className="w-px shrink-0 self-stretch bg-black/15" aria-hidden />
-            <button
-              type="button"
-              disabled={sendBusy}
-              className={cn(
-                "flex shrink-0 items-center gap-1.5 px-3.5 text-sm font-semibold text-[var(--color-brand-primary)]",
-                "hover:bg-black/[0.04] disabled:opacity-60"
-              )}
-              onClick={handleSendOtp}
-            >
-              {sendBusy ? (
-                <Loader variant="inline" size="sm" />
-              ) : null}
-              {PD.verify}
-            </button>
-          </>
+        {canEdit ? (
+          <ProfileContactActionButton
+            label={PD.verify}
+            onClick={handleSendOtp}
+            disabled={sendBusy}
+            busy={sendBusy}
+            busySlot={<Loader variant="inline" size="sm" />}
+          />
+        ) : null}
+        {showChange ? (
+          <ProfileContactActionButton
+            label={PD.change}
+            onClick={() => router.push(buildChangeContactPath("mobile"))}
+          />
         ) : null}
       </div>
-
-      {!isMobileVerified && otpPhase ? (
-        <div className="flex flex-col gap-2 rounded-xl border border-black/15 bg-neutral-50 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-700">{PD.otpHint}</p>
-          <Input
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            maxLength={OTP_LENGTH}
-            value={otp}
-            onChange={(e) =>
-              setOtp(e.target.value.replace(/\D/g, "").slice(0, OTP_LENGTH))
-            }
-            placeholder={PD.otpLabel}
-            disabled={verifyBusy}
-            className={cn(
-              "h-11 rounded-xl border border-black/15 bg-white px-3 text-center text-base font-semibold tracking-widest",
-              "focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0"
-            )}
-          />
-          <Button
-            type="button"
-            disabled={verifyBusy}
-            onClick={handleConfirmOtp}
-            className="h-11 rounded-full bg-[var(--color-brand-primary)] font-semibold text-white hover:bg-[var(--color-brand-primary)]/90"
-          >
-            {verifyBusy ? (
-              <Loader variant="inline" size="sm" />
-            ) : (
-              PD.confirmOtp
-            )}
-          </Button>
-          <p className="text-xs text-neutral-500">{PD.resentPrompt}</p>
-        </div>
+      {canEdit && otpPhase ? (
+        <ProfilePhoneOtpPanel
+          otp={otp}
+          onOtpChange={setOtp}
+          verifyBusy={verifyBusy}
+          onConfirm={handleConfirmOtp}
+        />
       ) : null}
-
       {hasError && errorMessage ? (
         <p className="text-xs font-semibold text-[var(--color-brand-error)]">
           {errorMessage}
         </p>
       ) : null}
       {feedback ? (
-        <p className="text-xs font-semibold text-[var(--color-brand-error)]">{feedback}</p>
+        <p className="text-xs font-semibold text-[var(--color-brand-error)]">
+          {feedback}
+        </p>
       ) : null}
     </div>
   );
 }
-

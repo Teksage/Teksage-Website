@@ -9,12 +9,15 @@ import {
   WHATSAPP_UPDATES_SCREEN,
   WHATSAPP_UPDATES_UI,
 } from "@/lib/constants/whatsapp-updates";
+import { DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants/default-region";
 
 export function WhatsAppUpdatesPhoneGate() {
   const WU = useI18nConstants(WHATSAPP_UPDATES_SCREEN);
   const user = useAuthStore((s) => s.user);
   const { refetchProfile } = useProfile();
-  const [countryCode, setCountryCode] = useState(user?.countryCode ?? "91");
+  const [countryCode, setCountryCode] = useState(
+    user?.countryCode ?? DEFAULT_COUNTRY_CODE_NUMERIC
+  );
   const [mobile, setMobile] = useState(user?.mobile?.replace(/\D/g, "") ?? "");
 
   if (user?.isMobileVerified) return null;
