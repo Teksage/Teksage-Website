@@ -17,6 +17,7 @@ export const PROFILE_DETAILS = {
   rasi: "Rasi",
   nakshatram: "Nakshatram",
   verify: "Verify",
+  change: "Change",
   save: "Save",
   edit: "Edit",
   discard: "Discard",

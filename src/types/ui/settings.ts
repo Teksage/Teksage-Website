@@ -111,6 +111,21 @@ export interface ProfilePhoneRowProps {
   errorMessage?: string;
 }
 
+export interface ProfilePhoneOtpPanelProps {
+  otp: string;
+  onOtpChange: (value: string) => void;
+  verifyBusy: boolean;
+  onConfirm: () => void;
+}
+
+export interface ProfileContactActionButtonProps {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  busy?: boolean;
+  busySlot?: React.ReactNode;
+}
+
 export interface ProfileEmailRowProps {
   email: string;
   onEmailChange: (value: string) => void;
@@ -123,6 +138,27 @@ export interface ProfileEmailRowProps {
 }
 
 export type ChangeContactMode = "email" | "mobile";
+
+export interface ChangeContactMobileFieldsProps {
+  dialValue: string;
+  mobile: string;
+  maxDigits: number;
+  onCountrySelect: (countryCodeNumeric: string, mobileLength: number) => void;
+  onMobileChange: (value: string) => void;
+}
+
+export interface ChangeContactOtpSectionProps {
+  mode: ChangeContactMode;
+  otp: string;
+  verifying: boolean;
+  onOtpChange: (value: string) => void;
+  onVerify: () => void;
+}
+
+export interface ChangeContactModeTabsProps {
+  mode: ChangeContactMode;
+  onModeChange: (mode: ChangeContactMode) => void;
+}
 
 export type SettingsRowVariant = "default" | "logout";
 
