@@ -37,6 +37,7 @@ export * from "./horoscope-chart-frame";
 export * from "./prediction-circle-nav";
 export * from "./login-email-form";
 export * from "./login-mobile-form";
+export * from "./country-dial-picker";
 export * from "./login-screen";
 export * from "./otp-verify-screen";
 export * from "./prediction-premium-gate";

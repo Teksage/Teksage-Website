@@ -1,8 +1,9 @@
 import { WHATSAPP_CONSENT_RESEND_COOLDOWN_MS } from "@/lib/constants/whatsapp-updates";
+import { DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants/default-region";
 import { digitsOnly } from "@/lib/phone-utils";
 
 export function maskPhoneForDisplay(countryCode: string, mobile: string): string {
-  const cc = digitsOnly(countryCode) || "91";
+  const cc = digitsOnly(countryCode) || DEFAULT_COUNTRY_CODE_NUMERIC;
   const national = digitsOnly(mobile);
   if (!national) return `+${cc}`;
   if (national.length <= 4) return `+${cc} ****`;
