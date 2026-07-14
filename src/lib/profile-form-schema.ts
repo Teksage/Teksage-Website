@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
-import { LOGIN_EMAIL_REGEX, LOGIN_MOBILE_DIGITS_REGEX } from "@/lib/constants/validation-patterns";
+import { LOGIN_EMAIL_REGEX } from "@/lib/constants/validation-patterns";
+import {
+  expectedLengthForCountryCode,
+  isValidNationalMobile,
+} from "@/lib/mobile-validation";
 
 export function createProfileDetailsFormSchema(
   requireReferralSource: boolean,
@@ -71,9 +75,10 @@ export function createProfileDetailsFormSchema(
         });
       }
       const mobileDigits = data.mobile.replace(/\D/g, "");
+      const expectedLen = expectedLengthForCountryCode(data.countryCode);
       if (
         mobileDigits.length > 0 &&
-        !LOGIN_MOBILE_DIGITS_REGEX.test(mobileDigits)
+        !isValidNationalMobile(mobileDigits, expectedLen)
       ) {
         ctx.addIssue({
           code: "custom",

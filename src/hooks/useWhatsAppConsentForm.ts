@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
-import { LOGIN_MOBILE_DIGITS_REGEX } from "@/lib/constants";
 import { WHATSAPP_UPDATES_SCREEN } from "@/lib/constants/whatsapp-updates";
 import { maskPhoneForDisplay } from "@/lib/whatsapp-consent-resend";
 import { normalizePhoneParts } from "@/lib/phone-utils";
+import {
+  expectedLengthForCountryCode,
+  isValidNationalMobile,
+} from "@/lib/mobile-validation";
 import type {
   WhatsAppConsentPhoneMode,
   WhatsAppConsentRequestPayload,
@@ -34,7 +37,8 @@ export function useWhatsAppConsentForm({
     if (mode === "profile") {
       return { useProfilePhone: true };
     }
-    if (!LOGIN_MOBILE_DIGITS_REGEX.test(mobile)) {
+    const expected = expectedLengthForCountryCode(countryCode);
+    if (!isValidNationalMobile(mobile, expected)) {
       setValidationError(WU.phoneChoiceInvalidMobile);
       return null;
     }

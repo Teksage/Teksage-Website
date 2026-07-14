@@ -31,6 +31,20 @@ function emptyOtpCells(): string[] {
   return Array.from({ length: OTP_LENGTH }, () => "");
 }
 
+/** Mask national mobile for OTP screen — works for variable lengths. */
+function maskNationalMobile(contact: string): string {
+  const digits = contact.replace(/\D/g, "");
+  if (digits.length <= 4) return "*".repeat(digits.length);
+  const visibleStart = Math.min(2, Math.floor(digits.length / 4));
+  const visibleEnd = Math.min(2, Math.floor(digits.length / 4));
+  const mid = digits.length - visibleStart - visibleEnd;
+  return (
+    digits.slice(0, visibleStart) +
+    "x".repeat(Math.max(mid, 1)) +
+    digits.slice(digits.length - visibleEnd)
+  );
+}
+
 export function OtpVerifyView({
   contact,
   contactType,
@@ -108,7 +122,7 @@ export function OtpVerifyView({
   }
   const maskedContact =
     contactType === OTP_CONTACT_TYPE_MOBILE
-      ? contact.replace(/(\d{2})\d{6}(\d{2})/, "$1xxxxxx$2")
+      ? maskNationalMobile(contact)
       : contact.replace(/^(.{2}).*(@.*)$/, "$1****$2");
 
   return (
