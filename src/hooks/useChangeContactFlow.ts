@@ -40,7 +40,7 @@ export function useChangeContactFlow() {
   const [otp, setOtp] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newMobile, setNewMobile] = useState("");
-  const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE_NUMERIC);
+  const [countryCode, setCountryCode] = useState<string>(DEFAULT_COUNTRY_CODE_NUMERIC);
   const [mobileLength, setMobileLength] = useState(10);
   const [sending, setSending] = useState(false);
   const [verifying, setVerifying] = useState(false);
