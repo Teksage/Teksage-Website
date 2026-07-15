@@ -71,20 +71,6 @@ export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResults
                   <p className={L.resultsSubtitle}>{M.emptyDescription}</p>
                 ) : null}
               </div>
-              <div className="flex shrink-0 items-center gap-2">
-                {onAskAstrologer ? (
-                  <button
-                    type="button"
-                    onClick={onAskAstrologer}
-                    className="rounded-full border border-[var(--color-brand-primary)] px-4 py-1.5 text-xs font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-80 lg:text-sm"
-                  >
-                    {M.askAstrologerCta}
-                  </button>
-                ) : null}
-                <Link href={ROUTES.eventPlanner} className={L.backCta}>
-                  {M.backToFormCta}
-                </Link>
-              </div>
             </div>
           </div>
 
@@ -97,6 +83,24 @@ export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResults
             {rows.map((day) => (
               <MuhurthaDayRow key={day.iso_date} day={day} />
             ))}
+          </div>
+
+          <div className={L.resultsActionsRow}>
+            {onAskAstrologer ? (
+              <button
+                type="button"
+                onClick={onAskAstrologer}
+                className={cn(L.resultsActionBtnBase, L.resultsActionSecondary)}
+              >
+                {M.askAstrologerCta}
+              </button>
+            ) : null}
+            <Link
+              href={ROUTES.eventPlanner}
+              className={cn(L.resultsActionBtnBase, L.resultsActionPrimary)}
+            >
+              {M.backToFormCta}
+            </Link>
           </div>
         </div>
       </div>

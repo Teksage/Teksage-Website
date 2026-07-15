@@ -50,6 +50,12 @@ export const MUHURTHA_LAYOUT = {
     "inline-flex items-center rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] px-2.5 py-0.5 text-xs font-medium text-[var(--color-brand-black)]/75 ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_15%,transparent)]",
   backCta:
     "ml-auto inline-flex min-h-9 min-w-[8.5rem] shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 sm:ml-0 sm:min-h-12 sm:min-w-[12rem] sm:px-8 sm:text-base",
+  resultsActionsRow: "flex flex-wrap items-center justify-end gap-3 pt-1",
+  resultsActionBtnBase:
+    "inline-flex min-h-11 min-w-[10rem] flex-1 cursor-pointer items-center justify-center rounded-full px-6 text-sm font-semibold shadow-sm transition-opacity hover:opacity-90 sm:flex-none sm:min-w-[12rem] sm:text-base",
+  resultsActionPrimary: "bg-[var(--color-brand-primary)] text-white",
+  resultsActionSecondary:
+    "border border-[var(--color-brand-primary)] bg-white text-[var(--color-brand-primary)]",
   tableCard: `overflow-visible ${panchangCard}`,
   tableHead: `grid gap-1.5 border-b border-neutral-100 bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] px-3 py-2 sm:gap-3 sm:px-4 sm:py-3 ${tableGridCols}`,
   tableHeadCell: `${TYPO.caption} font-semibold uppercase tracking-wide text-[var(--color-brand-black)]/55`,
