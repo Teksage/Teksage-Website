@@ -1,4 +1,5 @@
 import { DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
+import { NATIONAL_LENGTH_BY_DIAL } from "@/lib/constants/phone-national-lengths";
 
 /** Longest-first for combined MSISDN parsing — mirrors backend `phone_utils`. */
 const KNOWN_DIAL_CODES = [
@@ -26,6 +27,26 @@ export function digitsOnly(value: string | null | undefined): string {
   return (value ?? "").replace(/\D/g, "");
 }
 
+function stripRedundantDialPrefix(cc: string, mobile: string): string {
+  if (!cc || !mobile.startsWith(cc) || mobile.length <= cc.length) {
+    return mobile;
+  }
+
+  const remainder = mobile.slice(cc.length);
+  const expected = NATIONAL_LENGTH_BY_DIAL[cc];
+
+  if (expected !== undefined) {
+    if (mobile.length === expected) return mobile;
+    if (remainder.length === expected) return remainder;
+    return mobile;
+  }
+
+  if (mobile.length > 12 && remainder.length >= 7 && remainder.length <= 12) {
+    return remainder;
+  }
+  return mobile;
+}
+
 function parseCombinedDigits(combined: string): { countryCode: string; mobile: string } | null {
   if (!combined) return null;
 
@@ -34,8 +55,11 @@ function parseCombinedDigits(combined: string): { countryCode: string; mobile: s
     if (!combined.startsWith(dial)) continue;
     const national = combined.slice(dial.length);
     if (!national) continue;
-    if (dial === "1" && national.length === 10) return { countryCode: dial, mobile: national };
-    if (dial === "91" && national.length === 10) return { countryCode: dial, mobile: national };
+    const expected = NATIONAL_LENGTH_BY_DIAL[dial];
+    if (expected !== undefined) {
+      if (national.length === expected) return { countryCode: dial, mobile: national };
+      continue;
+    }
     if (national.length >= 7 && national.length <= 12) {
       return { countryCode: dial, mobile: national };
     }
@@ -53,16 +77,14 @@ export function normalizePhoneParts(
   countryCode: string | null | undefined,
   mobile: string | null | undefined
 ): { countryCode: string; mobile: string } {
-  let cc = digitsOnly(countryCode);
+  const cc = digitsOnly(countryCode);
   let national = digitsOnly(mobile);
 
   if (!national && !cc) {
     return { countryCode: DEFAULT_COUNTRY_CODE_NUMERIC, mobile: "" };
   }
 
-  if (cc && national.startsWith(cc) && national.length > cc.length) {
-    national = national.slice(cc.length);
-  }
+  national = stripRedundantDialPrefix(cc, national);
 
   if (cc.length > 3 || (cc.startsWith("1") && cc.length > 1)) {
     const parsed = parseCombinedDigits(digitsOnly(countryCode) + digitsOnly(mobile));
