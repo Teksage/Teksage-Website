@@ -1,5 +1,7 @@
 /** Ask Astrologer feature types — mirrors backend AskAstrologerRequest. */
 
+import type { MuhurthaResult } from "@/types/muhurtha";
+
 export type AskAstrologerStatus =
   | "pending_payment"
   | "paid"
@@ -13,6 +15,7 @@ export interface AskAstrologerRequest {
   user_question: string;
   ai_response: string;
   preferred_languages: string[];
+  muhurtha_result?: MuhurthaResult | null;
   customer_name: string | null;
   date_of_birth: string | null;
   time_of_birth: string | null;
@@ -49,6 +52,7 @@ export interface AskAstrologerCreatePayload {
   ai_response: string;
   preferred_languages: string[];
   currency: string;
+  muhurtha_result?: MuhurthaResult;
 }
 
 export interface AskAstrologerOrderResponse {
@@ -71,4 +75,6 @@ export interface AskAstrologerFlowState {
   user_question: string;
   ai_response: string;
   preferred_languages?: string[];
+  /** Present when initiated from the Event Planner results page. */
+  muhurtha_result?: MuhurthaResult;
 }

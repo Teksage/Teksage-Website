@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import { AskAnswerVoiceInput } from "@/components/astrologer/AskAnswerVoiceInput";
 import { AskRequestCustomerSection } from "@/components/astrologer/AskRequestCustomerSection";
+import { MuhurthaEventPlanAccordion } from "@/components/ask-astrologer/MuhurthaEventPlanAccordion";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
+import { SettingsModalDialog } from "@/components/settings/SettingsModalDialog";
 import { submitAskAnswer } from "@/lib/services/astrologer-ask-requests";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
@@ -35,6 +37,7 @@ export function AskAstrologerRequestCard({
   const [voiceFile, setVoiceFile] = useState<File | null>(null);
   const [voiceDurationSec, setVoiceDurationSec] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   function getStatusLabel(status: string): string {
@@ -43,11 +46,22 @@ export function AskAstrologerRequestCard({
     return status;
   }
 
-  async function handleSubmit() {
-    if (!answerText.trim() && !voiceFile) {
+  function handleSubmitClick() {
+    if (!voiceFile) {
       setError(AA.astrologerAnswerRequired);
       return;
     }
+    setError(null);
+    setConfirmOpen(true);
+  }
+
+  async function handleConfirmSubmit() {
+    if (!voiceFile) {
+      setConfirmOpen(false);
+      setError(AA.astrologerAnswerRequired);
+      return;
+    }
+    setConfirmOpen(false);
     setSubmitting(true);
     setError(null);
     try {
@@ -104,9 +118,15 @@ export function AskAstrologerRequestCard({
 
         <section>
           <h3 className={ASK_ASTROLOGER_UI.portalSectionTitle}>
-            {AA.astrologerAiReference}
+            {req.muhurtha_result ? AA.astrologerEventPlanReference : AA.astrologerAiReference}
           </h3>
-          <p className={cn(ASK_ASTROLOGER_UI.portalBody, "mt-2")}>{req.ai_response}</p>
+          {req.muhurtha_result ? (
+            <div className="mt-2">
+              <MuhurthaEventPlanAccordion result={req.muhurtha_result} />
+            </div>
+          ) : (
+            <p className={cn(ASK_ASTROLOGER_UI.portalBody, "mt-2")}>{req.ai_response}</p>
+          )}
         </section>
 
         {req.status === "answered" && (req.answer_text || req.answer_voice_url) ? (
@@ -152,6 +172,7 @@ export function AskAstrologerRequestCard({
                       onVoiceFileChange={(file, durationSec) => {
                         setVoiceFile(file);
                         setVoiceDurationSec(durationSec ?? null);
+                        if (file) setError(null);
                       }}
                       disabled={submitting}
                     />
@@ -174,7 +195,7 @@ export function AskAstrologerRequestCard({
                 ) : null}
                 <button
                   type="button"
-                  onClick={() => void handleSubmit()}
+                  onClick={handleSubmitClick}
                   disabled={submitting}
                   className={ASK_ASTROLOGER_LAYOUT.primaryBtn}
                 >
@@ -187,6 +208,14 @@ export function AskAstrologerRequestCard({
           </>
         ) : null}
       </div>
+
+      <SettingsModalDialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        message={AA.astrologerSubmitConfirmMessage}
+        confirmLabel={AA.astrologerSubmitConfirmLabel}
+        onConfirm={() => void handleConfirmSubmit()}
+      />
     </li>
   );
 }

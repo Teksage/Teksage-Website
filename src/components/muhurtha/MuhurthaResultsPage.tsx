@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
+import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -13,14 +14,30 @@ import { MuhurthaPremiumGate } from "@/components/muhurtha/MuhurthaPremiumGate";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useMuhurthaAccess } from "@/hooks/useMuhurthaAccess";
 import { useMuhurthaResults } from "@/hooks/useMuhurthaResults";
+import { writeAskAstrologerFlow } from "@/lib/ask-astrologer-session";
 import { MAIN_TAB_VIEWPORT_BACKDROP, MUHURTHA_LAYOUT, MUHURTHA_SCREEN, PAGE_SHELL, ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export function MuhurthaResultsPage() {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
+  const router = useRouter();
   const { isAuthenticated, isPremium, hasProfile } = useMuhurthaAccess();
   const { data, isLoading, error, retry } = useMuhurthaResults();
+
+  function handleAskAstrologer() {
+    if (!data?.result) return;
+    const r = data.result;
+    const dateRange = r.start_date && r.end_date
+      ? `${r.start_date} to ${r.end_date}`
+      : r.start_date ?? "";
+    writeAskAstrologerFlow({
+      user_question: `Event Planner: ${r.event} — ${dateRange} — ${r.location}`,
+      ai_response: "",
+      muhurtha_result: r,
+    });
+    router.push(ROUTES.askAstrologerLanguages);
+  }
 
   const showPremiumGate = isAuthenticated && !isPremium;
   const showProfileGate = isAuthenticated && isPremium && !hasProfile;
@@ -81,7 +98,7 @@ export function MuhurthaResultsPage() {
             }
           />
         ) : data?.result ? (
-          <MuhurthaResultsView result={data.result} />
+          <MuhurthaResultsView result={data.result} onAskAstrologer={handleAskAstrologer} />
         ) : null}
       </div>
 

@@ -70,6 +70,7 @@ export default function AskAstrologerCheckoutPage() {
         ai_response: flow.ai_response,
         preferred_languages: flow.preferred_languages,
         currency,
+        ...(flow.muhurtha_result ? { muhurtha_result: flow.muhurtha_result } : {}),
       });
 
       await openRazorpayCheckout({

@@ -8,6 +8,10 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import type { MuhurthaResultsViewProps } from "@/types";
 
+interface MuhurthaResultsViewExtendedProps extends MuhurthaResultsViewProps {
+  onAskAstrologer?: () => void;
+}
+
 function formatRange(start: string, end: string) {
   const s = new Date(`${start}T12:00:00`);
   const e = new Date(`${end}T12:00:00`);
@@ -16,7 +20,7 @@ function formatRange(start: string, end: string) {
   return `${fmt(s)} – ${fmt(e)}`;
 }
 
-export function MuhurthaResultsView({ result }: MuhurthaResultsViewProps) {
+export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResultsViewExtendedProps) {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
   const { t } = useT();
@@ -67,9 +71,6 @@ export function MuhurthaResultsView({ result }: MuhurthaResultsViewProps) {
                   <p className={L.resultsSubtitle}>{M.emptyDescription}</p>
                 ) : null}
               </div>
-              <Link href={ROUTES.eventPlanner} className={L.backCta}>
-                {M.backToFormCta}
-              </Link>
             </div>
           </div>
 
@@ -82,6 +83,24 @@ export function MuhurthaResultsView({ result }: MuhurthaResultsViewProps) {
             {rows.map((day) => (
               <MuhurthaDayRow key={day.iso_date} day={day} />
             ))}
+          </div>
+
+          <div className={L.resultsActionsRow}>
+            {onAskAstrologer ? (
+              <button
+                type="button"
+                onClick={onAskAstrologer}
+                className={cn(L.resultsActionBtnBase, L.resultsActionSecondary)}
+              >
+                {M.askAstrologerCta}
+              </button>
+            ) : null}
+            <Link
+              href={ROUTES.eventPlanner}
+              className={cn(L.resultsActionBtnBase, L.resultsActionPrimary)}
+            >
+              {M.backToFormCta}
+            </Link>
           </div>
         </div>
       </div>
