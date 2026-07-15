@@ -47,4 +47,8 @@ export const MUHURTHA_SCREEN = {
   },
   expandAria: "Show day details",
   collapseAria: "Hide day details",
+  askAstrologerCta: "Ask Astrologer",
+  eventPlanAccordionLabel: "Your event plan",
+  eventPlanAccordionExpand: "View event plan",
+  eventPlanAccordionCollapse: "Hide event plan",
 } as const;

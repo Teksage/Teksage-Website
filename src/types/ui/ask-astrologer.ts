@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { AskAstrologerPricing } from "@/types/ask-astrologer";
 import type { WhatsAppUpdatesPhoneChoiceProps } from "@/types/whatsapp-updates";
+import type { MuhurthaResult } from "@/types/muhurtha";
 
 export interface AskAstrologerShellProps {
   title: string;
@@ -25,6 +26,8 @@ export interface AskAstrologerLanguagesContentProps {
   primary: string;
   firstError: string | null;
   onPrimaryChange: (value: string) => void;
+  /** Present when the flow was started from the Event Planner results page. */
+  muhurthaResult?: MuhurthaResult;
 }
 
 export interface AskAstrologerCheckoutContentProps {

@@ -598,5 +598,12 @@
   "Find Event Planner for your event": "Find Event Planner for your event",
   "Event Planner (Muhurtha)": "Event Planner (Muhurtha)",
   "Find Event Planner (Muhurtha)": "Find Event Planner (Muhurtha)",
-  "Event Planner\n(Muhurtha)": "Event Planner\n(Muhurtha)"
+  "Event Planner\n(Muhurtha)": "Event Planner\n(Muhurtha)",
+  "Your event plan": "നിങ്ങളുടെ ഇവന്റ് പ്ലാൻ",
+  "View event plan": "ഇവന്റ് പ്ലാൻ കാണുക",
+  "Hide event plan": "ഇവന്റ് പ്ലാൻ മറയ്ക്കുക",
+  "Event Plan (for reference)": "റഫറൻസിനായി ഇവന്റ് പ്ലാൻ",
+  "Please record or attach a voice answer before submitting.": "സമർപ്പിക്കുന്നതിന് മുമ്പ് ദയവായി വോയിസ് ഉത്തരം റെക്കോർഡ് ചെയ്യുക അല്ലെങ്കിൽ അറ്റാച്ച് ചെയ്യുക.",
+  "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "ഈ ഉത്തരം സമർപ്പിക്കാൻ നിങ്ങൾക്ക് ഉറപ്പാണോ? സമർപ്പിച്ചതിന് ശേഷം നിങ്ങൾക്ക് ഇത് എഡിറ്റ് ചെയ്യാൻ കഴിയില്ല.",
+  "Record your answer (required)": "നിങ്ങളുടെ ഉത്തരം റെക്കോർഡ് ചെയ്യുക (ആവശ്യമാണ്)"
 }

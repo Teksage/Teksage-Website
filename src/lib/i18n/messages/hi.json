@@ -606,5 +606,12 @@
   "Find Event Planner for your event": "Find Event Planner for your event",
   "Event Planner (Muhurtha)": "Event Planner (Muhurtha)",
   "Find Event Planner (Muhurtha)": "Find Event Planner (Muhurtha)",
-  "Event Planner\n(Muhurtha)": "Event Planner\n(Muhurtha)"
+  "Event Planner\n(Muhurtha)": "Event Planner\n(Muhurtha)",
+  "Your event plan": "आपकी इवेंट योजना",
+  "View event plan": "इवेंट योजना देखें",
+  "Hide event plan": "इवेंट योजना छिपाएँ",
+  "Event Plan (for reference)": "संदर्भ के लिए इवेंट योजना",
+  "Please record or attach a voice answer before submitting.": "सबमिट करने से पहले कृपया वॉइस उत्तर रिकॉर्ड या संलग्न करें।",
+  "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "क्या आप वाकई यह उत्तर सबमिट करना चाहते हैं? सबमिट करने के बाद आप इसे संपादित नहीं कर पाएँगे।",
+  "Record your answer (required)": "अपना उत्तर रिकॉर्ड करें (आवश्यक)"
 }

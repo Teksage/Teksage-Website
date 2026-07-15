@@ -664,5 +664,12 @@
   "Find Event Planner for your event": "Find Event Planner for your event",
   "Event Planner (Muhurtha)": "Event Planner (Muhurtha)",
   "Find Event Planner (Muhurtha)": "Find Event Planner (Muhurtha)",
-  "Event Planner\n(Muhurtha)": "Event Planner\n(Muhurtha)"
+  "Event Planner\n(Muhurtha)": "Event Planner\n(Muhurtha)",
+  "Your event plan": "உங்கள் நிகழ்வுத் திட்டம்",
+  "View event plan": "நிகழ்வுத் திட்டத்தைக் காண்க",
+  "Hide event plan": "நிகழ்வுத் திட்டத்தை மறை",
+  "Event Plan (for reference)": "குறிப்புக்கான நிகழ்வுத் திட்டம்",
+  "Please record or attach a voice answer before submitting.": "சமர்ப்பிக்கும் முன் குரல் பதிலைப் பதிவு செய்யவும் அல்லது இணைக்கவும்.",
+  "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "இந்த பதிலை சமர்ப்பிக்க விரும்புகிறீர்களா? சமர்ப்பித்த பிறகு திருத்த முடியாது.",
+  "Record your answer (required)": "உங்கள் பதிலைப் பதிவு செய்யுங்கள் (கட்டாயம்)"
 }
