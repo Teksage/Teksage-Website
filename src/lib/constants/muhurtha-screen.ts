@@ -16,7 +16,7 @@ export const MUHURTHA_SCREEN = {
   loginCta: "Go to login",
   premiumTitle: "Event Planner is a premium feature",
   premiumDescription:
-    "Subscribe to unlock personalized auspicious dates for your life events — same as the Teksage app.",
+    "Subscribe to unlock personalized auspicious dates for your life events. ",
   upgradeCta: "Upgrade Now",
   loadErrorTitle: "Could not load Event Planner",
   loadErrorFallback: "Failed to find auspicious dates.",
