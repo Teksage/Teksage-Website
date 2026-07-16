@@ -4,6 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { EmptyState } from "@/components/common/EmptyState";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { LoginPromptButton } from "@/components/common/LoginPromptButton";
 import { PredictionProfilePrompt } from "@/components/predictions/PredictionProfilePrompt";
 import { MuhurthaFormView } from "@/components/muhurtha/MuhurthaFormView";
@@ -18,7 +19,8 @@ import { cn } from "@/lib/utils";
 
 export function MuhurthaFormPage() {
   const M = useI18nConstants(MUHURTHA_SCREEN);
-  const { isAuthenticated, isPremium, hasProfile } = useMuhurthaAccess();
+  const { isAuthenticated, isPremium, hasProfile, isHydratingProfile } =
+    useMuhurthaAccess();
   const {
     event,
     setEvent,
@@ -32,7 +34,8 @@ export function MuhurthaFormPage() {
   } = useMuhurthaForm();
 
   const showPremiumGate = isAuthenticated && !isPremium;
-  const showProfileGate = isAuthenticated && isPremium && !hasProfile;
+  const showProfileGate =
+    isAuthenticated && isPremium && !hasProfile && !isHydratingProfile;
   const showForm = isAuthenticated && isPremium && hasProfile;
 
   return (
@@ -93,6 +96,8 @@ export function MuhurthaFormPage() {
           />
         ) : null}
       </div>
+
+      <LoadingOverlay open={Boolean(isAuthenticated && isHydratingProfile)} />
     </div>
   );
 }
