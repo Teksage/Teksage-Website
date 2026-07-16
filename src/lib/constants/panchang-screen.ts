@@ -8,7 +8,7 @@ export const PANCHANG_SCREEN = {
   loginCta: "Go to login",
   premiumTitle: "Panchang is a premium feature",
   premiumDescription:
-    "Subscribe to unlock daily Panchang, auspicious timings, and PDF sharing — same as the Teksage app.",
+    "Subscribe to unlock daily Panchang, auspicious timings, and PDF sharing.",
   subscriptionsCta: "View subscriptions",
   upgradeCta: "Upgrade Now",
   loadErrorTitle: "Could not load Panchang",
