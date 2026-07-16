@@ -22,7 +22,8 @@ export function MuhurthaResultsPage() {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
   const router = useRouter();
-  const { isAuthenticated, isPremium, hasProfile } = useMuhurthaAccess();
+  const { isAuthenticated, isPremium, hasProfile, isHydratingProfile } =
+    useMuhurthaAccess();
   const { data, isLoading, error, retry } = useMuhurthaResults();
 
   function handleAskAstrologer() {
@@ -40,7 +41,8 @@ export function MuhurthaResultsPage() {
   }
 
   const showPremiumGate = isAuthenticated && !isPremium;
-  const showProfileGate = isAuthenticated && isPremium && !hasProfile;
+  const showProfileGate =
+    isAuthenticated && isPremium && !hasProfile && !isHydratingProfile;
   const showResults = isAuthenticated && isPremium && hasProfile;
 
   return (
@@ -102,7 +104,11 @@ export function MuhurthaResultsPage() {
         ) : null}
       </div>
 
-      <LoadingOverlay open={Boolean(showResults && isLoading)} />
+      <LoadingOverlay
+        open={Boolean(
+          (isAuthenticated && isHydratingProfile) || (showResults && isLoading)
+        )}
+      />
     </div>
   );
 }
