@@ -1,7 +1,8 @@
 /** Event Planner localStorage L1 cache — mirrors backend 10-day TTL. */
 
 export const EVENT_PLANNER_CACHE = {
-  storagePrefix: "teksage_event_planner_v1",
+  /** Bump when muhurtha window/segment logic changes (invalidates old L1 rows). */
+  storagePrefix: "teksage_event_planner_v3",
   ttlDays: 10,
 } as const;
 

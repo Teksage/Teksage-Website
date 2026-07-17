@@ -28,6 +28,20 @@ export interface MuhurthaReasonInfoProps {
   triggerClassName?: string;
 }
 
+export interface MuhurthaDaySegment {
+  period: "Morning" | "Evening" | "Full day" | string;
+  nakshatra?: string;
+  thara_bala?: number;
+  chandra_bala?: number;
+  amirthathi_yoga?: string;
+  is_suitable: boolean;
+  reason_code?: MuhurthaReasonCode | null;
+  reason_codes?: MuhurthaReasonCode[];
+  rating?: string;
+  window?: string;
+  windows?: string[];
+}
+
 export interface MuhurthaDayResult {
   date: string;
   iso_date: string;
@@ -45,6 +59,8 @@ export interface MuhurthaDayResult {
   chandra_bala?: number;
   amirthathi_yoga?: string;
   dayinfo?: string;
+  /** Present when API evaluates morning/evening separately after mid-day nakshatra change. */
+  segments?: MuhurthaDaySegment[];
 }
 
 export interface MuhurthaResult {

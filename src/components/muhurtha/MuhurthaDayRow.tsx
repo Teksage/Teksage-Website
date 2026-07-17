@@ -2,32 +2,80 @@
 
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { MUHURTHA_LAYOUT, MUHURTHA_SCREEN } from "@/lib/constants";
-import {
-  formatMuhurthaMoreReasons,
-  formatMuhurthaWindows,
-  muhurthaStatusBadgeClass,
-} from "@/lib/muhurtha-format";
-import { cn } from "@/lib/utils";
+import { formatMuhurthaMoreReasons, formatMuhurthaWindows } from "@/lib/muhurtha-format";
 import type { MuhurthaDayResult } from "@/types/muhurtha";
 import { MuhurthaReasonInfo } from "@/components/muhurtha/MuhurthaReasonInfo";
+import {
+  MuhurthaSegmentDetails,
+  MuhurthaStatusBadge,
+  muhurthaSegmentReasons,
+} from "@/components/muhurtha/MuhurthaDayStatus";
 
-function dayReasons(day: MuhurthaDayResult, t: (key: string) => string): string[] {
-  const codes =
-    day.reason_codes && day.reason_codes.length > 0
-      ? day.reason_codes
-      : day.reason_code
-        ? [day.reason_code]
-        : [];
-  return codes.map((code) => t(code));
+function periodLabel(
+  period: string | undefined,
+  labels: { periodMorning: string; periodEvening: string; periodFullDay: string }
+): string {
+  if (period === "Morning") return labels.periodMorning;
+  if (period === "Evening") return labels.periodEvening;
+  if (period === "Full day") return labels.periodFullDay;
+  return period ?? "";
 }
 
 export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
   const { t } = useT();
+  const splitSegments =
+    day.segments && day.segments.length > 1 ? day.segments : null;
+
+  if (splitSegments) {
+    return (
+      <div className={L.dayRowStatic}>
+        <div className={L.tableColDate}>
+          <p className={L.dayRowDate}>{day.date}</p>
+          {day.weekday ? <p className={L.dayRowWeekday}>{day.weekday}</p> : null}
+        </div>
+
+        <div className={L.tableColStatus}>
+          <div className={L.statusStack}>
+            {splitSegments.map((segment) => (
+              <div key={`${day.iso_date}-${segment.period}`} className={L.statusStack}>
+                <span className={L.statusPeriodLabel}>
+                  {periodLabel(segment.period, M)}
+                </span>
+                <MuhurthaStatusBadge
+                  suitable={segment.is_suitable}
+                  rating={segment.rating}
+                  labelSuitable={M.suitableLabel}
+                  labelNotSuitable={M.notSuitableLabel}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={L.tableColDetails}>
+          <div className={L.segmentDetailsStack}>
+            {splitSegments.map((segment) => (
+              <div
+                key={`${day.iso_date}-${segment.period}-details`}
+                className={L.segmentDetailBlock}
+              >
+                <span className={L.statusPeriodLabel}>
+                  {periodLabel(segment.period, M)}
+                </span>
+                <MuhurthaSegmentDetails segment={segment} ariaLabel={M.reasonInfoAria} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const hasWindow = Boolean(day.is_suitable && (day.windows?.length || day.window));
   const windowSlots = hasWindow ? formatMuhurthaWindows(day) : [];
-  const reasons = dayReasons(day, t);
+  const reasons = muhurthaSegmentReasons(day, t);
   const primaryReason = reasons[0];
   const extraReasonCount = Math.max(0, reasons.length - 1);
 
@@ -39,19 +87,12 @@ export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
       </div>
 
       <div className={L.tableColStatus}>
-        {day.is_suitable ? (
-          <span className={cn(L.statusBadgeBase, muhurthaStatusBadgeClass(day.rating, L))}>
-            <span>{M.suitableLabel}</span>
-            {day.rating ? (
-              <>
-                <span className={L.statusSeparator}>–</span>
-                <span>{t(day.rating)}</span>
-              </>
-            ) : null}
-          </span>
-        ) : (
-          <span className={cn(L.statusBadgeBase, L.statusUnsuitable)}>{M.notSuitableLabel}</span>
-        )}
+        <MuhurthaStatusBadge
+          suitable={day.is_suitable}
+          rating={day.rating}
+          labelSuitable={M.suitableLabel}
+          labelNotSuitable={M.notSuitableLabel}
+        />
       </div>
 
       <div className={L.tableColDetails}>
