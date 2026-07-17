@@ -66,6 +66,11 @@ export const MUHURTHA_LAYOUT = {
   tableColDetails: "flex min-w-0 items-center justify-end",
   dayRowDate: "text-xs font-semibold text-[var(--color-brand-black)] sm:text-sm",
   dayRowWeekday: "text-[10px] text-[var(--color-brand-black)]/50 sm:text-xs",
+  statusStack: "flex flex-col items-start gap-1",
+  statusPeriodLabel:
+    "text-[9px] font-semibold uppercase tracking-wide text-[var(--color-brand-black)]/45 sm:text-[10px]",
+  segmentDetailsStack: "flex min-w-0 flex-col items-end gap-1.5 text-right",
+  segmentDetailBlock: "flex min-w-0 flex-col items-end gap-0.5",
   statusBadgeBase:
     "inline-flex w-fit max-w-full flex-wrap items-center gap-x-0.5 rounded-full px-2 py-0.5 text-[10px] font-semibold leading-tight sm:px-2.5 sm:text-xs",
   statusSuitable:
