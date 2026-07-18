@@ -99,3 +99,5 @@ export const PAGE_SIZE = 10;
 // OTP
 export const OTP_LENGTH = 6;
 export const OTP_EXPIRY_SECONDS = 120;
+/** Client-side resend button cooldown (backend also enforces 60s). */
+export const OTP_RESEND_COOLDOWN_SECONDS = 60;
