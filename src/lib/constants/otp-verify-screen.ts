@@ -9,4 +9,6 @@ export const OTP_VERIFY_SCREEN = {
   verifyCta: "Verify & Login",
   resendQuestion: "Didn't receive OTP?",
   resendCta: "Resend",
+  resendWaitPrefix: "Resend in ",
+  resendWaitSuffix: "s",
 } as const;
