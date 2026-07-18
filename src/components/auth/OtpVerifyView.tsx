@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/auth/OtpInput";
@@ -16,6 +16,7 @@ import {
   OTP_LENGTH,
   LOGIN_SCREEN,
   OTP_VERIFY_SCREEN,
+  OTP_RESEND_COOLDOWN_SECONDS,
 } from "@/lib/constants";
 import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
 import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
@@ -60,9 +61,22 @@ export function OtpVerifyView({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const [resendSecondsLeft, setResendSecondsLeft] = useState(
+    OTP_RESEND_COOLDOWN_SECONDS
+  );
 
   const otpDigits = otpCells.join("");
   const isComplete = otpDigits.length === OTP_LENGTH;
+  const canResend = resendSecondsLeft <= 0 && !isLoading && !isResending;
+
+  useEffect(() => {
+    if (resendSecondsLeft <= 0) return;
+    const id = window.setTimeout(
+      () => setResendSecondsLeft((s) => s - 1),
+      1000
+    );
+    return () => window.clearTimeout(id);
+  }, [resendSecondsLeft]);
 
   async function handleVerify() {
     if (!isComplete || isLoading) return;
@@ -80,7 +94,6 @@ export function OtpVerifyView({
       );
       setAuth(response.user, response.token);
       showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpVerified);
-      // Fire-and-forget — push registration is non-fatal
       void import("@/lib/services/push-notifications").then(({ initWebPush }) =>
         initWebPush()
       );
@@ -99,7 +112,7 @@ export function OtpVerifyView({
   }
 
   async function handleResendOtp() {
-    if (isLoading || isResending) return;
+    if (!canResend) return;
     setIsResending(true);
     setError(null);
     try {
@@ -108,10 +121,14 @@ export function OtpVerifyView({
       } else {
         await resendOtp({
           mobile_number: contact,
-          country_code: (mobileCountryCode ?? DEFAULT_COUNTRY_CALLING_CODE).replace("+", ""),
+          country_code: (mobileCountryCode ?? DEFAULT_COUNTRY_CALLING_CODE).replace(
+            "+",
+            ""
+          ),
         });
       }
       setOtpCells(emptyOtpCells());
+      setResendSecondsLeft(OTP_RESEND_COOLDOWN_SECONDS);
       showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
     } catch {
       setError(OV.resendError);
@@ -176,12 +193,23 @@ export function OtpVerifyView({
 
         <button
           type="button"
-          className="mt-6 text-center text-sm text-neutral-500 transition-colors hover:text-[var(--color-brand-primary)]"
+          className={cn(
+            "mt-6 text-center text-sm text-neutral-500 transition-colors",
+            canResend
+              ? "hover:text-[var(--color-brand-primary)]"
+              : "cursor-not-allowed opacity-60"
+          )}
           onClick={handleResendOtp}
-          disabled={isLoading || isResending}
+          disabled={!canResend}
         >
           {isResending ? (
             <Loader variant="inline" size="sm" />
+          ) : resendSecondsLeft > 0 ? (
+            <>
+              {OV.resendWaitPrefix}
+              {resendSecondsLeft}
+              {OV.resendWaitSuffix}
+            </>
           ) : (
             <>
               {OV.resendQuestion}{" "}
