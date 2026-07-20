@@ -21,7 +21,7 @@ export const MUHURTHA_LAYOUT = {
   heroCopy: "mx-auto max-w-xl text-center",
   heroTitle:
     "text-center text-xl font-bold leading-tight tracking-tight text-[var(--color-brand-black)] lg:text-2xl",
-  heroSubtitle: `${TYPO.captionMedium} mx-auto mt-2 max-w-md text-center text-[var(--color-brand-black)]/70`,
+  heroSubtitle: `${TYPO.bodySm} mx-auto mt-2 max-w-md text-center font-medium text-[var(--color-brand-black)]/70 sm:text-base`,
   heroNotification:
     "absolute right-4 top-[max(0.75rem,env(safe-area-inset-top,0px))] rounded-full p-2 text-[var(--color-brand-black)] transition-colors hover:bg-black/5 lg:right-8 lg:top-5",
   heroBackBtn:
