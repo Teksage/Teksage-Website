@@ -1,4 +1,5 @@
 import {
+  CONSULTATION_FOREIGN_COUNTRY_CODES,
   CONSULTATION_FOREIGN_LOCATION_HINTS,
   CONSULTATION_INDIA_TIMEZONES,
 } from "@/lib/constants/consultation-currency";
@@ -8,7 +9,9 @@ export type ConsultationCurrency = "INR" | "USD";
 
 export type ConsultationCurrencyContext = {
   countryCode?: string | null;
+  /** Prefer profile/API timezone over the browser clock. */
   timezone?: string | null;
+  browserTimezone?: string | null;
 };
 
 function normalizeCountryCode(countryCode?: string | null): string {
@@ -25,7 +28,26 @@ function isIndiaLocationText(location: string): boolean {
 
 function isForeignLocationText(location: string): boolean {
   const loc = location.trim().toLowerCase();
-  return CONSULTATION_FOREIGN_LOCATION_HINTS.some((hint) => loc.includes(hint));
+  if (CONSULTATION_FOREIGN_LOCATION_HINTS.some((hint) => loc.includes(hint))) {
+    return true;
+  }
+  // Last comma segment often is the country ("Timmins, ON, Canada" / "... CA")
+  const parts = loc.split(",").map((part) => part.trim()).filter(Boolean);
+  const countryPart = parts.length > 1 ? parts[parts.length - 1] : "";
+  if (!countryPart) return false;
+  if (countryPart === "ca" || countryPart === "us" || countryPart === "usa") {
+    return true;
+  }
+  return CONSULTATION_FOREIGN_LOCATION_HINTS.some((hint) =>
+    countryPart.includes(hint)
+  );
+}
+
+function isIndiaTimezone(timezone?: string | null): boolean {
+  const tz = timezone?.trim();
+  return Boolean(
+    tz && (CONSULTATION_INDIA_TIMEZONES as readonly string[]).includes(tz)
+  );
 }
 
 /**
@@ -44,13 +66,23 @@ export function consultationCurrencyForLocation(
 
   const code = normalizeCountryCode(context?.countryCode);
   if (code === DEFAULT_COUNTRY_CODE_NUMERIC) return "INR";
+  if (
+    code &&
+    (CONSULTATION_FOREIGN_COUNTRY_CODES as readonly string[]).includes(code)
+  ) {
+    return "USD";
+  }
 
-  const tz = context?.timezone?.trim();
-  if (tz && (CONSULTATION_INDIA_TIMEZONES as readonly string[]).includes(tz)) {
-    return "INR";
+  // Profile timezone (from preferred_location) beats the browser clock —
+  // a Canada resident browsing from India should still see USD.
+  if (isIndiaTimezone(context?.timezone)) return "INR";
+  if (context?.timezone?.trim() && !isIndiaTimezone(context.timezone)) {
+    return "USD";
   }
 
   if (code && code !== DEFAULT_COUNTRY_CODE_NUMERIC) return "USD";
+
+  if (isIndiaTimezone(context?.browserTimezone)) return "INR";
 
   return "INR";
 }
