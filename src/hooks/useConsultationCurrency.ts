@@ -10,15 +10,17 @@ import { useAuthStore } from "@/store/auth.store";
 export function useConsultationCurrency(): ConsultationCurrency {
   const preferredLocation = useAuthStore((s) => s.user?.preferredLocation);
   const countryCode = useAuthStore((s) => s.user?.countryCode);
+  const profileTimezone = useAuthStore((s) => s.user?.timezone);
 
   return useMemo(() => {
-    const timezone =
+    const browserTimezone =
       typeof window !== "undefined"
         ? Intl.DateTimeFormat().resolvedOptions().timeZone
         : undefined;
     return consultationCurrencyForLocation(preferredLocation, {
       countryCode,
-      timezone,
+      timezone: profileTimezone,
+      browserTimezone,
     });
-  }, [preferredLocation, countryCode]);
+  }, [preferredLocation, countryCode, profileTimezone]);
 }

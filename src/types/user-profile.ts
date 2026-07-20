@@ -21,6 +21,8 @@ export interface UserProfile {
   referralSource?: string;
   /** Maps API `preferred_location`. */
   preferredLocation?: string;
+  /** Maps API `timezone` (IANA), derived from preferred location. */
+  timezone?: string;
   rashi?: string;
   nakshatra?: string;
   gender?: "male" | "female" | "other";

@@ -11,9 +11,9 @@ function hasBirthChartFields(
 }
 
 /**
- * Hydrates auth-store profile from GET /profile after login.
- * Login OTP only returns a thin user (no rashi/nakshatra/birth fields);
- * without this, Event Planner and similar gates falsely show "Complete profile".
+ * Hydrates auth user from profile API after login.
+ * Needed for role (`user_type`) and INR/USD (preferred_location, country_code, timezone).
+ * Login verify alone does not include preferred_location.
  */
 export function useSyncAuthProfileRole(): void {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
