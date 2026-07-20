@@ -11,7 +11,13 @@ export const CONSULTATION_FOREIGN_LOCATION_HINTS = [
   "uae",
   "dubai",
   "europe",
+  "ontario",
+  "quebec",
+  "british columbia",
 ] as const;
+
+/** Dial codes treated as non-India for consultation pricing. */
+export const CONSULTATION_FOREIGN_COUNTRY_CODES = ["1"] as const;
 
 /** IANA zones treated as India for consultation pricing. */
 export const CONSULTATION_INDIA_TIMEZONES = ["Asia/Kolkata", "Asia/Calcutta"] as const;

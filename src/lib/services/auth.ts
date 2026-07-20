@@ -15,10 +15,15 @@ interface LoginVerifyApiResponse {
   last_name?: string | null;
   email?: string | null;
   mobile_number?: string | null;
+  country_code?: string | null;
+  timezone?: string | null;
+  preferred_location?: string | null;
   user_id: number | string;
   premium_member?: boolean;
   user_type?: string | null;
   profile_updated?: boolean | null;
+  chat_languages?: string | null;
+  app_language?: string | null;
 }
 
 function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthResponse {
@@ -29,6 +34,7 @@ function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthRespons
     data.email?.trim() ||
     data.mobile_number ||
     "User";
+  const countryCode = data.country_code?.replace(/\D/g, "") || undefined;
 
   return {
     token: data.access_token,
@@ -36,8 +42,15 @@ function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthRespons
     user: {
       id: String(data.user_id),
       name,
+      firstName: first || undefined,
+      lastName: last || undefined,
       email: data.email ?? undefined,
       mobile: data.mobile_number ?? undefined,
+      countryCode,
+      timezone: data.timezone?.trim() || undefined,
+      preferredLocation: data.preferred_location?.trim() || undefined,
+      chatLanguages: data.chat_languages?.trim() || undefined,
+      language: data.app_language?.trim().toLowerCase() || undefined,
       isPremium: Boolean(data.premium_member),
       userType: data.user_type?.trim() || undefined,
       isProfileUpdated:
