@@ -5,8 +5,9 @@ import { useAuthStore } from "@/store/auth.store";
 import { fetchProfile } from "@/lib/services/profile";
 
 /**
- * Syncs `user.userType` from profile API (`user_type` field).
- * Home/sidebar rely on role but profile page is not always visited after login.
+ * Hydrates auth user from profile API after login.
+ * Needed for role (`user_type`) and INR/USD (preferred_location, country_code, timezone).
+ * Login verify alone does not include preferred_location.
  */
 export function useSyncAuthProfileRole(): void {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -23,9 +24,9 @@ export function useSyncAuthProfileRole(): void {
     let cancelled = false;
     fetchProfile()
       .then((profile) => {
-        if (cancelled || !profile.userType?.trim()) return;
+        if (cancelled) return;
         syncedForUserRef.current = userId;
-        useAuthStore.getState().updateUser({ userType: profile.userType });
+        useAuthStore.getState().updateUser(profile);
       })
       .catch(() => {
         /* non-blocking */

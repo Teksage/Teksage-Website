@@ -14,6 +14,7 @@ export interface RawProfileResponse {
   time_of_birth?: string | null;
   birth_location?: string | null;
   preferred_location?: string | null;
+  timezone?: string | null;
   chat_languages?: string | null;
   referral_source?: string | null;
   rashi?: string | null;
@@ -90,6 +91,7 @@ export function mapRawProfileToUserProfile(
     timeOfBirth: tob,
     placeOfBirth: raw.birth_location ?? undefined,
     preferredLocation: raw.preferred_location ?? undefined,
+    timezone: raw.timezone?.trim() || undefined,
     chatLanguages: raw.chat_languages ?? undefined,
     referralSource: raw.referral_source ?? undefined,
     rashi: raw.rashi ?? undefined,

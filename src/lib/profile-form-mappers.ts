@@ -76,12 +76,23 @@ export function mergeProfileFormAfterUserRefresh(
 ): ProfileDetailsFormValues {
   const pick = (cur: string, next: string) =>
     cur.trim() !== "" ? cur : next;
+
+  // Login often hydrates dial as default +91 before profile loads. Do not keep
+  // that default when the server has a real non-India country and phone is empty.
+  const countryCode =
+    !current.mobile.trim() &&
+    current.countryCode === DEFAULT_COUNTRY_CODE_NUMERIC &&
+    fromUser.countryCode.trim() &&
+    fromUser.countryCode !== DEFAULT_COUNTRY_CODE_NUMERIC
+      ? fromUser.countryCode
+      : pick(current.countryCode, fromUser.countryCode);
+
   return {
     firstName: pick(current.firstName, fromUser.firstName),
     lastName: pick(current.lastName, fromUser.lastName),
     email: pick(current.email, fromUser.email),
     mobile: pick(current.mobile, fromUser.mobile),
-    countryCode: pick(current.countryCode, fromUser.countryCode),
+    countryCode,
     chatLanguages: pick(current.chatLanguages, fromUser.chatLanguages),
     referralSource: pick(current.referralSource, fromUser.referralSource),
     dateOfBirth: pick(current.dateOfBirth, fromUser.dateOfBirth),

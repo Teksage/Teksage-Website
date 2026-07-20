@@ -60,6 +60,7 @@ export function consumeLegacyAuthSnapshot(): UserProfile | null {
         firstName: parsed.firstName,
         lastName: parsed.lastName,
         preferredLocation: parsed.preferredLocation,
+        timezone: parsed.timezone,
         chatLanguages: parsed.chatLanguages,
         language: parsed.language,
       });
