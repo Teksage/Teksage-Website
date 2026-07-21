@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AskAstrologerCheckoutContent } from "@/components/ask-astrologer/AskAstrologerCheckoutContent";
 import { AskAstrologerShell } from "@/components/ask-astrologer/AskAstrologerShell";
@@ -14,6 +14,7 @@ import {
   fetchAskAstrologerPricing,
   verifyAskAstrologerPayment,
 } from "@/lib/services/ask-astrologer";
+import { fetchProfile } from "@/lib/services/profile";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { useAuthStore } from "@/store/auth.store";
@@ -34,8 +35,10 @@ export default function AskAstrologerCheckoutPage() {
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const currency = useConsultationCurrency();
   const user = useAuthStore((s) => s.user);
+  const updateUser = useAuthStore((s) => s.updateUser);
 
   const [pricing, setPricing] = useState<AskAstrologerPricing | null>(null);
+  const [profileReady, setProfileReady] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
@@ -45,22 +48,29 @@ export default function AskAstrologerCheckoutPage() {
       router.replace(ROUTES.askAstrologerLanguages);
       return;
     }
-    fetchAskAstrologerPricing()
-      .then(setPricing)
-      .catch(() => setLoadError(true));
-  }, [flow, router]);
+    let cancelled = false;
+    (async () => {
+      try {
+        // Hydrate preferred_location / country / timezone before INR vs USD
+        // (same pattern as consultation checkout).
+        const [price, profile] = await Promise.all([
+          fetchAskAstrologerPricing(),
+          fetchProfile(),
+        ]);
+        if (cancelled) return;
+        updateUser(profile);
+        setPricing(price);
+        setProfileReady(true);
+      } catch {
+        if (!cancelled) setLoadError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [flow, router, updateUser]);
 
-  if (!flow) return null;
-
-  const isINR = currency === "INR";
-  const baseAmount = pricing
-    ? isINR
-      ? pricing.local_plan_price
-      : pricing.foreign_plan_price
-    : 0;
-  const total = pricing ? (isINR ? pricing.inr_total : pricing.usd_total) : 0;
-
-  async function handlePay() {
+  const handlePay = useCallback(async () => {
     if (!pricing || !flow?.preferred_languages) return;
     setPaying(true);
     setPayError(null);
@@ -115,7 +125,18 @@ export default function AskAstrologerCheckoutPage() {
     } finally {
       setPaying(false);
     }
-  }
+  }, [pricing, flow, currency, user?.email, router]);
+
+  if (!flow) return null;
+
+  const isINR = currency === "INR";
+  const baseAmount = pricing
+    ? isINR
+      ? pricing.local_plan_price
+      : pricing.foreign_plan_price
+    : 0;
+  const total = pricing ? (isINR ? pricing.inr_total : pricing.usd_total) : 0;
+  const ready = profileReady && pricing != null;
 
   return (
     <AskAstrologerShell
@@ -123,7 +144,7 @@ export default function AskAstrologerCheckoutPage() {
       onBack={() => router.back()}
       centered
       footer={
-        !loadError && pricing ? (
+        !loadError && ready ? (
           <>
             {payError ? (
               <p className="mb-2 text-center text-sm text-[var(--color-brand-error)]">
@@ -146,7 +167,7 @@ export default function AskAstrologerCheckoutPage() {
         <p className="text-center text-sm text-[var(--color-brand-error)]">
           {AA.checkoutLoadError}
         </p>
-      ) : !pricing ? (
+      ) : !ready ? (
         <PageLoadingCenter />
       ) : (
         <AskAstrologerCheckoutContent
