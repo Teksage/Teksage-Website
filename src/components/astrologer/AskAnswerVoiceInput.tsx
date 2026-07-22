@@ -26,7 +26,6 @@ export function AskAnswerVoiceInput({
 
   const recorder = useVoiceRecorder({
     disabled,
-    maxRecordSec: VOICE.maxRecordSec,
     onComplete: (file, durationSec) => {
       setError(null);
       onVoiceFileChange(file, durationSec);

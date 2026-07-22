@@ -13,14 +13,12 @@ import {
 
 type UseVoiceRecorderOptions = {
   disabled?: boolean;
-  maxRecordSec: number;
   onComplete: (file: File, durationSec: number) => void;
   onError: (message: string) => void;
 };
 
 export function useVoiceRecorder({
   disabled = false,
-  maxRecordSec,
   onComplete,
   onError,
 }: UseVoiceRecorderOptions) {
@@ -32,7 +30,6 @@ export function useVoiceRecorder({
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const mimeRef = useRef("audio/webm");
-  const stopTimerRef = useRef<number | null>(null);
   const tickTimerRef = useRef<number | null>(null);
   const elapsedSecRef = useRef(0);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -40,10 +37,6 @@ export function useVoiceRecorder({
   const rafRef = useRef<number | null>(null);
 
   const clearTimers = useCallback(() => {
-    if (stopTimerRef.current != null) {
-      window.clearTimeout(stopTimerRef.current);
-      stopTimerRef.current = null;
-    }
     if (tickTimerRef.current != null) {
       window.clearInterval(tickTimerRef.current);
       tickTimerRef.current = null;
@@ -178,10 +171,6 @@ export function useVoiceRecorder({
           return next;
         });
       }, 1000);
-
-      stopTimerRef.current = window.setTimeout(() => {
-        void stopRecordingInternal(true);
-      }, maxRecordSec * 1000);
     } catch {
       cleanupStream();
       resetRecordingUi();
@@ -191,7 +180,6 @@ export function useVoiceRecorder({
     cleanupStream,
     disabled,
     isRecording,
-    maxRecordSec,
     onError,
     resetRecordingUi,
     startAnalyser,

@@ -42,7 +42,6 @@ export const ASTRO_PORTAL_UI = {
     saveFailed: "Could not save recording. Please try again.",
     cancelRecordingAria: "Cancel recording",
     stopRecordingAria: "Stop recording",
-    maxRecordSec: 180,
   },
 
   // Meetings list
