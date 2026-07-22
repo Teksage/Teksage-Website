@@ -124,9 +124,10 @@ export const COLORS = {
   muhurthaCardTop: "#FFF6E0",
   muhurthaCardBottom: "#FFE4A8",
   muhurthaCardAccent: "#B8860B",
-  muhurthaBannerTop: "#FFF9EB",
-  muhurthaBannerMid: "#FFE9B8",
-  muhurthaBannerBottom: "#F5D27A",
+  /** Soft mint — `mainColor` ~18% / ~8% on white (Flutter home banner). */
+  muhurthaBannerTop: "#D4F1D1",
+  muhurthaBannerMid: "#E0F5DD",
+  muhurthaBannerBottom: "#ECF9EB",
 } as const;
 
 export type ColorKey = keyof typeof COLORS;

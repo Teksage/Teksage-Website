@@ -16,7 +16,8 @@ export const HOME_DASHBOARD = {
   loveCompatibilityLines: "Love\nCompatibility",
   eventPlanner: "Find Event Planner (Muhurtha)",
   eventPlannerLines: "Event Planner\n(Muhurtha)",
-  eventPlannerBannerTitle: "Event Planner\n(Muhurtha)",
+  /** Mirrors Flutter `EventPlannerHomeBanner` copy. */
+  eventPlannerBannerTitle: "Find auspicious dates for your life events",
   eventPlannerBannerCta: "Plan Now",
   dailyPrediction: "Daily Prediction",
   tharaBala: "Thara Bala",

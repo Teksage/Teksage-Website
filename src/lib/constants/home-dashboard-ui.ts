@@ -24,12 +24,11 @@ export const HOME_DASHBOARD_UI = {
   sidebarGreeting: `${TYPO.h3Bold} ${TYPO.leadingTight} text-[color:var(--color-home-dashboard-heading)]`,
   chatBannerTitle: `min-w-0 shrink whitespace-pre-line text-left ${TYPO.bannerCta} text-white lg:text-lg`,
   chatBannerCta: `${TYPO.bannerFine} text-[var(--color-brand-banner-font)]`,
-  eventPlannerBannerTitle: `min-w-0 shrink whitespace-pre-line text-left ${TYPO.bodyBold} leading-tight text-[var(--color-muhurtha-card-accent)]`,
-  eventPlannerBannerCta: `${TYPO.caption} font-semibold leading-snug text-[var(--color-muhurtha-card-accent)]`,
-  eventPlannerBannerGlow:
-    "pointer-events-none absolute -right-6 top-1/2 size-32 -translate-y-1/2 rounded-full bg-[color-mix(in_srgb,var(--color-muhurtha-banner-bottom)_55%,white)] opacity-90",
-  eventPlannerBannerCtaPill:
-    "flex h-9 shrink-0 items-center justify-evenly gap-1.5 rounded-full bg-white px-3 py-1.5 shadow-sm ring-1 ring-[color-mix(in_srgb,var(--color-muhurtha-card-accent)_22%,transparent)] transition-opacity group-hover:opacity-95 sm:h-10 sm:min-w-[8.75rem] sm:gap-2 sm:px-4",
+  eventPlannerBannerRow: "flex w-full items-center justify-between gap-3",
+  eventPlannerBannerCopy: "flex min-w-0 flex-1 flex-col items-start gap-1",
+  eventPlannerBannerTitle: `min-w-0 text-left ${TYPO.labelSemibold} font-bold leading-snug text-neutral-900`,
+  eventPlannerBannerCta: `${TYPO.caption} leading-snug text-[var(--color-brand-primary)] transition-opacity group-hover:opacity-90`,
+  eventPlannerBannerIcon: "inline-flex size-8 shrink-0 text-[var(--color-brand-primary)] sm:size-9",
   eventPlannerBannerCtaArrow: "inline-flex shrink-0",
   eventPlannerCardTitle: `whitespace-pre-line text-center ${TYPO.bodyBold} leading-tight text-[var(--color-muhurtha-card-accent)]`,
   notificationBadge: `absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-brand-error)] px-1 ${TYPO.badgeMicro} ${TYPO.weightBold} text-white`,

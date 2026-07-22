@@ -11,6 +11,10 @@ export interface EventPlannerCtaArrowProps {
   className?: string;
 }
 
+export interface EventPlannerCalendarIconProps {
+  className?: string;
+}
+
 export interface ConsultationBannerProps {
   isLoggedIn?: boolean;
   isAstrologer?: boolean;
