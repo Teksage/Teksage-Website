@@ -31,7 +31,4 @@ export interface MuhurthaCardProps {
 export interface MuhurthaFeatureHeroProps {
   title: string;
   subtitle?: string;
-  showNotification?: boolean;
-  showBack?: boolean;
-  backHref?: string;
 }

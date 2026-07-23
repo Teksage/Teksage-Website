@@ -17,15 +17,11 @@ export const MUHURTHA_LAYOUT = {
   featurePageMainForm: "justify-start mt-20 lg:justify-center lg:mt-0",
   featurePageMainResults: "max-w-lg lg:max-w-2xl",
   heroHeader:
-    "relative z-10 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top,0px))] lg:px-8 lg:pb-5 lg:pt-5",
+    "relative z-10 px-4 pb-3 pt-[max(2.75rem,calc(env(safe-area-inset-top,0px)+2rem))] lg:px-8 lg:pb-5 lg:pt-10",
   heroCopy: "mx-auto max-w-xl text-center",
   heroTitle:
     "text-center text-xl font-bold leading-tight tracking-tight text-[var(--color-brand-black)] lg:text-2xl",
   heroSubtitle: `${TYPO.bodySm} mx-auto mt-2 max-w-md text-center font-medium text-[var(--color-brand-black)]/70 sm:text-base`,
-  heroNotification:
-    "absolute right-4 top-[max(0.75rem,env(safe-area-inset-top,0px))] rounded-full p-2 text-[var(--color-brand-black)] transition-colors hover:bg-black/5 lg:right-8 lg:top-5",
-  heroBackBtn:
-    "absolute left-4 top-[max(0.75rem,env(safe-area-inset-top,0px))] rounded-full p-2 text-[var(--color-brand-black)] transition-colors hover:bg-black/5 lg:left-8 lg:top-5",
   formRoot: "mx-auto w-full space-y-4",
   formCard: `space-y-5 ${panchangCard} p-5 sm:p-6`,
   fieldLabel: `${TYPO.labelSemibold} text-sm text-[var(--color-brand-black)]`,
@@ -50,9 +46,9 @@ export const MUHURTHA_LAYOUT = {
     "inline-flex items-center rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] px-2.5 py-0.5 text-xs font-medium text-[var(--color-brand-black)]/75 ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_15%,transparent)]",
   backCta:
     "ml-auto inline-flex min-h-9 min-w-[8.5rem] shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 sm:ml-0 sm:min-h-12 sm:min-w-[12rem] sm:px-8 sm:text-base",
-  resultsActionsRow: "flex flex-wrap items-center justify-end gap-3 pt-1",
+  resultsActionsRow: "flex flex-nowrap items-center justify-end gap-2 pt-1 sm:gap-3",
   resultsActionBtnBase:
-    "inline-flex min-h-11 min-w-[10rem] flex-1 cursor-pointer items-center justify-center rounded-full px-6 text-sm font-semibold shadow-sm transition-opacity hover:opacity-90 sm:flex-none sm:min-w-[12rem] sm:text-base",
+    "inline-flex min-h-10 shrink-0 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold shadow-sm transition-opacity hover:opacity-90 sm:min-h-11 sm:px-6 sm:text-base",
   resultsActionPrimary: "bg-[var(--color-brand-primary)] text-white",
   resultsActionSecondary:
     "border border-[var(--color-brand-primary)] bg-white text-[var(--color-brand-primary)]",

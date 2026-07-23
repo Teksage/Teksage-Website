@@ -10,9 +10,7 @@ import { MatchMakingShell } from "@/components/match-making/MatchMakingShell";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { MATCH_MAKING_LAYOUT } from "@/lib/constants/match-making-layout";
-import { PREDICTION_DESKTOP_LAYOUT } from "@/lib/constants/prediction-desktop-layout";
 import { ROUTES } from "@/lib/constants/routes";
-import { cn } from "@/lib/utils";
 import type { MatchMakingDetailsLayoutProps } from "@/types/match-making-ui";
 
 export function MatchMakingDetailsLayout({
@@ -64,13 +62,13 @@ export function MatchMakingDetailsLayout({
               {data.result.general_details}
             </article>
           ) : null}
-          <div className={cn("hidden lg:flex", PREDICTION_DESKTOP_LAYOUT.sideBySideCtaRow)}>
+          <div className={MATCH_MAKING_LAYOUT.detailsCtaRow}>
             {onDownloadPdf ? (
               <button
                 type="button"
                 disabled={pdfBusy}
                 onClick={onDownloadPdf}
-                className="flex flex-1 items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)]"
+                className={MATCH_MAKING_LAYOUT.detailsCtaButton}
               >
                 {pdfBusy ? "…" : MM.downloadPdfCta}
               </button>
@@ -78,17 +76,25 @@ export function MatchMakingDetailsLayout({
             <button
               type="button"
               onClick={onRegenerate}
-              className="flex flex-1 items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)]"
+              className={MATCH_MAKING_LAYOUT.detailsCtaButton}
             >
-              <img src={MATCH_MAKING_ASSETS.regenerate} alt="" className="size-5" />
+              <img
+                src={MATCH_MAKING_ASSETS.regenerate}
+                alt=""
+                className={MATCH_MAKING_LAYOUT.detailsCtaIcon}
+              />
               {MM.regenerateCta}
             </button>
             <Link
               href={ROUTES.consultation}
               onClick={onExpertConnect}
-              className="flex flex-1 items-center justify-center gap-2 rounded-[1.25rem] bg-white py-3 text-lg font-semibold text-[var(--color-match-button-text)]"
+              className={MATCH_MAKING_LAYOUT.detailsCtaButton}
             >
-              <img src={MATCH_MAKING_ASSETS.expert} alt="" className="size-5" />
+              <img
+                src={MATCH_MAKING_ASSETS.expert}
+                alt=""
+                className={MATCH_MAKING_LAYOUT.detailsCtaIcon}
+              />
               {MM.expertConnectCta}
             </Link>
           </div>
