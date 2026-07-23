@@ -66,6 +66,7 @@ export const ASK_ASTROLOGER_SCREEN = {
   confirmationStatusValue: "Received",
   confirmationNotificationsLink: "Track in Notifications → Consultation",
   confirmationDone: "Back to Chat",
+  confirmationDoneEventPlanner: "Back to Event Planner",
 
   // Notifications tab — Ask cards
   askCardLabel: "Ask Astrologer",

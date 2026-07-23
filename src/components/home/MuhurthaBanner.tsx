@@ -1,12 +1,10 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import Image from "next/image";
 import { AuthGatedLink } from "@/components/common/AuthGatedLink";
-import { EventPlannerCtaArrow } from "@/components/home/EventPlannerCtaArrow";
+import { EventPlannerCalendarIcon } from "@/components/home/EventPlannerCalendarIcon";
 import { cn } from "@/lib/utils";
 import {
-  DASHBOARD_ASSETS,
   HOME_DASHBOARD,
   HOME_DASHBOARD_UI,
   HOME_LAYOUT,
@@ -14,7 +12,7 @@ import {
 } from "@/lib/constants";
 import type { MuhurthaBannerProps } from "@/types";
 
-/** Home strip — soft mint gradient, distinct from consultation lime and chat dark. */
+/** Home Event Planner strip — mirrors Flutter `EventPlannerHomeBanner` (mobile). */
 export function MuhurthaBanner({ className }: MuhurthaBannerProps) {
   const HD = useI18nConstants(HOME_DASHBOARD);
   const href = ROUTES.eventPlanner;
@@ -29,35 +27,21 @@ export function MuhurthaBanner({ className }: MuhurthaBannerProps) {
       <div
         className={cn(
           "relative isolate w-full min-w-0 overflow-hidden",
-          HOME_LAYOUT.homeBannerStripMinH,
           HOME_LAYOUT.homeCardRadius,
-          HOME_LAYOUT.eventPlannerBannerShell
+          HOME_LAYOUT.eventPlannerBannerShell,
+          HOME_LAYOUT.eventPlannerBannerPad
         )}
       >
-        <div aria-hidden className={HOME_DASHBOARD_UI.eventPlannerBannerGlow} />
-
-        <div
-          className={cn(
-            "relative z-10 flex w-full items-center justify-evenly gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-3",
-            HOME_LAYOUT.homeBannerStripMinH
-          )}
-        >
-          <p className={HOME_DASHBOARD_UI.eventPlannerBannerTitle}>{HD.eventPlannerBannerTitle}</p>
-
-          <Image
-            src={DASHBOARD_ASSETS.muhurthaHero}
-            alt=""
-            width={38}
-            height={38}
-            unoptimized
-            className="pointer-events-none size-[2.125rem] shrink-0 object-contain sm:size-[2.375rem]"
-            aria-hidden
-          />
-
-          <div className={HOME_DASHBOARD_UI.eventPlannerBannerCtaPill}>
-            <span className={HOME_DASHBOARD_UI.eventPlannerBannerCta}>{HD.eventPlannerBannerCta}</span>
-            <EventPlannerCtaArrow />
+        <div className={HOME_DASHBOARD_UI.eventPlannerBannerRow}>
+          <div className={HOME_DASHBOARD_UI.eventPlannerBannerCopy}>
+            <p className={HOME_DASHBOARD_UI.eventPlannerBannerTitle}>
+              {HD.eventPlannerBannerTitle}
+            </p>
+            <span className={HOME_DASHBOARD_UI.eventPlannerBannerCta}>
+              {HD.eventPlannerBannerCta}
+            </span>
           </div>
+          <EventPlannerCalendarIcon />
         </div>
       </div>
     </AuthGatedLink>

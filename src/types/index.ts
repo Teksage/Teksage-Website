@@ -97,6 +97,7 @@ export type {
   ChatBannerProps,
   MuhurthaBannerProps,
   EventPlannerCtaArrowProps,
+  EventPlannerCalendarIconProps,
   ConsultationBannerProps,
   MatchMakingCardProps,
   PredictionCirclesProps,

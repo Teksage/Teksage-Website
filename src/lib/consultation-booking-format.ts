@@ -40,7 +40,8 @@ export function formatProfileTimeOfBirth(tob?: string | null): string {
 }
 
 export function formatFeeSlash(amount: number, currency: string): string {
-  const unit = currency === "INR" ? "₹" : "$";
-  const value = currency === "INR" ? Math.round(amount) : amount.toFixed(2);
+  const isUsd = currency === "USD";
+  const unit = isUsd ? "$" : "₹";
+  const value = isUsd ? amount.toFixed(2) : Math.round(amount);
   return `${unit} ${value}/-`;
 }
