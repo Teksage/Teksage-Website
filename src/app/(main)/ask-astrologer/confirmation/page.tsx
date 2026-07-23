@@ -18,7 +18,7 @@ import type { MuhurthaEventType } from "@/types/muhurtha";
 export default function AskAstrologerConfirmationPage() {
   const router = useRouter();
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
-  const [ctaHref, setCtaHref] = useState(ROUTES.chat);
+  const [ctaHref, setCtaHref] = useState<string>(ROUTES.chat);
   const [fromEventPlanner, setFromEventPlanner] = useState(false);
 
   useEffect(() => {
