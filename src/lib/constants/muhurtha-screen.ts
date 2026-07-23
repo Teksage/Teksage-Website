@@ -4,7 +4,7 @@ export const MUHURTHA_SCREEN = {
   headerTitle: "Event Planner (Muhurtha)",
   formTitle: "Plan an auspicious time",
   formSubtitle:
-    "Select a life event and start date. We scan the next 7 days using your birth chart and Panchang.",
+    "Select a life event and start date. We scan the next 7 days to find auspicious dates for you using your birth chart and panchang.",
   eventLabel: "Event type",
   startDateLabel: "Start date",
   startDateHint: "Searching the next 7 days from this date",
