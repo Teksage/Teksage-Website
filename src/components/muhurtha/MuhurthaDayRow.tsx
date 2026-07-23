@@ -21,12 +21,26 @@ function periodLabel(
   return period ?? "";
 }
 
+function shouldSplitMuhurthaDay(day: MuhurthaDayResult): boolean {
+  const segments = day.segments;
+  if (!segments || segments.length <= 1) return false;
+  const weekday = (day.weekday ?? "").toLowerCase();
+  if (weekday === "tuesday" || weekday === "saturday") return false;
+  const allWeekdayExcluded = segments.every((segment) => {
+    const codes = [
+      ...(segment.reason_codes ?? []),
+      ...(segment.reason_code ? [segment.reason_code] : []),
+    ];
+    return codes.includes("weekday_excluded");
+  });
+  return !allWeekdayExcluded;
+}
+
 export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
   const { t } = useT();
-  const splitSegments =
-    day.segments && day.segments.length > 1 ? day.segments : null;
+  const splitSegments = shouldSplitMuhurthaDay(day) ? day.segments! : null;
 
   if (splitSegments) {
     return (
