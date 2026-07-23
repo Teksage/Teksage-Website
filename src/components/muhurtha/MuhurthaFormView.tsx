@@ -4,7 +4,7 @@ import { useI18nConstants, useT } from "@/hooks/useT";
 import { MuhurthaFeatureHero } from "@/components/muhurtha/MuhurthaFeatureHero";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { MUHURTHA_EVENT_TYPES } from "@/types/muhurtha";
-import { MUHURTHA_LAYOUT, MUHURTHA_SCREEN, ROUTES } from "@/lib/constants";
+import { MUHURTHA_LAYOUT, MUHURTHA_SCREEN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { toIsoDate } from "@/lib/panchang-calendar";
 import type { MuhurthaFormViewProps } from "@/types";
@@ -30,8 +30,6 @@ export function MuhurthaFormView({
       <MuhurthaFeatureHero
         title={M.headerTitle}
         subtitle={M.formSubtitle}
-        showBack
-        backHref={ROUTES.home}
       />
       <div className={cn(L.featurePageMain, L.featurePageMainForm)}>
         <div className={L.formRoot}>

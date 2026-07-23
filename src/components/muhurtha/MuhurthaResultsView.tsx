@@ -30,11 +30,7 @@ export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResults
   if (!rows.length) {
     return (
       <>
-        <MuhurthaFeatureHero
-          title={M.headerTitle}
-          showBack
-          backHref={ROUTES.eventPlanner}
-        />
+        <MuhurthaFeatureHero title={M.headerTitle} />
         <div className={cn(L.featurePageMain, L.featurePageMainResults)}>
           <div className={`${L.resultsHeaderCard} text-center`}>
             <h2 className={L.resultsTitle}>{M.emptyTitle}</h2>
@@ -50,11 +46,7 @@ export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResults
 
   return (
     <>
-      <MuhurthaFeatureHero
-        title={M.headerTitle}
-        showBack
-        backHref={ROUTES.eventPlanner}
-      />
+      <MuhurthaFeatureHero title={M.headerTitle} />
       <div className={cn(L.featurePageMain, L.featurePageMainResults)}>
         <div className={L.resultsRoot}>
           <div className={L.resultsHeaderCard}>
