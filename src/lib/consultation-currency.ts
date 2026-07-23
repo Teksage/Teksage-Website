@@ -101,7 +101,8 @@ export function consultationFeeForAstrologer(
 }
 
 export function formatConsultationFee(amount: number, currency: string): string {
-  if (currency === "INR") {
+  const code = assertConsultationCurrency(currency);
+  if (code === "INR") {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
@@ -110,7 +111,17 @@ export function formatConsultationFee(amount: number, currency: string): string 
   }
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: currency || "USD",
+    currency: "USD",
     maximumFractionDigits: 2,
   }).format(amount);
+}
+
+/** Normalize order/API currency before Razorpay — never pass null/empty. */
+export function assertConsultationCurrency(
+  value: string | null | undefined,
+  fallback: ConsultationCurrency = "INR"
+): ConsultationCurrency {
+  const normalized = (value ?? "").trim().toUpperCase();
+  if (normalized === "INR" || normalized === "USD") return normalized;
+  return fallback;
 }

@@ -2,6 +2,7 @@ import {
   openRazorpayCheckout,
   openRazorpaySubscriptionCheckout,
 } from "@/lib/razorpay-checkout";
+import { assertConsultationCurrency } from "@/lib/consultation-currency";
 import {
   initiateAutoPaySubscription,
   initiateSubscriptionPayment,
@@ -33,9 +34,10 @@ export async function paySubscriptionOneTime(options: {
       currency,
       couponId: totals.couponId || null,
     });
+    const orderCurrency = assertConsultationCurrency(order.currency, currency);
     await openRazorpayCheckout({
       key: order.key,
-      currency: order.currency,
+      currency: orderCurrency,
       orderId: order.id,
       description: plan.planName,
       prefill,

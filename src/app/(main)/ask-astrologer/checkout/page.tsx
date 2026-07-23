@@ -16,6 +16,7 @@ import {
 } from "@/lib/services/ask-astrologer";
 import { fetchProfile } from "@/lib/services/profile";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
+import { assertConsultationCurrency } from "@/lib/consultation-currency";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { useAuthStore } from "@/store/auth.store";
 import { useI18nConstants } from "@/hooks/useT";
@@ -87,7 +88,7 @@ export default function AskAstrologerCheckoutPage() {
 
       await openRazorpayCheckout({
         key: order.key,
-        currency: order.currency,
+        currency: assertConsultationCurrency(order.currency, currency),
         orderId: order.razorpay_order_id,
         name: "Teksage",
         description: "Ask Astrologer — Single question",

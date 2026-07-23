@@ -79,6 +79,11 @@ export async function openRazorpayCheckout(options: {
   onDismiss?: () => void;
   onFailure?: (message: string) => void;
 }): Promise<void> {
+  const currency = (options.currency ?? "").trim().toUpperCase();
+  if (currency !== "INR" && currency !== "USD") {
+    throw new Error("Invalid payment currency");
+  }
+
   await loadRazorpayScript();
   if (!window.Razorpay) {
     throw new Error("Razorpay unavailable");
@@ -90,7 +95,7 @@ export async function openRazorpayCheckout(options: {
 
   const rzp = new window.Razorpay({
     key: options.key,
-    currency: options.currency,
+    currency,
     ...(options.amount != null ? { amount: options.amount } : {}),
     name: options.name ?? "Teksage",
     description: options.description ?? "Consultation",
