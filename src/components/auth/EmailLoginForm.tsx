@@ -5,9 +5,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
+import { TurnstileField } from "@/components/auth/TurnstileField";
 import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
-import { LOGIN_EMAIL_FORM, LOGIN_EMAIL_REGEX } from "@/lib/constants";
+import { LOGIN_EMAIL_FORM, LOGIN_EMAIL_REGEX, TURNSTILE } from "@/lib/constants";
+import { isTurnstileConfigured } from "@/lib/env";
 import { http } from "@/lib/services/http";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import {
@@ -21,9 +23,12 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
+  const captchaReady = !isTurnstileConfigured() || Boolean(turnstileToken);
   const isValid = LOGIN_EMAIL_REGEX.test(email.trim());
-  const canSubmit = isValid && !isLoading;
+  const canSubmit = isValid && !isLoading && captchaReady;
 
   function handleChange(value: string) {
     const lower = value.toLowerCase().replace(/\s/g, "");
@@ -38,15 +43,27 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) return;
+    if (isTurnstileConfigured() && !turnstileToken) {
+      setError(LOGIN_EMAIL_FORM.captchaRequired);
+      showErrorAppSnackBar(LOGIN_EMAIL_FORM.captchaRequired);
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
-      await http.post(API_ENDPOINTS.sendOtp, { email: email.trim() });
+      await http.post(API_ENDPOINTS.sendOtp, {
+        email: email.trim(),
+        ...(turnstileToken
+          ? { [TURNSTILE.tokenField]: turnstileToken }
+          : {}),
+      });
       showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
       onOtpSent(email.trim());
     } catch {
       setError(LOGIN_EMAIL_FORM.sendOtpError);
       showErrorAppSnackBar(LOGIN_EMAIL_FORM.sendOtpError);
+      setTurnstileToken(null);
+      setTurnstileKey((k) => k + 1);
     } finally {
       setIsLoading(false);
     }
@@ -75,6 +92,11 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
           </p>
         )}
       </div>
+
+      <TurnstileField
+        remountKey={turnstileKey}
+        onTokenChange={setTurnstileToken}
+      />
 
       <Button
         type="submit"

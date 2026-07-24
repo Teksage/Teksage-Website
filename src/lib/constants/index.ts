@@ -65,6 +65,7 @@ export * from "./chat-assets";
 export * from "./notifications-screen";
 export * from "./settings-change-contact";
 export * from "./auth-http";
+export * from "./turnstile";
 export * from "./feature-discovery";
 export * from "./welcome-onboarding";
 
