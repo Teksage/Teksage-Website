@@ -95,6 +95,9 @@ export type { AuthGatedLinkProps } from "./ui/auth-gated-link";
 
 export type {
   ChatBannerProps,
+  MuhurthaBannerProps,
+  EventPlannerCtaArrowProps,
+  EventPlannerCalendarIconProps,
   ConsultationBannerProps,
   MatchMakingCardProps,
   PredictionCirclesProps,
@@ -108,6 +111,8 @@ export type {
 export type {
   EmailLoginFormProps,
   MobileLoginFormProps,
+  TurnstileFieldProps,
+  OtpResendBlockProps,
   OtpInputProps,
   OtpVerifyViewProps,
   LoginBackButtonProps,
@@ -154,6 +159,15 @@ export type {
 } from "./ui/panchang-horoscope";
 
 export type {
+  MuhurthaPremiumGateProps,
+  MuhurthaFormViewProps,
+  MuhurthaResultsViewProps,
+  MuhurthaDayRowProps,
+  MuhurthaCardProps,
+  MuhurthaFeatureHeroProps,
+} from "./ui/muhurtha";
+
+export type {
   LoaderVariant,
   LoaderSize,
   LoaderProps,
@@ -198,6 +212,18 @@ export type {
   RashiOption,
   NakshatraOption,
 } from "./match-making";
+
+export type {
+  MuhurthaDayResult,
+  MuhurthaEventType,
+  MuhurthaPayload,
+  MuhurthaResult,
+  MuhurthaSearchParams,
+} from "./muhurtha";
+export type {
+  EventPlannerCacheEntry,
+  EventPlannerCacheKeyInput,
+} from "./event-planner-cache";
 
 export type {
   ConsultationShellProps,

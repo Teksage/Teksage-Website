@@ -2,6 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import { ConsultationLanguageField } from "@/components/consultation/ConsultationLanguageField";
+import { MuhurthaEventPlanAccordion } from "@/components/ask-astrologer/MuhurthaEventPlanAccordion";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
 import { CONSULTATION_LANGUAGES } from "@/lib/constants";
 import { ASK_ASTROLOGER_SCREEN, ASK_ASTROLOGER_UI } from "@/lib/constants/chat-ask-astrologer";
@@ -13,17 +14,24 @@ export function AskAstrologerLanguagesContent({
   primary,
   firstError,
   onPrimaryChange,
+  muhurthaResult,
 }: AskAstrologerLanguagesContentProps) {
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
 
   return (
     <>
-      <div className={cn(CONSULTATION_BOOKING_LAYOUT.grayCard, ASK_ASTROLOGER_UI.languageQuestionCard)}>
-        <p className={ASK_ASTROLOGER_UI.sectionLabel}>
-          {AA.checkoutYourQuestion}
-        </p>
-        <p className={cn(ASK_ASTROLOGER_UI.languageQuestionText, "mt-2")}>{userQuestion}</p>
-      </div>
+      {muhurthaResult ? (
+        <div className={ASK_ASTROLOGER_UI.languageQuestionCard}>
+          <MuhurthaEventPlanAccordion result={muhurthaResult} />
+        </div>
+      ) : (
+        <div className={cn(CONSULTATION_BOOKING_LAYOUT.grayCard, ASK_ASTROLOGER_UI.languageQuestionCard)}>
+          <p className={ASK_ASTROLOGER_UI.sectionLabel}>
+            {AA.checkoutYourQuestion}
+          </p>
+          <p className={cn(ASK_ASTROLOGER_UI.languageQuestionText, "mt-2")}>{userQuestion}</p>
+        </div>
+      )}
       <div className={ASK_ASTROLOGER_UI.languageIntro}>
         <h1 className={ASK_ASTROLOGER_UI.heading}>
           {AA.languageHeading}

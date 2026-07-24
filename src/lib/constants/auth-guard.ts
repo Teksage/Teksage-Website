@@ -15,6 +15,7 @@ const AUTH_PATH_PREFIXES = [
   ROUTES.matchmaking,
   ROUTES.profile,
   ROUTES.panchang,
+  ROUTES.eventPlanner,
   ROUTES.horoscope,
   ROUTES.notifications,
   ROUTES.whatsappUpdates,

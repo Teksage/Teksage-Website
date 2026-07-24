@@ -74,6 +74,9 @@ export const DASHBOARD_ASSETS = {
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
   sidebarGettingStarted: flutterSvg("sidebar-getting-started.svg"),
+  /** Muhurtha — outline rings + star (matches desktop sidebar icon set). */
+  sidebarMuhurtha: flutterSvg("sidebar-muhurtha.svg"),
+  muhurthaHero: flutterSvg("sidebar-muhurtha.svg"),
 } as const;
 
 /** Daily prediction — `dailyPrediction.dart`, `predictionContainer.dart`, `imageConstant.dart`. */

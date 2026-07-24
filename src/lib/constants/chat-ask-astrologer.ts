@@ -66,6 +66,7 @@ export const ASK_ASTROLOGER_SCREEN = {
   confirmationStatusValue: "Received",
   confirmationNotificationsLink: "Track in Notifications → Consultation",
   confirmationDone: "Back to Chat",
+  confirmationDoneEventPlanner: "Back to Event Planner",
 
   // Notifications tab — Ask cards
   askCardLabel: "Ask Astrologer",
@@ -100,10 +101,15 @@ export const ASK_ASTROLOGER_SCREEN = {
   astrologerSubmitAnswer: "Submit Answer",
   astrologerSubmitting: "Submitting…",
   astrologerSubmitFailed: "Submit failed. Please try again.",
-  astrologerAnswerRequired: "Provide an answer (text and/or voice).",
+  astrologerAnswerRequired: "Please record or attach a voice answer before submitting.",
+  astrologerSubmitConfirmMessage:
+    "Are you sure you want to submit this answer? You won't be able to edit it after submission.",
+  astrologerSubmitConfirmLabel: "Submit",
   astrologerAiReference: "AI Answer (for reference)",
+  astrologerEventPlanReference: "Event Plan (for reference)",
+  muhurthaEventPlanLabel: "Your event plan",
   astrologerYourAnswer: "Your Answer",
-  astrologerVoiceAnswerLead: "Record your answer (recommended)",
+  astrologerVoiceAnswerLead: "Record your answer (required)",
   astrologerVoiceAnswerHint:
     "Tap Record voice and share your personalized reply. You may add optional written notes below.",
   astrologerTextAnswerOptional: "Optional written notes",

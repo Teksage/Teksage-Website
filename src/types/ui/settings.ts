@@ -39,6 +39,8 @@ export interface ProfileLocationFieldProps {
   errorMessage?: string;
   /** Return false to block focus (e.g. premium gate). */
   onFocusAttempt?: () => boolean;
+  /** Override input surface styles (e.g. white bg on Event Planner form). */
+  inputClassName?: string;
 }
 
 export interface ProfileDetailsFormProps {

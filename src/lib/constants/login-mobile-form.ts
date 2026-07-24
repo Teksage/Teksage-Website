@@ -6,4 +6,5 @@ export const LOGIN_MOBILE_FORM = {
   placeholder: "Enter Mobile Number",
   submitCta: "Continue",
   countryCodeAria: "Country code",
+  captchaRequired: "Please complete the captcha and try again.",
 } as const;

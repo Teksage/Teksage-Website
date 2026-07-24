@@ -18,6 +18,7 @@ import {
   DESKTOP_SIDEBAR_NOTIFICATIONS_LINK,
   DESKTOP_SIDEBAR_WHATSAPP_LINK,
   DESKTOP_SIDEBAR_PANCHANG_LINK,
+  DESKTOP_SIDEBAR_EVENT_PLANNER_LINK,
   DESKTOP_SIDEBAR_SETTINGS_LINK,
   DESKTOP_SIDEBAR_GETTING_STARTED_LINK,
   DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK,
@@ -145,6 +146,17 @@ export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavP
           active={pathname.startsWith(DESKTOP_SIDEBAR_PANCHANG_LINK.href)}
           onClick={() =>
             guardNavigation(DESKTOP_SIDEBAR_PANCHANG_LINK.href, {
+              redirectHomeOnClose: true,
+            })
+          }
+        />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_EVENT_PLANNER_LINK.icon}
+          label={HDS.eventPlanner}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_EVENT_PLANNER_LINK.href)}
+          onClick={() =>
+            guardNavigation(DESKTOP_SIDEBAR_EVENT_PLANNER_LINK.href, {
               redirectHomeOnClose: true,
             })
           }

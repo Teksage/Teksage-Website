@@ -22,6 +22,7 @@ export function ProfileLocationField({
   hasError,
   errorMessage,
   onFocusAttempt,
+  inputClassName,
 }: ProfileLocationFieldProps) {
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,36 +84,36 @@ export function ProfileLocationField({
   const menu =
     showMenu && typeof document !== "undefined"
       ? createPortal(
-          <ul
-            id={listId}
-            role="listbox"
-            className="max-h-48 overflow-y-auto rounded-xl border border-black/10 bg-white py-1 shadow-lg"
-            style={{
-              position: "fixed",
-              top: menuPos.top,
-              left: menuPos.left,
-              width: menuPos.width,
-              zIndex: 9999,
-            }}
-          >
-            {suggestions.map((item) => (
-              <li key={`${item.displayText}-${item.selectedText}`}>
-                <button
-                  type="button"
-                  className="w-full px-3 py-2.5 text-left text-sm hover:bg-neutral-100"
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => pickSuggestion(item)}
-                >
-                  <span className="font-medium text-[var(--color-brand-black)]">
-                    {item.selectedText}
-                  </span>
-                  <span className="mt-0.5 block text-xs text-black/50">{item.displayText}</span>
-                </button>
-              </li>
-            ))}
-          </ul>,
-          document.body
-        )
+        <ul
+          id={listId}
+          role="listbox"
+          className="max-h-48 overflow-y-auto rounded-xl border border-black/10 bg-white py-1 shadow-lg"
+          style={{
+            position: "fixed",
+            top: menuPos.top,
+            left: menuPos.left,
+            width: menuPos.width,
+            zIndex: 9999,
+          }}
+        >
+          {suggestions.map((item) => (
+            <li key={`${item.displayText}-${item.selectedText}`}>
+              <button
+                type="button"
+                className="w-full px-3 py-2.5 text-left text-sm hover:bg-neutral-100"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => pickSuggestion(item)}
+              >
+                <span className="font-medium text-[var(--color-brand-black)]">
+                  {item.selectedText}
+                </span>
+                <span className="mt-0.5 block text-xs text-black/50">{item.displayText}</span>
+              </button>
+            </li>
+          ))}
+        </ul>,
+        document.body
+      )
       : null;
 
   return (
@@ -149,7 +150,8 @@ export function ProfileLocationField({
           hasError
             ? "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]"
             : "border-black/15 focus-visible:border-[var(--color-brand-primary)]",
-          !isEditable && "cursor-not-allowed opacity-90"
+          !isEditable && "cursor-not-allowed opacity-90",
+          inputClassName
         )}
       />
       {hasError && errorMessage ? (

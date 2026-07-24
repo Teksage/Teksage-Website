@@ -16,6 +16,7 @@ import {
 } from "@/lib/services/ask-astrologer";
 import { fetchProfile } from "@/lib/services/profile";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
+import { assertConsultationCurrency } from "@/lib/consultation-currency";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { useAuthStore } from "@/store/auth.store";
 import { useI18nConstants } from "@/hooks/useT";
@@ -80,11 +81,14 @@ export default function AskAstrologerCheckoutPage() {
         ai_response: flow.ai_response,
         preferred_languages: flow.preferred_languages,
         currency,
+        ...(flow.muhurtha_result
+          ? { muhurtha_result: flow.muhurtha_result }
+          : {}),
       });
 
       await openRazorpayCheckout({
         key: order.key,
-        currency: order.currency,
+        currency: assertConsultationCurrency(order.currency, currency),
         orderId: order.razorpay_order_id,
         name: "Teksage",
         description: "Ask Astrologer — Single question",

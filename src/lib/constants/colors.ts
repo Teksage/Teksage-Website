@@ -101,6 +101,33 @@ export const COLORS = {
   /** Flutter `balaContainer.dart` Chandra 8. */
   dailyChandrashtama: "#FF3232",
   dailyChandrashtamaBg: "#FFE0E0",
+
+  /** Event Planner (Muhurtha) — status + rating chips */
+  muhurthaSuitableBg: "#E8F8E6",
+  muhurthaSuitableText: "#1B7A12",
+  muhurthaSuitableRing: "#9AD492",
+  muhurthaUnsuitableBg: "#FCE8E8",
+  muhurthaUnsuitableText: "#B42318",
+  muhurthaUnsuitableRing: "#F5B5B0",
+  muhurthaRatingVeryGood: "#1B7A12",
+  muhurthaRatingGood: "#D35400",
+  muhurthaRatingAverage: "#C9920A",
+  muhurthaStatusVeryGoodBg: "#E8F8E6",
+  muhurthaStatusVeryGoodText: "#1B7A12",
+  muhurthaStatusVeryGoodRing: "#9AD492",
+  muhurthaStatusGoodBg: "#FFF0E0",
+  muhurthaStatusGoodText: "#D35400",
+  muhurthaStatusGoodRing: "#F5B07A",
+  muhurthaStatusAverageBg: "#FFF8DC",
+  muhurthaStatusAverageText: "#C9920A",
+  muhurthaStatusAverageRing: "#F0D060",
+  muhurthaCardTop: "#FFF6E0",
+  muhurthaCardBottom: "#FFE4A8",
+  muhurthaCardAccent: "#B8860B",
+  /** Soft mint — `mainColor` ~18% / ~8% on white (Flutter home banner). */
+  muhurthaBannerTop: "#D4F1D1",
+  muhurthaBannerMid: "#E0F5DD",
+  muhurthaBannerBottom: "#ECF9EB",
 } as const;
 
 export type ColorKey = keyof typeof COLORS;

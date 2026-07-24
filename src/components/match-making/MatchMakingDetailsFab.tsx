@@ -4,9 +4,11 @@ import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { MATCH_MAKING_ASSETS } from "@/lib/constants/prediction-assets";
+import { MATCH_MAKING_LAYOUT } from "@/lib/constants/match-making-layout";
 import { MATCH_MAKING_SCREEN } from "@/lib/constants/match-making-screen";
 import { cn } from "@/lib/utils";
 
+/** Mobile-only plus menu (`lg:hidden`). Desktop uses the three CTA buttons. */
 export function MatchMakingDetailsFab({
   onRegenerate,
   onExpertConnect,
@@ -19,6 +21,7 @@ export function MatchMakingDetailsFab({
   pdfBusy?: boolean;
 }) {
   const MM = useI18nConstants(MATCH_MAKING_SCREEN);
+  const L = MATCH_MAKING_LAYOUT;
   const [open, setOpen] = useState(false);
 
   return (
@@ -31,9 +34,9 @@ export function MatchMakingDetailsFab({
           onClick={() => setOpen(false)}
         />
       ) : null}
-      <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-5 z-50 flex flex-col items-end gap-3 lg:hidden">
+      <div className={L.fabWrap}>
         {open ? (
-          <div className="rounded-2xl bg-white/95 p-4 shadow-lg backdrop-blur-sm">
+          <div className={L.fabMenuPanel}>
             {onDownloadPdf ? (
               <button
                 type="button"
@@ -42,7 +45,7 @@ export function MatchMakingDetailsFab({
                   onDownloadPdf();
                 }}
                 disabled={pdfBusy}
-                className="flex w-full items-center gap-2.5 py-1.5 text-base font-medium text-[var(--color-brand-black)]"
+                className={L.fabMenuItem}
               >
                 <img src={CHAT_ASSETS.download} alt="" className="size-5" />
                 {pdfBusy ? "…" : MM.downloadPdfCta}
@@ -54,10 +57,7 @@ export function MatchMakingDetailsFab({
                 setOpen(false);
                 onExpertConnect();
               }}
-              className={cn(
-                "flex w-full items-center gap-2.5 py-1.5 text-base font-medium text-[var(--color-brand-black)]",
-                onDownloadPdf && "mt-3"
-              )}
+              className={cn(L.fabMenuItem, onDownloadPdf && "mt-2")}
             >
               <img src={MATCH_MAKING_ASSETS.expert} alt="" className="size-5" />
               {MM.expertConnectCta}
@@ -68,7 +68,7 @@ export function MatchMakingDetailsFab({
                 setOpen(false);
                 onRegenerate();
               }}
-              className="mt-3 flex w-full items-center gap-2.5 py-1.5 text-base font-medium text-[var(--color-brand-black)]"
+              className={cn(L.fabMenuItem, "mt-2")}
             >
               <img src={MATCH_MAKING_ASSETS.regenerate} alt="" className="size-5" />
               {MM.regenerateCta}
@@ -78,14 +78,10 @@ export function MatchMakingDetailsFab({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className={cn(
-            "flex size-[4.375rem] items-center justify-center rounded-full",
-            "bg-[var(--color-match-fab)] shadow-lg transition-transform",
-            open && "rotate-45"
-          )}
+          className={cn(L.fabButton, open && "rotate-45")}
           aria-label={open ? "Close actions" : "Open actions"}
         >
-          <img src={MATCH_MAKING_ASSETS.fabButton} alt="" className="size-7" />
+          <img src={MATCH_MAKING_ASSETS.fabButton} alt="" className={L.fabIcon} />
         </button>
       </div>
     </>

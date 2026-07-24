@@ -14,6 +14,11 @@ export const HOME_DASHBOARD = {
   loveCompatibility: "Love Compatibility",
   /** Two-line title on home card. */
   loveCompatibilityLines: "Love\nCompatibility",
+  eventPlanner: "Find Event Planner (Muhurtha)",
+  eventPlannerLines: "Event Planner\n(Muhurtha)",
+  /** Mirrors Flutter `EventPlannerHomeBanner` copy. */
+  eventPlannerBannerTitle: "Event Planner",
+  eventPlannerBannerCta: "Plan Now",
   dailyPrediction: "Daily Prediction",
   tharaBala: "Thara Bala",
   chandraBala: "Chandra Bala",

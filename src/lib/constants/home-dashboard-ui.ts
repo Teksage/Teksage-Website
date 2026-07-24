@@ -24,6 +24,13 @@ export const HOME_DASHBOARD_UI = {
   sidebarGreeting: `${TYPO.h3Bold} ${TYPO.leadingTight} text-[color:var(--color-home-dashboard-heading)]`,
   chatBannerTitle: `min-w-0 shrink whitespace-pre-line text-left ${TYPO.bannerCta} text-white lg:text-lg`,
   chatBannerCta: `${TYPO.bannerFine} text-[var(--color-brand-banner-font)]`,
+  eventPlannerBannerRow: "flex w-full items-center justify-between gap-3",
+  eventPlannerBannerCopy: "flex min-w-0 flex-1 flex-col items-start gap-1",
+  eventPlannerBannerTitle: `min-w-0 text-left ${TYPO.labelSemibold} font-bold leading-snug text-neutral-900`,
+  eventPlannerBannerCta: `${TYPO.caption} leading-snug text-neutral-500 transition-opacity group-hover:opacity-90`,
+  eventPlannerBannerIcon: "inline-flex size-8 shrink-0 text-[var(--color-brand-primary)] sm:size-9",
+  eventPlannerBannerCtaArrow: "inline-flex shrink-0",
+  eventPlannerCardTitle: `whitespace-pre-line text-center ${TYPO.bodyBold} leading-tight text-[var(--color-muhurtha-card-accent)]`,
   notificationBadge: `absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[var(--color-brand-error)] px-1 ${TYPO.badgeMicro} ${TYPO.weightBold} text-white`,
   matchCardTitle: `whitespace-pre-line text-center ${TYPO.bodyBold} leading-tight text-[var(--color-brand-marriage)]`,
 } as const;

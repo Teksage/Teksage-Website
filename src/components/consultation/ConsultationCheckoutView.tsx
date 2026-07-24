@@ -37,7 +37,10 @@ import {
   verifyConsultationPayment,
 } from "@/lib/services/consultation";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
-import { consultationFeeForAstrologer } from "@/lib/consultation-currency";
+import {
+  assertConsultationCurrency,
+  consultationFeeForAstrologer,
+} from "@/lib/consultation-currency";
 import { consultationAstrologerName } from "@/lib/consultation-display";
 import {
   consultationBookPaymentAmount,
@@ -207,7 +210,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
       });
       await openRazorpayCheckout({
         key: order.key,
-        currency: order.currency,
+        currency: assertConsultationCurrency(order.currency, currency),
         orderId: order.id,
         amount: order.amount,
         prefill: { email: user?.email ?? undefined, contact: user?.mobile ?? undefined },

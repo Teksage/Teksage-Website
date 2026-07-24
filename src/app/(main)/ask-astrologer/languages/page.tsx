@@ -37,14 +37,20 @@ export default function AskAstrologerLanguagesPage() {
       setFirstError(AA.languageFieldError);
       return;
     }
-    if (!flowState.user_question || !flowState.ai_response) {
-      router.replace(ROUTES.chat);
+    // Chat flow needs question + AI answer; Event Planner needs muhurtha_result
+    // (ai_response is intentionally empty for Muhurtha).
+    const isMuhurtha = Boolean(flowState.muhurtha_result);
+    if (!flowState.user_question || (!isMuhurtha && !flowState.ai_response)) {
+      router.replace(isMuhurtha ? ROUTES.eventPlannerResults : ROUTES.chat);
       return;
     }
     writeAskAstrologerFlow({
       user_question: flowState.user_question,
       ai_response: flowState.ai_response,
       preferred_languages: [primary],
+      ...(flowState.muhurtha_result
+        ? { muhurtha_result: flowState.muhurtha_result }
+        : {}),
     });
     router.push(ROUTES.askAstrologerCheckout);
   }
@@ -73,6 +79,7 @@ export default function AskAstrologerLanguagesPage() {
           setPrimary(value);
           setFirstError(null);
         }}
+        muhurthaResult={flowState.muhurtha_result}
       />
     </AskAstrologerShell>
   );

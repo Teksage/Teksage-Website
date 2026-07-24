@@ -1,50 +1,23 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/auth/OtpInput";
+import { OtpResendBlock } from "@/components/auth/OtpResendBlock";
 import { Loader } from "@/components/common/Loader";
 import { BrandLoginLogo } from "@/components/common/BrandLoginLogo";
 import { LoginBackButton } from "@/components/auth/LoginChrome";
-import { useAuthStore } from "@/store/auth.store";
-import { resendOtp, verifyOtp } from "@/lib/services/auth";
 import { cn } from "@/lib/utils";
 import {
-  DEFAULT_COUNTRY_CALLING_CODE,
   OTP_LENGTH,
   LOGIN_SCREEN,
   OTP_VERIFY_SCREEN,
-  OTP_RESEND_COOLDOWN_SECONDS,
 } from "@/lib/constants";
-import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
-import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
-import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
-import {
-  showErrorAppSnackBar,
-  showSuccessAppSnackBar,
-} from "@/lib/app-snackbar";
+import { isTurnstileConfigured } from "@/lib/env";
+import { useOtpVerifyFlow } from "@/hooks/useOtpVerifyFlow";
+import { maskNationalMobile } from "@/lib/otp-verify-helpers";
 import type { OtpVerifyViewProps } from "@/types";
-import { OTP_CONTACT_TYPE_EMAIL, OTP_CONTACT_TYPE_MOBILE } from "@/types";
-
-function emptyOtpCells(): string[] {
-  return Array.from({ length: OTP_LENGTH }, () => "");
-}
-
-/** Mask national mobile for OTP screen — works for variable lengths. */
-function maskNationalMobile(contact: string): string {
-  const digits = contact.replace(/\D/g, "");
-  if (digits.length <= 4) return "*".repeat(digits.length);
-  const visibleStart = Math.min(2, Math.floor(digits.length / 4));
-  const visibleEnd = Math.min(2, Math.floor(digits.length / 4));
-  const mid = digits.length - visibleStart - visibleEnd;
-  return (
-    digits.slice(0, visibleStart) +
-    "x".repeat(Math.max(mid, 1)) +
-    digits.slice(digits.length - visibleEnd)
-  );
-}
+import { OTP_CONTACT_TYPE_MOBILE } from "@/types";
 
 export function OtpVerifyView({
   contact,
@@ -54,89 +27,13 @@ export function OtpVerifyView({
 }: OtpVerifyViewProps) {
   const LS = useI18nConstants(LOGIN_SCREEN);
   const OV = useI18nConstants(OTP_VERIFY_SCREEN);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { setAuth } = useAuthStore();
-  const [otpCells, setOtpCells] = useState<string[]>(emptyOtpCells);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isResending, setIsResending] = useState(false);
-  const [resendSecondsLeft, setResendSecondsLeft] = useState(
-    OTP_RESEND_COOLDOWN_SECONDS
-  );
-
-  const otpDigits = otpCells.join("");
-  const isComplete = otpDigits.length === OTP_LENGTH;
-  const canResend = resendSecondsLeft <= 0 && !isLoading && !isResending;
-
-  useEffect(() => {
-    if (resendSecondsLeft <= 0) return;
-    const id = window.setTimeout(
-      () => setResendSecondsLeft((s) => s - 1),
-      1000
-    );
-    return () => window.clearTimeout(id);
-  }, [resendSecondsLeft]);
-
-  async function handleVerify() {
-    if (!isComplete || isLoading) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await verifyOtp(
-        contactType === OTP_CONTACT_TYPE_EMAIL
-          ? { email: contact, otp: otpDigits }
-          : {
-              mobile: contact,
-              otp: otpDigits,
-              countryCode: mobileCountryCode ?? DEFAULT_COUNTRY_CALLING_CODE,
-            }
-      );
-      setAuth(response.user, response.token);
-      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpVerified);
-      void import("@/lib/services/push-notifications").then(({ initWebPush }) =>
-        initWebPush()
-      );
-      const dest = resolvePostLoginRedirectPath(
-        searchParams.get(LOGIN_REDIRECT_QUERY),
-        { profileUpdated: response.user.isProfileUpdated }
-      );
-      router.replace(dest);
-    } catch {
-      setError(OV.invalidOtp);
-      showErrorAppSnackBar(OV.invalidOtp);
-      setOtpCells(emptyOtpCells());
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function handleResendOtp() {
-    if (!canResend) return;
-    setIsResending(true);
-    setError(null);
-    try {
-      if (contactType === OTP_CONTACT_TYPE_EMAIL) {
-        await resendOtp({ email: contact });
-      } else {
-        await resendOtp({
-          mobile_number: contact,
-          country_code: (mobileCountryCode ?? DEFAULT_COUNTRY_CALLING_CODE).replace(
-            "+",
-            ""
-          ),
-        });
-      }
-      setOtpCells(emptyOtpCells());
-      setResendSecondsLeft(OTP_RESEND_COOLDOWN_SECONDS);
-      showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
-    } catch {
-      setError(OV.resendError);
-      showErrorAppSnackBar(OV.resendError);
-    } finally {
-      setIsResending(false);
-    }
-  }
+  const flow = useOtpVerifyFlow({
+    contact,
+    contactType,
+    mobileCountryCode,
+    copy: OTP_VERIFY_SCREEN,
+  });
+  const isComplete = flow.otpCells.join("").length === OTP_LENGTH;
   const maskedContact =
     contactType === OTP_CONTACT_TYPE_MOBILE
       ? maskNationalMobile(contact)
@@ -159,24 +56,24 @@ export function OtpVerifyView({
         </div>
 
         <OtpInput
-          value={otpCells}
+          value={flow.otpCells}
           onChange={(next) => {
-            setOtpCells(next);
-            if (error) setError(null);
+            flow.setOtpCells(next);
+            if (flow.error) flow.setError(null);
           }}
-          hasError={!!error}
+          hasError={!!flow.error}
           className="mb-2"
         />
 
-        {error && (
+        {flow.error ? (
           <p className="mb-4 mt-2 text-center text-sm font-semibold text-[var(--color-brand-error)]">
-            {error}
+            {flow.error}
           </p>
-        )}
+        ) : null}
 
         <Button
-          onClick={handleVerify}
-          disabled={!isComplete || isLoading}
+          onClick={() => void flow.handleVerify(isComplete)}
+          disabled={!isComplete || flow.isLoading}
           className={cn(
             "mt-6 h-14 w-full rounded-full text-lg font-medium",
             isComplete && "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
@@ -184,41 +81,24 @@ export function OtpVerifyView({
               "cursor-not-allowed bg-[var(--login-email-cta-disabled-bg)] text-[var(--login-email-cta-disabled-text)]"
           )}
         >
-          {isLoading ? (
-            <Loader variant="inline" size="sm" />
-          ) : (
-            OV.verifyCta
-          )}
+          {flow.isLoading ? <Loader variant="inline" size="sm" /> : OV.verifyCta}
         </Button>
 
-        <button
-          type="button"
-          className={cn(
-            "mt-6 text-center text-sm text-neutral-500 transition-colors",
-            canResend
-              ? "hover:text-[var(--color-brand-primary)]"
-              : "cursor-not-allowed opacity-60"
-          )}
-          onClick={handleResendOtp}
-          disabled={!canResend}
-        >
-          {isResending ? (
-            <Loader variant="inline" size="sm" />
-          ) : resendSecondsLeft > 0 ? (
-            <>
-              {OV.resendWaitPrefix}
-              {resendSecondsLeft}
-              {OV.resendWaitSuffix}
-            </>
-          ) : (
-            <>
-              {OV.resendQuestion}{" "}
-              <span className="font-semibold text-[var(--color-brand-primary)]">
-                {OV.resendCta}
-              </span>
-            </>
-          )}
-        </button>
+        <OtpResendBlock
+          canResend={flow.canResend}
+          isResending={flow.isResending}
+          resendSecondsLeft={flow.resendSecondsLeft}
+          showCaptcha={isTurnstileConfigured()}
+          turnstileKey={flow.turnstileKey}
+          onTokenChange={flow.setTurnstileToken}
+          onResend={() => void flow.handleResendOtp()}
+          labels={{
+            resendWaitPrefix: OV.resendWaitPrefix,
+            resendWaitSuffix: OV.resendWaitSuffix,
+            resendQuestion: OV.resendQuestion,
+            resendCta: OV.resendCta,
+          }}
+        />
       </div>
     </div>
   );

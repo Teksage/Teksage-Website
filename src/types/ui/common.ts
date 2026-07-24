@@ -23,6 +23,8 @@ export interface AppHeaderProps {
   style?: CSSProperties;
   /** Override icon/text colour when AppBar has a non-white background. */
   foregroundColor?: string;
+  /** Optional class names for the title element. */
+  titleClassName?: string;
 }
 
 export interface EmptyStateProps {

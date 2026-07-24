@@ -44,4 +44,12 @@ export const HOME_LAYOUT = {
   exploreFeatureStackGap: "gap-5 sm:gap-6 lg:gap-8",
   /** Match making + daily cards — shared height rhythm. */
   featureCardHeight: "h-[11rem] lg:h-[12.5rem]",
+  /** Event Planner home strip — soft mint (Flutter `mainColor` alpha gradient). */
+  eventPlannerBannerShell:
+    "border border-[color-mix(in_srgb,var(--color-brand-primary)_20%,transparent)] bg-[linear-gradient(135deg,var(--color-muhurtha-banner-top)_0%,var(--color-muhurtha-banner-bottom)_100%)] shadow-sm",
+  /** Flutter `width20` / `responsiveHeight(0.018)` rhythm. */
+  eventPlannerBannerPad: "px-5 py-3.5 sm:px-5 sm:py-4",
+  /** Event Planner mobile grid card shell */
+  eventPlannerCardShell:
+    "bg-[linear-gradient(160deg,var(--color-muhurtha-card-top)_0%,var(--color-muhurtha-card-bottom)_100%)] ring-1 ring-[color-mix(in_srgb,var(--color-muhurtha-card-accent)_28%,transparent)]",
 } as const;

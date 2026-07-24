@@ -6,4 +6,5 @@ export const LOGIN_EMAIL_FORM = {
   placeholder: "Enter Email",
   submitCta: "Continue",
   maxLength: 50,
+  captchaRequired: "Please complete the captcha and try again.",
 } as const;
