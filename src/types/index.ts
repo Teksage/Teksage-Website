@@ -111,6 +111,8 @@ export type {
 export type {
   EmailLoginFormProps,
   MobileLoginFormProps,
+  TurnstileFieldProps,
+  OtpResendBlockProps,
   OtpInputProps,
   OtpVerifyViewProps,
   LoginBackButtonProps,

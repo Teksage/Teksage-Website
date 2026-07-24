@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { CountryDialPicker } from "@/components/common/CountryDialPicker";
+import { TurnstileField } from "@/components/auth/TurnstileField";
 import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import {
   DEFAULT_COUNTRY_CALLING_CODE,
   LOGIN_MOBILE_FORM,
+  TURNSTILE,
 } from "@/lib/constants";
+import { isTurnstileConfigured } from "@/lib/env";
 import { fetchCountries, findCountryByDial } from "@/lib/services/countries";
 import {
   isValidNationalMobile,
@@ -36,6 +39,8 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   useEffect(() => {
     void fetchCountries().then(() => {
@@ -46,8 +51,9 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
     });
   }, [countryCode]);
 
+  const captchaReady = !isTurnstileConfigured() || Boolean(turnstileToken);
   const isValid = isValidNationalMobile(mobile, mobileLength);
-  const canSubmit = isValid && !isLoading;
+  const canSubmit = isValid && !isLoading && captchaReady;
   const maxDigits = nationalMobileMaxLength(mobileLength);
 
   function handleMobileChange(value: string) {
@@ -63,18 +69,28 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) return;
+    if (isTurnstileConfigured() && !turnstileToken) {
+      setError(LOGIN_MOBILE_FORM.captchaRequired);
+      showErrorAppSnackBar(LOGIN_MOBILE_FORM.captchaRequired);
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
       await http.post(API_ENDPOINTS.sendOtp, {
         mobile_number: mobile,
         country_code: countryCode.replace("+", ""),
+        ...(turnstileToken
+          ? { [TURNSTILE.tokenField]: turnstileToken }
+          : {}),
       });
       showSuccessAppSnackBar(APP_SNACKBAR_MESSAGES.otpSent);
       onOtpSent(mobile, countryCode);
     } catch {
       setError(LOGIN_MOBILE_FORM.sendOtpError);
       showErrorAppSnackBar(LOGIN_MOBILE_FORM.sendOtpError);
+      setTurnstileToken(null);
+      setTurnstileKey((k) => k + 1);
     } finally {
       setIsLoading(false);
     }
@@ -121,6 +137,12 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
           </p>
         ) : null}
       </div>
+
+      <TurnstileField
+        remountKey={turnstileKey}
+        onTokenChange={setTurnstileToken}
+      />
+
       <Button
         type="submit"
         disabled={!canSubmit}

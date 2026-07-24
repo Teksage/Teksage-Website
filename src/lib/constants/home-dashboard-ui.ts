@@ -26,7 +26,7 @@ export const HOME_DASHBOARD_UI = {
   chatBannerCta: `${TYPO.bannerFine} text-[var(--color-brand-banner-font)]`,
   eventPlannerBannerRow: "flex w-full items-center justify-between gap-3",
   eventPlannerBannerCopy: "flex min-w-0 flex-1 flex-col items-start gap-1",
-  eventPlannerBannerTitle: `min-w-0 text-left ${TYPO.labelSemibold} font-bold leading-snug text-neutral-500`,
+  eventPlannerBannerTitle: `min-w-0 text-left ${TYPO.labelSemibold} font-bold leading-snug text-neutral-900`,
   eventPlannerBannerCta: `${TYPO.caption} leading-snug text-neutral-500 transition-opacity group-hover:opacity-90`,
   eventPlannerBannerIcon: "inline-flex size-8 shrink-0 text-[var(--color-brand-primary)] sm:size-9",
   eventPlannerBannerCtaArrow: "inline-flex shrink-0",

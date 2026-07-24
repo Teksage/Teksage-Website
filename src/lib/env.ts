@@ -80,3 +80,16 @@ export function getPublicApiBaseUrl(): string {
   cachedPublicApiBaseUrl = readPublicApiBaseUrl();
   return cachedPublicApiBaseUrl;
 }
+
+/**
+ * Cloudflare Turnstile site key (public).
+ * Set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in `.env.local`.
+ * Cloudflare always-pass test key: `1x00000000000000000000AA`
+ */
+export function getTurnstileSiteKey(): string {
+  return process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim() ?? "";
+}
+
+export function isTurnstileConfigured(): boolean {
+  return getTurnstileSiteKey().length > 0;
+}

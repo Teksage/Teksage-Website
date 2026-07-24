@@ -81,16 +81,28 @@ export async function sendOtp(mobile: string): Promise<{ message: string }> {
 
 export async function resendOtp(
   payload:
-    | { email: string }
-    | { mobile_number: string; country_code?: string }
+    | { email: string; cf_turnstile_token?: string }
+    | {
+        mobile_number: string;
+        country_code?: string;
+        cf_turnstile_token?: string;
+      }
 ): Promise<{ message: string }> {
   const body =
     "email" in payload
-      ? { email: payload.email.trim().toLowerCase() }
+      ? {
+          email: payload.email.trim().toLowerCase(),
+          ...(payload.cf_turnstile_token
+            ? { cf_turnstile_token: payload.cf_turnstile_token }
+            : {}),
+        }
       : {
           mobile_number: payload.mobile_number,
           country_code:
             payload.country_code?.replace(/\D/g, "") ?? DEFAULT_COUNTRY_CODE_NUMERIC,
+          ...(payload.cf_turnstile_token
+            ? { cf_turnstile_token: payload.cf_turnstile_token }
+            : {}),
         };
   const { data } = await http.post<{ message: string }>(API_ENDPOINTS.sendOtp, body);
   return data;
