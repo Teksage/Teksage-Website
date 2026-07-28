@@ -60,8 +60,12 @@ export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
                 <MuhurthaStatusBadge
                   suitable={segment.is_suitable}
                   rating={segment.rating}
-                  labelSuitable={M.suitableLabel}
-                  labelNotSuitable={M.notSuitableLabel}
+                  labels={{
+                    veryGood: M.statusVeryGood,
+                    good: M.statusGood,
+                    average: M.statusAverage,
+                    notSuitable: M.notSuitableLabel,
+                  }}
                 />
               </div>
             ))}
@@ -104,8 +108,12 @@ export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
         <MuhurthaStatusBadge
           suitable={day.is_suitable}
           rating={day.rating}
-          labelSuitable={M.suitableLabel}
-          labelNotSuitable={M.notSuitableLabel}
+          labels={{
+            veryGood: M.statusVeryGood,
+            good: M.statusGood,
+            average: M.statusAverage,
+            notSuitable: M.notSuitableLabel,
+          }}
         />
       </div>
 

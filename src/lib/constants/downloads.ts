@@ -8,4 +8,5 @@ export const DOWNLOAD_FILENAMES = {
   yearlyPredictionPdf: "yearly-prediction.pdf",
   lifePredictionPdf: "life-prediction.pdf",
   matchMakingPdf: "match-making.pdf",
+  eventPlannerResultPng: "event-planner-result.png",
 } as const;

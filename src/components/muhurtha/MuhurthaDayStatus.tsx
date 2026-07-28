@@ -4,10 +4,9 @@ import { useT } from "@/hooks/useT";
 import { MUHURTHA_LAYOUT } from "@/lib/constants";
 import {
   formatMuhurthaMoreReasons,
+  formatMuhurthaStatusLabel,
   formatMuhurthaWindows,
-  muhurthaStatusBadgeClass,
 } from "@/lib/muhurtha-format";
-import { cn } from "@/lib/utils";
 import type { MuhurthaDaySegment } from "@/types/muhurtha";
 import { MuhurthaReasonInfo } from "@/components/muhurtha/MuhurthaReasonInfo";
 
@@ -27,32 +26,20 @@ export function muhurthaSegmentReasons(
 export function MuhurthaStatusBadge({
   suitable,
   rating,
-  labelSuitable,
-  labelNotSuitable,
+  labels,
 }: {
   suitable: boolean;
   rating?: string;
-  labelSuitable: string;
-  labelNotSuitable: string;
+  labels: {
+    veryGood: string;
+    good: string;
+    average: string;
+    notSuitable: string;
+  };
 }) {
   const L = MUHURTHA_LAYOUT;
-  const { t } = useT();
-  if (!suitable) {
-    return (
-      <span className={cn(L.statusBadgeBase, L.statusUnsuitable)}>{labelNotSuitable}</span>
-    );
-  }
-  return (
-    <span className={cn(L.statusBadgeBase, muhurthaStatusBadgeClass(rating, L))}>
-      <span>{labelSuitable}</span>
-      {rating ? (
-        <>
-          <span className={L.statusSeparator}>–</span>
-          <span>{t(rating)}</span>
-        </>
-      ) : null}
-    </span>
-  );
+  const label = formatMuhurthaStatusLabel({ suitable, rating, labels });
+  return <span className={L.statusBadgeBase}>{label}</span>;
 }
 
 export function MuhurthaSegmentDetails({
