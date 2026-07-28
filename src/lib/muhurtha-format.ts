@@ -1,4 +1,4 @@
-/** Format Event Planner window strings from API payloads. */
+/** Format Event Planner window strings and status labels from API payloads. */
 
 export function formatMuhurthaWindow(window: string): string {
   const parts = window.split(/\s+To\s+/i);
@@ -19,22 +19,6 @@ export function formatMuhurthaWindows(day: {
   return [];
 }
 
-export function muhurthaStatusBadgeClass(
-  rating: string | undefined,
-  layout: {
-    statusSuitable: string;
-    statusSuitableVeryGood: string;
-    statusSuitableGood: string;
-    statusSuitableAverage: string;
-  }
-): string {
-  const tone = muhurthaRatingTone(rating ?? "");
-  if (tone === "veryGood") return layout.statusSuitableVeryGood;
-  if (tone === "good") return layout.statusSuitableGood;
-  if (tone === "average") return layout.statusSuitableAverage;
-  return layout.statusSuitable;
-}
-
 export function muhurthaRatingTone(
   rating: string
 ): "veryGood" | "good" | "average" | "default" {
@@ -43,6 +27,24 @@ export function muhurthaRatingTone(
   if (key === "good") return "good";
   if (key === "average") return "average";
   return "default";
+}
+
+/** Plain status line: emoji dot + black label (no “Suitable” / no chip colors). */
+export function formatMuhurthaStatusLabel(args: {
+  suitable: boolean;
+  rating?: string;
+  labels: {
+    veryGood: string;
+    good: string;
+    average: string;
+    notSuitable: string;
+  };
+}): string {
+  if (!args.suitable) return args.labels.notSuitable;
+  const tone = muhurthaRatingTone(args.rating ?? "");
+  if (tone === "average") return args.labels.average;
+  if (tone === "good") return args.labels.good;
+  return args.labels.veryGood;
 }
 
 export function formatMuhurthaMoreReasons(extraCount: number): string {

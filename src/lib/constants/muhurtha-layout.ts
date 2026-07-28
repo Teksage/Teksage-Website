@@ -36,14 +36,20 @@ export const MUHURTHA_LAYOUT = {
   submitWrap: "flex justify-center pt-2",
   submitCta: primaryCta,
   resultsRoot: "mx-auto w-full space-y-4",
-  resultsHeaderCard: `${panchangCard} p-4 sm:p-5`,
-  resultsHeaderTop: "flex flex-col items-stretch gap-3 sm:flex-row sm:items-start sm:justify-between",
-  resultsHeaderCopy: "min-w-0 space-y-2 text-center sm:text-left",
+  shareCaptureShell: "relative",
+  shareCaptureRoot: "space-y-4 bg-[var(--color-brand-horoscope-bg)]",
+  resultsHeaderCard: `${panchangCard} p-4 pr-12 sm:p-5 sm:pr-14`,
+  resultsHeaderTop: "flex flex-row items-start justify-between gap-3",
+  resultsHeaderCopy: "min-w-0 flex-1 space-y-2 text-center sm:text-left",
   resultsTitle: `${TYPO.h3Bold} text-[var(--color-brand-black)]`,
   resultsSubtitle: `${TYPO.bodySm} text-[var(--color-brand-black)]/65`,
   resultsMetaRow: "flex flex-wrap justify-center gap-2 sm:justify-start",
   metaChip:
     "inline-flex items-center rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] px-2.5 py-0.5 text-xs font-medium text-[var(--color-brand-black)]/75 ring-1 ring-[color-mix(in_srgb,var(--color-brand-primary)_15%,transparent)]",
+  resultsHeaderActions: "absolute right-2 top-2 z-10 flex shrink-0 items-start justify-end",
+  resultsShareBtn:
+    "inline-flex size-10 shrink-0 items-center justify-center rounded-full text-[var(--color-brand-black)]/70 transition-colors hover:bg-black/5 hover:text-[var(--color-brand-black)] disabled:opacity-50",
+  resultsShareIcon: "size-5",
   backCta:
     "ml-auto inline-flex min-h-9 min-w-[8.5rem] shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90 sm:ml-0 sm:min-h-12 sm:min-w-[12rem] sm:px-8 sm:text-base",
   resultsActionsRow: "flex flex-nowrap items-center justify-end gap-2 pt-1 sm:gap-3",
@@ -68,17 +74,7 @@ export const MUHURTHA_LAYOUT = {
   segmentDetailsStack: "flex min-w-0 flex-col items-end gap-1.5 text-right",
   segmentDetailBlock: "flex min-w-0 flex-col items-end gap-0.5",
   statusBadgeBase:
-    "inline-flex w-fit max-w-full flex-wrap items-center gap-x-0.5 rounded-full px-2 py-0.5 text-[10px] font-semibold leading-tight sm:px-2.5 sm:text-xs",
-  statusSuitable:
-    "bg-[var(--color-muhurtha-suitable-bg)] text-[var(--color-muhurtha-suitable-text)] ring-1 ring-[var(--color-muhurtha-suitable-ring)]",
-  statusSuitableVeryGood:
-    "bg-[var(--color-muhurtha-status-very-good-bg)] text-[var(--color-muhurtha-status-very-good-text)] ring-1 ring-[var(--color-muhurtha-status-very-good-ring)]",
-  statusSuitableGood:
-    "bg-[var(--color-muhurtha-status-good-bg)] text-[var(--color-muhurtha-status-good-text)] ring-1 ring-[var(--color-muhurtha-status-good-ring)]",
-  statusSuitableAverage:
-    "bg-[var(--color-muhurtha-status-average-bg)] text-[var(--color-muhurtha-status-average-text)] ring-1 ring-[var(--color-muhurtha-status-average-ring)]",
-  statusUnsuitable:
-    "bg-[var(--color-muhurtha-unsuitable-bg)] text-[var(--color-muhurtha-unsuitable-text)] ring-1 ring-[var(--color-muhurtha-unsuitable-ring)]",
+    "inline-flex w-fit max-w-full items-center text-left text-[11px] font-semibold leading-snug text-[var(--color-brand-black)] sm:text-xs",
   statusSeparator: "font-semibold opacity-80",
   detailsTimeBlock: "flex min-w-0 flex-col items-end gap-0.5 text-right",
   dayRowWindow: "text-[10px] font-medium leading-tight text-[var(--color-brand-black)]/80 sm:text-sm",
