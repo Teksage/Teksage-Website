@@ -1,7 +1,6 @@
 import { toBlob } from "html-to-image";
 import { DOWNLOAD_FILENAMES } from "@/lib/constants/downloads";
 import { MUHURTHA_SCREEN } from "@/lib/constants/muhurtha-screen";
-import { PUBLIC_SITE_ORIGIN } from "@/lib/constants/site";
 import { ROUTES } from "@/lib/constants/routes";
 
 export type MuhurthaImageShareOutcome =
@@ -13,17 +12,18 @@ export type MuhurthaImageShareOutcome =
 
 const PIXEL_RATIO = 2;
 const BLOB_REVOKE_DELAY_MS = 2000;
+const MUHURTHA_SHARE_ORIGIN = "https://my.teksage.app";
 
 /** Keep localhost/dev page URL; rewrite only non-local hosts to production. */
 export function toPublicMuhurthaShareUrl(pageUrl: string): string {
   try {
     const fallbackOrigin =
-      typeof window !== "undefined" ? window.location.origin : PUBLIC_SITE_ORIGIN;
+      typeof window !== "undefined" ? window.location.origin : MUHURTHA_SHARE_ORIGIN;
     const parsed = new URL(pageUrl, fallbackOrigin);
     const host = parsed.hostname;
     const isLocal =
       host === "localhost" || host === "127.0.0.1" || host.endsWith(".local");
-    const origin = isLocal ? parsed.origin : PUBLIC_SITE_ORIGIN;
+    const origin = isLocal ? parsed.origin : MUHURTHA_SHARE_ORIGIN;
     const path = parsed.pathname.includes("event-planner")
       ? parsed.pathname
       : ROUTES.eventPlannerResults;
