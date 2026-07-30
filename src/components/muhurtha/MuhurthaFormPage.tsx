@@ -29,6 +29,7 @@ export function MuhurthaFormPage() {
     location,
     locationFull,
     locationError,
+    dateError,
     onLocationChange,
     submit,
   } = useMuhurthaForm();
@@ -89,6 +90,7 @@ export function MuhurthaFormPage() {
             location={location}
             locationFull={locationFull}
             locationError={locationError}
+            dateError={dateError}
             onEventChange={(v) => setEvent(v as MuhurthaEventType)}
             onStartDateChange={setStartDate}
             onLocationChange={onLocationChange}

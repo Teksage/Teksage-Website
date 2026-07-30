@@ -10,6 +10,7 @@ export interface MuhurthaFormViewProps {
   location: string;
   locationFull: string;
   locationError: string | null;
+  dateError: string | null;
   onEventChange: (value: string) => void;
   onStartDateChange: (value: string) => void;
   onLocationChange: (selected: string, full: string) => void;
