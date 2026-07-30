@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
 import { useMuhurthaAccess } from "@/hooks/useMuhurthaAccess";
 import { MUHURTHA_SCREEN } from "@/lib/constants/muhurtha-screen";
+import { isMuhurthaStartDateAllowed } from "@/lib/muhurtha-date-range";
 import { buildEventPlannerResultsPath } from "@/lib/muhurtha-route";
 import { toIsoDate } from "@/lib/panchang-calendar";
 import type { MuhurthaEventType } from "@/types/muhurtha";
@@ -19,6 +20,7 @@ export function useMuhurthaForm() {
   const [location, setLocation] = useState("");
   const [locationFull, setLocationFull] = useState("");
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [dateError, setDateError] = useState<string | null>(null);
 
   useEffect(() => {
     const preferred = user?.preferredLocation?.trim() ?? "";
@@ -33,14 +35,24 @@ export function useMuhurthaForm() {
     setLocationError(null);
   }, []);
 
+  const onStartDateChange = useCallback((value: string) => {
+    setStartDate(value);
+    setDateError(null);
+  }, []);
+
   const submit = useCallback(() => {
     if (!maySearch) return;
+    if (!isMuhurthaStartDateAllowed(startDate)) {
+      setDateError(M.startDateOutOfRange);
+      return;
+    }
     const scanLocation = (locationFull || location).trim();
     if (!scanLocation) {
       setLocationError(M.locationRequired);
       return;
     }
     setLocationError(null);
+    setDateError(null);
     router.push(
       buildEventPlannerResultsPath({
         event,
@@ -48,16 +60,26 @@ export function useMuhurthaForm() {
         location: scanLocation,
       })
     );
-  }, [M.locationRequired, event, location, locationFull, maySearch, router, startDate]);
+  }, [
+    M.locationRequired,
+    M.startDateOutOfRange,
+    event,
+    location,
+    locationFull,
+    maySearch,
+    router,
+    startDate,
+  ]);
 
   return {
     event,
     setEvent,
     startDate,
-    setStartDate,
+    setStartDate: onStartDateChange,
     location,
     locationFull,
     locationError,
+    dateError,
     onLocationChange,
     submit,
   };

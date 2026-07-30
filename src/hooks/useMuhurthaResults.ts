@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { useMuhurthaAccess } from "@/hooks/useMuhurthaAccess";
+import { MUHURTHA_DATE } from "@/lib/constants/muhurtha-date";
 import { MUHURTHA_QUERY } from "@/lib/constants/muhurtha-query";
 import { MUHURTHA_SCREEN } from "@/lib/constants/muhurtha-screen";
 import { ROUTES } from "@/lib/constants/routes";
@@ -13,6 +14,7 @@ import {
   readEventPlannerCache,
   writeEventPlannerCache,
 } from "@/lib/event-planner-cache";
+import { isMuhurthaStartDateAllowed } from "@/lib/muhurtha-date-range";
 import { getStoredAppLanguageName } from "@/lib/settings-language-storage";
 import { fetchMuhurtha } from "@/lib/services/muhurtha";
 import { useAuthStore } from "@/store/auth.store";
@@ -28,6 +30,7 @@ function isEventType(value: string | null): value is MuhurthaEventType {
 
 export function useMuhurthaResults() {
   const M = useI18nConstants(MUHURTHA_SCREEN);
+  const { t } = useT();
   const { version: languageVersion } = useAppLanguage();
   const userId = useAuthStore((state) => state.user?.id ?? "guest");
   const router = useRouter();
@@ -50,6 +53,13 @@ export function useMuhurthaResults() {
     }
     if (!isEventType(event) || !startDate?.trim() || !location?.trim()) {
       router.replace(ROUTES.eventPlanner);
+      return;
+    }
+
+    if (!isMuhurthaStartDateAllowed(startDate)) {
+      setError(t(MUHURTHA_DATE.startDateOutOfRange));
+      setData(null);
+      setIsLoading(false);
       return;
     }
 
@@ -86,7 +96,8 @@ export function useMuhurthaResults() {
       })
       .catch((e: Error) => {
         if (!cancelled) {
-          setError(e.message || M.loadErrorFallback);
+          const raw = e.message || M.loadErrorFallback;
+          setError(t(raw));
           setData(null);
         }
       })
@@ -106,6 +117,7 @@ export function useMuhurthaResults() {
     retryToken,
     router,
     startDate,
+    t,
     userId,
   ]);
 

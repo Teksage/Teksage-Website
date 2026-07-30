@@ -1,5 +1,8 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import { MUHURTHA_DATE } from "@/lib/constants/muhurtha-date";
+import { MUHURTHA_SCREEN } from "@/lib/constants/muhurtha-screen";
+import { messageFromProfileApiError } from "@/lib/profile-api-error";
 import type { MuhurthaPayload, MuhurthaResult, MuhurthaSearchParams } from "@/types/muhurtha";
 
 interface MuhurthaApiBody {
@@ -25,12 +28,25 @@ function parseMuhurthaBody(body: MuhurthaApiBody): MuhurthaPayload {
 export async function fetchMuhurtha(
   params: MuhurthaSearchParams
 ): Promise<MuhurthaPayload> {
-  const { data } = await http.get<MuhurthaApiBody>(API_ENDPOINTS.eventPlanner, {
-    params: {
-      event: params.event,
-      start_date: params.startDate,
-      location: params.location,
-    },
-  });
-  return parseMuhurthaBody(data);
+  try {
+    const { data } = await http.get<MuhurthaApiBody>(API_ENDPOINTS.eventPlanner, {
+      params: {
+        event: params.event,
+        start_date: params.startDate,
+        location: params.location,
+      },
+    });
+    return parseMuhurthaBody(data);
+  } catch (error) {
+    const detail = messageFromProfileApiError(error);
+    if (
+      detail?.includes("30 days") ||
+      detail === MUHURTHA_DATE.startDateOutOfRange
+    ) {
+      throw new Error(MUHURTHA_DATE.startDateOutOfRange);
+    }
+    if (detail) throw new Error(detail);
+    if (error instanceof Error && error.message) throw error;
+    throw new Error(MUHURTHA_SCREEN.loadErrorFallback);
+  }
 }
