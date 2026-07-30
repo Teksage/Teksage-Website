@@ -8,6 +8,7 @@ export const MUHURTHA_SCREEN = {
   eventLabel: "Event type",
   startDateLabel: "Start date",
   startDateHint: "Searching the next 7 days from this date",
+  startDateOutOfRange: "Choose a date within the next 30 days.",
   locationLabel: "Location",
   locationFromProfile: "From your profile",
   findCta: "Find Auspicious Dates",

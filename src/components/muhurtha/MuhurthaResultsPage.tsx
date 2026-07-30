@@ -91,11 +91,29 @@ export function MuhurthaResultsPage() {
           <PredictionProfilePrompt />
         ) : error && !isLoading ? (
           <EmptyState
-            title={M.loadErrorTitle}
-            description={error}
+            title={
+              error === M.startDateOutOfRange
+                ? M.startDateOutOfRange
+                : M.loadErrorTitle
+            }
+            description={
+              error === M.startDateOutOfRange ? undefined : error
+            }
             action={
-              <Button type="button" className={L.submitCta} onClick={retry}>
-                {M.tryAgainCta}
+              <Button
+                type="button"
+                className={L.submitCta}
+                onClick={() => {
+                  if (error === M.startDateOutOfRange) {
+                    router.push(ROUTES.eventPlanner);
+                    return;
+                  }
+                  retry();
+                }}
+              >
+                {error === M.startDateOutOfRange
+                  ? M.backToFormCta
+                  : M.tryAgainCta}
               </Button>
             }
           />
