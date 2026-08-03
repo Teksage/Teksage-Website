@@ -2,6 +2,8 @@ import { TYPO } from "@/lib/constants/typography";
 import type { GettingStartedVideo } from "@/types/getting-started";
 
 export const GETTING_STARTED_YOUTUBE_VIDEO_ID_INTRO = "ZDkYDsDu42Y" as const;
+export const GETTING_STARTED_YOUTUBE_VIDEO_ID_AUSPICIOUS_DATES =
+  "JccJJZJGWUQ" as const;
 
 export const GETTING_STARTED_SCREEN = {
   menuLabel: "Getting Started",
@@ -17,6 +19,11 @@ export const GETTING_STARTED_VIDEOS: readonly GettingStartedVideo[] = [
     id: "intro",
     title: "Welcome to Teksage",
     youtubeVideoId: GETTING_STARTED_YOUTUBE_VIDEO_ID_INTRO,
+  },
+  {
+    id: "auspicious-dates",
+    title: "Find the Best Auspicious Dates for Any Important Event",
+    youtubeVideoId: GETTING_STARTED_YOUTUBE_VIDEO_ID_AUSPICIOUS_DATES,
   },
 ] as const;
 
