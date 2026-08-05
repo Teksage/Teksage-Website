@@ -27,13 +27,13 @@ export const useAuthStore = create<AuthState>()(
       updateUser: (updates) =>
         set((state) => {
           if (!state.user) return { user: null };
-          const next = { ...state.user };
-          (Object.keys(updates) as (keyof UserProfile)[]).forEach((key) => {
-            const value = updates[key];
+          const next: UserProfile = { ...state.user };
+          for (const [key, value] of Object.entries(updates)) {
+            // Keep explicit `false` (e.g. showPartnerReferralSection).
             if (value !== undefined) {
-              (next as Record<string, unknown>)[key as string] = value;
+              (next as Record<string, unknown>)[key] = value;
             }
-          });
+          }
           return { user: next };
         }),
     }),

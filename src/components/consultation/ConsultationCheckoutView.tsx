@@ -46,6 +46,11 @@ import {
   consultationBookPaymentAmount,
   initialConsultationPricing,
 } from "@/lib/consultation-pricing";
+import {
+  PARTNER_CHECKOUT_CODE,
+  partnerConsultPct,
+} from "@/lib/partner-discount";
+import { fetchPartnerMyDiscount } from "@/lib/services/partner-discount-api";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
@@ -104,9 +109,10 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
     let cancelled = false;
     (async () => {
       try {
-        const [detail, userProfile] = await Promise.all([
+        const [detail, userProfile, liveDiscount] = await Promise.all([
           fetchAstrologerDetail(astrologerId),
           fetchProfile(),
+          fetchPartnerMyDiscount().catch(() => null),
         ]);
         const fee = consultationFeeForAstrologer(detail.astrologer, currency);
         if (cancelled) return;
@@ -118,7 +124,15 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
           astrologerName: consultationAstrologerName(detail.astrologer.user) || d.astrologerName || "",
           astrologerPicture: detail.astrologer.picture ?? d.astrologerPicture,
         });
-        setPricing(initialConsultationPricing(fee, currency));
+        const partnerPct = partnerConsultPct(
+          liveDiscount ?? userProfile.partnerDiscount
+        );
+        setPricing(initialConsultationPricing(fee, currency, partnerPct));
+        if (partnerPct > 0) {
+          setCouponApplied(true);
+          setAppliedCouponCode(PARTNER_CHECKOUT_CODE);
+          setCouponCode(PARTNER_CHECKOUT_CODE);
+        }
       } catch {
         if (!cancelled) router.replace(consultationSlotsPath(astrologerId));
       }
@@ -143,8 +157,10 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
 
   const booking = draft;
   const totals = pricing;
+  const referralLocked = appliedCouponCode === PARTNER_CHECKOUT_CODE;
 
   function onCouponChange(value: string) {
+    if (referralLocked) return;
     setCouponCode(value);
     if (
       (couponApplied || promoError) &&
@@ -160,7 +176,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
   }
 
   async function onApplyCoupon() {
-    if (!couponCode.trim()) return;
+    if (referralLocked || !couponCode.trim()) return;
     setBusy(true);
     setPromoError(null);
     try {
@@ -176,10 +192,12 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
       setAppliedCouponId(couponId);
       setCouponApplied(true);
       setAppliedCouponCode(couponCode.trim());
+      showSuccessAppSnackBar(PROMO.appliedToast, { position: "top" });
     } catch {
       setCouponApplied(false);
       setAppliedCouponId(null);
       setPromoError(PROMO.invalidPromo);
+      showErrorAppSnackBar(PROMO.invalidPromo, { position: "top" });
       if (booking.fee != null) {
         setPricing(initialConsultationPricing(booking.fee, currency));
       }
@@ -321,6 +339,7 @@ export function ConsultationCheckoutView({ astrologerId }: ConsultationCheckoutV
         currency={currency}
         couponCode={couponCode}
         couponApplied={couponApplied}
+        referralLocked={referralLocked}
         promoError={promoError}
         busy={busy}
         onCouponChange={onCouponChange}

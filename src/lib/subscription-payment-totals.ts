@@ -48,23 +48,39 @@ function enrichSubscriptionPlan(
 
 export function totalsFromPlan(
   plan: SubscriptionPlan,
-  currency: "INR" | "USD"
+  currency: "INR" | "USD",
+  partnerPct = 0
 ): PaymentTotals {
   const enriched = enrichSubscriptionPlan(plan, currency);
   const planCost =
     currency === "INR" ? enriched.localPlanPrice : enriched.foreignPlanPrice;
-  const total =
-    currency === "INR"
-      ? enriched.localTotalAmount
-      : enriched.foreignTotalAmount;
+  const pct = Math.max(0, Number(partnerPct) || 0);
+  const discount = pct > 0 ? Math.round(planCost * (pct / 100) * 100) / 100 : 0;
+  const discounted = Math.max(0, planCost - discount);
+  if (currency === "INR") {
+    const cgstPct = enriched.cgstPercentage || INR_CGST_PCT;
+    const sgstPct = enriched.sgstPercentage || INR_SGST_PCT;
+    const cgst = Math.round(((discounted * cgstPct) / 100) * 100) / 100;
+    const sgst = Math.round(((discounted * sgstPct) / 100) * 100) / 100;
+    return {
+      planCost,
+      discount,
+      cgst,
+      sgst,
+      cgstPct,
+      sgstPct,
+      total: Math.round((discounted + cgst + sgst) * 100) / 100,
+      couponId: "",
+    };
+  }
   return {
     planCost,
-    discount: 0,
-    cgst: enriched.cgstAmount,
-    sgst: enriched.sgstAmount,
-    cgstPct: enriched.cgstPercentage,
-    sgstPct: enriched.sgstPercentage,
-    total,
+    discount,
+    cgst: 0,
+    sgst: 0,
+    cgstPct: 0,
+    sgstPct: 0,
+    total: discounted,
     couponId: "",
   };
 }

@@ -4,7 +4,9 @@ import { TYPO } from "@/lib/constants/typography";
 export const COUPON_PROMO_COPY = {
   invalidPromo: "Invalid or expired promo code.",
   applied: "Applied",
+  appliedToast: "Coupon applied",
   consultationSaved: "Coupon applied & you saved",
+  referralSaved: "Referral discount applied & you saved",
 } as const;
 
 export const COUPON_PROMO_LAYOUT = {
@@ -21,9 +23,11 @@ export const COUPON_PROMO_LAYOUT = {
   consultationWrapApplied:
     "flex gap-2 rounded-xl border border-[var(--color-consult-user-bg)] bg-white p-1",
   consultationInput:
-    "min-w-0 flex-1 rounded-lg border-0 bg-white px-3 py-2.5 text-sm outline-none",
+    "min-w-0 flex-1 rounded-lg border-0 bg-white px-3 py-2.5 text-sm outline-none disabled:cursor-not-allowed disabled:text-neutral-500",
   consultationApply:
-    "shrink-0 rounded-lg border border-[var(--color-consult-user-bg)] px-4 py-2.5 text-sm font-semibold text-[var(--color-consult-user-bg)] disabled:opacity-60",
+    "shrink-0 rounded-lg border border-[var(--color-consult-user-bg)] px-4 py-2.5 text-sm font-semibold text-[var(--color-consult-user-bg)] disabled:cursor-not-allowed disabled:opacity-60",
+  consultationWrapDisabled:
+    "flex gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-1 opacity-90",
   error: `${TYPO.caption} mt-1.5 text-[var(--color-brand-error)]`,
   savedRow: `mt-1.5 flex items-center justify-between ${TYPO.caption} font-medium text-[var(--color-consult-user-bg)]`,
 } as const;

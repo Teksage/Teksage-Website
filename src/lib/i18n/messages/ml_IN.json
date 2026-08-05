@@ -610,5 +610,17 @@
   "Event Plan (for reference)": "റഫറൻസിനായി ഇവന്റ് പ്ലാൻ",
   "Please record or attach a voice answer before submitting.": "സമർപ്പിക്കുന്നതിന് മുമ്പ് ദയവായി വോയിസ് ഉത്തരം റെക്കോർഡ് ചെയ്യുക അല്ലെങ്കിൽ അറ്റാച്ച് ചെയ്യുക.",
   "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "ഈ ഉത്തരം സമർപ്പിക്കാൻ നിങ്ങൾക്ക് ഉറപ്പാണോ? സമർപ്പിച്ചതിന് ശേഷം നിങ്ങൾക്ക് ഇത് എഡിറ്റ് ചെയ്യാൻ കഴിയില്ല.",
-  "Record your answer (required)": "നിങ്ങളുടെ ഉത്തരം റെക്കോർഡ് ചെയ്യുക (ആവശ്യമാണ്)"
+  "Record your answer (required)": "നിങ്ങളുടെ ഉത്തരം റെക്കോർഡ് ചെയ്യുക (ആവശ്യമാണ്)",
+  "Referral code": "Referral code",
+  "e.g. ASTRO001": "e.g. ASTRO001",
+  "Applying…": "Applying…",
+  "Referral code applied": "Referral code applied",
+  "Your referral discounts are ready. Check Home for days left on subscription and consultation.": "Your referral discounts are ready. Check Home for days left on subscription and consultation.",
+  "Referral code already applied": "Referral code already applied",
+  "Invalid referral code": "Invalid referral code",
+  "Referral discount": "Referral discount",
+  "Subscription discount — {days} days left": "Subscription discount — {days} days left",
+  "Consultation discount — {days} days left": "Consultation discount — {days} days left",
+  "Referral discount applied": "Referral discount applied",
+  "{days} days left": "{days} days left"
 }

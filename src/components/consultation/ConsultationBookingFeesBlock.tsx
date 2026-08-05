@@ -18,6 +18,7 @@ export function ConsultationBookingFeesBlock({
   currency,
   couponCode,
   couponApplied,
+  referralLocked = false,
   promoError,
   busy,
   onCouponChange,
@@ -26,7 +27,9 @@ export function ConsultationBookingFeesBlock({
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const C = useI18nConstants(CONSULTATION_SCREEN);
   const PROMO = useI18nConstants(COUPON_PROMO_COPY);
-  const currencySymbol = currency === "INR" ? "\u20b9" : "$";
+  const hasDiscount = totals.discount > 0;
+  /** Original fee before discount — tax is on discounted amount. */
+  const baseFee = totals.plan_price > 0 ? totals.plan_price : totals.discounted_price;
 
   return (
     <div className="space-y-3">
@@ -37,20 +40,24 @@ export function ConsultationBookingFeesBlock({
           applied={couponApplied}
           error={promoError}
           busy={busy}
+          disabled={referralLocked}
           placeholder={C.couponPlaceholder}
           applyLabel={C.applyCoupon}
           appliedLabel={PROMO.applied}
-          savingsLabel={PROMO.consultationSaved}
-          savingsAmount={couponApplied ? totals.discount : null}
-          currencySymbol={currencySymbol}
           onChange={onCouponChange}
           onApply={onApplyCoupon}
         />
       </div>
       <div className={CONSULTATION_BOOKING_LAYOUT.feeRow}>
         <span>{CB.consultationFee}</span>
-        <span>{formatFeeSlash(totals.discounted_price, currency)}</span>
+        <span>{formatFeeSlash(baseFee, currency)}</span>
       </div>
+      {hasDiscount ? (
+        <div className={CONSULTATION_BOOKING_LAYOUT.feeDiscountRow}>
+          <span>{referralLocked ? CB.referralDiscount : C.discount}</span>
+          <span>-{formatFeeSlash(totals.discount, currency)}</span>
+        </div>
+      ) : null}
       {totals.cgst > 0 ? (
         <div className={CONSULTATION_BOOKING_LAYOUT.feeRow}>
           <span>{C.cgst}</span>

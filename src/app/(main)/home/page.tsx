@@ -3,13 +3,13 @@
 import { useDashboard } from "@/hooks/useDashboard";
 import { formatHomeDashboardDate } from "@/lib/utils";
 import { ConsultationBanner } from "@/components/home/ConsultationBanner";
+import { PartnerDiscountHomeBanner } from "@/components/home/PartnerDiscountHomeBanner";
 import { PredictionCircles } from "@/components/home/PredictionCircles";
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
 import { MuhurthaBanner } from "@/components/home/MuhurthaBanner";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
-import { HomePanchangTimingMobileCard } from "@/components/home/HomePanchangTimingMobileCard";
 import { HomeDashboardHeader } from "@/components/home/HomeDashboardHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { HOME_LAYOUT, MAIN_TAB_VIEWPORT_BACKDROP, PAGE_SHELL } from "@/lib/constants";
@@ -64,7 +64,9 @@ export default function HomePage() {
             isLoggedIn={isAuthenticated}
             isAstrologer={isAuthenticated && isAstrologer}
           />
-          {isAuthenticated ? <HomePanchangTimingMobileCard /> : null}
+          {isAuthenticated ? (
+            <PartnerDiscountHomeBanner discount={user?.partnerDiscount} />
+          ) : null}
 
           <div
             className={cn(

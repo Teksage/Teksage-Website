@@ -11,6 +11,7 @@ export function PromoCodeField({
   applied,
   error,
   busy,
+  disabled = false,
   placeholder,
   applyLabel,
   appliedLabel,
@@ -22,7 +23,9 @@ export function PromoCodeField({
 }: PromoCodeFieldProps) {
   const L = COUPON_PROMO_LAYOUT;
   const isSubscription = variant === "subscription";
-  const wrapClass = isSubscription
+  const locked = disabled || busy;
+
+  let wrapClass = isSubscription
     ? applied
       ? L.subscriptionWrapApplied
       : L.subscriptionWrap
@@ -30,8 +33,13 @@ export function PromoCodeField({
       ? L.consultationWrapApplied
       : L.consultationWrap;
 
+  if (!isSubscription && disabled) {
+    wrapClass = L.consultationWrapDisabled;
+  }
+
   const showSavings =
     variant === "consultation" &&
+    !disabled &&
     applied &&
     savingsAmount != null &&
     savingsAmount > 0 &&
@@ -43,13 +51,18 @@ export function PromoCodeField({
         <input
           type="text"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            if (disabled) return;
+            onChange(e.target.value);
+          }}
           placeholder={placeholder}
+          disabled={locked}
+          readOnly={disabled}
           className={isSubscription ? L.subscriptionInput : L.consultationInput}
         />
         <button
           type="button"
-          disabled={busy || applied}
+          disabled={locked || applied}
           onClick={onApply}
           className={isSubscription ? L.subscriptionApply : L.consultationApply}
         >

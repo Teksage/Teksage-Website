@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Teksage Website
 
-## Getting Started
+Next.js web app for **Teksage** — mobile-first customer experience mirroring the Flutter app (auth, home, chat, predictions, consultation, Event Planner, settings, and more).
 
-First, run the development server:
+Backend: FastAPI ([Teksage-backend-latest](../Teksage-backend-latest)). Sister apps: [Teksage-Mobile-App](../Teksage-Mobile-App), [Teksage-admin](../Teksage-admin).
+
+---
+
+## Stack
+
+| Piece | Technology |
+|-------|------------|
+| Framework | Next.js **16** (App Router) |
+| UI | React 19, Tailwind, shadcn/ui |
+| State / data | Feature hooks, contexts, stores under `src/` |
+| i18n | `src/lib/i18n/messages/*.json` + `translate()` |
+| Package manager | **npm** (`package-lock.json`) |
+
+> This Next.js version may differ from older tutorials. Prefer docs under `node_modules/next/dist/docs/` and [AGENTS.md](AGENTS.md) before using outdated patterns.
+
+---
+
+## Prerequisites
+
+- Node.js **20+** recommended
+- npm
+- Running Teksage backend (default `http://127.0.0.1:8000`) for full functionality
+
+---
+
+## Quick start
+
+```bash
+cd teksage-website
+npm install
+```
+
+### Environment
+
+Create `.env.local` in the project root (no committed `.env.example` — use the template below or [`.env.vercel.production.template`](.env.vercel.production.template) for production names).
+
+**Local development example**
+
+```env
+# Browser calls same-origin /api/* ; Next rewrites to the backend
+NEXT_PUBLIC_API_BASE_URL=same-origin
+BACKEND_PROXY_TARGET=http://127.0.0.1:8000
+BACKEND_URL=http://127.0.0.1:8000
+
+# WebSocket base (use backend origin; wss:// required on HTTPS hosts)
+NEXT_PUBLIC_WS_BASE_URL=http://127.0.0.1:8000
+
+# Optional for local
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=
+NEXT_PUBLIC_POSTHOG_ENABLE_IN_DEV=false
+```
+
+**Other public vars** (when features are needed):
+
+- Firebase: `NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY`
+- Turnstile: `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+- PostHog: `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`
+- Server-only: `GOOGLE_PLACES_API_KEY`
+
+Env helpers live in [`src/lib/env.ts`](src/lib/env.ts). **Never hardcode API hosts in components** — use env + [`src/lib/constants/api.ts`](src/lib/constants/api.ts).
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open **http://localhost:3000**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | Purpose |
+|--------|---------|
+| `npm run dev` | Dev server (webpack) |
+| `npm run dev:turbo` | Dev with Turbopack |
+| `npm run build` | Production build |
+| `npm run start` | Serve production build |
+| `npm run lint` | ESLint |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/                 # App Router
+    (auth)/            # login, onboarding, welcome
+    (main)/            # home, chat, consultation, predictions, …
+    api/               # Next route handlers (proxy, places, …)
+  components/
+    ui/                # shadcn primitives
+    common/            # shared app components
+    <feature>/         # feature-specific UI
+  lib/
+    constants/         # colors, typography, routes, api, assets, copy
+    i18n/              # locales + translate
+    env.ts
+  hooks/               # use<Feature>.ts
+  contexts/, store/, types/
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development conventions
 
-## Deploy on Vercel
+Follow workspace rules (also in `.cursor/rules/`):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- No hardcoded colors / fonts / asset paths / route strings — use `src/lib/constants/*`
+- Types and interfaces in `.ts` under `src/types/` — not inside `.tsx`
+- Prefer `className` + Tailwind; use `cn()` for conditional classes
+- Use shadcn/ui for primitives
+- Keep files focused (prefer ≤ ~200 lines; split when needed)
+- Mirror Flutter feature naming where useful for parity
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### i18n
+
+Add user-visible strings to all locale files under `src/lib/i18n/messages/` (`en_US`, `ta`, `hi`, `te_IN`, `kn_IN`, `ml_IN`, `mr_IN`, …) and look them up via existing translate helpers — do not hardcode product copy in components.
+
+---
+
+## Talking to the backend
+
+1. Start [Teksage-backend-latest](../Teksage-backend-latest) on port **8000**.
+2. Set `BACKEND_PROXY_TARGET` / `NEXT_PUBLIC_API_BASE_URL` as above.
+3. API path segments only belong in `src/lib/constants/api.ts` (`API_ENDPOINTS`).
+
+---
+
+## Deploy
+
+Production env checklist: [`.env.vercel.production.template`](.env.vercel.production.template).
+
+Typical hosting: Vercel (rewrites `/api/*` → `BACKEND_PROXY_TARGET`).
+
+---
+
+## License
+
+Proprietary — Teksage. All rights reserved.

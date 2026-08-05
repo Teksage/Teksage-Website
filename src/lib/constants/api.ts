@@ -43,6 +43,10 @@ export const API_ENDPOINTS = {
   deleteAccountRequest: "/api/auth/delete/request",
   deleteAccountConfirm: "/api/auth/delete/confirm",
 
+  // --- Partner referral codes ---
+  partnerCodeRedeem: "/api/partner-codes/redeem",
+  partnerMyDiscount: "/api/partner-codes/my-discount",
+
   // --- Notifications — `api/endpoints/notification.py` ---
   notifications: "/api/notifications",
   notificationsUpdateStatus: "/api/notifications/update-status",

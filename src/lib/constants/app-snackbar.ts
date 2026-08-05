@@ -15,6 +15,8 @@ export const APP_SNACKBAR_MESSAGES = {
   deleteAccountFarewell: "Thanks for using Teksage",
   otpSent: "OTP sent successfully",
   otpVerified: "OTP Verified",
+  couponApplied: "Coupon applied",
+  referralCodeApplied: "Referral code applied",
   paymentSuccess: "Payment successful!",
   paymentFailed: "Payment verification failed. Please try again.",
   paymentFailedGeneric: "Payment failed. Please try again.",
