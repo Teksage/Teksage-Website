@@ -3,6 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { AppSnackBarHost } from "@/components/common/AppSnackBarHost";
+import { PartnerRefCapture } from "@/components/common/PartnerRefCapture";
 import { AppLoaderProvider } from "@/contexts/AppLoaderContext";
 import { AppLanguageProvider } from "@/contexts/AppLanguageProvider";
 import { LoginPromptProvider } from "@/contexts/LoginPromptContext";
@@ -51,6 +52,7 @@ export function AppProviders({
       <AppLanguageProvider initialLocale={initialLocale}>
         <LoginPromptProvider>
           <AppLoaderProvider>
+            <PartnerRefCapture />
             {children}
             <AppSnackBarHost />
           </AppLoaderProvider>

@@ -39,4 +39,8 @@ export interface UserProfile {
    * Mirrors Flutter `saveUserType(result['user_type'] == 'customer')` used for consultation banner vs astrologer flow.
    */
   userType?: string;
+  /** API `show_partner_referral_section` (derived from DB `hide_partner_referral_section`). */
+  showPartnerReferralSection?: boolean;
+  /** Active partner referral discount summary for Home / checkout. */
+  partnerDiscount?: import("./partner-referral").PartnerDiscountState;
 }

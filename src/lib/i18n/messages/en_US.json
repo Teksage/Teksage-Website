@@ -602,5 +602,17 @@
   "Event Plan (for reference)": "Event Plan (for reference)",
   "Please record or attach a voice answer before submitting.": "Please record or attach a voice answer before submitting.",
   "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "Are you sure you want to submit this answer? You won't be able to edit it after submission.",
-  "Record your answer (required)": "Record your answer (required)"
+  "Record your answer (required)": "Record your answer (required)",
+  "Referral code": "Referral code",
+  "e.g. ASTRO001": "e.g. ASTRO001",
+  "Applying…": "Applying…",
+  "Referral code applied": "Referral code applied",
+  "Your referral discounts are ready. Check Home for days left on subscription and consultation.": "Your referral discounts are ready. Check Home for days left on subscription and consultation.",
+  "Referral code already applied": "Referral code already applied",
+  "Invalid referral code": "Invalid referral code",
+  "Referral discount": "Referral discount",
+  "Subscription discount — {days} days left": "Subscription discount — {days} days left",
+  "Consultation discount — {days} days left": "Consultation discount — {days} days left",
+  "Referral discount applied": "Referral discount applied",
+  "{days} days left": "{days} days left"
 }

@@ -1,6 +1,11 @@
 // Shared TypeScript interfaces — mirrors Flutter Model/ DTOs
 
 export type { UserProfile } from "./user-profile";
+export type { PartnerDiscountState } from "./partner-referral";
+export type {
+  PartnerReferralCodeSectionProps,
+  PartnerDiscountHomeBannerProps,
+} from "./ui/partner-referral";
 export type {
   ConsultationAstrologer,
   ConsultationAstrologerDetail,

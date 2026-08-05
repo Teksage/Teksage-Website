@@ -98,6 +98,8 @@ export interface ConsultationBookingFeesBlockProps {
   currency: string;
   couponCode: string;
   couponApplied: boolean;
+  /** Partner referral auto-applied — disable promo input; show savings under SGST. */
+  referralLocked?: boolean;
   promoError: string | null;
   busy: boolean;
   onCouponChange: (value: string) => void;

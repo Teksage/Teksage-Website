@@ -10,6 +10,7 @@ import { DesktopNavGreeting } from "@/components/common/DesktopNavGreeting";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
 import { DesktopNavOtherPredictionsMenu } from "@/components/common/DesktopNavOtherPredictionsMenu";
 import { DesktopNavUnlockPremium } from "@/components/common/DesktopNavUnlockPremium";
+import { PartnerDiscountHomeBanner } from "@/components/home/PartnerDiscountHomeBanner";
 import {
   DESKTOP_SIDEBAR_ASTROLOGER_PORTAL_LINK,
   DESKTOP_SIDEBAR_BOOK_LINK,
@@ -198,9 +199,15 @@ export function DesktopMainNav({ className, hideBrand = false }: DesktopMainNavP
           active={pathname.startsWith(DESKTOP_SIDEBAR_GETTING_STARTED_LINK.href)}
         />
 
-        {showPremiumUpsell ? (
-          <div className="mt-auto pt-4">
-            <DesktopNavUnlockPremium />
+        {isAuthenticated || showPremiumUpsell ? (
+          <div className="mt-auto flex flex-col gap-3 pt-4">
+            {isAuthenticated ? (
+              <PartnerDiscountHomeBanner
+                variant="sidebar"
+                discount={user?.partnerDiscount}
+              />
+            ) : null}
+            {showPremiumUpsell ? <DesktopNavUnlockPremium /> : null}
           </div>
         ) : null}
       </nav>

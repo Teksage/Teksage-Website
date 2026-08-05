@@ -676,5 +676,17 @@
   "Event Plan (for reference)": "குறிப்புக்கான நிகழ்வுத் திட்டம்",
   "Please record or attach a voice answer before submitting.": "சமர்ப்பிக்கும் முன் குரல் பதிலைப் பதிவு செய்யவும் அல்லது இணைக்கவும்.",
   "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "இந்த பதிலை சமர்ப்பிக்க விரும்புகிறீர்களா? சமர்ப்பித்த பிறகு திருத்த முடியாது.",
-  "Record your answer (required)": "உங்கள் பதிலைப் பதிவு செய்யுங்கள் (கட்டாயம்)"
+  "Record your answer (required)": "உங்கள் பதிலைப் பதிவு செய்யுங்கள் (கட்டாயம்)",
+  "Referral code": "Referral code",
+  "e.g. ASTRO001": "e.g. ASTRO001",
+  "Applying…": "Applying…",
+  "Referral code applied": "Referral code applied",
+  "Your referral discounts are ready. Check Home for days left on subscription and consultation.": "Your referral discounts are ready. Check Home for days left on subscription and consultation.",
+  "Referral code already applied": "Referral code already applied",
+  "Invalid referral code": "Invalid referral code",
+  "Referral discount": "Referral discount",
+  "Subscription discount — {days} days left": "Subscription discount — {days} days left",
+  "Consultation discount — {days} days left": "Consultation discount — {days} days left",
+  "Referral discount applied": "Referral discount applied",
+  "{days} days left": "{days} days left"
 }

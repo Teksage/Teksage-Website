@@ -610,5 +610,17 @@
   "Event Plan (for reference)": "संदर्भासाठी इव्हेंट योजना",
   "Please record or attach a voice answer before submitting.": "सबमिट करण्यापूर्वी कृपया व्हॉइस उत्तर रेकॉर्ड करा किंवा संलग्न करा.",
   "Are you sure you want to submit this answer? You won't be able to edit it after submission.": "तुम्हाला खात्री आहे की हे उत्तर सबमिट करायचे आहे? सबमिट केल्यानंतर तुम्ही ते संपादित करू शकणार नाही.",
-  "Record your answer (required)": "तुमचे उत्तर रेकॉर्ड करा (आवश्यक)"
+  "Record your answer (required)": "तुमचे उत्तर रेकॉर्ड करा (आवश्यक)",
+  "Referral code": "Referral code",
+  "e.g. ASTRO001": "e.g. ASTRO001",
+  "Applying…": "Applying…",
+  "Referral code applied": "Referral code applied",
+  "Your referral discounts are ready. Check Home for days left on subscription and consultation.": "Your referral discounts are ready. Check Home for days left on subscription and consultation.",
+  "Referral code already applied": "Referral code already applied",
+  "Invalid referral code": "Invalid referral code",
+  "Referral discount": "Referral discount",
+  "Subscription discount — {days} days left": "Subscription discount — {days} days left",
+  "Consultation discount — {days} days left": "Consultation discount — {days} days left",
+  "Referral discount applied": "Referral discount applied",
+  "{days} days left": "{days} days left"
 }

@@ -13,6 +13,7 @@ import { ProfileLocationField } from "@/components/settings/ProfileLocationField
 import { ProfileEmailRow } from "@/components/settings/ProfileEmailRow";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
 import { ProfileReferralSourceField } from "@/components/settings/ProfileReferralSourceField";
+import { PartnerReferralCodeSection } from "@/components/settings/PartnerReferralCodeSection";
 import { usePremiumAccess } from "@/hooks/usePremiumAccess";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { useProfileRashiNakshatra } from "@/hooks/useProfileRashiNakshatra";
@@ -211,6 +212,11 @@ export function ProfileDetailsFields({
           errorMessage={errors.referralSource?.message}
         />
       ) : null}
+
+      <PartnerReferralCodeSection
+        show={Boolean(user.showPartnerReferralSection)}
+        onApplied={onProfileRefresh}
+      />
 
       {isEditing ? (
         <Button

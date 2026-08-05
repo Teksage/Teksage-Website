@@ -47,6 +47,11 @@ import {
   type PaymentTotals,
 } from "@/lib/subscription-payment-totals";
 import {
+  PARTNER_CHECKOUT_CODE,
+  partnerYearlyPct,
+} from "@/lib/partner-discount";
+import { fetchProfile } from "@/lib/services/profile";
+import {
   applySubscriptionCoupon,
   fetchPremiumPlanById,
 } from "@/lib/services/settings-subscription";
@@ -94,14 +99,28 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
         session.autoPay ?? SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED
       );
       try {
-        const fetched = await fetchPremiumPlanById(session.planId);
+        const [fetched, profile] = await Promise.all([
+          fetchPremiumPlanById(session.planId),
+          fetchProfile().catch(() => null),
+        ]);
         if (cancelled) return;
         if (!fetched) {
           setError(P.loadFailed);
           return;
         }
+        if (profile) {
+          const token = useAuthStore.getState().token;
+          if (token) useAuthStore.getState().setAuth(profile, token);
+        }
+        const discount = profile?.partnerDiscount ?? user?.partnerDiscount;
         setPlan(fetched);
-        setTotals(totalsFromPlan(fetched, session.currency));
+        const partnerPct = partnerYearlyPct(discount, fetched.planId);
+        setTotals(totalsFromPlan(fetched, session.currency, partnerPct));
+        if (partnerPct > 0) {
+          setPromoApplied(true);
+          setAppliedPromoCode(PARTNER_CHECKOUT_CODE);
+          setPromo(PARTNER_CHECKOUT_CODE);
+        }
       } catch {
         if (!cancelled) setError(P.loadFailed);
       } finally {
@@ -112,7 +131,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [P.invalidCheckout, P.loadFailed]);
+  }, [P.invalidCheckout, P.loadFailed, user?.partnerDiscount]);
 
   const symbol = currency === "INR" ? "\u20b9" : "$";
   const isInr = currency === "INR";
@@ -120,16 +139,28 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
   const autoPayEligible = plan != null && isAutoPayEligiblePlan(plan.planId, currency);
 
   useEffect(() => {
-    if (!plan || !autoPayEnabled) return;
-    setTotals(totalsFromPlan(plan, currency));
-    setPromo("");
-    setPromoApplied(false);
-    setAppliedPromoCode("");
-    setPromoError(null);
-  }, [autoPayEnabled, plan, currency]);
+    if (!plan) return;
+    const partnerPct = partnerYearlyPct(user?.partnerDiscount, plan.planId);
+    // Only monthly auto-pay checkout clears coupons; yearly keeps partner %.
+    if (autoPayEnabled && autoPayEligible) {
+      setTotals(totalsFromPlan(plan, currency));
+      setPromo("");
+      setPromoApplied(false);
+      setAppliedPromoCode("");
+      setPromoError(null);
+      return;
+    }
+    setTotals(totalsFromPlan(plan, currency, partnerPct));
+    if (partnerPct > 0) {
+      setPromoApplied(true);
+      setAppliedPromoCode(PARTNER_CHECKOUT_CODE);
+      setPromo(PARTNER_CHECKOUT_CODE);
+    }
+  }, [autoPayEnabled, autoPayEligible, plan, currency, user?.partnerDiscount]);
 
   const showPromo =
-    plan != null && isSubscriptionCouponAllowed(plan.planId, autoPayEnabled);
+    (plan != null && isSubscriptionCouponAllowed(plan.planId, autoPayEnabled)) ||
+    (promoApplied && appliedPromoCode === PARTNER_CHECKOUT_CODE);
 
   const onPromoChange = useCallback(
     (value: string) => {
@@ -161,9 +192,11 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
       setTotals(totalsFromCoupon(result));
       setPromoApplied(true);
       setAppliedPromoCode(promo.trim());
+      showSuccessAppSnackBar(PROMO.appliedToast, { position: "top" });
     } catch {
       setPromoApplied(false);
       setPromoError(PROMO.invalidPromo);
+      showErrorAppSnackBar(PROMO.invalidPromo, { position: "top" });
       setTotals(totalsFromPlan(plan, currency));
     } finally {
       setBusy(false);

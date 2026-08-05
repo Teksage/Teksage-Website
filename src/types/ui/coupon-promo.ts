@@ -6,6 +6,8 @@ export type PromoCodeFieldProps = {
   applied: boolean;
   error: string | null;
   busy: boolean;
+  /** Lock field when partner referral is auto-applied. */
+  disabled?: boolean;
   placeholder: string;
   applyLabel: string;
   appliedLabel: string;
