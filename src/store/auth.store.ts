@@ -27,14 +27,10 @@ export const useAuthStore = create<AuthState>()(
       updateUser: (updates) =>
         set((state) => {
           if (!state.user) return { user: null };
-          const next: UserProfile = { ...state.user };
-          for (const [key, value] of Object.entries(updates)) {
-            // Keep explicit `false` (e.g. showPartnerReferralSection).
-            if (value !== undefined) {
-              (next as Record<string, unknown>)[key] = value;
-            }
-          }
-          return { user: next };
+          const filtered = Object.fromEntries(
+            Object.entries(updates).filter(([, value]) => value !== undefined)
+          ) as Partial<UserProfile>;
+          return { user: { ...state.user, ...filtered } };
         }),
     }),
     {
