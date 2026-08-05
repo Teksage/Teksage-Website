@@ -38,6 +38,9 @@ export interface RawProfileResponse {
     days_left?: number;
     show_subscription_row?: boolean;
     show_consultation_row?: boolean;
+    code?: string | null;
+    code_active?: boolean;
+    message?: string | null;
   } | null;
 }
 
