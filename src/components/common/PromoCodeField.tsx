@@ -25,7 +25,7 @@ export function PromoCodeField({
   const isSubscription = variant === "subscription";
   const locked = disabled || busy;
 
-  let wrapClass = isSubscription
+  let wrapClass: string = isSubscription
     ? applied
       ? L.subscriptionWrapApplied
       : L.subscriptionWrap

@@ -26,6 +26,7 @@ export * from "./getting-started";
 export * from "./settings-screen";
 export * from "./routes";
 export * from "./default-region";
+export * from "./default-profile";
 export * from "./partner-referral";
 export * from "./downloads";
 export * from "./loader-ui";
