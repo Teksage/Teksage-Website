@@ -29,6 +29,9 @@ export const PARTNER_REFERRAL_UI = {
   revokedTitle: "Referral code inactive",
   revokedBody:
     "This referral code is no longer active. Discount cannot be used on new purchases.",
+  statusUsed: "Used",
+  statusExpired: "Expired",
+  statusInactive: "Referral is inactive",
 } as const;
 
 export const PARTNER_REFERRAL_LAYOUT = {
@@ -55,6 +58,12 @@ export const PARTNER_REFERRAL_LAYOUT = {
   sidebarChips: "flex flex-wrap gap-1",
   chipPct:
     "inline-flex rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-bold leading-none text-white",
+  chipStatusUsed:
+    "inline-flex rounded-full bg-[#2e7d32]/12 px-2 py-0.5 text-[10px] font-bold leading-none text-[#1b5e20]",
+  chipStatusExpired:
+    "inline-flex rounded-full bg-[#ed6c02]/12 px-2 py-0.5 text-[10px] font-bold leading-none text-[#e65100]",
+  chipStatusInactive:
+    "inline-flex rounded-full bg-neutral-500/14 px-2 py-0.5 text-[10px] font-bold leading-none text-neutral-600",
   chipDays:
     "inline-flex items-center font-mono text-[11px] font-semibold tabular-nums leading-none text-[var(--color-brand-primary)]",
   chipTimerExpired:

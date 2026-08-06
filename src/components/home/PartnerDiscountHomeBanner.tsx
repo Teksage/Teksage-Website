@@ -7,13 +7,14 @@ import {
   PARTNER_REFERRAL_LAYOUT as L,
   PARTNER_REFERRAL_UI,
 } from "@/lib/constants/partner-referral";
+import {
+  formatPartnerPctOff,
+  partnerBannerRows,
+  partnerBannerShowTimer,
+  type PartnerBannerRow,
+} from "@/lib/partner-discount-banner";
 import { cn } from "@/lib/utils";
 import type { PartnerDiscountHomeBannerProps } from "@/types/ui/partner-referral";
-
-function formatPctOff(pct: number, template: string): string | null {
-  if (pct <= 0) return null;
-  return template.replace("{pct}", String(Math.round(pct)));
-}
 
 function PartnerTimerChip({
   expiresAt,
@@ -38,6 +39,75 @@ function PartnerTimerChip({
   );
 }
 
+function statusChipClass(
+  label: string,
+  copy: {
+    statusUsed: string;
+    statusExpired: string;
+    statusInactive: string;
+  }
+) {
+  if (label === copy.statusUsed) return L.chipStatusUsed;
+  if (label === copy.statusExpired) return L.chipStatusExpired;
+  return L.chipStatusInactive;
+}
+
+function BannerRowChip({
+  row,
+  pctTemplate,
+  copy,
+}: {
+  row: PartnerBannerRow;
+  pctTemplate: string;
+  copy: {
+    statusUsed: string;
+    statusExpired: string;
+    statusInactive: string;
+  };
+}) {
+  if (row.kind === "pct" && row.pct != null) {
+    const pct = formatPartnerPctOff(row.pct, pctTemplate);
+    return pct ? <span className={L.chipPct}>{pct}</span> : null;
+  }
+  if (row.statusLabel) {
+    return (
+      <span className={statusChipClass(row.statusLabel, copy)}>
+        {row.statusLabel}
+      </span>
+    );
+  }
+  return null;
+}
+
+function HomeBannerRows({
+  rows,
+  pctTemplate,
+  rowClass,
+  labelClass,
+  copy,
+}: {
+  rows: PartnerBannerRow[];
+  pctTemplate: string;
+  rowClass: string;
+  labelClass: string;
+  copy: {
+    statusUsed: string;
+    statusExpired: string;
+    statusInactive: string;
+  };
+}) {
+  return (
+    <>
+      {rows.map((row) => (
+        <div key={row.key} className={rowClass}>
+          <p className={labelClass}>{row.label}</p>
+          <BannerRowChip row={row} pctTemplate={pctTemplate} copy={copy} />
+        </div>
+      ))}
+    </>
+  );
+}
+
 export function PartnerDiscountHomeBanner({
   discount: initialDiscount,
   className,
@@ -48,73 +118,52 @@ export function PartnerDiscountHomeBanner({
 
   if (!discount?.hasDiscount) return null;
 
-  const codeActive = discount.codeActive !== false;
-  if (!codeActive) {
-    return (
-      <aside
-        className={cn(L.revokedCard, className)}
-        aria-label={copy.revokedTitle}
-      >
-        <p className={L.revokedTitle}>{copy.revokedTitle}</p>
-        <p className={L.revokedBody}>
-          {discount.message || copy.revokedBody}
-        </p>
-      </aside>
-    );
-  }
+  const rows = partnerBannerRows(discount, {
+    subscriptionLabel: copy.subscriptionLabel,
+    consultationLabel: copy.consultationLabel,
+    used: copy.statusUsed,
+    expired: copy.statusExpired,
+    inactive: copy.statusInactive,
+  });
+  if (!rows.length) return null;
 
-  if (!discount.showSubscriptionRow && !discount.showConsultationRow) {
-    return null;
-  }
-
-  const isSidebar = variant === "sidebar";
-  const rows: { key: string; label: string; pct: number }[] = [];
-  if (discount.showSubscriptionRow) {
-    rows.push({
-      key: "sub",
-      label: copy.subscriptionLabel,
-      pct: discount.yearlyPct,
-    });
-  }
-  if (discount.showConsultationRow) {
-    rows.push({
-      key: "consult",
-      label: copy.consultationLabel,
-      pct: discount.consultPct,
-    });
-  }
-
-  const timer = (
+  const statusCopy = {
+    statusUsed: copy.statusUsed,
+    statusExpired: copy.statusExpired,
+    statusInactive: copy.statusInactive,
+  };
+  const showTimer = partnerBannerShowTimer(discount);
+  const timer = showTimer ? (
     <PartnerTimerChip
       expiresAt={discount.expiresAt}
       daysLeft={discount.daysLeft}
     />
-  );
+  ) : null;
 
-  if (isSidebar) {
+  if (variant === "sidebar") {
     return (
       <aside
         className={cn(L.sidebarCard, className)}
         aria-label={copy.homeBlockTitle}
       >
         <div
-          className={cn(L.sidebarHeader, "flex items-center justify-between gap-2")}
+          className={cn(
+            L.sidebarHeader,
+            "flex items-center justify-between gap-2"
+          )}
         >
           <p className={L.sidebarTitle}>{copy.homeBlockTitle}</p>
           {timer}
         </div>
         <div className={L.sidebarBody}>
-          {rows.map((row) => {
-            const pct = formatPctOff(row.pct, copy.pctOff);
-            return (
-              <div key={row.key} className={L.sidebarRow}>
-                <div className="flex items-center justify-between gap-2">
-                  <p className={L.sidebarLabel}>{row.label}</p>
-                  {pct ? <span className={L.chipPct}>{pct}</span> : null}
-                </div>
+          {rows.map((row) => (
+            <div key={row.key} className={L.sidebarRow}>
+              <div className="flex items-center justify-between gap-2">
+                <p className={L.sidebarLabel}>{row.label}</p>
+                <BannerRowChip row={row} pctTemplate={copy.pctOff} copy={statusCopy} />
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </aside>
     );
@@ -127,15 +176,13 @@ export function PartnerDiscountHomeBanner({
         {timer}
       </div>
       <div className={L.homeBody}>
-        {rows.map((row) => {
-          const pct = formatPctOff(row.pct, copy.pctOff);
-          return (
-            <div key={row.key} className={L.homeRow}>
-              <p className={L.homeLabel}>{row.label}</p>
-              {pct ? <span className={L.chipPct}>{pct}</span> : null}
-            </div>
-          );
-        })}
+        <HomeBannerRows
+          rows={rows}
+          pctTemplate={copy.pctOff}
+          rowClass={L.homeRow}
+          labelClass={L.homeLabel}
+          copy={statusCopy}
+        />
       </div>
     </aside>
   );
