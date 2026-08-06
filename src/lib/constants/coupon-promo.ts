@@ -30,4 +30,5 @@ export const COUPON_PROMO_LAYOUT = {
     "flex gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-1 opacity-90",
   error: `${TYPO.caption} mt-1.5 text-[var(--color-brand-error)]`,
   savedRow: `mt-1.5 flex items-center justify-between ${TYPO.caption} font-medium text-[var(--color-consult-user-bg)]`,
+  subscriptionSavedRow: `mt-1.5 flex items-center justify-between ${TYPO.caption} font-medium text-[var(--color-brand-primary)]`,
 } as const;

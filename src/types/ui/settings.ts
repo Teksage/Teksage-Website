@@ -196,6 +196,8 @@ export interface SubscriptionPaymentFeesProps {
   promoApplied: boolean;
   promoError: string | null;
   busy: boolean;
+  /** Partner referral auto-applied (REFERRAL code locked). */
+  referralLocked?: boolean;
   onPromoChange: (value: string) => void;
   onApplyPromo: () => void;
 }

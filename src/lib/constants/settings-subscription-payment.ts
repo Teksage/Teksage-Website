@@ -5,6 +5,7 @@ export const SETTINGS_SUBSCRIPTION_PAYMENT = {
   membership: "membership",
   planCost: "Plan Cost",
   discount: "Discount",
+  referralDiscount: "Referral discount",
   cgstLabel: "CGST Charges",
   sgstLabel: "SGST Charges",
   totalCost: "Total Cost",

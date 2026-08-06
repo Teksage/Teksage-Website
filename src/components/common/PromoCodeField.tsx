@@ -38,12 +38,12 @@ export function PromoCodeField({
   }
 
   const showSavings =
-    variant === "consultation" &&
-    !disabled &&
     applied &&
     savingsAmount != null &&
     savingsAmount > 0 &&
     savingsLabel;
+
+  const savedRowClass = isSubscription ? L.subscriptionSavedRow : L.savedRow;
 
   return (
     <div>
@@ -70,7 +70,7 @@ export function PromoCodeField({
         </button>
       </div>
       {showSavings ? (
-        <div className={L.savedRow}>
+        <div className={savedRowClass}>
           <span>{savingsLabel}</span>
           <span>
             {currencySymbol}

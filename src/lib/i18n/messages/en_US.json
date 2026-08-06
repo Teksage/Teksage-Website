@@ -614,5 +614,15 @@
   "Subscription discount — {days} days left": "Subscription discount — {days} days left",
   "Consultation discount — {days} days left": "Consultation discount — {days} days left",
   "Referral discount applied": "Referral discount applied",
-  "{days} days left": "{days} days left"
+  "Used": "Used",
+  "Expired": "Expired",
+  "Referral is inactive": "Referral is inactive",
+  "{days} days left": "{days} days left",
+  "Yearly plan": "Yearly plan",
+  "{pct}% off": "{pct}% off",
+  "1 day left": "1 day left",
+  "left": "left",
+  "Referral discount applied & you saved": "Referral discount applied & you saved",
+  "Referral code inactive": "Referral code inactive",
+  "This referral code is no longer active. Discount cannot be used on new purchases.": "This referral code is no longer active. Discount cannot be used on new purchases."
 }

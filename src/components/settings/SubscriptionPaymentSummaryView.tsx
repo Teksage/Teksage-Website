@@ -336,6 +336,9 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
             promoApplied={promoApplied}
             promoError={promoError}
             busy={busy || autoPayEnabled}
+            referralLocked={
+              promoApplied && appliedPromoCode === PARTNER_CHECKOUT_CODE
+            }
             onPromoChange={onPromoChange}
             onApplyPromo={() => void applyPromo()}
           />
