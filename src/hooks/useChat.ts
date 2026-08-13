@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import { avatarIndexToStorage, avatarStorageToWsName } from "@/lib/chat-preference-helpers";
+import { shouldShowChatLanding, hasChatHistory } from "@/lib/chat-landing-activity";
 import type { ChatStyleFormat } from "@/lib/constants/chat-preferences";
 import {
   CHAT_DEFAULTS,
@@ -21,7 +22,7 @@ import { ChatWebSocketClient } from "@/lib/services/chat-websocket-client";
 import { fetchProfile } from "@/lib/services/profile";
 import { fetchProfileSettings } from "@/lib/services/settings-profile";
 import { useChatStream } from "@/hooks/useChatStream";
-import type { ChatMessage } from "@/types/chat";
+import type { ChatHistoryRecord, ChatMessage, ChatViewMode } from "@/types/chat";
 
 type UseChatOptions = {
   enabled: boolean;
@@ -49,9 +50,12 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
   const [toast, setToast] = useState<string | null>(null);
   const [chatUnavailableReason, setChatUnavailableReason] = useState<string | null>(null);
   const [chatStatusSuppressed, setChatStatusSuppressed] = useState(false);
+  const [viewMode, setViewMode] = useState<ChatViewMode>("landing");
+  const [chatHistoryRecords, setChatHistoryRecords] = useState<ChatHistoryRecord[]>([]);
 
   const clientRef = useRef<ChatWebSocketClient | null>(null);
   const messagesRef = useRef<ChatMessage[]>([]);
+  const historyRecordsRef = useRef<ChatHistoryRecord[]>([]);
   const awaitingResponseRef = useRef(false);
   messagesRef.current = messages;
   const outboundPrefsRef = useRef<{ format: string; avator: string }>({
@@ -143,6 +147,8 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         setToast(CS.wsConnectError);
         return;
       }
+      setViewMode("conversation");
+      setShowBanner(false);
       const sent = await transmitQuery(trimmed);
       if (!sent) return;
       setInput("");
@@ -171,6 +177,48 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     },
     [messages, transmitQuery]
   );
+
+  const sendPredefinedQuestion = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed) return;
+
+      let history = historyRecordsRef.current;
+      if (!history.length) {
+        history = await fetchChatHistory();
+        historyRecordsRef.current = history;
+        setChatHistoryRecords(history);
+      }
+
+      if (history.length > 0) {
+        setMessages(historyToChatMessages(history));
+        setShowBanner(false);
+      } else {
+        setMessages([]);
+      }
+      setViewMode("conversation");
+      await sendQuery(trimmed);
+    },
+    [sendQuery]
+  );
+
+  const openPreviousChat = useCallback(async () => {
+    let history = historyRecordsRef.current;
+    if (!history.length) {
+      history = await fetchChatHistory();
+      historyRecordsRef.current = history;
+      setChatHistoryRecords(history);
+    }
+    if (!history.length) return;
+    setMessages(historyToChatMessages(history));
+    setShowBanner(false);
+    setViewMode("conversation");
+  }, []);
+
+  const returnToLanding = useCallback(() => {
+    setViewMode("landing");
+    setShowBanner(true);
+  }, []);
 
   useEffect(() => {
     if (!enabled) return;
@@ -245,9 +293,18 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
         setMessageCount(pref.chatCountLast7Days);
         setMaintainHistory(pref.maintainHistory);
         setPlanStatus(settings.subscription?.planStatus ?? "");
-        if (history.length > 0) {
+        historyRecordsRef.current = history;
+        setChatHistoryRecords(history);
+
+        if (shouldShowChatLanding(history)) {
+          setViewMode("landing");
+          setShowBanner(true);
+        } else if (history.length > 0) {
           setMessages(historyToChatMessages(history));
+          setViewMode("conversation");
           setShowBanner(false);
+        } else {
+          setViewMode("landing");
         }
         setSessionReady(true);
 
@@ -310,10 +367,16 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     wsConnected,
     chatUnavailableReason,
     chatStatusSuppressed,
+    viewMode,
+    hasPreviousChat: hasChatHistory(chatHistoryRecords),
+    chatHistoryRecords,
     toast,
     clearToast: () => setToast(null),
     showToast: (message: string) => setToast(message),
     sendQuery,
+    sendPredefinedQuestion,
+    openPreviousChat,
+    returnToLanding,
     retryMessage,
     chatLanguage,
     setVoiceMessageMode: () => {

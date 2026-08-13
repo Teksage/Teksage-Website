@@ -7,7 +7,7 @@ import { ChatEmbedHeader } from "@/components/chat/ChatEmbedHeader";
 import { ChatAvatarOnboarding } from "@/components/chat/ChatAvatarOnboarding";
 import { ChatComposer } from "@/components/chat/ChatComposer";
 import { ChatConsultStrip } from "@/components/chat/ChatConsultStrip";
-import { ChatIntroText } from "@/components/chat/ChatIntroText";
+import { ChatLandingView } from "@/components/chat/ChatLandingView";
 import { ChatMessageList } from "@/components/chat/ChatMessageList";
 import { ChatPreferenceBar } from "@/components/chat/ChatPreferenceBar";
 import { ChatRelatedQueries } from "@/components/chat/ChatRelatedQueries";
@@ -15,7 +15,9 @@ import { ChatStyleOnboarding } from "@/components/chat/ChatStyleOnboarding";
 import { ChatSubscribeStrip } from "@/components/chat/ChatSubscribeStrip";
 import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import { HomeChatEmbedHeader } from "@/components/home/HomeChatEmbedHeader";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
+import { CHAT_LANDING_LAYOUT } from "@/lib/constants/chat-landing-ui";
 import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/useChat";
 import { useChatPreferences } from "@/hooks/useChatPreferences";
@@ -39,7 +41,6 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
     relatedLoading,
     showTyping,
     enableInput,
-    showBanner,
     userInitials,
     canSendMore,
     isPrime,
@@ -51,10 +52,15 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
     wsConnected,
     chatUnavailableReason,
     chatStatusSuppressed,
+    viewMode,
+    hasPreviousChat,
     toast,
     clearToast,
     showToast,
     sendQuery,
+    sendPredefinedQuestion,
+    openPreviousChat,
+    returnToLanding,
     retryMessage,
     chatLanguage,
     setVoiceMessageMode,
@@ -65,6 +71,8 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
     avatarIndex: prefs.avatarIndex,
   });
 
+  const isConversation = viewMode === "conversation";
+  const isLanding = viewMode === "landing";
   const hasMessages = messages.length > 0;
 
   useEffect(() => {
@@ -99,7 +107,7 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
   });
 
   const shellClass = embedded
-    ? "relative flex h-full min-h-0 w-full flex-col bg-[var(--color-chat-shell)]"
+    ? CHAT_LANDING_LAYOUT.embeddedShell
     : CHAT_LAYOUT.pageRoot;
 
   const preferenceBar = (
@@ -122,6 +130,24 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
       onSelectAvatar={prefs.selectAvatar}
     />
   );
+
+  const resolvedEmbedHeader =
+    embedHeader ??
+    (embedded ? (
+      <HomeChatEmbedHeader
+        showPreviousChat={isLanding && hasPreviousChat}
+        onPreviousChat={() => void openPreviousChat()}
+        showReturnToLanding={isConversation}
+        onReturnToLanding={returnToLanding}
+        isPremium={isPrime}
+        messageCount={messageCount}
+        maintainHistory={maintainHistory}
+        planStatus={planStatus}
+        onToast={showToast}
+      />
+    ) : (
+      <ChatEmbedHeader />
+    ));
 
   if (!prefs.hydrated) {
     return (
@@ -151,13 +177,22 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
   return (
     <div className={shellClass}>
       <div
-        className="chat-shell-bg pointer-events-none absolute inset-0 bg-cover bg-center opacity-40"
+        className={cn(
+          "chat-shell-bg pointer-events-none absolute inset-0 bg-cover bg-center",
+          embedded
+            ? isConversation
+              ? "opacity-[0.06]"
+              : "opacity-[0.18]"
+            : isConversation
+              ? "opacity-15"
+              : "opacity-40"
+        )}
         aria-hidden
       />
 
       {embedded ? (
         <div className="relative z-30 shrink-0 pointer-events-auto">
-          {embedHeader ?? <ChatEmbedHeader />}
+          {resolvedEmbedHeader}
         </div>
       ) : (
         <ChatAppBar
@@ -177,11 +212,24 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
       ) : null}
 
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <div
+          className={
+            isConversation
+              ? CHAT_LAYOUT.conversationScroll
+              : CHAT_LAYOUT.landingScroll
+          }
+        >
           {!sessionReady ? null : (
             <>
-              {!hasMessages ? <ChatIntroText visible={showBanner} /> : null}
-              {hasMessages ? (
+              {isLanding ? (
+                <ChatLandingView
+                  onSelectQuestion={(question) =>
+                    void sendPredefinedQuestion(question)
+                  }
+                  onSpeak={voice.toggleRecording}
+                  speakDisabled={!enableInput || !sessionReady}
+                />
+              ) : hasMessages ? (
                 <ChatMessageList
                   messages={messages}
                   userInitials={userInitials}
@@ -212,6 +260,7 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
             visible={
               canSendMore &&
               !showTyping &&
+              isConversation &&
               hasMessages &&
               (relatedLoading || relatedQueries.length > 0)
             }

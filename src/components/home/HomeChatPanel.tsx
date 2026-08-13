@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ChatPageView } from "@/components/chat/ChatPageView";
-import { HomeChatEmbedHeader } from "@/components/home/HomeChatEmbedHeader";
 import { useHydratedLoggedIn } from "@/hooks/useHydratedLoggedIn";
 import { buildLoginRedirectPath } from "@/lib/login-redirect";
 import { ROUTES } from "@/lib/constants/routes";
@@ -45,7 +44,7 @@ export function HomeChatPanel({ className }: HomeChatPanelProps) {
         className
       )}
     >
-      <ChatPageView embedded embedHeader={<HomeChatEmbedHeader />} />
+      <ChatPageView embedded />
     </aside>
   );
 }

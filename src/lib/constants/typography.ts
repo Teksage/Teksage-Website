@@ -122,7 +122,10 @@ export const TYPO = {
   priceFootnote: "text-micro leading-none",
   exploreTitle: "text-sm font-semibold sm:text-body-sm",
   exploreCircle: "text-xs font-semibold leading-snug sm:text-sm-plus",
-  chatBubble: "text-body-sm leading-relaxed",
+  chatBubble: "text-body-sm font-semibold leading-relaxed",
+  chatCardText: "text-body-sm font-bold leading-relaxed",
+  chatCardTextBot: "text-body-sm font-semibold leading-relaxed text-[var(--color-brand-black)]",
+  chatCardTextUser: "text-body-sm font-bold leading-relaxed text-white",
   bannerCta: "text-sm font-bold leading-snug sm:text-base",
   bannerFine: "text-nav font-semibold leading-tight sm:text-xs",
   consultBannerBody:

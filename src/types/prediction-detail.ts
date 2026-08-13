@@ -12,6 +12,10 @@ export interface DailyPredictionDetail {
   /** Weekly `short_prediction` for today (e.g. Comfort & Joy). */
   cautious?: string;
   cautiousIsPositiveDay?: boolean;
+  careerScore?: number;
+  relationshipScore?: number;
+  wealthScore?: number;
+  healthScore?: number;
   predictionId: number | null;
 }
 

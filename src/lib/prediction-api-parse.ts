@@ -1,3 +1,4 @@
+import { parseDailyCategoryScore } from "@/lib/daily-energy-scores";
 import { mapPredictionApiStringError, PREDICTION_NO_DATA } from "@/lib/prediction-request-error";
 import { resolvePredictionPositiveDay } from "@/lib/prediction-day-status";
 import { parseYearlyPredictionDetail } from "@/lib/prediction-yearly-parse";
@@ -74,6 +75,10 @@ export function toPredictionViewModel(
         rec.thara_bala != null ? String(rec.thara_bala) : undefined,
       chandraBala:
         rec.chandra_bala != null ? String(rec.chandra_bala) : undefined,
+      careerScore: parseDailyCategoryScore(rec.career_score),
+      relationshipScore: parseDailyCategoryScore(rec.relationship_score),
+      wealthScore: parseDailyCategoryScore(rec.wealth_score),
+      healthScore: parseDailyCategoryScore(rec.health_score),
       predictionId,
     };
     return d;

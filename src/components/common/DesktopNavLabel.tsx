@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
 import type { DesktopNavLabelLines } from "@/types/ui/desktop-nav";
 
 export function DesktopNavLabel({
@@ -11,24 +12,37 @@ export function DesktopNavLabel({
   active?: boolean;
 }) {
   if (labelLines) {
-    const lineClass = active
-      ? "text-sm font-semibold text-[var(--color-brand-primary)]"
-      : "text-sm font-medium text-black";
-
     return (
       <span className="flex min-w-0 flex-1 flex-col leading-snug">
-        <span className={lineClass}>{labelLines.primary}</span>
-        {labelLines.secondary ? <span className={lineClass}>{labelLines.secondary}</span> : null}
+        <span
+          className={
+            active
+              ? DESKTOP_SIDEBAR_UI.navLabelActive
+              : DESKTOP_SIDEBAR_UI.navLabel
+          }
+        >
+          {labelLines.primary}
+        </span>
+        {labelLines.secondary ? (
+          <span
+            className={
+              active
+                ? DESKTOP_SIDEBAR_UI.navLabelActive
+                : DESKTOP_SIDEBAR_UI.navLabel
+            }
+          >
+            {labelLines.secondary}
+          </span>
+        ) : null}
       </span>
     );
   }
 
   return (
     <span
-      className={cn(
-        "flex-1 text-sm leading-snug",
-        active ? "font-semibold text-[var(--color-brand-primary)]" : "font-medium text-black"
-      )}
+      className={
+        active ? DESKTOP_SIDEBAR_UI.navLabelActive : DESKTOP_SIDEBAR_UI.navLabel
+      }
     >
       {label}
     </span>

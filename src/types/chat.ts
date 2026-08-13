@@ -25,7 +25,11 @@ export type ChatMessage = ChatUserMessage | ChatAssistantMessage;
 export interface ChatHistoryRecord {
   userQuestion: string;
   apiResponse: string;
+  /** ISO timestamp from `CustomerQuery.query_date` — drives 24h landing vs resume. */
+  queryDate?: string;
 }
+
+export type ChatViewMode = "landing" | "conversation";
 
 export interface ChatPreferencePayload {
   maintainHistory: boolean;

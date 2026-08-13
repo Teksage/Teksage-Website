@@ -38,7 +38,7 @@ export function ChatAssistantAudioSlot({
   if (!showPending) return null;
 
   return (
-    <div className="mt-2.5 rounded-xl border border-white/15 bg-white/10 px-3 py-2.5 text-center text-xs font-semibold text-white">
+    <div className="mt-2.5 rounded-xl border border-black/10 bg-black/[0.04] px-3 py-2.5 text-center text-xs font-semibold text-black/65">
       {VC.speechConverting}
     </div>
   );

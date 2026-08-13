@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
+import { CHAT_LANDING_LAYOUT } from "@/lib/constants/chat-landing-ui";
 import { CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import {
   downloadChatPdf,
@@ -18,6 +19,9 @@ type ChatAppBarMenuProps = {
   maintainHistory: boolean;
   planStatus: string;
   onToast: (message: string) => void;
+  /** `light` = white header background (home embed). */
+  tone?: "dark" | "light";
+  trigger?: "bars" | "dots";
 };
 
 export function ChatAppBarMenu({
@@ -26,6 +30,8 @@ export function ChatAppBarMenu({
   maintainHistory,
   planStatus,
   onToast,
+  tone = "dark",
+  trigger = "bars",
 }: ChatAppBarMenuProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const [open, setOpen] = useState(false);
@@ -95,21 +101,38 @@ export function ChatAppBarMenu({
     }
   }
 
+  const lineClass =
+    tone === "light"
+      ? "block h-0.5 w-5 rounded-full bg-[var(--color-brand-black)]/70"
+      : "block h-0.5 w-5 rounded-full bg-white";
+
   return (
     <div ref={rootRef} className="relative shrink-0">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex size-10 items-center justify-center"
+        className={
+          trigger === "dots"
+            ? CHAT_LANDING_LAYOUT.headerActionBtn
+            : "flex size-10 items-center justify-center"
+        }
         aria-label={CS.chatMenuAria}
         aria-expanded={open}
         disabled={busy}
       >
-        <span className="flex flex-col gap-1">
-          <span className="block h-0.5 w-5 rounded-full bg-white" />
-          <span className="block h-0.5 w-5 rounded-full bg-white" />
-          <span className="block h-0.5 w-5 rounded-full bg-white" />
-        </span>
+        {trigger === "dots" ? (
+          <span className="flex flex-col gap-0.5">
+            <span className={CHAT_LANDING_LAYOUT.headerMenuDot} />
+            <span className={CHAT_LANDING_LAYOUT.headerMenuDot} />
+            <span className={CHAT_LANDING_LAYOUT.headerMenuDot} />
+          </span>
+        ) : (
+          <span className="flex flex-col gap-1">
+            <span className={lineClass} />
+            <span className={lineClass} />
+            <span className={lineClass} />
+          </span>
+        )}
       </button>
       {open ? (
         <div

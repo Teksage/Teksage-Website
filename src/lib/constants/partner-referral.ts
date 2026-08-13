@@ -1,3 +1,5 @@
+import { TYPO } from "@/lib/constants/typography";
+
 /** Partner Referral code — Profile last section + Home days-left (web). */
 
 export const PARTNER_REFERRAL_STORAGE_KEY = "teksage_partner_ref_code" as const;
@@ -68,6 +70,17 @@ export const PARTNER_REFERRAL_LAYOUT = {
     "inline-flex items-center font-mono text-[11px] font-semibold tabular-nums leading-none text-[var(--color-brand-primary)]",
   chipTimerExpired:
     "inline-flex items-center text-[11px] font-semibold leading-none text-neutral-500",
+  topBarPill:
+    "inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[var(--color-brand-primary)]/45 bg-white px-3 py-1.5",
+  topBarTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-primary)]`,
+  topBarTimer:
+    "inline-flex items-center gap-1 rounded-full border border-[var(--color-brand-error)]/70 bg-white px-2 py-0.5 text-micro font-bold tabular-nums leading-none text-[var(--color-brand-error)]",
+  topBarPopover:
+    "absolute left-0 top-full z-50 mt-2 min-w-[13.5rem] rounded-2xl border border-neutral-200/90 bg-white p-3 shadow-[0_8px_24px_rgba(0,0,0,0.1)]",
+  topBarPopoverTitle: `${TYPO.sizeSm} ${TYPO.weightBold} mb-2 text-[var(--color-brand-primary)]`,
+  topBarPopoverRow:
+    "flex items-center justify-between gap-3 border-b border-neutral-100 py-2 last:border-b-0 last:pb-0 first:pt-0",
+  topBarPopoverLabel: `${TYPO.sizeSm} ${TYPO.weightMedium} text-[var(--color-brand-black)]`,
   revokedCard:
     "overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3",
   revokedTitle: "text-sm font-bold text-neutral-700",

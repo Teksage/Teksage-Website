@@ -8,6 +8,7 @@ import {
   CHAT_PREFERENCES,
   type ChatStyleFormat,
 } from "@/lib/constants/chat-preferences";
+import { CHAT_OVERLAY_UI } from "@/lib/constants/chat-overlay-ui";
 import { cn } from "@/lib/utils";
 import type { ChatStyleMenuProps } from "@/types/ui/chat";
 
@@ -15,13 +16,18 @@ type MenuPosition = { left: number; bottom: number };
 
 function readMenuPosition(anchor: HTMLButtonElement): MenuPosition {
   const rect = anchor.getBoundingClientRect();
+  const menuWidth = 176;
+  const left = Math.min(
+    Math.max(12, rect.left),
+    window.innerWidth - menuWidth - 12
+  );
   return {
-    left: rect.left,
-    bottom: window.innerHeight - rect.top + 8,
+    left,
+    bottom: Math.max(12, window.innerHeight - rect.top + 8),
   };
 }
 
-/** Flutter `showStyleModal` — portaled so parent overflow does not clip the menu. */
+/** Flutter `showStyleModal` — portaled overlay so chat overflow cannot clip it. */
 export function ChatStyleMenu({
   open,
   anchorRef,
@@ -32,6 +38,11 @@ export function ChatStyleMenu({
   const CP = useI18nConstants(CHAT_PREFERENCES);
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<MenuPosition | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open || !anchorRef.current) {
@@ -52,16 +63,14 @@ export function ChatStyleMenu({
 
   useEffect(() => {
     if (!open) return;
-    const onPointerDown = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (menuRef.current?.contains(target) || anchorRef.current?.contains(target)) return;
-      onClose();
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
     };
-    document.addEventListener("mousedown", onPointerDown);
-    return () => document.removeEventListener("mousedown", onPointerDown);
-  }, [open, anchorRef, onClose]);
+  }, [open]);
 
-  if (!open || !position || typeof document === "undefined") return null;
+  if (!open || !position || !mounted) return null;
 
   const items: { format: ChatStyleFormat; label: string; icon: string }[] = [
     {
@@ -77,37 +86,55 @@ export function ChatStyleMenu({
   ];
 
   return createPortal(
-    <div
-      ref={menuRef}
-      role="menu"
-      className="fixed z-[100] min-w-[11rem] rounded-md bg-white py-3 shadow-[0_4px_23px_rgba(0,0,0,0.17)]"
-      style={{ left: position.left, bottom: position.bottom }}
-    >
-      {items.map((item) => {
-        const isSelected = item.format === selectedFormat;
-        return (
-          <button
-            key={item.format}
-            type="button"
-            role="menuitem"
-            onClick={() => onSelect(item.format)}
-            className="flex w-full items-center gap-2.5 px-5 py-2 text-left"
-          >
-            <img src={item.icon} alt="" className="size-[1.125rem] shrink-0" />
-            <span
-              className={cn(
-                "flex-1 text-base font-medium",
-                isSelected ? "text-[var(--color-brand-primary)]" : "text-black"
-              )}
+    <div className={CHAT_OVERLAY_UI.root} role="presentation">
+      <button
+        type="button"
+        className={CHAT_OVERLAY_UI.backdrop}
+        aria-label="Close style menu"
+        onClick={onClose}
+      />
+      <div
+        ref={menuRef}
+        role="menu"
+        className={CHAT_OVERLAY_UI.styleMenu}
+        style={{ left: position.left, bottom: position.bottom }}
+      >
+        {items.map((item) => {
+          const isSelected = item.format === selectedFormat;
+          return (
+            <button
+              key={item.format}
+              type="button"
+              role="menuitem"
+              onClick={() => onSelect(item.format)}
+              className={CHAT_OVERLAY_UI.styleMenuItem}
             >
-              {item.label}
-            </span>
-            {isSelected ? (
-              <img src={CHAT_PREFERENCE_ASSETS.selectCheck} alt="" className="size-5 shrink-0" />
-            ) : null}
-          </button>
-        );
-      })}
+              <img
+                src={item.icon}
+                alt=""
+                className={CHAT_OVERLAY_UI.styleMenuIcon}
+              />
+              <span
+                className={cn(
+                  CHAT_OVERLAY_UI.styleMenuLabel,
+                  isSelected
+                    ? CHAT_OVERLAY_UI.styleMenuLabelActive
+                    : CHAT_OVERLAY_UI.styleMenuLabelIdle
+                )}
+              >
+                {item.label}
+              </span>
+              {isSelected ? (
+                <img
+                  src={CHAT_PREFERENCE_ASSETS.selectCheck}
+                  alt=""
+                  className={CHAT_OVERLAY_UI.styleMenuCheck}
+                />
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
     </div>,
     document.body
   );

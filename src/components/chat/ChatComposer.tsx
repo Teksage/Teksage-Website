@@ -4,6 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { ChatRecordingComposer } from "@/components/chat/ChatRecordingComposer";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
+import { CHAT_LANDING_LAYOUT } from "@/lib/constants/chat-landing-ui";
 import { cn } from "@/lib/utils";
 import type { ChatComposerProps } from "@/types/ui/chat";
 
@@ -43,14 +44,81 @@ export function ChatComposer({
     );
   }
 
+  if (embedded) {
+    return (
+      <div className={CHAT_LANDING_LAYOUT.embeddedComposerShell}>
+        {preferenceBar}
+        <form
+          className={CHAT_LANDING_LAYOUT.embeddedComposerRow}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (canSend) onSend();
+          }}
+        >
+          <div className={CHAT_LANDING_LAYOUT.embeddedInputShell}>
+            <textarea
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              disabled={disabled}
+              placeholder={placeholder}
+              rows={1}
+              className={cn(
+                "max-h-28 min-h-[2.75rem] flex-1 resize-none border-0 bg-transparent py-2.5",
+                "text-body-sm leading-snug text-black outline-none",
+                "placeholder:text-black/40 disabled:opacity-60"
+              )}
+              aria-label={placeholder}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  if (canSend) onSend();
+                }
+              }}
+            />
+            <button
+              type="submit"
+              disabled={!canSend}
+              className={cn(
+                CHAT_LANDING_LAYOUT.embeddedSendBtn,
+                canSend
+                  ? CHAT_LANDING_LAYOUT.embeddedSendBtnActive
+                  : CHAT_LANDING_LAYOUT.embeddedSendBtnIdle
+              )}
+              aria-label={CS.sendAria}
+            >
+              <img
+                src={CHAT_ASSETS.send}
+                alt=""
+                className="size-4 brightness-0 invert"
+              />
+            </button>
+          </div>
+          <button
+            type="button"
+            disabled={micBusy}
+            onClick={onMicPress}
+            className={CHAT_LANDING_LAYOUT.speakButton}
+            aria-label={CS.speakLabel}
+            aria-pressed={isRecording}
+          >
+            <img
+              src={CHAT_ASSETS.mic}
+              alt=""
+              className="size-5 brightness-0 invert"
+            />
+            {CS.speakLabel}
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(
         CHAT_LAYOUT.composerShell,
         "mt-auto shrink-0 px-5 pt-3",
-        embedded
-          ? "pb-2 lg:pb-2"
-          : "pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]"
+        "pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]"
       )}
     >
       <form

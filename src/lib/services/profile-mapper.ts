@@ -1,4 +1,5 @@
 import type { UserProfile } from "@/types";
+import type { CurrentDasaSummary } from "@/types/astrology";
 
 /** Raw shape from `GET /api/auth/profile` success body (`profile.py`). */
 export interface RawProfileResponse {
@@ -42,6 +43,35 @@ export interface RawProfileResponse {
     code_active?: boolean;
     message?: string | null;
   } | null;
+  current_dasa?: string | null;
+  current_dasa_summary?: {
+    dasa?: string;
+    bukti?: string;
+    label?: string;
+    start_date?: string;
+    end_date?: string;
+    days_remaining?: number;
+    raw?: string | null;
+  } | null;
+}
+
+function mapCurrentDasaSummary(
+  raw: RawProfileResponse["current_dasa_summary"]
+): CurrentDasaSummary | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const dasa = raw.dasa?.trim() ?? "";
+  const bukti = raw.bukti?.trim() ?? "";
+  const label = raw.label?.trim() ?? "";
+  if (!dasa && !bukti && !label) return undefined;
+  return {
+    dasa,
+    bukti,
+    label: label || `${dasa} / ${bukti}`.replace(/\s*\/\s*$/, "").trim(),
+    startDate: raw.start_date ?? "",
+    endDate: raw.end_date ?? "",
+    daysRemaining: Number(raw.days_remaining ?? 0),
+    raw: raw.raw?.trim() || undefined,
+  };
 }
 
 export function mapRawProfileToUserProfile(
@@ -143,6 +173,8 @@ export function mapRawProfileToUserProfile(
           message: raw.partner_discount.message || undefined,
         }
       : undefined,
+    currentDasa: raw.current_dasa?.trim() || undefined,
+    currentDasaSummary: mapCurrentDasaSummary(raw.current_dasa_summary),
   };
 }
 

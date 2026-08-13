@@ -25,19 +25,19 @@ export function ChatMessageBubble({
   const showActions = !isUser && Boolean(userQuestion);
 
   return (
-    <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>
+    <div className={cn("relative flex w-full", isUser ? "justify-end" : "justify-start")}>
       {!isUser ? (
-        <img src={CHAT_ASSETS.botLogo} alt="" className="mr-2 mt-1 size-8 shrink-0 self-start" />
+        <img
+          src={CHAT_ASSETS.botLogo}
+          alt=""
+          className={CHAT_LAYOUT.botAvatar}
+        />
       ) : null}
       <div className={CHAT_LAYOUT.messageColumn}>
         <div
-          className={cn(
-            "rounded-[0.9rem] px-3 py-2.5",
-            CHAT_LAYOUT.messageBubble,
-            isUser
-              ? "border border-black/10 bg-[var(--color-chat-user-bubble)] text-[var(--color-chat-user-text)]"
-              : CHAT_LAYOUT.botMessageBubble
-          )}
+          className={
+            isUser ? CHAT_LAYOUT.userMessageCard : CHAT_LAYOUT.botMessageCard
+          }
         >
           <p className="whitespace-pre-wrap break-words">{message.text}</p>
           {!isUser ? (
@@ -67,10 +67,7 @@ export function ChatMessageBubble({
         ) : null}
       </div>
       {isUser ? (
-        <span
-          className="ml-2 mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-chat-user-avatar-bg)] text-xs font-semibold text-[var(--color-chat-user-text)]"
-          aria-hidden
-        >
+        <span className={CHAT_LAYOUT.userAvatar} aria-hidden>
           {userInitials}
         </span>
       ) : null}

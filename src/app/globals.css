@@ -55,6 +55,7 @@
   --color-consult-filter-chip: #7fa900;
   --color-consult-match-track: #d9d9d9;
   --desktop-sidebar-width: 17.5rem;
+  --desktop-sidebar-width-xl: 19rem;
   --color-home-timing-rail-bg: #e8f4e4;
   --color-home-timing-chip-bg: #f4faf2;
   --color-home-timing-rahu: #c45c2a;
@@ -63,12 +64,33 @@
   --color-ai-chat-icon: #2e8b1e;
   --color-chat-shell: #ffffff;
   --color-chat-composer-bg: #e3f8e1;
-  --color-chat-user-bubble: #f5f5f5;
-  --color-chat-user-text: var(--color-brand-black);
-  --color-chat-user-avatar-bg: #e8f5e6;
-  --color-chat-bot-bubble: var(--color-brand-primary);
-  --color-chat-bot-text: #ffffff;
-  --color-chat-bot-border: transparent;
+  --color-chat-user-bubble: var(--color-brand-primary);
+  --color-chat-user-text: #ffffff;
+  --color-chat-user-avatar-bg: #ececec;
+  --color-chat-user-avatar-text: #4a4a4a;
+  --color-chat-bot-bubble: #ffffff;
+  --color-chat-bot-text: var(--color-brand-black);
+  --color-chat-bot-border: rgb(0 0 0 / 0.12);
+  --color-chat-ask-btn-bg: #ffffff;
+  --color-chat-ask-btn-border: var(--color-brand-primary);
+  --color-chat-ask-btn-text: var(--color-brand-primary);
+  --color-chat-consult-btn-bg: #ffffff;
+  --color-chat-consult-btn-border: #6b4fb3;
+  --color-chat-consult-btn-text: #6b4fb3;
+  --color-chat-conversation-glow: color-mix(in srgb, var(--color-home-screen-mint) 72%, white);
+  --color-chat-conversation-surface: color-mix(in srgb, var(--color-home-screen-mint) 38%, white);
+  --color-chat-landing-pill-border: rgb(0 0 0 / 0.12);
+  --color-chat-landing-card-border: rgb(0 0 0 / 0.1);
+  --color-chat-landing-bg: #ffffff;
+  --color-chat-landing-header-border: rgb(0 0 0 / 0.08);
+  --color-chat-landing-composer-border: rgb(0 0 0 / 0.06);
+  --color-chat-voice-ready-bg: #e8f5e9;
+  --color-chat-voice-ready-text: #0b6b00;
+  --color-chat-landing-accent: #0da602;
+  --color-chat-landing-label: rgb(0 0 0 / 0.62);
+  --color-chat-landing-glow: color-mix(in srgb, var(--color-home-screen-mint) 32%, white);
+  --color-chat-star: #f5a623;
+  --color-chat-header-bg: #ffffff;
   --color-subscription-card-surface: color-mix(in srgb, var(--color-brand-black) 88%, transparent);
   --color-subscription-plan-idle-surface: color-mix(in srgb, var(--color-brand-black) 72%, transparent);
   --color-subscription-feature-text: rgb(255 255 255 / 0.94);
@@ -371,6 +393,34 @@
   .prediction-slide-up-btn {
     animation: prediction-slide-up 0.8s ease-out 0.2s both;
   }
+
+  /** Chat conversation — soft mint glow behind response cards (matches landing feel). */
+  .chat-conversation-surface {
+    background-color: var(--color-chat-landing-bg);
+    background-image:
+      radial-gradient(
+        ellipse 85% 70% at 32% 28%,
+        var(--color-chat-conversation-glow) 0%,
+        var(--color-chat-conversation-surface) 42%,
+        var(--color-chat-landing-bg) 78%
+      ),
+      radial-gradient(
+        ellipse 55% 45% at 68% 62%,
+        color-mix(in srgb, var(--color-brand-primary) 8%, white) 0%,
+        transparent 70%
+      );
+  }
+
+  /** Chat landing — white surface + soft mint glow behind the mic hero. */
+  .chat-landing-surface {
+    background-color: var(--color-chat-landing-bg);
+    background-image: radial-gradient(
+      ellipse 48% 28% at 50% 12%,
+      var(--color-chat-landing-glow) 0%,
+      color-mix(in srgb, var(--color-brand-primary) 4%, white) 45%,
+      var(--color-chat-landing-bg) 72%
+    );
+  }
 }
 
 @keyframes match-ring-pulse {
@@ -421,6 +471,12 @@
 
   .desktop-sidebar-width {
     width: var(--desktop-sidebar-width);
+  }
+
+  @media (min-width: 1280px) {
+    :root {
+      --desktop-sidebar-width: var(--desktop-sidebar-width-xl);
+    }
   }
 
   .chat-shell-bg {

@@ -1,44 +1,104 @@
 "use client";
 
 import Image from "next/image";
-import { HomePanchangTimingStrip } from "@/components/home/HomePanchangTimingStrip";
-import { APP_NAME, PUBLIC_ASSETS } from "@/lib/constants";
-import { HOME_EMBED_HEADER_UI } from "@/lib/constants/home-embed-header-ui";
-import { HOME_LAYOUT } from "@/lib/constants/home-layout";
+import Link from "next/link";
+import { useI18nConstants } from "@/hooks/useT";
+import { AuthGatedLink } from "@/components/common/AuthGatedLink";
+import { ProfileQuickMenu } from "@/components/common/ProfileQuickMenu";
+import { HomePanchangTimingPills } from "@/components/home/HomePanchangTimingPills";
+import { HomeReferralTopBarPill } from "@/components/home/HomeReferralTopBarPill";
+import {
+  DASHBOARD_ASSETS,
+  HOME_DASHBOARD,
+  HOME_DASHBOARD_UI,
+  ROUTES,
+} from "@/lib/constants";
+import { CHAT_LANDING_UI } from "@/lib/constants/chat-landing-ui";
+import { HOME_EMBED_HEADER_UI as UI } from "@/lib/constants/home-embed-header-ui";
+import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
+import { userInitialsFromProfile } from "@/lib/chat-helpers";
 import { useAuthStore } from "@/store/auth.store";
+import { useDashboard } from "@/hooks/useDashboard";
 import type { HomeDesktopTopHeaderProps } from "@/types/ui/home-embed-header";
 import { cn } from "@/lib/utils";
 
-/** Desktop (`lg+`) — brand above sidebar; timings above main content on all main routes. */
+/** Desktop (`lg+`) — greeting row + mint Panchang strip above the main pane. */
 export function HomeDesktopTopHeader({ className }: HomeDesktopTopHeaderProps) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const user = useAuthStore((s) => s.user);
+  const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
+  const HD = useI18nConstants(HOME_DASHBOARD);
+  const landingCopy = useI18nConstants(CHAT_LANDING_UI);
+  const { unreadCount } = useDashboard();
+
+  const displayName =
+    user?.name?.trim() || user?.firstName?.trim() || HDS.helloGuest;
+  const initials = userInitialsFromProfile(
+    user?.firstName,
+    user?.lastName,
+    user?.name
+  );
+
+  if (!isAuthenticated) return null;
 
   return (
     <header
-      className={cn(HOME_EMBED_HEADER_UI.desktopTopHeader, className)}
+      className={cn(UI.desktopTopHeader, className)}
       aria-label="Teksage home"
     >
-      <div
-        className={cn(
-          HOME_LAYOUT.desktopAsideWidth,
-          HOME_EMBED_HEADER_UI.brandColumn
-        )}
-      >
-        <Image
-          src={PUBLIC_ASSETS.appLogo}
-          alt=""
-          width={HOME_EMBED_HEADER_UI.logoPx}
-          height={HOME_EMBED_HEADER_UI.logoPx}
-          unoptimized
-          className="size-9 shrink-0"
-        />
-        <span className={HOME_EMBED_HEADER_UI.brandWordmark}>{APP_NAME}</span>
-      </div>
-      {isAuthenticated ? (
-        <div className={HOME_EMBED_HEADER_UI.timingColumn}>
-          <HomePanchangTimingStrip variant="light" flush />
+      <div className={UI.topRow}>
+        <div className={UI.greetingRow}>
+          <p className={UI.helloText}>
+            {HDS.hello}, {displayName}
+          </p>
+          <div className={UI.actionsRow}>
+            <HomeReferralTopBarPill discount={user?.partnerDiscount} />
+            <Link href={ROUTES.gettingStarted} className={UI.gettingStartedPill}>
+              <Image
+                src={UI.gettingStartedIcon}
+                alt=""
+                width={16}
+                height={16}
+                unoptimized
+                className="size-4"
+              />
+              {landingCopy.gettingStarted}
+            </Link>
+            <AuthGatedLink
+              href={ROUTES.notifications}
+              returnPath={ROUTES.notifications}
+              inline
+              className="relative rounded-full p-1.5 transition-colors hover:bg-black/5"
+              aria-label={HD.notificationsLinkAria}
+            >
+              <Image
+                src={DASHBOARD_ASSETS.notification}
+                alt=""
+                width={24}
+                height={24}
+                unoptimized
+                className="block size-6"
+              />
+              {unreadCount > 0 ? (
+                <span className={HOME_DASHBOARD_UI.notificationBadge}>
+                  {unreadCount > 9
+                    ? HD.notificationCountOverflow
+                    : unreadCount}
+                </span>
+              ) : null}
+            </AuthGatedLink>
+            <ProfileQuickMenu
+              userInitials={initials}
+              userName={displayName}
+            />
+          </div>
         </div>
-      ) : null}
+      </div>
+      <div className={UI.panchangRow}>
+        <div className={UI.panchangPane}>
+          <HomePanchangTimingPills />
+        </div>
+      </div>
     </header>
   );
 }
