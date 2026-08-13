@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DesktopNavLabel } from "@/components/common/DesktopNavLabel";
+import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
 import { cn } from "@/lib/utils";
 import type { DesktopNavItemProps } from "@/types/ui/desktop-nav";
 
-/** Sidebar row — Flutter design ref (icon + label + optional chevron). */
+/** Sidebar row — modern icon + label + optional chevron. */
 export function DesktopNavItem({
   href,
   iconSrc,
@@ -15,22 +16,21 @@ export function DesktopNavItem({
   onClick,
   ariaExpanded,
 }: DesktopNavItemProps) {
-  const rowClass = cn(
-    "flex w-full items-center gap-3 rounded-xl px-2 py-2.5 text-left transition-colors",
-    active
-      ? "bg-[var(--color-home-screen-mint)]"
-      : "hover:bg-neutral-50"
-  );
+  const rowClass = active
+    ? DESKTOP_SIDEBAR_UI.navItemActive
+    : DESKTOP_SIDEBAR_UI.navItem;
 
   const content = (
     <>
       <Image
         src={iconSrc}
         alt=""
-        width={32}
-        height={32}
+        width={28}
+        height={28}
         unoptimized
-        className="size-8 shrink-0 object-contain"
+        className={
+          active ? DESKTOP_SIDEBAR_UI.navIconActive : DESKTOP_SIDEBAR_UI.navIcon
+        }
       />
       <DesktopNavLabel label={label} labelLines={labelLines} active={active} />
       {trailing ? <span className="ml-auto shrink-0">{trailing}</span> : null}
@@ -51,7 +51,7 @@ export function DesktopNavItem({
   }
 
   return (
-    <Link href={href ?? "#"} className={rowClass}>
+    <Link href={href ?? "#"} className={cn(rowClass)}>
       {content}
     </Link>
   );

@@ -31,8 +31,6 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const isFullHeightPane =
     isChatRoute || isHomeRoute || isSubscriptionFlow;
   const hideBottomNav = isChatRoute || isSubscriptionFlow;
-  /** Top header shows brand when logged in — avoid duplicating it in the sidebar. */
-  const hideSidebarBrand = isAuthenticated;
 
   const mainPaneClass = cn(
     isFullHeightPane &&
@@ -56,12 +54,12 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
         <FeatureDiscoveryPrompt />
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">
-        {isAuthenticated ? <HomeDesktopTopHeader /> : null}
-        <div className="flex min-h-0 flex-1">
+        <div className="relative z-0 flex min-h-0 flex-1">
           <div className={cn(isChatRoute && "hidden lg:block")}>
-            <DesktopMainNav hideBrand={hideSidebarBrand} className="h-full" />
+            <DesktopMainNav className="h-full" />
           </div>
           <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
+            {isAuthenticated ? <HomeDesktopTopHeader /> : null}
             <main className={mainPaneClass}>{children}</main>
             {hideBottomNav ? null : <BottomNav />}
           </div>

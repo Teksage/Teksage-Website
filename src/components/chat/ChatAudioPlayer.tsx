@@ -89,16 +89,16 @@ export function ChatAudioPlayer({ audioBase64 }: ChatAudioPlayerProps) {
   const progress = duration > 0 ? (position / duration) * 100 : 0;
 
   return (
-    <div className="mt-2.5 rounded-xl border border-white/15 bg-white/10 p-2">
+    <div className="mt-2.5 rounded-xl border border-black/10 bg-[var(--color-brand-primary)]/8 p-2">
       <div className="flex items-center gap-3">
         <div className="min-w-0 flex-1">
-          <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
+          <div className="h-1.5 overflow-hidden rounded-full bg-black/10">
             <div
-              className="h-full rounded-full bg-white transition-[width]"
+              className="h-full rounded-full bg-[var(--color-brand-primary)] transition-[width]"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="mt-1.5 flex justify-between text-2xs text-white/90">
+          <div className="mt-1.5 flex justify-between text-2xs text-black/55">
             <span>{formatTime(remaining)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -108,8 +108,8 @@ export function ChatAudioPlayer({ audioBase64 }: ChatAudioPlayerProps) {
           onClick={togglePlay}
           aria-label={playing ? VC.pauseAria : VC.playAria}
           className={cn(
-            "flex size-10 shrink-0 items-center justify-center rounded-full bg-white",
-            "text-[var(--color-brand-primary)]"
+            "flex size-10 shrink-0 items-center justify-center rounded-full",
+            "bg-[var(--color-brand-primary)] text-white"
           )}
         >
           {playing ? (

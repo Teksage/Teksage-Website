@@ -16,7 +16,8 @@ export const CHAT_SCREEN = {
   noResponseLabel: "No response.",
   relatedTitle: "Related questions",
   composerPlaceholder: "Tap the mic",
-  composerPlaceholderDesktop: "Ask your astrology question…",
+  composerPlaceholderDesktop: "Ask your astrology question or tap Speak",
+  speakLabel: "Speak",
   sendAria: "Send message",
   backAria: "Go back",
   plansCta: "Plans",
@@ -34,6 +35,7 @@ export const CHAT_SCREEN = {
     "Your astrological insights haven't begun. Start a chat to unlock the stars!",
   chatExportFailed: "Could not complete this action. Please try again.",
   chatMenuAria: "Chat actions",
+  historyAria: "Previous chats",
   consultBannerTitle: "Consult Astrologer",
   styleLabel: "Explanatory",
   avatarLabel: "The Seeker",
@@ -50,12 +52,26 @@ export const CHAT_LAYOUT = {
     "mx-auto flex w-full max-w-md flex-1 flex-col justify-between px-5 pb-8 pt-4 lg:max-w-lg lg:px-8 lg:pb-10 lg:pt-6",
   onboardingTitle: `text-center ${TYPO.h1Semibold} lg:text-3xl`,
   onboardingOptionsStack: "mt-8 space-y-4 lg:mt-10 lg:space-y-5",
-  messageGutter: "px-5",
-  messageBubble: TYPO.chatBubble,
+  messageGutter: "relative min-h-full flex-1 px-5",
+  messageList:
+    "chat-conversation-surface relative z-10 flex min-h-full flex-col gap-4 py-4",
+  messageListGlow:
+    "pointer-events-none absolute left-[30%] top-8 h-80 w-80 -translate-x-1/2 rounded-full bg-[var(--color-chat-conversation-glow)] opacity-90 blur-3xl",
+  conversationScroll:
+    "chat-conversation-surface flex min-h-0 flex-1 flex-col overflow-y-auto",
+  landingScroll: "flex min-h-0 flex-1 flex-col overflow-y-auto",
   messageColumn:
-    "flex max-w-[min(94%,32rem)] flex-col gap-1 lg:max-w-[min(92%,40rem)]",
-  botMessageBubble:
-    "border border-[var(--color-chat-bot-border)] bg-[var(--color-chat-bot-bubble)] text-[var(--color-chat-bot-text)]",
+    "flex max-w-[min(92%,34rem)] flex-col gap-2 lg:max-w-[min(90%,42rem)]",
+  /** Card chrome — same idea as energy-score pills: solid fill + border + soft shadow. */
+  userMessageCard: `${TYPO.chatCardTextUser} rounded-2xl bg-[var(--color-chat-user-bubble)] px-4 py-3 shadow-[0_2px_10px_rgb(16_177_0_/_0.16)]`,
+  botMessageCard: `${TYPO.chatCardTextBot} rounded-2xl border border-[var(--color-chat-bot-border)] bg-[var(--color-chat-bot-bubble)] px-4 py-3 shadow-[0_1px_6px_rgb(0_0_0_/_0.06)]`,
+  botAvatar: "mr-2.5 mt-0.5 size-9 shrink-0 self-start",
+  userAvatar:
+    "ml-2.5 mt-0.5 flex size-9 shrink-0 items-center justify-center self-start rounded-full border border-black/10 bg-[var(--color-chat-user-avatar-bg)] text-xs font-bold text-[var(--color-chat-user-avatar-text)]",
+  askActionBtn:
+    "inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-chat-ask-btn-border)] bg-[var(--color-chat-ask-btn-bg)] px-4 py-1.5 text-center text-xs font-bold leading-tight text-[var(--color-chat-ask-btn-text)] transition-colors hover:bg-[var(--color-brand-primary)]/8",
+  consultActionBtn:
+    "inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-chat-consult-btn-border)] bg-[var(--color-chat-consult-btn-bg)] px-4 py-1.5 text-center text-xs font-bold leading-tight text-[var(--color-chat-consult-btn-text)] transition-colors hover:bg-[var(--color-chat-consult-btn-border)]/8",
   headerBlock: "bg-[var(--color-brand-primary)] text-white",
   embedHeaderBlock: "px-4 py-3 text-center",
   embedHeaderTitle: `${TYPO.h3Bold} text-white`,

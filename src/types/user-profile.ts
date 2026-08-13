@@ -1,3 +1,5 @@
+import type { CurrentDasaSummary } from "./astrology";
+
 /** Authenticated customer profile — mirrors Flutter user model fields used on web. */
 
 export interface UserProfile {
@@ -43,4 +45,8 @@ export interface UserProfile {
   showPartnerReferralSection?: boolean;
   /** Active partner referral discount summary for Home / checkout. */
   partnerDiscount?: import("./partner-referral").PartnerDiscountState;
+  /** Raw horoscope `current_dasa` string from profile API. */
+  currentDasa?: string;
+  /** Parsed dasa / bukti with days remaining for landing UI. */
+  currentDasaSummary?: CurrentDasaSummary;
 }

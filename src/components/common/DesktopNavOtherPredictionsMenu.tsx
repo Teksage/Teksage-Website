@@ -12,6 +12,7 @@ import {
   HOME_DASHBOARD_SIDEBAR,
   HOME_DASHBOARD_SIDEBAR_ASSETS,
 } from "@/lib/constants/home-dashboard-sidebar";
+import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
 
@@ -76,13 +77,13 @@ export function DesktopNavOtherPredictionsMenu() {
                     guardNavigation(item.href, { redirectHomeOnClose: true })
                   }
                   className={cn(
-                    "flex w-full items-center gap-2.5 rounded-lg py-2 text-left text-sm font-medium transition-colors",
                     active
-                      ? "font-semibold text-black"
-                      : "text-black/80 hover:text-black"
+                      ? DESKTOP_SIDEBAR_UI.submenuItemActive
+                      : DESKTOP_SIDEBAR_UI.submenuItem,
+                    "px-2"
                   )}
                 >
-                  <span className="size-1.5 shrink-0 rounded-[1px] bg-[var(--color-brand-primary)]" />
+                  <span className={DESKTOP_SIDEBAR_UI.submenuDot} />
                   {item.label}
                 </button>
               </li>

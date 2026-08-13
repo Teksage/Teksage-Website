@@ -12,16 +12,13 @@ export function ChatMessageList({
   showTyping,
 }: ChatMessageListProps) {
   return (
-    <div
-      className={cn(
-        "relative z-10 flex flex-col gap-3 py-3",
-        CHAT_LAYOUT.messageGutter
-      )}
-    >
+    <div className={cn(CHAT_LAYOUT.messageGutter, CHAT_LAYOUT.messageList)}>
+      <div className={CHAT_LAYOUT.messageListGlow} aria-hidden />
       {messages.map((message, index) => {
-        // For assistant messages, find the preceding user message to power ChatMessageActions
         const prevUserQuestion =
-          message.role === "assistant" && index > 0 && messages[index - 1].role === "user"
+          message.role === "assistant" &&
+          index > 0 &&
+          messages[index - 1].role === "user"
             ? messages[index - 1].text
             : undefined;
 

@@ -31,16 +31,6 @@ export const DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.loveCompatibility,
 } as const;
 
-export const DESKTOP_SIDEBAR_NOTIFICATIONS_LINK = {
-  href: ROUTES.notifications,
-  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.notification,
-} as const;
-
-export const DESKTOP_SIDEBAR_WHATSAPP_LINK = {
-  href: ROUTES.whatsappUpdates,
-  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.whatsapp,
-} as const;
-
 export const DESKTOP_SIDEBAR_PANCHANG_LINK = {
   href: ROUTES.panchang,
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.panchang,
@@ -49,16 +39,6 @@ export const DESKTOP_SIDEBAR_PANCHANG_LINK = {
 export const DESKTOP_SIDEBAR_EVENT_PLANNER_LINK = {
   href: ROUTES.eventPlanner,
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.eventPlanner,
-} as const;
-
-export const DESKTOP_SIDEBAR_SETTINGS_LINK = {
-  href: ROUTES.settings,
-  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.settings,
-} as const;
-
-export const DESKTOP_SIDEBAR_GETTING_STARTED_LINK = {
-  href: ROUTES.gettingStarted,
-  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.gettingStarted,
 } as const;
 
 export const DESKTOP_SIDEBAR_AI_CHAT_HREF = ROUTES.home;

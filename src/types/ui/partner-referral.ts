@@ -11,3 +11,8 @@ export type PartnerDiscountHomeBannerProps = {
   /** `sidebar` = compact card in desktop left rail (all routes). */
   variant?: "home" | "sidebar";
 };
+
+export type HomeReferralTopBarPillProps = {
+  discount: PartnerDiscountState | null | undefined;
+  className?: string;
+};

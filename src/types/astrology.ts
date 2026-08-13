@@ -59,3 +59,14 @@ export interface HoroscopePayload {
   rasi_chart_label?: string;
   navamsa_chart_label?: string;
 }
+
+/** Parsed `current_dasa` line from profile API (`current_dasa_summary`). */
+export interface CurrentDasaSummary {
+  dasa: string;
+  bukti: string;
+  label: string;
+  startDate: string;
+  endDate: string;
+  daysRemaining: number;
+  raw?: string;
+}

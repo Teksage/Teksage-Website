@@ -9,6 +9,7 @@ import type {
 type RawChatHistoryRow = {
   user_question?: string;
   api_response?: string;
+  query_date?: string;
 };
 
 type RawChatPreference = {
@@ -34,6 +35,7 @@ export async function fetchChatHistory(): Promise<ChatHistoryRecord[]> {
     .map((row) => ({
       userQuestion: row.user_question ?? "",
       apiResponse: row.api_response ?? "",
+      queryDate: row.query_date?.trim() || undefined,
     }));
 }
 

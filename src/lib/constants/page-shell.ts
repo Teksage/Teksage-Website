@@ -8,7 +8,7 @@ import { SETTINGS_SHELL_GRADIENT_CLASS } from "@/lib/constants/settings-screen";
 export const PAGE_SHELL = {
   column: "flex flex-col",
   root: "relative min-h-dvh",
-  homeRoot: "relative flex min-h-dvh flex-col",
+  homeRoot: "relative flex min-h-dvh flex-col lg:min-h-0",
   detailRoot: "relative flex flex-col",
   contentLayer: "relative z-10",
   contentBottomPad: "pb-4",
