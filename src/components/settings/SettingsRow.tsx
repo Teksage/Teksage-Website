@@ -11,11 +11,11 @@ export type { SettingsRowVariant };
 function ChevronRight() {
   return (
     <svg
-      width="16"
-      height="16"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
-      className="shrink-0 text-neutral-400"
+      className={SETTINGS_UI.rowChevron}
       aria-hidden
     >
       <path
@@ -37,35 +37,37 @@ export function SettingsRow({
   onClick,
   className,
 }: SettingsRowProps) {
+  const isLogout = variant === "logout";
   const inner = (
     <div
       className={cn(
-        "flex min-h-[52px] items-center justify-between gap-3 rounded-lg px-5",
-        variant === "logout" ? SETTINGS_UI.rowLogout : SETTINGS_UI.rowDefault,
+        SETTINGS_UI.rowShell,
+        isLogout ? SETTINGS_UI.rowLogout : SETTINGS_UI.rowDefault,
         className
       )}
     >
       <span className="flex min-w-0 items-center gap-3">
-        <Image
-          src={iconSrc}
-          alt=""
-          width={24}
-          height={24}
-          unoptimized
-          className="size-6 shrink-0"
-        />
         <span
-          className={cn(
-            "truncate text-base font-medium",
-            variant === "logout"
-              ? "text-[var(--color-brand-error)]"
-              : "text-[var(--color-brand-black)]"
-          )}
+          className={
+            isLogout ? SETTINGS_UI.rowIconWrapLogout : SETTINGS_UI.rowIconWrap
+          }
+        >
+          <Image
+            src={iconSrc}
+            alt=""
+            width={20}
+            height={20}
+            unoptimized
+            className={SETTINGS_UI.rowIcon}
+          />
+        </span>
+        <span
+          className={isLogout ? SETTINGS_UI.rowLabelLogout : SETTINGS_UI.rowLabel}
         >
           {label}
         </span>
       </span>
-      {variant === "default" && <ChevronRight />}
+      {!isLogout ? <ChevronRight /> : null}
     </div>
   );
 
@@ -83,4 +85,3 @@ export function SettingsRow({
     </button>
   );
 }
-

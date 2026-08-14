@@ -1,6 +1,8 @@
 import type { UserProfile } from "../user-profile";
 import type { PaymentTotals } from "@/lib/subscription-payment-totals";
+import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
 import type { SubscriptionPlan } from "@/types/settings";
+import type { FieldErrors, UseFormSetValue } from "react-hook-form";
 
 export type ProfileDetailsFormState = {
   firstName: string;
@@ -24,6 +26,18 @@ export interface ProfileDetailsFieldsProps {
   isEditing: boolean;
   isSaving: boolean;
   onProfileRefresh?: () => void | Promise<void>;
+}
+
+export interface ProfileDetailsBirthSectionProps {
+  form: ProfileDetailsFormValues;
+  errors: FieldErrors<ProfileDetailsFormValues>;
+  setValue: UseFormSetValue<ProfileDetailsFormValues>;
+  touch: { shouldDirty: true };
+  isEditing: boolean;
+  guardBirthEdit: () => boolean;
+  refreshRashi: () => void | Promise<void>;
+  rashiBusy: boolean;
+  rashiError: string | null;
 }
 
 export interface ProfileLocationFieldProps {
@@ -52,6 +66,17 @@ export interface ProfileDetailsFormProps {
   onProfileRefresh?: () => void | Promise<void>;
   className?: string;
 }
+
+export interface ProfilePageHeaderProps {
+  title: string;
+  subtitle?: string;
+  backLabel: string;
+  onBack: () => void;
+  action?: React.ReactNode;
+  className?: string;
+}
+
+export type SettingsPageHeaderProps = ProfilePageHeaderProps;
 
 export interface ProfileAvatarProps {
   name?: string;

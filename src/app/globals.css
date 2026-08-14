@@ -421,6 +421,23 @@
       var(--color-chat-landing-bg) 72%
     );
   }
+
+  /** Settings / profile — white + soft mint glow (matches chat conversation feel). */
+  .mint-glow-surface {
+    background-color: var(--color-chat-landing-bg);
+    background-image:
+      radial-gradient(
+        ellipse 90% 65% at 28% 18%,
+        var(--color-chat-conversation-glow) 0%,
+        var(--color-chat-conversation-surface) 40%,
+        var(--color-chat-landing-bg) 76%
+      ),
+      radial-gradient(
+        ellipse 50% 40% at 78% 70%,
+        color-mix(in srgb, var(--color-brand-primary) 7%, white) 0%,
+        transparent 72%
+      );
+  }
 }
 
 @keyframes match-ring-pulse {

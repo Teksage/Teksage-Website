@@ -90,6 +90,7 @@ export function HomeDesktopTopHeader({ className }: HomeDesktopTopHeaderProps) {
             <ProfileQuickMenu
               userInitials={initials}
               userName={displayName}
+              userSubtitle={user?.email?.trim() || user?.mobile?.trim()}
             />
           </div>
         </div>

@@ -1,5 +1,7 @@
 /** Flutter-aligned layout tokens for settings sub-pages. */
 
+import { TYPO } from "@/lib/constants/typography";
+
 export const PREMIUM_PLAN_FEATURES = [
   "Auto Schedule Daily Predictions",
   "Auto Schedule Weekly Predictions",
@@ -15,50 +17,58 @@ export const PREMIUM_PLAN_FEATURES = [
 ] as const;
 
 export const SETTINGS_UI = {
+  rowShell:
+    "flex min-h-[3.5rem] w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition-colors",
   rowDefault:
-    "bg-[color-mix(in_srgb,var(--color-brand-black)_3%,transparent)] lg:border lg:border-neutral-100 lg:bg-white lg:shadow-[0_1px_2px_rgb(0_0_0_/0.04)]",
+    "bg-transparent hover:bg-[var(--color-home-screen-mint)]/55",
   rowLogout:
-    "bg-[color-mix(in_srgb,var(--color-brand-error)_6%,transparent)] lg:border lg:border-[color-mix(in_srgb,var(--color-brand-error)_20%,transparent)]",
+    "bg-transparent hover:bg-[color-mix(in_srgb,var(--color-brand-error)_8%,transparent)]",
+  rowIconWrap:
+    "flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-home-screen-mint)]/90 ring-1 ring-[var(--color-brand-primary)]/10",
+  rowIconWrapLogout:
+    "flex size-9 shrink-0 items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--color-brand-error)_10%,white)]",
+  rowIcon: "size-[1.15rem] object-contain",
+  rowLabel: `${TYPO.sizeSm} ${TYPO.weightMedium} truncate text-[var(--color-brand-black)]/80 lg:text-base`,
+  rowLabelLogout: `${TYPO.sizeSm} ${TYPO.weightSemibold} truncate text-[var(--color-brand-error)] lg:text-base`,
+  rowChevron: "size-4 shrink-0 text-black/25 lg:size-5",
   whitePage: "relative z-10 min-h-0 flex-1 bg-white",
-  languagePage: "relative z-10 min-h-0 flex-1 settings-language-gradient",
+  languagePage: "relative z-10 min-h-0 flex-1",
   subscriptionPage: "relative z-10 min-h-0 flex-1 bg-black text-white",
-  contentPad: "mx-auto w-full max-w-lg px-5",
-  languageHint: "text-sm font-medium text-neutral-500",
-  languageList: "mt-5 flex flex-col gap-3",
+  contentPad: "w-full",
+  languageHint: `${TYPO.sizeSm} ${TYPO.weightMedium} text-black/45`,
+  languageList: "mt-4 flex flex-col gap-2",
   languageOption:
-    "flex w-full items-center gap-3 rounded-lg border-2 border-transparent px-3 py-2.5 text-left transition-colors",
+    "flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors",
   languageOptionSelected:
-    "border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,white)]",
-  languageOptionIdle: "border-transparent bg-[color-mix(in_srgb,var(--color-brand-black)_3%,transparent)]",
+    "bg-[var(--color-home-screen-mint)]/70 ring-1 ring-[var(--color-brand-primary)]/20",
+  languageOptionIdle: "hover:bg-[var(--color-home-screen-mint)]/40",
   radioOuter:
     "flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-neutral-400",
   radioOuterSelected: "border-[var(--color-brand-primary)]",
   radioInner: "size-2.5 rounded-full bg-[var(--color-brand-primary)]",
-  pushList:
-    "w-full border-y border-[#e0e0e0] divide-y divide-[#e0e0e0] bg-white",
-  pushRow: "px-5 py-4",
-  supportLead: "text-center text-base font-medium text-black/50",
+  pushList: "divide-y divide-black/[0.06]",
+  pushRow: "px-4 py-4 sm:px-5",
+  pushNotice: `${TYPO.sizeSm} mb-4 text-black/55`,
+  pushNoticeLink: `${TYPO.weightMedium} text-[var(--color-brand-primary)] underline-offset-2 hover:underline`,
+  supportLead: `${TYPO.sizeSm} ${TYPO.weightMedium} whitespace-pre-line text-black/50`,
   supportTextarea:
-    "mt-12 w-full resize-none rounded-lg border-0 bg-[#f2f2f2] px-3 py-3.5 text-sm text-[var(--color-brand-black)] outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]",
+    "mt-5 w-full resize-none rounded-xl border border-black/[0.08] bg-[var(--color-brand-bg)] px-4 py-3.5 text-sm text-[var(--color-brand-black)] outline-none focus:border-[var(--color-brand-primary)] focus:bg-white",
   supportSubmit:
-    "mt-auto w-full rounded-full py-3.5 text-base font-semibold transition-colors disabled:bg-[#d9d9d9] disabled:text-neutral-600 enabled:bg-[var(--color-brand-primary)] enabled:text-white",
-  faqSubtitle: "text-center text-base font-medium text-black/50",
-  faqContent: "mx-auto w-full max-w-lg lg:max-w-2xl",
+    "mt-6 w-full rounded-full py-3.5 text-base font-semibold transition-colors disabled:bg-black/10 disabled:text-neutral-500 enabled:bg-[var(--color-brand-primary)] enabled:text-white sm:max-w-[14rem]",
+  faqSubtitle: `${TYPO.sizeSm} ${TYPO.weightMedium} text-black/50`,
+  faqContent: "w-full",
   faqSearch:
-    "relative rounded-xl bg-[#f6f6f6] px-4 py-3 ring-1 ring-transparent focus-within:ring-[color-mix(in_srgb,var(--color-brand-primary)_35%,transparent)]",
+    "relative rounded-xl bg-[var(--color-brand-bg)] px-4 py-3 ring-1 ring-transparent focus-within:ring-[color-mix(in_srgb,var(--color-brand-primary)_35%,transparent)]",
   faqSearchInput:
     "w-full min-w-0 bg-transparent pr-10 text-base leading-normal text-black/80 outline-none placeholder:text-black/50",
   faqSearchIcon:
     "pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 opacity-50",
-  faqFooter:
-    "shrink-0 border-t border-black/[0.12] bg-[#f6f6f6] px-4 pt-4 pb-6 lg:px-8 lg:pb-8",
-  faqFooterInner: "mx-auto flex w-full max-w-lg flex-col items-center lg:max-w-md",
+  faqFooter: "mt-5",
+  faqFooterInner: "flex w-full flex-col items-start sm:items-center",
   faqContactBtn:
-    "mt-5 block w-full max-w-md rounded-full bg-[var(--color-brand-primary)] py-3 text-center text-base font-semibold text-white transition-opacity hover:opacity-95 lg:py-2.5 lg:text-lg",
-  legalHero: "settings-legal-hero relative shrink-0 px-4 pb-5 pt-3",
-  legalHeroTitle: "text-center text-2xl font-bold text-white",
-  legalHeroDate: "mt-2 text-center text-xs italic text-white",
-  legalBody: "bg-white px-5 py-6",
+    "mt-4 inline-flex rounded-full bg-[var(--color-brand-primary)] px-6 py-3 text-center text-base font-semibold text-white transition-opacity hover:opacity-95",
+  legalMeta: `${TYPO.sizeXs} ${TYPO.weightMedium} mb-4 italic text-black/45`,
+  legalBody: "space-y-1",
   legalParagraph: "mt-2 text-sm leading-relaxed text-neutral-600",
   subscriptionBg:
     "pointer-events-none absolute inset-x-0 top-12 z-0 h-64 w-full object-cover opacity-60",
@@ -66,7 +76,8 @@ export const SETTINGS_UI = {
     "pointer-events-none absolute inset-x-0 top-12 z-[1] h-80 bg-gradient-to-b from-black/25 via-black/75 to-black",
   subscriptionPageShell:
     "relative z-10 flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-black text-white",
-  subscriptionScroll: "relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain",
+  subscriptionScroll:
+    "relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain",
   subscriptionContent: "mx-auto w-full max-w-lg px-5 pt-2 lg:max-w-2xl lg:px-8",
   subscriptionContentAboveFooter: "pb-28 lg:pb-8",
   subscriptionFooter:
@@ -93,6 +104,7 @@ export const SETTINGS_UI = {
     "h-[106px] border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)]",
   subscriptionTryPremiumTitle:
     "text-center text-title-lg font-semibold leading-none text-white",
-  rateOverlay: "fixed inset-0 z-50 flex items-center justify-center bg-black/10 p-6 backdrop-blur-sm",
+  rateOverlay:
+    "fixed inset-0 z-50 flex items-center justify-center bg-black/10 p-6 backdrop-blur-sm",
   rateCard: "relative w-full max-w-sm rounded-xl bg-white p-4 shadow-xl",
 } as const;

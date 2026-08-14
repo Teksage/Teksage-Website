@@ -128,7 +128,10 @@ export type { CountryDialInfo, CountryDialPickerProps } from "./country";
 export type {
   ProfileDetailsFormState,
   ProfileDetailsFieldsProps,
+  ProfileDetailsBirthSectionProps,
   ProfileDetailsFormProps,
+  ProfilePageHeaderProps,
+  SettingsPageHeaderProps,
   ProfileAvatarProps,
   ProfileFieldProps,
   ProfileDateOfBirthFieldProps,

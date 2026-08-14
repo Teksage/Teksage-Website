@@ -68,7 +68,7 @@ export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageCon
 
   if (loading) {
     return (
-      <div className={cn(WHATSAPP_UPDATES_UI.page, className)}>
+      <div className={cn(WHATSAPP_UPDATES_UI.panel, className)}>
         <WhatsAppUpdatesHeader />
         <PageLoadingCenter />
       </div>
@@ -76,7 +76,7 @@ export function WhatsAppUpdatesPageContent({ className }: WhatsAppUpdatesPageCon
   }
 
   return (
-    <div className={cn(WHATSAPP_UPDATES_UI.page, className)}>
+    <div className={cn(WHATSAPP_UPDATES_UI.panel, className)}>
       <WhatsAppUpdatesHeader />
       <div className={WHATSAPP_UPDATES_UI.inner}>
         <WhatsAppUpdatesHero />

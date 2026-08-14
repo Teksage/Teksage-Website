@@ -16,6 +16,7 @@ import type { ProfileQuickMenuProps } from "@/types/ui/profile-quick-menu";
 export function ProfileQuickMenu({
   userInitials,
   userName,
+  userSubtitle,
   className,
 }: ProfileQuickMenuProps) {
   const copy = useI18nConstants(CHAT_LANDING_UI);
@@ -31,12 +32,15 @@ export function ProfileQuickMenu({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [open]);
 
+  const displayName = userName || copy.profileMenuProfile;
+  const hint = userSubtitle?.trim() || copy.profileMenuHeaderHint;
+
   return (
     <div ref={rootRef} className={cn("relative shrink-0", className)}>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className={UI.trigger}
+        className={cn(UI.trigger, open && UI.triggerOpen)}
         aria-label={copy.profileMenuProfile}
         aria-expanded={open}
       >
@@ -49,8 +53,8 @@ export function ProfileQuickMenu({
               {userInitials}
             </span>
             <div className={UI.headerText}>
-              <p className={UI.headerName}>{userName || copy.profileMenuProfile}</p>
-              <p className={UI.headerHint}>{copy.profileMenuHeaderHint}</p>
+              <p className={UI.headerName}>{displayName}</p>
+              <p className={UI.headerHint}>{hint}</p>
             </div>
           </div>
 
@@ -76,28 +80,16 @@ export function ProfileQuickMenu({
                 <span className={UI.itemLabel}>{copy[item.labelKey]}</span>
               </Link>
             ))}
+          </div>
 
-            <div className={UI.divider} role="separator" />
-
+          <div className={UI.footer}>
             <Link
               href={PROFILE_QUICK_MENU_SETTINGS.href}
               role="menuitem"
-              className={UI.settingsItem}
+              className={UI.settingsLink}
               onClick={() => setOpen(false)}
             >
-              <span className={UI.itemIconWrap}>
-                <Image
-                  src={PROFILE_QUICK_MENU_SETTINGS.icon}
-                  alt=""
-                  width={16}
-                  height={16}
-                  unoptimized
-                  className={UI.itemIcon}
-                />
-              </span>
-              <span className={UI.settingsLabel}>
-                {copy[PROFILE_QUICK_MENU_SETTINGS.labelKey]}
-              </span>
+              {copy[PROFILE_QUICK_MENU_SETTINGS.labelKey]}
             </Link>
           </div>
         </div>
