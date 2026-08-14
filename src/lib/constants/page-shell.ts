@@ -1,5 +1,4 @@
 import { HOME_LAYOUT } from "@/lib/constants/home-layout";
-import { SETTINGS_SHELL_GRADIENT_CLASS } from "@/lib/constants/settings-screen";
 
 /**
  * Page shells — height follows content; `(main)/layout.tsx` reserves floating nav clearance.
@@ -28,8 +27,8 @@ export const MAIN_TAB_VIEWPORT_BACKDROP = {
   brandGray: "bg-[var(--color-brand-bg)]",
   horoscopeMint: "bg-[var(--color-brand-horoscope-bg)]",
   horoscopeSplit: "horoscope-split-shell-bg",
-  settings: SETTINGS_SHELL_GRADIENT_CLASS,
-  profile: "bg-background",
+  settings: "mint-glow-surface",
+  profile: "mint-glow-surface",
   yearly: "yearly-shell-gradient",
   life: LIFE_SHELL_GRADIENT_CLASS,
   matchMaking: "match-details-body-gradient",

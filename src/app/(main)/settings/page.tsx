@@ -18,15 +18,16 @@ export default function SettingsPage() {
   return (
     <div className={cn(PAGE_SHELL.column, SETTINGS_LAYOUT.pageRoot)}>
       <MainTabViewportBackdrop
-        className={cn(
-          MAIN_TAB_VIEWPORT_BACKDROP.settings,
-          "lg:opacity-0"
-        )}
+        className={MAIN_TAB_VIEWPORT_BACKDROP.settings}
       />
       <AppHeader
         blend
         title={t(SS.title)}
-        className={cn(PAGE_SHELL.contentLayer, SETTINGS_LAYOUT.headerChrome)}
+        className={cn(
+          PAGE_SHELL.contentLayer,
+          SETTINGS_LAYOUT.headerChrome,
+          "lg:hidden"
+        )}
       />
 
       <div className={cn(PAGE_SHELL.contentLayer, SETTINGS_LAYOUT.desktopPanel)}>

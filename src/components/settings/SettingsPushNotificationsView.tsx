@@ -12,11 +12,11 @@ import {
   NOTIFICATION_PREF_LABELS,
   SETTINGS_NOTIFICATIONS_COPY,
 } from "@/lib/constants/settings-notifications";
+import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { fetchProfileSettings } from "@/lib/services/settings-profile";
 import { showErrorAppSnackBar } from "@/lib/app-snackbar";
 import { updateNotificationPrefs } from "@/lib/services/settings-notifications";
-import { cn } from "@/lib/utils";
 import type { NotificationPrefs } from "@/types/settings";
 
 export function SettingsPushNotificationsView() {
@@ -43,7 +43,7 @@ export function SettingsPushNotificationsView() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [SN.loadFailed]);
 
   async function onToggle(key: NotificationPrefKey, value: boolean) {
     if (!isPremium) return;
@@ -61,45 +61,43 @@ export function SettingsPushNotificationsView() {
 
   if (loading) {
     return (
-      <div className={cn(SETTINGS_UI.contentPad, "bg-white py-8")}>
-        <p className="text-sm text-neutral-500">Loading…</p>
+      <div className={SETTINGS_LAYOUT.contentCard}>
+        <p className={`${SETTINGS_LAYOUT.contentCardPad} text-sm text-black/45`}>
+          Loading…
+        </p>
       </div>
     );
   }
 
   return (
-    <div
-      className={cn(
-        "relative z-10 mx-auto w-full max-w-lg bg-white pb-8 pt-2"
-      )}
-    >
+    <div>
       {!isPremium ? (
-        <p className="px-5 py-3 text-sm text-neutral-600">
+        <p className={SETTINGS_UI.pushNotice}>
           {SN.premiumRequired}{" "}
           <Link
             href={ROUTES.settingsSubscriptions}
-            className="font-medium text-[var(--color-brand-primary)] underline-offset-2 hover:underline"
+            className={SETTINGS_UI.pushNoticeLink}
           >
-            View subscriptions
+            {SN.viewSubscriptions}
           </Link>
         </p>
       ) : null}
-      <div className={SETTINGS_UI.pushList}>
-        {NOTIFICATION_PREF_KEYS.map((key) => (
-          <div key={key} className={SETTINGS_UI.pushRow}>
-            <SettingsToggle
-              label={NOTIFICATION_PREF_LABELS[key]}
-              checked={prefs[key]}
-              disabled={!isPremium}
-              onCheckedChange={(value) => void onToggle(key, value)}
-            />
-          </div>
-        ))}
+      <div className={SETTINGS_LAYOUT.contentCard}>
+        <div className={SETTINGS_UI.pushList}>
+          {NOTIFICATION_PREF_KEYS.map((key) => (
+            <div key={key} className={SETTINGS_UI.pushRow}>
+              <SettingsToggle
+                label={NOTIFICATION_PREF_LABELS[key]}
+                checked={prefs[key]}
+                disabled={!isPremium}
+                onCheckedChange={(value) => void onToggle(key, value)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
       {error ? (
-        <p className="mt-3 px-5 text-sm text-[var(--color-brand-error)]">
-          {error}
-        </p>
+        <p className="mt-3 text-sm text-[var(--color-brand-error)]">{error}</p>
       ) : null}
     </div>
   );

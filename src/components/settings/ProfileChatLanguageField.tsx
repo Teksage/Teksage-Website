@@ -1,7 +1,11 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { CHAT_LANGUAGE_OPTIONS, PROFILE_DETAILS } from "@/lib/constants/profile-details";
+import {
+  CHAT_LANGUAGE_OPTIONS,
+  PROFILE_DETAILS,
+  PROFILE_FIELD_UI as FU,
+} from "@/lib/constants/profile-details";
 import { cn } from "@/lib/utils";
 
 type ProfileChatLanguageFieldProps = {
@@ -23,9 +27,9 @@ export function ProfileChatLanguageField({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-[var(--color-brand-black)]">
+      <span className={FU.label}>
         {PD.chatLanguage}
-        <span className="text-[var(--color-brand-error)]">*</span>
+        <span className={FU.labelRequired}>*</span>
       </span>
       <div className="relative">
         <select
@@ -33,12 +37,9 @@ export function ProfileChatLanguageField({
           onChange={(e) => onChange(e.target.value)}
           disabled={!isEditing}
           className={cn(
-            "h-12 w-full appearance-none rounded-xl border bg-neutral-100 px-4 pr-11 text-sm font-medium",
-            "text-[var(--color-brand-black)] outline-none transition-colors",
-            "focus:border-[var(--color-brand-primary)]",
-            hasError
-              ? "border-[var(--color-brand-error)]"
-              : "border-black/15",
+            FU.select,
+            "text-[var(--color-brand-black)]",
+            hasError && FU.shellError,
             !isEditing && "cursor-not-allowed opacity-90"
           )}
         >
@@ -51,7 +52,7 @@ export function ProfileChatLanguageField({
         <svg
           aria-hidden
           viewBox="0 0 20 20"
-          className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-black/70"
+          className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-black/40"
         >
           <path
             d="M5.5 7.5 10 12l4.5-4.5"
@@ -64,9 +65,7 @@ export function ProfileChatLanguageField({
         </svg>
       </div>
       {hasError && errorMessage ? (
-        <p className="text-xs font-semibold text-[var(--color-brand-error)]">
-          {errorMessage}
-        </p>
+        <p className={FU.errorText}>{errorMessage}</p>
       ) : null}
     </div>
   );

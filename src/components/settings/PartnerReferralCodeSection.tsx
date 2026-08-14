@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { ProfileContactActionButton } from "@/components/settings/ProfileContactActionButton";
 import { PARTNER_REFERRAL_UI } from "@/lib/constants/partner-referral";
+import { PROFILE_FIELD_UI as FU } from "@/lib/constants/profile-details";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import { http } from "@/lib/services/http";
 import {
@@ -65,14 +66,12 @@ function PartnerReferralCodeSectionInner({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-[var(--color-brand-black)]">
-        {copy.fieldLabel}
-      </span>
+      <span className={FU.label}>{copy.fieldLabel}</span>
       <div
         className={cn(
-          "flex h-12 items-stretch overflow-hidden rounded-xl border bg-neutral-100",
-          "transition-colors focus-within:border-[var(--color-brand-primary)]",
-          error ? "border-[var(--color-brand-error)]" : "border-black/15",
+          FU.shell,
+          "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
+          error && FU.shellError,
           !canEdit && "opacity-90"
         )}
       >

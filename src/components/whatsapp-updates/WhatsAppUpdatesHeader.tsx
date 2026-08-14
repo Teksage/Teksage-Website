@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { SettingsSubpageHeader } from "@/components/settings/SettingsSubpageHeader";
+import { SettingsPageHeader } from "@/components/settings/SettingsPageHeader";
+import { ROUTES } from "@/lib/constants/routes";
 import { WHATSAPP_UPDATES_SCREEN } from "@/lib/constants/whatsapp-updates";
 import { useI18nConstants } from "@/hooks/useT";
 
@@ -10,10 +11,11 @@ export function WhatsAppUpdatesHeader() {
   const router = useRouter();
 
   return (
-    <SettingsSubpageHeader
+    <SettingsPageHeader
       title={WU.title}
-      onBack={() => router.back()}
-      variant="white"
+      subtitle={WU.subtitle}
+      backLabel={WU.backLabel}
+      onBack={() => router.push(ROUTES.settings)}
     />
   );
 }

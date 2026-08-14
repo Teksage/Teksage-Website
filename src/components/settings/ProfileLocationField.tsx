@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { PROFILE_FIELD_UI as FU } from "@/lib/constants/profile-details";
 import { fetchPlaceSuggestions, type PlaceSuggestion } from "@/lib/places-suggestions";
 import { cn } from "@/lib/utils";
 import type { ProfileLocationFieldProps } from "@/types";
@@ -118,9 +119,9 @@ export function ProfileLocationField({
 
   return (
     <div className="relative flex flex-col gap-1.5">
-      <Label className="text-sm font-medium text-[var(--color-brand-black)]">
+      <Label className={FU.label}>
         {label}
-        {required ? <span className="text-[var(--color-brand-error)]">*</span> : null}
+        {required ? <span className={FU.labelRequired}>*</span> : null}
       </Label>
       <Input
         ref={inputRef}
@@ -145,19 +146,14 @@ export function ProfileLocationField({
         disabled={!isEditable}
         placeholder={placeholder}
         className={cn(
-          "h-12 rounded-xl border bg-neutral-100 px-4 text-sm font-medium",
-          "focus-visible:ring-0",
-          hasError
-            ? "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]"
-            : "border-black/15 focus-visible:border-[var(--color-brand-primary)]",
+          FU.inputBase,
+          hasError ? FU.inputError : FU.inputIdle,
           !isEditable && "cursor-not-allowed opacity-90",
           inputClassName
         )}
       />
       {hasError && errorMessage ? (
-        <p className="text-xs font-semibold text-[var(--color-brand-error)]">
-          {errorMessage}
-        </p>
+        <p className={FU.errorText}>{errorMessage}</p>
       ) : null}
       {menu}
       {!isEditable && fullLocation && fullLocation !== value ? (

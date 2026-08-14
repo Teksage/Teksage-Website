@@ -7,6 +7,7 @@ import {
   APP_LANGUAGE_OPTIONS,
   SETTINGS_LANGUAGE_COPY,
 } from "@/lib/constants/settings-language";
+import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import {
@@ -45,58 +46,65 @@ export function SettingsLanguageView() {
   }
 
   return (
-    <div className={cn(SETTINGS_UI.contentPad, "pb-8 pt-5")}>
-      <p className={SETTINGS_UI.languageHint}>
-        {t("Select your preferred language")}
-      </p>
-      <ul className={SETTINGS_UI.languageList}>
-        {APP_LANGUAGE_OPTIONS.map((lang) => {
-          const active = lang.code === selected;
-          const showSubtitle = lang.label !== lang.nativeLabel;
-          return (
-            <li key={lang.code}>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void onSelect(lang.code)}
-                className={cn(
-                  SETTINGS_UI.languageOption,
-                  active ? SETTINGS_UI.languageOptionSelected : SETTINGS_UI.languageOptionIdle
-                )}
-              >
-                <span
+    <div className={SETTINGS_LAYOUT.contentCard}>
+      <div className={SETTINGS_LAYOUT.contentCardPad}>
+        <p className={SETTINGS_UI.languageHint}>
+          {t("Select your preferred language")}
+        </p>
+        <ul className={SETTINGS_UI.languageList}>
+          {APP_LANGUAGE_OPTIONS.map((lang) => {
+            const active = lang.code === selected;
+            const showSubtitle = lang.label !== lang.nativeLabel;
+            return (
+              <li key={lang.code}>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void onSelect(lang.code)}
                   className={cn(
-                    SETTINGS_UI.radioOuter,
-                    active && SETTINGS_UI.radioOuterSelected
+                    SETTINGS_UI.languageOption,
+                    active
+                      ? SETTINGS_UI.languageOptionSelected
+                      : SETTINGS_UI.languageOptionIdle
                   )}
-                  aria-hidden
                 >
-                  {active ? <span className={SETTINGS_UI.radioInner} /> : null}
-                </span>
-                <span className="min-w-0 flex-1">
                   <span
                     className={cn(
-                      "block text-base",
-                      active
-                        ? "font-bold text-[var(--color-brand-primary)]"
-                        : "font-medium text-[var(--color-brand-black)]"
+                      SETTINGS_UI.radioOuter,
+                      active && SETTINGS_UI.radioOuterSelected
                     )}
+                    aria-hidden
                   >
-                    {active && !showSubtitle ? lang.label : lang.nativeLabel}
+                    {active ? (
+                      <span className={SETTINGS_UI.radioInner} />
+                    ) : null}
                   </span>
-                  {showSubtitle ? (
-                    <span className="text-xs text-neutral-500">{lang.label}</span>
-                  ) : null}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      {error ? (
-        <p className="mt-4 text-sm text-[var(--color-brand-error)]">{error}</p>
-      ) : null}
+                  <span className="min-w-0 flex-1">
+                    <span
+                      className={cn(
+                        "block text-base",
+                        active
+                          ? "font-bold text-[var(--color-brand-primary)]"
+                          : "font-medium text-[var(--color-brand-black)]"
+                      )}
+                    >
+                      {active && !showSubtitle ? lang.label : lang.nativeLabel}
+                    </span>
+                    {showSubtitle ? (
+                      <span className="text-xs text-neutral-500">
+                        {lang.label}
+                      </span>
+                    ) : null}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        {error ? (
+          <p className="mt-4 text-sm text-[var(--color-brand-error)]">{error}</p>
+        ) : null}
+      </div>
     </div>
   );
 }
-
