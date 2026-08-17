@@ -41,6 +41,7 @@ const MINT_SECTIONS = new Set<SettingsSectionSlug>([
   "support",
   "terms",
   "privacy",
+  "delete-account",
 ]);
 
 export default function SettingsSectionPage() {

@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AppHeader } from "@/components/common/AppHeader";
+import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { GettingStartedVideoCard } from "@/components/getting-started/GettingStartedVideoCard";
+import { SettingsPageHeader } from "@/components/settings/SettingsPageHeader";
 import { useI18nConstants } from "@/hooks/useT";
 import { useAppLanguage } from "@/contexts/AppLanguageProvider";
 import {
@@ -10,7 +11,13 @@ import {
   GETTING_STARTED_SCREEN,
   GETTING_STARTED_VIDEOS,
 } from "@/lib/constants/getting-started";
-import { ROUTES } from "@/lib/constants/routes";
+import {
+  MAIN_TAB_VIEWPORT_BACKDROP,
+  PAGE_SHELL,
+  ROUTES,
+  SETTINGS_SCREEN,
+} from "@/lib/constants";
+import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { cn } from "@/lib/utils";
 
 export function GettingStartedView() {
@@ -19,40 +26,32 @@ export function GettingStartedView() {
   const router = useRouter();
 
   return (
-    <div className={GETTING_STARTED_LAYOUT.pageRoot}>
-      <AppHeader
-        blend
-        title={GS.title}
-        showBack
-        onBackClick={() => router.push(ROUTES.settings)}
-        className={cn(GETTING_STARTED_LAYOUT.headerChrome)}
+    <div className={cn(PAGE_SHELL.column, GETTING_STARTED_LAYOUT.pageRoot)}>
+      <MainTabViewportBackdrop
+        className={MAIN_TAB_VIEWPORT_BACKDROP.settings}
       />
-
       <div className={GETTING_STARTED_LAYOUT.panel}>
-        <header className={GETTING_STARTED_LAYOUT.hero}>
-          <h1 className={GETTING_STARTED_LAYOUT.heroTitle}>{GS.title}</h1>
-          <p className={GETTING_STARTED_LAYOUT.heroSubtitle}>{GS.subtitle}</p>
-        </header>
-
-        <section aria-labelledby="getting-started-videos-heading">
-          <h2
-            id="getting-started-videos-heading"
-            className={GETTING_STARTED_LAYOUT.sectionTitle}
-          >
-            {GS.videosSectionTitle}
-          </h2>
-          <div className={GETTING_STARTED_LAYOUT.videoGrid}>
-            {GETTING_STARTED_VIDEOS.map((video) => (
-              <GettingStartedVideoCard
-                key={video.id}
-                video={{
-                  ...video,
-                  title: t(video.title),
-                }}
-              />
-            ))}
+        <SettingsPageHeader
+          title={GS.title}
+          subtitle={GS.subtitle}
+          backLabel={t(SETTINGS_SCREEN.title)}
+          onBack={() => router.push(ROUTES.settings)}
+        />
+        <div className={SETTINGS_LAYOUT.contentCard}>
+          <div className={SETTINGS_LAYOUT.contentCardPad}>
+            <div className={GETTING_STARTED_LAYOUT.videoGrid}>
+              {GETTING_STARTED_VIDEOS.map((video) => (
+                <GettingStartedVideoCard
+                  key={video.id}
+                  video={{
+                    ...video,
+                    title: t(video.title),
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

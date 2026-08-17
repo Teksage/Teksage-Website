@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
+import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 
 type FaqAccordionItemProps = {
   question: string;
@@ -20,9 +21,7 @@ export function FaqAccordionItem({ question, answer }: FaqAccordionItemProps) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
-        <span className="flex-1 text-base font-semibold leading-snug text-[var(--color-brand-black)]">
-          {question}
-        </span>
+        <span className={SETTINGS_UI.faqQuestion}>{question}</span>
         <Image
           src={open ? SETTINGS_PAGE_ASSETS.faqCollapse : SETTINGS_PAGE_ASSETS.faqExpand}
           alt=""
@@ -33,7 +32,7 @@ export function FaqAccordionItem({ question, answer }: FaqAccordionItemProps) {
         />
       </button>
       {open ? (
-        <p className="px-4 pb-4 text-sm leading-relaxed text-black/50">{answer}</p>
+        <p className={SETTINGS_UI.faqAnswer}>{answer}</p>
       ) : null}
     </div>
   );

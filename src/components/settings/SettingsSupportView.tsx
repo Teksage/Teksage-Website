@@ -2,6 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
+import { SettingsSupportWhatsAppCta } from "@/components/settings/SettingsSupportWhatsAppCta";
 import { SETTINGS_SUPPORT_COPY } from "@/lib/constants/settings-support";
 import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
@@ -41,7 +42,6 @@ export function SettingsSupportView() {
   return (
     <div className={SETTINGS_LAYOUT.contentCard}>
       <div className={SETTINGS_LAYOUT.contentCardPad}>
-        <p className={SETTINGS_UI.supportLead}>{SU.lead}</p>
         <textarea
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -65,6 +65,7 @@ export function SettingsSupportView() {
         >
           {busy ? SU.submitting : SU.submit}
         </button>
+        <SettingsSupportWhatsAppCta />
       </div>
     </div>
   );
