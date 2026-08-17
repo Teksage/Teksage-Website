@@ -1,5 +1,4 @@
-import type { LegalBlock } from "@/types/settings-legal";
-import type { SettingsLegalTocItem } from "@/types/settings-legal";
+import type { LegalBlock, SettingsLegalTocItem } from "@/types/settings-legal";
 
 function slugify(value: string): string {
   return value

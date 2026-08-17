@@ -46,3 +46,9 @@ export interface SettingsLegalBlockProps {
   block: LegalBlock;
   index: number;
 }
+
+export type SettingsLegalTocItem = {
+  id: string;
+  label: string;
+  level: 1 | 2;
+};

@@ -205,6 +205,7 @@ export type {
   LegalSectionGroup,
   SettingsLegalViewProps,
   SettingsLegalBlockProps,
+  SettingsLegalTocItem,
 } from "./settings-legal";
 
 export type {
