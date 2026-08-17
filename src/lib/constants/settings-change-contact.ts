@@ -1,9 +1,11 @@
 import { ROUTES } from "./routes";
+import { TYPO } from "./typography";
 
 /** Change email/phone — mirrors Flutter ChangeButton → OTPScreen → ChangeEmailMobile. */
 
 export const SETTINGS_CHANGE_CONTACT = {
   title: "Change Email / Mobile",
+  subtitle: "Verify your current contact, then enter the new one.",
   titleChangeEmail: "Change Email",
   titleChangePhone: "Change Phone Number",
   titleVerifyEmail: "Verify Email",
@@ -34,6 +36,16 @@ export const SETTINGS_CHANGE_CONTACT = {
   modeQueryEmail: "email",
   modeQueryMobile: "mobile",
   countryCodeLabel: "Country code",
+} as const;
+
+export const CHANGE_CONTACT_LAYOUT = {
+  pageRoot: "relative min-h-dvh mint-glow-surface",
+  panel:
+    "relative z-10 mx-auto w-full max-w-lg px-4 pb-8 pt-5 lg:my-6 lg:max-w-6xl lg:px-8 lg:pb-10",
+  lead: `${TYPO.chatBubble} text-black/55`,
+  contact: `${TYPO.chatCardTextBot} text-[var(--color-brand-black)]`,
+  feedbackOk: `${TYPO.chatBubble} text-[var(--color-brand-primary)]`,
+  feedbackError: `${TYPO.chatBubble} text-[var(--color-brand-error)]`,
 } as const;
 
 export function buildChangeContactPath(mode: "email" | "mobile"): string {

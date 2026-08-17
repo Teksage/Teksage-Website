@@ -200,7 +200,13 @@ export type {
   ChatPreferencePayload,
 } from "./chat";
 
-export type { LegalBlock } from "./settings-legal";
+export type {
+  LegalBlock,
+  LegalSectionGroup,
+  SettingsLegalViewProps,
+  SettingsLegalBlockProps,
+  SettingsLegalTocItem,
+} from "./settings-legal";
 
 export type {
   FaqItem,

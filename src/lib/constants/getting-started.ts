@@ -32,19 +32,14 @@ export function youtubeEmbedUrl(videoId: string): string {
 }
 
 export const GETTING_STARTED_LAYOUT = {
-  pageRoot: "relative min-h-dvh bg-white lg:pb-6",
-  headerChrome:
-    "lg:border-b lg:border-[var(--color-home-dashboard-rule)] lg:bg-white lg:shadow-[0_1px_3px_rgb(0_0_0_/0.06)]",
+  pageRoot: "relative min-h-dvh mint-glow-surface",
   panel:
-    "relative z-10 w-full px-4 pb-8 pt-4 sm:px-5 lg:px-8 lg:pt-6 xl:px-10",
-  hero: "mb-6 text-center lg:mb-8 lg:text-left",
-  heroTitle: `${TYPO.h2Semibold} text-[var(--color-brand-black)]`,
-  heroSubtitle: `mt-2 max-w-3xl ${TYPO.bodySm} text-[var(--color-brand-black)]/60`,
-  sectionTitle: `mb-4 ${TYPO.labelSemibold} text-[var(--color-brand-black)]/80`,
+    "relative z-10 mx-auto w-full max-w-lg px-4 pb-8 pt-5 lg:my-6 lg:max-w-6xl lg:px-8 lg:pb-10",
   videoGrid:
-    "grid w-full grid-cols-1 gap-6 rounded-xl border border-[var(--color-home-dashboard-rule)] bg-[var(--color-brand-bg)]/35 p-4 sm:p-6 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-8",
+    "grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-8",
   videoCell: "flex min-w-0 flex-col gap-3",
-  videoTitle: `${TYPO.labelSemibold} text-[var(--color-brand-primary)]`,
-  videoFrameWrap: "relative aspect-video w-full overflow-hidden rounded-lg bg-[var(--color-brand-black)]",
+  videoTitle: `${TYPO.chatBubble} text-[var(--color-brand-primary)]`,
+  videoFrameWrap:
+    "relative aspect-video w-full overflow-hidden rounded-2xl border border-[var(--color-chat-bot-border)] bg-[var(--color-brand-black)] shadow-[0_1px_6px_rgb(0_0_0_/_0.06)]",
   videoFrame: "absolute inset-0 size-full border-0",
 } as const;

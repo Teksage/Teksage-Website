@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
   /** `POST` — rashi/nakshatra resolution */
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",
+  supportWhatsAppIntent: "/api/auth/support/whatsapp-intent",
   notifyUpdate: "/api/auth/notify-update",
   /**
    * Web (same-origin): `app/api/auth/register-token` route handler → FastAPI.

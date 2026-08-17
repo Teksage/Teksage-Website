@@ -81,17 +81,16 @@ export function SettingsLanguageView() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span
-                      className={cn(
-                        "block text-base",
+                      className={
                         active
-                          ? "font-bold text-[var(--color-brand-primary)]"
-                          : "font-medium text-[var(--color-brand-black)]"
-                      )}
+                          ? SETTINGS_UI.languageOptionLabelActive
+                          : SETTINGS_UI.languageOptionLabel
+                      }
                     >
                       {active && !showSubtitle ? lang.label : lang.nativeLabel}
                     </span>
                     {showSubtitle ? (
-                      <span className="text-xs text-neutral-500">
+                      <span className={SETTINGS_UI.languageOptionSub}>
                         {lang.label}
                       </span>
                     ) : null}
