@@ -2,32 +2,40 @@
 
 import { SettingsLegalBlock } from "@/components/settings/SettingsLegalBlock";
 import { LEGAL_LAST_UPDATED } from "@/lib/constants/legal";
-import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
-import { SETTINGS_UI } from "@/lib/constants/settings-ui";
-import type { LegalBlock } from "@/types/settings-legal";
-
-type SettingsLegalViewProps = {
-  title: string;
-  blocks: readonly LegalBlock[];
-};
+import {
+  SETTINGS_LEGAL_COPY,
+  SETTINGS_LEGAL_UI as L,
+} from "@/lib/constants/settings-legal-ui";
+import { groupLegalBlocks } from "@/lib/group-legal-blocks";
+import type { SettingsLegalViewProps } from "@/types";
 
 export function SettingsLegalView({ title, blocks }: SettingsLegalViewProps) {
+  const sections = groupLegalBlocks(blocks);
+
   return (
-    <div className={SETTINGS_LAYOUT.contentCard}>
-      <div className={SETTINGS_LAYOUT.contentCardPad}>
-        <p className={SETTINGS_UI.legalMeta}>
-          {title} · Last updated: {LEGAL_LAST_UPDATED}
+    <div className={L.column}>
+      <article className={L.card}>
+        <p className={L.meta}>
+          {title} · {SETTINGS_LEGAL_COPY.lastUpdatedPrefix} {LEGAL_LAST_UPDATED}
         </p>
-        <div className={SETTINGS_UI.legalBody}>
-          {blocks.map((block, index) => (
-            <SettingsLegalBlock
-              key={`${block.type}-${index}`}
-              block={block}
-              index={index}
-            />
-          ))}
-        </div>
-      </div>
+      </article>
+
+      {sections.map((section, sectionIndex) => (
+        <article key={`${section.heading ?? "intro"}-${sectionIndex}`} className={L.card}>
+          {section.heading ? (
+            <h2 className={L.heading}>{section.heading}</h2>
+          ) : null}
+          <div className={L.stack}>
+            {section.items.map((block, index) => (
+              <SettingsLegalBlock
+                key={`${block.type}-${index}`}
+                block={block}
+                index={index}
+              />
+            ))}
+          </div>
+        </article>
+      ))}
     </div>
   );
 }

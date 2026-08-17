@@ -67,9 +67,6 @@ export const SETTINGS_UI = {
   faqFooterInner: "flex w-full flex-col items-start sm:items-center",
   faqContactBtn:
     "mt-4 inline-flex rounded-full bg-[var(--color-brand-primary)] px-6 py-3 text-center text-base font-semibold text-white transition-opacity hover:opacity-95",
-  legalMeta: `${TYPO.sizeXs} ${TYPO.weightMedium} mb-4 italic text-black/45`,
-  legalBody: "space-y-1",
-  legalParagraph: "mt-2 text-sm leading-relaxed text-neutral-600",
   subscriptionBg:
     "pointer-events-none absolute inset-x-0 top-12 z-0 h-64 w-full object-cover opacity-60",
   subscriptionHeroScrim:
