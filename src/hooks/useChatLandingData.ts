@@ -5,6 +5,7 @@ import { resolveDailyEnergyScores } from "@/lib/daily-energy-scores";
 import { fetchPredictionDetail } from "@/lib/services/predictions";
 import { fetchProfile } from "@/lib/services/profile";
 import { isPredictionError } from "@/lib/prediction-api-parse";
+import { useAuthStore } from "@/store/auth.store";
 import type { CurrentDasaSummary } from "@/types/astrology";
 import type { ChatLandingEnergyScores } from "@/types/ui/chat-landing";
 
@@ -16,7 +17,20 @@ export function useChatLandingData() {
   const [scores, setScores] = useState<ChatLandingEnergyScores>({});
   const [dasaSummary, setDasaSummary] = useState<CurrentDasaSummary | null>(null);
 
+  // Wait for Zustand persist to rehydrate from localStorage before fetching,
+  // otherwise the auth token is missing on the first render in production.
+  const [authReady, setAuthReady] = useState(
+    () => useAuthStore.persist.hasHydrated()
+  );
+
   useEffect(() => {
+    if (authReady) return;
+    return useAuthStore.persist.onFinishHydration(() => setAuthReady(true));
+  }, [authReady]);
+
+  useEffect(() => {
+    if (!authReady) return;
+
     let cancelled = false;
 
     async function load() {
@@ -54,7 +68,7 @@ export function useChatLandingData() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [authReady]);
 
   return { loading, error, theme, themeIsPositive, scores, dasaSummary };
 }
