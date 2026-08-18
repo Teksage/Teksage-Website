@@ -9,13 +9,29 @@ export const SETTINGS_SUBSCRIPTIONS_AUTO_PAY = {
   toggleHint: "Renews monthly. Cancel anytime from this page.",
   activeLabel: "Auto-renewal is on",
   nextBilling: "Next billing",
-  cancelCta: "Cancel auto-renewal",
+  cancelCta: "Cancel auto-renew",
   cancelConfirm:
-    "Stop automatic renewals? You keep premium access until the current period ends.",
-  cancelSuccess: "Auto-renewal cancelled.",
-  cancelFailed: "Could not cancel auto-renewal. Please try again.",
+    "Stop automatic renewals? Your premium access will continue until the current period ends.",
+  cancelConfirmDismiss: "Keep auto-renew",
+  cancelConfirmCta: "Cancel auto-renew",
+  cancelReasonLabel: "Reason for cancellation",
+  cancelReasonPlaceholder: "Tell us why you're cancelling auto-renew",
+  cancelReasonRequired: "Please select a cancellation reason.",
+  cancelReasonOtherRequired: "Please enter a reason for Other.",
+  cancelReasonOther: "Other",
+  cancelSuccess: "Auto-renew cancelled.",
+  accessUntil: "Your premium access will continue until",
+  cancelFailed: "Could not cancel auto-renew. Please try again.",
   monthlyBadge: "Auto-renew available",
 } as const;
+
+export const SUBSCRIPTION_CANCEL_REASONS = [
+  "Too expensive",
+  "Not using it enough",
+  "Didn't find it useful",
+  "Technical issues",
+  "Switching to another service",
+] as const;
 
 export const SETTINGS_SUBSCRIPTIONS_COPY = {
   pageTitle: "Subscription",

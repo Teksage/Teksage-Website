@@ -95,7 +95,7 @@ export const SETTINGS_UI = {
   subscriptionFooter:
     "sticky bottom-0 z-20 mt-auto flex w-full shrink-0 justify-center border-t border-white/10 bg-black px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] shadow-[0_-12px_32px_rgb(0_0_0_/0.65)] lg:px-8 lg:pb-6",
   subscriptionPrimaryBtn:
-    "w-full max-w-md rounded-full bg-white py-4 text-center text-lg font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-95 disabled:opacity-60",
+    "w-full max-w-md cursor-pointer rounded-full bg-white py-4 text-center text-lg font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60",
   subscriptionCard:
     "relative z-10 rounded-xl border border-white/15 bg-[var(--color-subscription-card-surface)] px-5 pb-4 pt-6 shadow-[0_8px_32px_rgb(0_0_0_/0.5)] backdrop-blur-md",
   subscriptionPlanPriceBox:
@@ -118,5 +118,25 @@ export const SETTINGS_UI = {
     "text-center text-title-lg font-semibold leading-none text-white",
   rateOverlay:
     "fixed inset-0 z-50 flex items-center justify-center bg-black/10 p-6 backdrop-blur-sm",
-  rateCard: "relative w-full max-w-sm rounded-xl bg-white p-4 shadow-xl",
+  rateCard:
+    "relative max-h-[80vh] w-full max-w-sm overflow-y-auto rounded-xl bg-white p-4 shadow-xl",
+  cancelReasonList: "flex flex-col gap-2 text-left",
+  cancelReasonItem:
+    "flex cursor-pointer items-start gap-2 text-sm font-medium text-[var(--color-brand-black)]",
+  cancelReasonCheckbox:
+    "mt-0.5 size-4 shrink-0 cursor-pointer appearance-none rounded-full border-2 border-[var(--color-brand-primary)] bg-white outline-none ring-0 checked:border-[6px] checked:border-[var(--color-brand-primary)] focus:outline-none focus:ring-0 focus-visible:outline-none",
+  cancelReasonOtherInput:
+    "mt-2 w-full resize-none rounded-lg border border-black/15 px-3 py-2 text-sm text-[var(--color-brand-black)] outline-none focus:border-[var(--color-brand-primary)]",
+  cancelReasonError: "mt-1 text-xs text-red-500",
+  rateModalActions: "flex justify-center px-4 pb-4 pt-2",
+  rateModalActionsRow:
+    "flex w-full flex-row items-stretch justify-between gap-3 px-4 pb-4 pt-2",
+  rateModalConfirmBtn:
+    "min-w-[140px] cursor-pointer rounded-full bg-[var(--color-brand-primary)] px-6 py-2.5 text-base font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50",
+  rateModalConfirmBtnSplit:
+    "flex-1 cursor-pointer rounded-full bg-[var(--color-brand-primary)] px-3 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50",
+  rateModalDismissBtn:
+    "min-w-[140px] cursor-pointer rounded-full border border-black/15 px-6 py-2.5 text-base font-semibold text-[var(--color-brand-black)] transition-opacity hover:opacity-90",
+  rateModalDismissBtnSplit:
+    "flex-1 cursor-pointer rounded-full border border-black/15 px-3 py-2.5 text-sm font-semibold text-[var(--color-brand-black)] transition-opacity hover:opacity-90",
 } as const;

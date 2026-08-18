@@ -143,6 +143,7 @@ export type {
   SettingsRowVariant,
   SettingsRowProps,
   SettingsModalDialogProps,
+  SubscriptionCancelReasonFieldsProps,
   SettingsRateDialogProps,
   SubscriptionPaymentFeesProps,
   SubscriptionPlanBenefitsProps,

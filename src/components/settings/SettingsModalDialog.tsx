@@ -12,6 +12,9 @@ export function SettingsModalDialog({
   message,
   confirmLabel,
   onConfirm,
+  cancelLabel,
+  confirmDisabled = false,
+  body,
 }: SettingsModalDialogProps) {
   if (!open) return null;
 
@@ -21,7 +24,7 @@ export function SettingsModalDialog({
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-3 top-3 flex size-8 items-center justify-center"
+          className="absolute right-3 top-3 flex size-8 cursor-pointer items-center justify-center"
           aria-label="Close"
         >
           <Image
@@ -36,11 +39,32 @@ export function SettingsModalDialog({
         <p className="whitespace-pre-line px-4 pt-8 text-center text-base font-semibold leading-relaxed text-[var(--color-brand-black)]">
           {message}
         </p>
-        <div className="flex justify-center py-4">
+        {body ? <div className="px-4 pb-2">{body}</div> : null}
+        <div
+          className={
+            cancelLabel
+              ? SETTINGS_UI.rateModalActionsRow
+              : SETTINGS_UI.rateModalActions
+          }
+        >
+          {cancelLabel ? (
+            <button
+              type="button"
+              onClick={onClose}
+              className={SETTINGS_UI.rateModalDismissBtnSplit}
+            >
+              {cancelLabel}
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={onConfirm}
-            className="min-w-[140px] rounded-full bg-[var(--color-brand-primary)] px-6 py-2.5 text-base font-semibold text-white"
+            disabled={confirmDisabled}
+            className={
+              cancelLabel
+                ? SETTINGS_UI.rateModalConfirmBtnSplit
+                : SETTINGS_UI.rateModalConfirmBtn
+            }
           >
             {confirmLabel}
           </button>
