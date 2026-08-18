@@ -18,27 +18,27 @@ export const CHAT_LANDING_QUESTIONS: Record<
   readonly string[]
 > = {
   today: [
-    "What does today hold for me?",
-    "Is today good for important decisions?",
-    "What should I focus on today?",
-    "Any cautions for me today?",
+    "What opportunity should I not miss today?",
+    "What should I be careful about today?",
+    "Is today a good day to make an important decision?",
+    "What does my horoscope want me to focus on today?",
   ],
   relationship: [
-    "How is my love life this week?",
-    "Is this a good time for marriage?",
-    "Will my relationship improve soon?",
-    "What does my chart say about compatibility?",
+    "Is someone from my past likely to come back?",
+    "What is likely to change in my love life soon?",
+    "What does my horoscope say about my relationship future?",
+    "When is a favourable time for love or marriage?",
   ],
   career: [
-    "When should I sign my job offer?",
-    "Is a career change favorable now?",
-    "How can I grow professionally?",
-    "What blocks my career progress?",
+    "When could my next career breakthrough happen?",
+    "Am I on the right career path right now?",
+    "Is a job change favourable for me at this time?",
+    "Should I focus on a job or start my own business?",
   ],
   wealth: [
-    "Is this a good month for investments?",
-    "Will finances improve this quarter?",
-    "What should I avoid financially today?",
-    "How can I improve my wealth luck?",
+    "When is my next strong financial period?",
+    "Is this a good time to make a major investment?",
+    "What does my horoscope say about my wealth potential?",
+    "Could a new income opportunity come my way soon?",
   ],
 };
