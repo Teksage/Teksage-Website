@@ -2,6 +2,7 @@ import type { UserProfile } from "../user-profile";
 import type { PaymentTotals } from "@/lib/subscription-payment-totals";
 import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
 import type { SubscriptionPlan } from "@/types/settings";
+import type { ReactNode } from "react";
 import type { FieldErrors, UseFormSetValue } from "react-hook-form";
 
 export type ProfileDetailsFormState = {
@@ -204,6 +205,21 @@ export interface SettingsModalDialogProps {
   message: string;
   confirmLabel: string;
   onConfirm: () => void;
+  cancelLabel?: string;
+  confirmDisabled?: boolean;
+  body?: ReactNode;
+}
+
+export interface SubscriptionCancelReasonFieldsProps {
+  label: string;
+  reasons: readonly string[];
+  otherLabel: string;
+  selected: string | null;
+  otherText: string;
+  otherPlaceholder: string;
+  error: string | null;
+  onSelect: (reason: string) => void;
+  onOtherTextChange: (value: string) => void;
 }
 
 export interface SettingsRateDialogProps {

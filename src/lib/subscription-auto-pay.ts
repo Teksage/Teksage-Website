@@ -1,4 +1,7 @@
-import { SUBSCRIPTION_AUTO_PAY_PLAN_ID } from "@/lib/constants/settings-subscriptions";
+import {
+  SUBSCRIPTION_AUTO_PAY_PLAN_ID,
+  SETTINGS_SUBSCRIPTIONS_AUTO_PAY,
+} from "@/lib/constants/settings-subscriptions";
 
 export function isAutoPayEligiblePlan(
   planId: number,
@@ -23,4 +26,17 @@ export function isSubscriptionCouponAllowed(
   autoPayEnabled: boolean
 ): boolean {
   return planId !== SUBSCRIPTION_AUTO_PAY_PLAN_ID && !autoPayEnabled;
+}
+
+export function buildAutoPayCancelReason(
+  selected: string | null,
+  otherText: string,
+  otherLabel: string = SETTINGS_SUBSCRIPTIONS_AUTO_PAY.cancelReasonOther
+): string | null {
+  if (!selected) return null;
+  if (selected === otherLabel) {
+    const other = otherText.trim();
+    return other ? `${otherLabel}: ${other}` : null;
+  }
+  return selected;
 }

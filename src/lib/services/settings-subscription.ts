@@ -140,7 +140,7 @@ export async function verifyAutoPayPayment(
   return data ?? {};
 }
 
-export async function cancelAutoPaySubscription(): Promise<{
+export async function cancelAutoPaySubscription(reason: string): Promise<{
   status?: string;
   message?: string;
   accessTill?: string;
@@ -149,7 +149,7 @@ export async function cancelAutoPaySubscription(): Promise<{
     status?: string;
     message?: string;
     access_till?: string;
-  }>(API_ENDPOINTS.paymentCancelAutoPay);
+  }>(API_ENDPOINTS.paymentCancelAutoPay, { reason });
   return {
     status: data?.status,
     message: data?.message,

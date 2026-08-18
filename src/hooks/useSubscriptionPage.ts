@@ -147,9 +147,10 @@ export function useSubscriptionPage(currency: "INR" | "USD") {
     return () => window.clearInterval(timer);
   }, [activatingPremium, isPremium, loadSettings]);
 
-  const cancelAutoPay = useCallback(async () => {
-    await cancelAutoPaySubscription();
+  const cancelAutoPay = useCallback(async (reason: string) => {
+    const result = await cancelAutoPaySubscription(reason);
     await loadSettings();
+    return result.accessTill;
   }, [loadSettings]);
 
   const sortedPlans = useMemo(
