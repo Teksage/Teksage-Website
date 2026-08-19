@@ -1,8 +1,4 @@
-import {
-  CONSULTATION_FOREIGN_COUNTRY_CODES,
-  CONSULTATION_FOREIGN_LOCATION_HINTS,
-  CONSULTATION_INDIA_TIMEZONES,
-} from "@/lib/constants/consultation-currency";
+import { CONSULTATION_INDIA_TIMEZONES } from "@/lib/constants/consultation-currency";
 import { DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants/default-region";
 
 export type ConsultationCurrency = "INR" | "USD";
@@ -22,25 +18,7 @@ function isIndiaLocationText(location: string): boolean {
   const loc = location.trim().toLowerCase();
   if (!loc) return false;
   if (loc === "india" || loc === "in") return true;
-  if (loc.includes("india")) return true;
-  return false;
-}
-
-function isForeignLocationText(location: string): boolean {
-  const loc = location.trim().toLowerCase();
-  if (CONSULTATION_FOREIGN_LOCATION_HINTS.some((hint) => loc.includes(hint))) {
-    return true;
-  }
-  // Last comma segment often is the country ("Timmins, ON, Canada" / "... CA")
-  const parts = loc.split(",").map((part) => part.trim()).filter(Boolean);
-  const countryPart = parts.length > 1 ? parts[parts.length - 1] : "";
-  if (!countryPart) return false;
-  if (countryPart === "ca" || countryPart === "us" || countryPart === "usa") {
-    return true;
-  }
-  return CONSULTATION_FOREIGN_LOCATION_HINTS.some((hint) =>
-    countryPart.includes(hint)
-  );
+  return loc.includes("india");
 }
 
 function isIndiaTimezone(timezone?: string | null): boolean {
@@ -50,9 +28,14 @@ function isIndiaTimezone(timezone?: string | null): boolean {
   );
 }
 
+function isUsableTimezone(timezone?: string | null): boolean {
+  const tz = timezone?.trim();
+  return Boolean(tz && tz.toUpperCase() !== "UTC");
+}
+
 /**
- * INR vs USD — mirrors Flutter `CurrencyService.getCurrency` (IN → INR).
- * Profile `preferred_location` wins over phone country code (explicit user choice).
+ * INR only for India. Any other preferred location is USD.
+ * Fallbacks: profile timezone (not UTC), then phone dial code, then browser TZ.
  */
 export function consultationCurrencyForLocation(
   preferredLocation?: string | null,
@@ -60,29 +43,19 @@ export function consultationCurrencyForLocation(
 ): ConsultationCurrency {
   const loc = preferredLocation?.trim() ?? "";
   if (loc) {
-    if (isIndiaLocationText(loc)) return "INR";
-    if (isForeignLocationText(loc)) return "USD";
+    return isIndiaLocationText(loc) ? "INR" : "USD";
+  }
+
+  if (isUsableTimezone(context?.timezone)) {
+    return isIndiaTimezone(context?.timezone) ? "INR" : "USD";
   }
 
   const code = normalizeCountryCode(context?.countryCode);
   if (code === DEFAULT_COUNTRY_CODE_NUMERIC) return "INR";
-  if (
-    code &&
-    (CONSULTATION_FOREIGN_COUNTRY_CODES as readonly string[]).includes(code)
-  ) {
-    return "USD";
-  }
-
-  // Profile timezone (from preferred_location) beats the browser clock —
-  // a Canada resident browsing from India should still see USD.
-  if (isIndiaTimezone(context?.timezone)) return "INR";
-  if (context?.timezone?.trim() && !isIndiaTimezone(context.timezone)) {
-    return "USD";
-  }
-
-  if (code && code !== DEFAULT_COUNTRY_CODE_NUMERIC) return "USD";
+  if (code) return "USD";
 
   if (isIndiaTimezone(context?.browserTimezone)) return "INR";
+  if (isUsableTimezone(context?.browserTimezone)) return "USD";
 
   return "INR";
 }
