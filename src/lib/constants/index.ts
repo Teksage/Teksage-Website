@@ -34,6 +34,7 @@ export * from "./brand-login-logo";
 export * from "./validation-patterns";
 export * from "./panchang-screen";
 export * from "./horoscope-screen";
+export * from "./horoscope-charts";
 export * from "./horoscope-chart-frame";
 export * from "./prediction-circle-nav";
 export * from "./login-email-form";

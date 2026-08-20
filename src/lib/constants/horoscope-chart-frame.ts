@@ -1,13 +1,11 @@
-/** Horoscope chart iframe — mirrors Flutter `ChartWidget` (339×305). */
+/** Horoscope chart iframe — size follows the South-Indian grid, not a tall empty card. */
 
 export const HOROSCOPE_CHART_FRAME = {
   resizeMessageType: "teksage-horoscope-chart-size",
-  /** Flutter `horoscopeChart.dart` fixed WebView width. */
   frameWidthPx: 339,
-  /** Flutter `horoscopeChart.dart` fixed WebView height. */
-  frameHeightPx: 305,
-  fallbackHeightPx: 305,
-  srcDocPaddingPx: 5,
+  /** Initial guess until the iframe reports the grid height. */
+  fallbackHeightPx: 248,
+  srcDocPaddingPx: 8,
 } as const;
 
 /** Tailwind width cap matching `frameWidthPx`. */

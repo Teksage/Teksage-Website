@@ -21,8 +21,8 @@ export const SETTINGS_SUBSCRIPTION_PAYMENT = {
 } as const;
 
 export const SUBSCRIPTION_PAYMENT_LAYOUT = {
-  page: "relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden bg-black text-white lg:min-h-full",
-  scroll: "relative z-10 flex-1 overflow-y-auto",
+  page: "relative z-10 flex min-h-dvh flex-1 flex-col bg-black text-white lg:h-full lg:min-h-0 lg:overflow-hidden",
+  scroll: "relative z-10 flex-1 lg:min-h-0 lg:overflow-y-auto",
   content: "mx-auto w-full max-w-lg px-5 pt-2 lg:max-w-2xl lg:px-8",
   footer:
     "flex w-full shrink-0 justify-center bg-black px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] lg:px-8 lg:pb-8",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useI18nConstants } from "@/hooks/useT";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/common/Loader";
@@ -38,6 +38,8 @@ export function ProfileDetailsFields({
   } = useFormContext<ProfileDetailsFormValues>();
 
   const form = watch();
+  const rashiWatch = useWatch({ name: "rashi" }) ?? "";
+  const nakshatraWatch = useWatch({ name: "nakshatra" }) ?? "";
   const birthLocationForApi =
     form.birthLocationFull.trim() || form.placeOfBirth.trim();
   const touch = { shouldDirty: true as const };
@@ -50,8 +52,8 @@ export function ProfileDetailsFields({
     timeOfBirth: form.timeOfBirth,
     birthLocation: birthLocationForApi,
     onResolved: (rashi, nakshatra) => {
-      setValue("rashi", rashi);
-      setValue("nakshatra", nakshatra);
+      setValue("rashi", rashi, touch);
+      setValue("nakshatra", nakshatra, touch);
     },
   });
 
@@ -139,7 +141,7 @@ export function ProfileDetailsFields({
       </section>
 
       <ProfileDetailsBirthSection
-        form={form}
+        form={{ ...form, rashi: rashiWatch, nakshatra: nakshatraWatch }}
         errors={errors}
         setValue={setValue}
         touch={touch}

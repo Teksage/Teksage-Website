@@ -49,6 +49,8 @@ export type {
   PanchangPayload,
   PanchangSegment,
   HoroscopePayload,
+  HoroscopeDivisionalChart,
+  HoroscopeChartsPayload,
 } from "./astrology";
 
 // --- Notification ---
@@ -165,6 +167,8 @@ export type {
   HoroscopeChartVariant,
   HoroscopeChartToggleProps,
   HoroscopeLoadedViewProps,
+  HoroscopeChartChipsProps,
+  HoroscopeSouthChartsProps,
 } from "./ui/panchang-horoscope";
 
 export type {

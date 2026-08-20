@@ -15,6 +15,7 @@ export const HOROSCOPE_SCREEN = {
   loadErrorTitle: "Could not load horoscope",
   tryAgainCta: "Try again",
   downloadPdfCta: "Download PDF",
+  downloadBusyCta: "Downloading…",
   downloadError: "Download failed. Please try again.",
   fallbackName: "Your horoscope",
   birthTimeSeparator: " · ",
@@ -40,19 +41,28 @@ export const HOROSCOPE_SCREEN = {
 const horoscopeCardBorder =
   "rounded-[20px] border-[3px] border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-white";
 
+const panelWidth = "w-full max-w-md lg:max-w-xl";
+
 /** Loaded horoscope shell — mirrors `horoscopePage.dart` spacing. */
 export const HOROSCOPE_LAYOUT = {
   shellRoot: "relative",
   heroHeader:
-    "relative z-10 px-10 pb-2 pt-[min(5vh,40px)] text-center text-white lg:px-12 lg:pb-4 lg:pt-12",
-  heroTitle: "text-xl font-bold leading-none tracking-tight lg:text-2xl",
+    "relative z-10 bg-[var(--color-brand-panchang)] pb-6 pt-[min(5vh,60px)] text-white",
+  heroBar: "relative mx-auto flex h-12 w-full items-center justify-center px-4",
+  heroTitle:
+    "text-center text-2xl font-bold leading-none tracking-tight",
   content:
-    "relative z-10 mx-auto flex w-full max-w-md flex-col items-center gap-3 px-5 pt-0 text-[var(--color-brand-black)] lg:max-w-4xl lg:gap-6 lg:px-8 lg:pb-8",
-  chartStack:
-    "flex w-full max-w-md flex-col items-center gap-3 lg:max-w-3xl lg:grid lg:grid-cols-2 lg:justify-items-center lg:gap-5 xl:max-w-4xl xl:gap-6",
+    "relative z-10 mx-auto -mt-6 flex w-full max-w-md flex-col items-center gap-3 px-5 pt-0 text-[var(--color-brand-black)] lg:max-w-4xl lg:gap-6 lg:px-8 lg:pb-8",
+  chartStack: `mx-auto flex ${panelWidth} flex-col items-center gap-4`,
   chartFrame: HOROSCOPE_CHART_SHELL_WIDTH,
   chartShell: `${HOROSCOPE_CHART_SHELL_WIDTH} overflow-hidden rounded-[20px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white`,
   chartIframe: "block w-full border-0 bg-transparent",
+  chartTitle:
+    "mb-2 text-center text-sm font-semibold uppercase tracking-wide text-[var(--color-brand-panchang)]",
+  southCharts:
+    "flex w-full flex-col items-center gap-3",
+  chartsLoading:
+    "text-center text-xs font-medium text-[var(--color-brand-panchang)]",
   northComingSoonWrap: "w-full lg:col-span-2",
   /** Flutter `ComingSoonContainer` — watermark + centered marquee on mint (no white card). */
   northComingSoonStage:
@@ -68,13 +78,26 @@ export const HOROSCOPE_LAYOUT = {
   comingSoonMarqueeTrack: "horoscope-coming-soon-marquee flex w-max items-center",
   comingSoonMarqueeItem:
     "flex shrink-0 items-center gap-1.5 px-3 text-sm font-semibold leading-none text-white",
-  profileCard: `w-full max-w-md ${horoscopeCardBorder} px-4 py-1 shadow-sm lg:max-w-xl`,
+  profileCard: `${panelWidth} ${horoscopeCardBorder} px-4 py-1 shadow-sm`,
+  downloadBtn: `${panelWidth} inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-brand-primary)] bg-white text-sm font-semibold text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]`,
+  downloadIcon: "size-4",
   profileRow:
     "flex items-start gap-3 border-dashed border-[var(--color-panchang-row-divider)] py-2.5 text-sm",
   profileRowLabel:
     "w-[7.25rem] shrink-0 font-semibold text-[var(--color-brand-panchang)] sm:w-32",
   profileRowValue:
     "min-w-0 flex-1 text-right font-medium leading-snug text-[var(--color-brand-black)]",
-  chartToggle:
-    "flex w-full max-w-md rounded-[28px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white p-1 shadow-sm lg:max-w-xl",
+  chartToggle: `flex ${panelWidth} rounded-[28px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white p-1 shadow-sm`,
+  chartToggleBtn:
+    "min-h-11 flex-1 rounded-full px-2 text-center text-xs font-semibold leading-tight sm:text-sm",
+  chartToggleBtnActive:
+    "bg-[var(--color-brand-primary)] text-white hover:bg-[var(--color-brand-primary)] hover:text-white",
+  chartToggleBtnIdle: "text-black/50 hover:bg-transparent",
+  chartPicker: panelWidth,
+  chartNav:
+    "flex items-center gap-1 rounded-[28px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white p-1 shadow-sm",
+  chartNavBtn:
+    "size-10 shrink-0 rounded-full border-0 bg-transparent text-lg text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,white)]",
+  chartSelect:
+    "min-w-0 flex-1 cursor-pointer appearance-none border-0 bg-transparent py-2 text-center text-sm font-semibold uppercase tracking-wide text-[var(--color-brand-panchang)] outline-none",
 } as const;

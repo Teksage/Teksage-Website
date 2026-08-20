@@ -48,8 +48,8 @@ export function ProfileDetailsForm({
       hasHydratedRef.current = true;
       return;
     }
-    // After email/mobile verify refetch: keep typed edits, fill only empty fields.
-    reset(mergeProfileFormAfterUserRefresh(getValues(), fromUser));
+    const current = getValues();
+    reset(mergeProfileFormAfterUserRefresh(current, fromUser));
   }, [user, reset, getValues]);
 
   const onValidSubmit = handleSubmit(

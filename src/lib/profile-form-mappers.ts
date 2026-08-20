@@ -1,4 +1,8 @@
 import { DEFAULT_CHAT_LANGUAGE, DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants";
+import {
+  formatProfileNakshatraDisplay,
+  formatProfileRashiDisplay,
+} from "@/lib/constants/rashi-sanskrit";
 import { normalizePhoneParts } from "@/lib/phone-utils";
 import { extractCityFromLocation } from "@/lib/profile-birth-normalize";
 import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
@@ -39,8 +43,8 @@ export function userToProfileFormValues(user: UserProfile): ProfileDetailsFormVa
     birthLocationFull: birthFull,
     preferredLocation: extractCityFromLocation(prefFull),
     preferredLocationFull: prefFull,
-    rashi: user.rashi ?? "",
-    nakshatra: user.nakshatra ?? "",
+    rashi: formatProfileRashiDisplay(user.rashi ?? ""),
+    nakshatra: formatProfileNakshatraDisplay(user.nakshatra ?? ""),
   };
 }
 

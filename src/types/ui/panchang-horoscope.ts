@@ -1,5 +1,5 @@
 import type { PanchangTimingRow } from "@/lib/panchang-timing-rows";
-import type { HoroscopePayload, PanchangDetail } from "../astrology";
+import type { HoroscopeDivisionalChart, HoroscopePayload, PanchangDetail } from "../astrology";
 
 export interface HoroscopeChartFrameProps {
   title: string;
@@ -76,4 +76,14 @@ export interface HoroscopeLoadedViewProps {
   chartVariant: HoroscopeChartVariant;
   onChartVariantChange: (next: HoroscopeChartVariant) => void;
   onDownloadPdf?: () => Promise<void>;
+}
+
+export interface HoroscopeChartChipsProps {
+  charts: HoroscopeDivisionalChart[];
+  selectedId: string;
+  onSelect: (id: string) => void;
+}
+
+export interface HoroscopeSouthChartsProps {
+  data: HoroscopePayload;
 }

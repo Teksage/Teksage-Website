@@ -87,9 +87,9 @@ export const SETTINGS_UI = {
   subscriptionHeroScrim:
     "pointer-events-none absolute inset-x-0 top-12 z-[1] h-80 bg-gradient-to-b from-black/25 via-black/75 to-black",
   subscriptionPageShell:
-    "relative z-10 flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-black text-white",
+    "relative z-10 flex min-h-dvh w-full flex-1 flex-col bg-black text-white lg:h-full lg:min-h-0 lg:overflow-hidden",
   subscriptionScroll:
-    "relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain",
+    "relative z-10 flex-1 lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain",
   subscriptionContent: "mx-auto w-full max-w-lg px-5 pt-2 lg:max-w-2xl lg:px-8",
   subscriptionContentAboveFooter: "pb-28 lg:pb-8",
   subscriptionFooter:

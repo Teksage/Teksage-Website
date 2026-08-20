@@ -60,6 +60,16 @@ export interface HoroscopePayload {
   navamsa_chart_label?: string;
 }
 
+export interface HoroscopeDivisionalChart {
+  id: string;
+  label: string;
+  html: string;
+}
+
+export interface HoroscopeChartsPayload {
+  charts: HoroscopeDivisionalChart[];
+}
+
 /** Parsed `current_dasa` line from profile API (`current_dasa_summary`). */
 export interface CurrentDasaSummary {
   dasa: string;

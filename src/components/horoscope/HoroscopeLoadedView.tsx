@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
-import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
+import Image from "next/image";
 import { HoroscopeChartToggle } from "@/components/horoscope/HoroscopeChartToggle";
 import { HoroscopeNorthPlaceholder } from "@/components/horoscope/HoroscopeNorthPlaceholder";
 import { HoroscopeProfileCard } from "@/components/horoscope/HoroscopeProfileCard";
+import { HoroscopeSouthCharts } from "@/components/horoscope/HoroscopeSouthCharts";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { Button } from "@/components/ui/button";
 import {
+  HOROSCOPE_ASSETS,
   HOROSCOPE_LAYOUT,
   HOROSCOPE_SCREEN,
   MAIN_TAB_VIEWPORT_BACKDROP,
@@ -40,48 +42,43 @@ export function HoroscopeLoadedView({
 
   return (
     <div className={L.shellRoot}>
-      <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.horoscopeSplit} />
+      <MainTabViewportBackdrop className={MAIN_TAB_VIEWPORT_BACKDROP.horoscopeMint} />
       <header className={L.heroHeader}>
-        <h1 className={L.heroTitle}>{H.headerTitle}</h1>
+        <div className={L.heroBar}>
+          <h1 className={L.heroTitle}>{H.headerTitle}</h1>
+        </div>
       </header>
 
       <div className={cn(L.content, PAGE_SHELL.contentBottomPad)}>
         <HoroscopeProfileCard data={data} />
-        {onDownloadPdf && (
+        {onDownloadPdf ? (
           <Button
             type="button"
             variant="outline"
             size="sm"
             disabled={isDownloading}
             onClick={handleDownload}
-            className="w-full max-w-md rounded-full border-[var(--color-brand-primary)] text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,transparent)] lg:max-w-xl"
+            className={L.downloadBtn}
           >
-            {isDownloading ? "Downloading…" : H.downloadPdfCta}
+            <Image
+              src={HOROSCOPE_ASSETS.download}
+              alt=""
+              width={16}
+              height={16}
+              unoptimized
+              className={L.downloadIcon}
+            />
+            {isDownloading ? H.downloadBusyCta : H.downloadPdfCta}
           </Button>
-        )}
+        ) : null}
         <HoroscopeChartToggle value={chartVariant} onChange={onChartVariantChange} />
-        <div className={L.chartStack}>
-          {chartVariant === "south" ? (
-            <>
-              <HoroscopeChartFrame
-                title={data.rasi_chart_label ?? H.chartFallbackRasi}
-                html={data.rashi_chart ?? ""}
-                showTitle={false}
-                className={L.chartFrame}
-              />
-              <HoroscopeChartFrame
-                title={data.navamsa_chart_label ?? H.chartFallbackNavamsa}
-                html={data.navamsa_chart ?? ""}
-                showTitle={false}
-                className={L.chartFrame}
-              />
-            </>
-          ) : (
-            <div className={L.northComingSoonWrap}>
-              <HoroscopeNorthPlaceholder />
-            </div>
-          )}
-        </div>
+        {chartVariant === "south" ? (
+          <HoroscopeSouthCharts data={data} />
+        ) : (
+          <div className={L.northComingSoonWrap}>
+            <HoroscopeNorthPlaceholder />
+          </div>
+        )}
       </div>
     </div>
   );
