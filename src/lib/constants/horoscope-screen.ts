@@ -1,7 +1,5 @@
 /** User-facing copy for Horoscope tab. */
 
-import { HOROSCOPE_CHART_SHELL_WIDTH } from "@/lib/constants/horoscope-chart-frame";
-
 export const HOROSCOPE_SCREEN = {
   headerTitle: "Horoscope",
   loginTitle: "Sign in to view your horoscope",
@@ -53,16 +51,15 @@ export const HOROSCOPE_LAYOUT = {
     "text-center text-2xl font-bold leading-none tracking-tight",
   content:
     "relative z-10 mx-auto -mt-6 flex w-full max-w-md flex-col items-center gap-3 px-5 pt-0 text-[var(--color-brand-black)] lg:max-w-4xl lg:gap-6 lg:px-8 lg:pb-8",
-  chartStack: `mx-auto flex ${panelWidth} flex-col items-center gap-4`,
-  chartFrame: HOROSCOPE_CHART_SHELL_WIDTH,
-  chartShell: `${HOROSCOPE_CHART_SHELL_WIDTH} overflow-hidden rounded-[20px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white`,
+  /** Mobile: stacked. Desktop: Rasi + Navamsa in one row. */
+  chartStack:
+    "flex w-full max-w-md flex-col items-center gap-3 lg:max-w-3xl lg:grid lg:grid-cols-2 lg:justify-items-center lg:gap-5 xl:max-w-4xl xl:gap-6",
+  chartFrame: "w-full max-w-[17.5rem] sm:max-w-xs lg:max-w-[20rem]",
+  chartShell:
+    "w-full overflow-hidden rounded-[20px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white",
   chartIframe: "block w-full border-0 bg-transparent",
   chartTitle:
     "mb-2 text-center text-sm font-semibold uppercase tracking-wide text-[var(--color-brand-panchang)]",
-  southCharts:
-    "flex w-full flex-col items-center gap-3",
-  chartsLoading:
-    "text-center text-xs font-medium text-[var(--color-brand-panchang)]",
   northComingSoonWrap: "w-full lg:col-span-2",
   /** Flutter `ComingSoonContainer` — watermark + centered marquee on mint (no white card). */
   northComingSoonStage:
@@ -93,11 +90,4 @@ export const HOROSCOPE_LAYOUT = {
   chartToggleBtnActive:
     "bg-[var(--color-brand-primary)] text-white hover:bg-[var(--color-brand-primary)] hover:text-white",
   chartToggleBtnIdle: "text-black/50 hover:bg-transparent",
-  chartPicker: panelWidth,
-  chartNav:
-    "flex items-center gap-1 rounded-[28px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white p-1 shadow-sm",
-  chartNavBtn:
-    "size-10 shrink-0 rounded-full border-0 bg-transparent text-lg text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,white)]",
-  chartSelect:
-    "min-w-0 flex-1 cursor-pointer appearance-none border-0 bg-transparent py-2 text-center text-sm font-semibold uppercase tracking-wide text-[var(--color-brand-panchang)] outline-none",
 } as const;

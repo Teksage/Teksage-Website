@@ -28,8 +28,6 @@ export const API_ENDPOINTS = {
   updateProfile: "/api/auth/update-profile",
   /** `GET` — user horoscope payload */
   horoscope: "/api/auth/horoscope",
-  /** `GET` — South-Indian D1–D60 chart HTML */
-  horoscopeCharts: "/api/auth/horoscope/charts",
   /** `POST` — rashi/nakshatra resolution */
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",

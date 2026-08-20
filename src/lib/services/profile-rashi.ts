@@ -1,9 +1,5 @@
 import { API_ENDPOINTS } from "@/lib/constants/api";
 import {
-  formatProfileNakshatraDisplay,
-  formatProfileRashiDisplay,
-} from "@/lib/constants/rashi-sanskrit";
-import {
   normalizeProfileDateForApi,
   normalizeProfileTimeForApi,
 } from "@/lib/profile-birth-normalize";
@@ -29,11 +25,6 @@ function pickEnglishLabel(value: unknown): string {
   return "";
 }
 
-function parsePada(value: unknown): number | undefined {
-  const p = typeof value === "number" ? value : Number(value);
-  return Number.isFinite(p) && p >= 1 && p <= 4 ? p : undefined;
-}
-
 /** `POST /api/auth/rashi-nakshatra` — mirrors Flutter `ProfileService.fetchRashiNakshatra`. */
 export async function fetchRashiNakshatra(params: {
   dateOfBirth: string;
@@ -50,13 +41,8 @@ export async function fetchRashiNakshatra(params: {
     headers: { response_language: "english" },
   });
 
-  const englishRashi = pickEnglishLabel(data.rashi);
-  const englishNak = pickEnglishLabel(data.nakshatra);
-  const pada = parsePada(data.pada);
-  const rashiSanskrit =
-    typeof data.rashi_sanskrit === "string" ? data.rashi_sanskrit.trim() : "";
-  const rashi = formatProfileRashiDisplay(rashiSanskrit || englishRashi);
-  const nakshatra = formatProfileNakshatraDisplay(englishNak, pada);
+  const rashi = pickEnglishLabel(data.rashi);
+  const nakshatra = pickEnglishLabel(data.nakshatra);
   if (!rashi || !nakshatra) {
     throw new Error("Incomplete rashi/nakshatra response");
   }

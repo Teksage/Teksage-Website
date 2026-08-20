@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
+import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
 import { HoroscopeChartToggle } from "@/components/horoscope/HoroscopeChartToggle";
 import { HoroscopeNorthPlaceholder } from "@/components/horoscope/HoroscopeNorthPlaceholder";
 import { HoroscopeProfileCard } from "@/components/horoscope/HoroscopeProfileCard";
-import { HoroscopeSouthCharts } from "@/components/horoscope/HoroscopeSouthCharts";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,13 +72,28 @@ export function HoroscopeLoadedView({
           </Button>
         ) : null}
         <HoroscopeChartToggle value={chartVariant} onChange={onChartVariantChange} />
-        {chartVariant === "south" ? (
-          <HoroscopeSouthCharts data={data} />
-        ) : (
-          <div className={L.northComingSoonWrap}>
-            <HoroscopeNorthPlaceholder />
-          </div>
-        )}
+        <div className={L.chartStack}>
+          {chartVariant === "south" ? (
+            <>
+              <HoroscopeChartFrame
+                title={data.rasi_chart_label ?? H.chartFallbackRasi}
+                html={data.rashi_chart ?? ""}
+                showTitle={false}
+                className={L.chartFrame}
+              />
+              <HoroscopeChartFrame
+                title={data.navamsa_chart_label ?? H.chartFallbackNavamsa}
+                html={data.navamsa_chart ?? ""}
+                showTitle={false}
+                className={L.chartFrame}
+              />
+            </>
+          ) : (
+            <div className={L.northComingSoonWrap}>
+              <HoroscopeNorthPlaceholder />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
