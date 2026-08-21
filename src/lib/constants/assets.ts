@@ -94,6 +94,11 @@ export const DAILY_PREDICTION_ASSETS = {
   balaDivider: flutterSvg("divider_daily.svg"),
 } as const;
 
+/** Horoscope PDF — Flutter `download.svg`. */
+export const HOROSCOPE_ASSETS = {
+  download: flutterSvg("download.svg"),
+} as const;
+
 /** Prediction share sheet — Flutter `share.svg`. */
 export const PREDICTION_SHARE_ASSETS = {
   share: flutterSvg("share.svg"),

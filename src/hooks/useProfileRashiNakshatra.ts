@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useI18nConstants } from "@/hooks/useT";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { fetchRashiNakshatra } from "@/lib/services/profile-rashi";
@@ -46,22 +46,6 @@ export function useProfileRashiNakshatra({
       setBusy(false);
     }
   }, [PD.rashiResolveError, enabled, dateOfBirth, timeOfBirth, birthLocation]);
-
-  const prevEnabled = useRef(false);
-  useEffect(() => {
-    if (enabled && !prevEnabled.current) {
-      void runFetch();
-    }
-    prevEnabled.current = enabled;
-  }, [enabled, runFetch]);
-
-  useEffect(() => {
-    if (!enabled) return;
-    const timer = window.setTimeout(() => {
-      void runFetch();
-    }, 500);
-    return () => window.clearTimeout(timer);
-  }, [enabled, dateOfBirth, timeOfBirth, birthLocation, runFetch]);
 
   return { rashiBusy: busy, rashiError: error, refreshRashi: runFetch };
 }

@@ -17,9 +17,13 @@ export interface ConsultationAstrologer {
   local_consulting_fee?: number;
   foreign_consulting_fee?: number;
   customer_rating?: number | null;
+  /** Optional list payload — total completed review events when API sends it. */
+  review_count?: number | null;
   astrologer_profile_info?: string | null;
   picture?: string | null;
   match_percentage?: number;
+  /** Public marketing profile URL/path (teksage.app) — same as ask-answer “View profile”. */
+  profile_link?: string | null;
   user?: ConsultationAstrologerUser;
 }
 

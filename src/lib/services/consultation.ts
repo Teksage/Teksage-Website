@@ -47,6 +47,12 @@ function parseAstrologer(raw: unknown): ConsultationAstrologer | null {
         : undefined,
     customer_rating:
       row.customer_rating != null ? Number(row.customer_rating) : null,
+    review_count:
+      row.review_count != null
+        ? Number(row.review_count)
+        : row.total_reviews != null
+          ? Number(row.total_reviews)
+          : null,
     astrologer_profile_info:
       typeof row.astrologer_profile_info === "string"
         ? row.astrologer_profile_info
@@ -57,6 +63,10 @@ function parseAstrologer(raw: unknown): ConsultationAstrologer | null {
         : null,
     match_percentage:
       row.match_percentage != null ? Number(row.match_percentage) : undefined,
+    profile_link:
+      typeof row.profile_link === "string" && row.profile_link.trim()
+        ? row.profile_link.trim()
+        : null,
     user: row.user as ConsultationAstrologer["user"],
   };
 }

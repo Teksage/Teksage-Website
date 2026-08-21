@@ -35,9 +35,7 @@ export function HoroscopeChartFrame({
       if (event.source !== iframeRef.current?.contentWindow) return;
       const next = event.data.height;
       if (typeof next === "number" && next > 0) {
-        setFrameHeight(
-          Math.max(next, HOROSCOPE_CHART_FRAME.frameHeightPx)
-        );
+        setFrameHeight(next);
       }
     };
     window.addEventListener("message", onMessage);
@@ -50,16 +48,13 @@ export function HoroscopeChartFrame({
   return (
     <div className={cn("flex flex-col", className)}>
       {showTitle !== false && title?.trim() ? (
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--color-brand-panchang)]">
-          {title}
-        </p>
+        <p className={HOROSCOPE_LAYOUT.chartTitle}>{title}</p>
       ) : null}
       <div className={HOROSCOPE_LAYOUT.chartShell}>
         <iframe
           ref={iframeRef}
           title={title}
           className={HOROSCOPE_LAYOUT.chartIframe}
-          style={{ minHeight: HOROSCOPE_CHART_FRAME.frameHeightPx }}
           sandbox="allow-scripts allow-same-origin"
           srcDoc={srcDoc}
         />

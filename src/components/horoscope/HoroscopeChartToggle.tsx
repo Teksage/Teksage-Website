@@ -26,10 +26,10 @@ export function HoroscopeChartToggle({ value, onChange }: HoroscopeChartTogglePr
             variant="ghost"
             size="sm"
             className={cn(
-              "min-h-11 flex-1 rounded-full px-2 text-center text-xs font-semibold leading-tight sm:text-sm",
+              HOROSCOPE_LAYOUT.chartToggleBtn,
               active
-                ? "bg-[var(--color-brand-primary)] text-white hover:bg-[var(--color-brand-primary)] hover:text-white"
-                : "text-black/50 hover:bg-transparent"
+                ? HOROSCOPE_LAYOUT.chartToggleBtnActive
+                : HOROSCOPE_LAYOUT.chartToggleBtnIdle
             )}
             onClick={() => onChange(v)}
           >

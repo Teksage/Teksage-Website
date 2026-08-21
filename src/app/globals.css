@@ -438,6 +438,42 @@
         transparent 72%
       );
   }
+
+  /** Consultation hub cards — opacity-only entrance so hover transform stays smooth. */
+  @keyframes consult-hub-card-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .consult-hub-card {
+    animation: consult-hub-card-in 0.28s ease-out both;
+  }
+
+  .consult-hub-card:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .consult-hub-card:nth-child(2) {
+    animation-delay: 35ms;
+  }
+  .consult-hub-card:nth-child(3) {
+    animation-delay: 70ms;
+  }
+  .consult-hub-card:nth-child(4) {
+    animation-delay: 105ms;
+  }
+  .consult-hub-card:nth-child(5) {
+    animation-delay: 140ms;
+  }
+  .consult-hub-card:nth-child(6) {
+    animation-delay: 175ms;
+  }
+  .consult-hub-card:nth-child(n + 7) {
+    animation-delay: 200ms;
+  }
 }
 
 @keyframes match-ring-pulse {
