@@ -12,8 +12,13 @@ import {
 import { useI18nConstants } from "@/hooks/useT";
 import type { ConsultationHubTabsProps } from "@/types/ui/consultation-home";
 
-export function ConsultationHubTabs({ activeTab, onChange }: ConsultationHubTabsProps) {
+export function ConsultationHubTabs({
+  activeTab,
+  onChange,
+  meetingCount = 0,
+}: ConsultationHubTabsProps) {
   const CH = useI18nConstants(CONSULTATION_HOME_SCREEN);
+  const meetingsActive = activeTab === CONSULTATION_HUB_TAB_MEETING;
 
   return (
     <div className={CONSULTATION_HOME_LAYOUT.hubTabsWrap}>
@@ -35,12 +40,22 @@ export function ConsultationHubTabs({ activeTab, onChange }: ConsultationHubTabs
           onClick={() => onChange(CONSULTATION_HUB_TAB_MEETING)}
           className={cn(
             CONSULTATION_HOME_LAYOUT.tab,
-            activeTab === CONSULTATION_HUB_TAB_MEETING
+            meetingsActive
               ? CONSULTATION_HOME_LAYOUT.tabActive
               : CONSULTATION_HOME_LAYOUT.tabInactive
           )}
         >
           {CH.tabMeeting}
+          <span
+            className={cn(
+              CONSULTATION_HOME_LAYOUT.tabBadge,
+              meetingsActive
+                ? CONSULTATION_HOME_LAYOUT.tabBadgeActive
+                : CONSULTATION_HOME_LAYOUT.tabBadgeInactive
+            )}
+          >
+            {meetingCount}
+          </span>
         </button>
       </div>
     </div>

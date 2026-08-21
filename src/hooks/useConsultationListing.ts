@@ -2,28 +2,31 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
+import { TEKSAGE_APP_ASTROLOGER_USER_IDS } from "@/lib/constants/consultation-featured-astrologers";
 import { defaultConsultationFilter } from "@/lib/consultation-default-filter";
-import { consultationExcludeUserIds } from "@/lib/consultation-display";
+import { consultationRouteUserId } from "@/lib/consultation-display";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { writeConsultationFilter } from "@/lib/consultation-session";
-import {
-  fetchMoreAstrologers,
-  fetchTopAstrologers,
-} from "@/lib/services/consultation";
+import { fetchMoreAstrologers } from "@/lib/services/consultation";
 import type { ConsultationAstrologer } from "@/types/consultation";
 
-function mergeAstrologerLists(
-  primary: ConsultationAstrologer[],
-  secondary: ConsultationAstrologer[]
+const FEATURED_ORDER = new Map<number, number>(
+  TEKSAGE_APP_ASTROLOGER_USER_IDS.map((id, index) => [id, index])
+);
+
+function sortAstrologersForHub(
+  rows: ConsultationAstrologer[]
 ): ConsultationAstrologer[] {
-  const seen = new Set(primary.map((a) => a.astrologer_id));
-  const merged = [...primary];
-  for (const row of secondary) {
-    if (seen.has(row.astrologer_id)) continue;
-    seen.add(row.astrologer_id);
-    merged.push(row);
-  }
-  return merged;
+  return [...rows].sort((a, b) => {
+    const aId = consultationRouteUserId(a);
+    const bId = consultationRouteUserId(b);
+    const aRank = FEATURED_ORDER.get(aId);
+    const bRank = FEATURED_ORDER.get(bId);
+    if (aRank != null && bRank != null) return aRank - bRank;
+    if (aRank != null) return -1;
+    if (bRank != null) return 1;
+    return aId - bId;
+  });
 }
 
 export function useConsultationListing() {
@@ -34,14 +37,13 @@ export function useConsultationListing() {
 
   const currency = useConsultationCurrency();
 
-  const load = useCallback(async (cats: string[], langs: string[]) => {
+  const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const topList = await fetchTopAstrologers(cats, langs);
-      const excludeUserIds = consultationExcludeUserIds(topList);
-      const rest = await fetchMoreAstrologers(excludeUserIds);
-      setAstrologers(mergeAstrologerLists(topList, rest));
+      // Full roster — same as Flutter GET /api/astrologer/filter (no language bias).
+      const all = await fetchMoreAstrologers([]);
+      setAstrologers(sortAstrologersForHub(all));
     } catch {
       setAstrologers([]);
       setError("load");
@@ -53,7 +55,7 @@ export function useConsultationListing() {
   useEffect(() => {
     const filter = defaultConsultationFilter();
     writeConsultationFilter(filter);
-    void load(filter.categories, filter.languages);
+    void load();
   }, [load, languageVersion]);
 
   return {

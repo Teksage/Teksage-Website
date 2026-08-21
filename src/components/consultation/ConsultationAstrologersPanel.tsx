@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
-import { ConsultationAstroCard } from "@/components/consultation/ConsultationAstroCard";
+import { ConsultationHubAstroCard } from "@/components/consultation/ConsultationHubAstroCard";
 import { consultationAstrologerPath } from "@/lib/constants/consultation-routes";
 import { CONSULTATION_HOME_LAYOUT } from "@/lib/constants/consultation-home";
 import { CONSULTATION_SCREEN } from "@/lib/constants";
@@ -23,18 +23,15 @@ export function ConsultationAstrologersPanel() {
 
   return (
     <>
-      <div className="px-4">
-        <div className={CONSULTATION_HOME_LAYOUT.astrologerGrid}>
+      <div className={CONSULTATION_HOME_LAYOUT.astrologerList}>
         {astrologers.map((astrologer) => (
-          <ConsultationAstroCard
+          <ConsultationHubAstroCard
             key={astrologer.astrologer_id}
-            variant="grid"
             astrologer={astrologer}
             currency={currency}
             href={consultationAstrologerPath(consultationRouteUserId(astrologer))}
           />
         ))}
-        </div>
       </div>
       <LoadingOverlay open={loading && astrologers.length > 0} />
     </>
