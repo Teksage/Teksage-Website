@@ -1,41 +1,41 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CONSULTATION_SLOTS_LAYOUT, CONSULTATION_SLOTS_SCREEN } from "@/lib/constants/consultation-slots";
-import { formatSlotTime12, isSlotInPast, isSameCalendarDay } from "@/lib/consultation-calendar";
+import {
+  CONSULTATION_SLOTS_LAYOUT,
+  CONSULTATION_SLOTS_SCREEN,
+} from "@/lib/constants/consultation-slots";
+import { formatSlotTime12, isSlotInPast } from "@/lib/consultation-calendar";
+import type { ConsultationSlotsTimePickerProps } from "@/types/ui/consultation";
 import type { ConsultationSlot } from "@/types/consultation";
-
-type Props = {
-  slots: ConsultationSlot[];
-  loading: boolean;
-  selected: ConsultationSlot | null;
-  selectedDate: Date;
-  onSelect: (slot: ConsultationSlot) => void;
-};
 
 function slotHour(iso: string): number {
   return new Date(iso).getHours();
 }
 
-function groupSlots(slots: ConsultationSlot[]): {
-  morning: ConsultationSlot[];
-  afternoon: ConsultationSlot[];
-  evening: ConsultationSlot[];
-} {
+function groupSlots(slots: ConsultationSlot[]) {
   const upcoming = slots.filter((s) => !isSlotInPast(s));
   return {
     morning: upcoming.filter((s) => slotHour(s.start_datetime) < 12),
-    afternoon: upcoming.filter((s) => slotHour(s.start_datetime) >= 12 && slotHour(s.start_datetime) < 17),
+    afternoon: upcoming.filter(
+      (s) => slotHour(s.start_datetime) >= 12 && slotHour(s.start_datetime) < 17
+    ),
     evening: upcoming.filter((s) => slotHour(s.start_datetime) >= 17),
   };
 }
 
-function SlotGroup({ label, slots, selected, onSelect }: {
+function SlotGroup({
+  label,
+  slots,
+  selected,
+  onSelect,
+}: {
   label: string;
   slots: ConsultationSlot[];
   selected: ConsultationSlot | null;
   onSelect: (slot: ConsultationSlot) => void;
 }) {
+  const CS = CONSULTATION_SLOTS_SCREEN;
   if (!slots.length) return null;
   return (
     <div className={CONSULTATION_SLOTS_LAYOUT.timeGroup}>
@@ -58,9 +58,16 @@ function SlotGroup({ label, slots, selected, onSelect }: {
                 booked && CONSULTATION_SLOTS_LAYOUT.slotChipBooked
               )}
             >
-              <span className="block">{formatSlotTime12(slot.start_datetime)}</span>
-              <span className={cn("block text-[10px]", isActive && !booked ? "text-white/70" : "text-black/40")}>
-                30 min
+              <span className="block lowercase">
+                {formatSlotTime12(slot.start_datetime)}
+              </span>
+              <span
+                className={cn(
+                  CONSULTATION_SLOTS_LAYOUT.slotChipDuration,
+                  isActive && !booked && CONSULTATION_SLOTS_LAYOUT.slotChipDurationSel
+                )}
+              >
+                {CS.sessionMinutes}
               </span>
             </button>
           );
@@ -70,11 +77,16 @@ function SlotGroup({ label, slots, selected, onSelect }: {
   );
 }
 
-export function ConsultationSlotsTimePicker({ slots, loading, selected, selectedDate, onSelect }: Props) {
+export function ConsultationSlotsTimePicker({
+  slots,
+  loading,
+  selected,
+  selectedDate,
+  onSelect,
+}: ConsultationSlotsTimePickerProps) {
   const CS = CONSULTATION_SLOTS_SCREEN;
   const { morning, afternoon, evening } = groupSlots(slots);
   const totalOpen = morning.length + afternoon.length + evening.length;
-
   const dayLabel = selectedDate.toLocaleDateString(undefined, {
     weekday: "short",
     day: "numeric",
@@ -82,8 +94,8 @@ export function ConsultationSlotsTimePicker({ slots, loading, selected, selected
   });
 
   return (
-    <section>
-      <div className="mb-4 flex items-center justify-between">
+    <section className={CONSULTATION_SLOTS_LAYOUT.panelCard}>
+      <div className={CONSULTATION_SLOTS_LAYOUT.timeSectionHead}>
         <h2 className={CONSULTATION_SLOTS_LAYOUT.timeSectionTitle}>
           {CS.chooseTime} – {dayLabel}
         </h2>
@@ -103,7 +115,12 @@ export function ConsultationSlotsTimePicker({ slots, loading, selected, selected
       ) : (
         <>
           <SlotGroup label={CS.morning} slots={morning} selected={selected} onSelect={onSelect} />
-          <SlotGroup label={CS.afternoon} slots={afternoon} selected={selected} onSelect={onSelect} />
+          <SlotGroup
+            label={CS.afternoon}
+            slots={afternoon}
+            selected={selected}
+            onSelect={onSelect}
+          />
           <SlotGroup label={CS.evening} slots={evening} selected={selected} onSelect={onSelect} />
         </>
       )}

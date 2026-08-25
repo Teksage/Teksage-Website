@@ -45,6 +45,15 @@ export interface ConsultationSlot {
   event_booked: boolean;
 }
 
+/** Per-day availability for the slots date strip. */
+export type ConsultationDaySlotStatus = "open" | "full" | "none" | "check_later";
+
+export interface ConsultationDaySlotSummary {
+  open: number;
+  total: number;
+  status: ConsultationDaySlotStatus;
+}
+
 export interface ConsultationRazorpayOrder {
   id: string;
   amount: number;

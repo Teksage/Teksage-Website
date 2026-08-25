@@ -16,7 +16,11 @@ import {
 import { CONSULTATION_SCREEN, ROUTES } from "@/lib/constants";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { ensureConsultationFilter } from "@/lib/consultation-default-filter";
-import { readConsultationFilter, writeConsultationDraft } from "@/lib/consultation-session";
+import {
+  clearConsultationDraftSlot,
+  readConsultationFilter,
+  writeConsultationDraft,
+} from "@/lib/consultation-session";
 import {
   fetchAstrologerDetail,
   fetchAstrologerSlots,
@@ -236,9 +240,19 @@ export function ConsultationDetailView({ astrologerId }: Props) {
                         <button
                           key={s.start_datetime}
                           type="button"
-                          onClick={() =>
-                            setSelectedSlot(isSelected ? null : s)
-                          }
+                          onClick={() => {
+                            if (isSelected) {
+                              setSelectedSlot(null);
+                              clearConsultationDraftSlot();
+                              return;
+                            }
+                            setSelectedSlot(s);
+                            writeConsultationDraft({
+                              astrologerId,
+                              slotStart: s.start_datetime,
+                              slotEnd: s.end_datetime,
+                            });
+                          }}
                           className={cn(
                             CONSULTATION_DETAIL_LAYOUT.slotChip,
                             isSelected &&
@@ -255,6 +269,14 @@ export function ConsultationDetailView({ astrologerId }: Props) {
                 <Link
                   href={consultationSlotsPath(astrologerId)}
                   className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
+                  onClick={() => {
+                    if (!selectedSlot) return;
+                    writeConsultationDraft({
+                      astrologerId,
+                      slotStart: selectedSlot.start_datetime,
+                      slotEnd: selectedSlot.end_datetime,
+                    });
+                  }}
                 >
                   {CD.seeAllSlots}
                 </Link>

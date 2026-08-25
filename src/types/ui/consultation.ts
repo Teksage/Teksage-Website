@@ -3,6 +3,7 @@ import type {
   ConsultationAstrologer,
   ConsultationCouponResult,
   ConsultationReviewEvent,
+  ConsultationSlot,
 } from "@/types/consultation";
 
 export interface ConsultationShellProps {
@@ -60,6 +61,39 @@ export interface ConsultationDetailReviewsProps {
   averageRating?: number | null;
   seeAllUrl?: string | null;
   fallbackCategories?: string[];
+}
+
+export interface ConsultationSlotsHeaderProps {
+  name: string;
+  initials: string;
+  picture?: string | null;
+  rating?: number | null;
+  reviewCount?: number | null;
+  languages: string[];
+  feeLabel: string;
+}
+
+import type { ConsultationDaySlotSummary } from "@/types/consultation";
+
+export interface ConsultationSlotsDateStripProps {
+  selectedDate: Date;
+  today: Date;
+  windowOffset: number;
+  canWindowPrev: boolean;
+  canWindowNext: boolean;
+  slotSummariesByDate: Record<string, ConsultationDaySlotSummary>;
+  countsLoading?: boolean;
+  onSelectDate: (d: Date) => void;
+  onWindowPrev: () => void;
+  onWindowNext: () => void;
+}
+
+export interface ConsultationSlotsTimePickerProps {
+  slots: ConsultationSlot[];
+  loading: boolean;
+  selected: ConsultationSlot | null;
+  selectedDate: Date;
+  onSelect: (slot: ConsultationSlot) => void;
 }
 
 export interface ConsultationCheckoutPricingProps {
