@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type {
   ConsultationAstrologer,
   ConsultationCouponResult,
+  ConsultationReviewEvent,
   ConsultationSlot,
 } from "@/types/consultation";
 
@@ -54,25 +55,44 @@ export interface ConsultationAuthGateProps {
   redirectPath: string;
 }
 
-export interface ConsultationSlotsShellProps {
-  title: string;
-  children: ReactNode;
-  footer?: ReactNode;
-  onBack?: () => void;
+export interface ConsultationDetailReviewsProps {
+  events: ConsultationReviewEvent[];
+  totalReviewCount: number;
+  averageRating?: number | null;
+  seeAllUrl?: string | null;
+  fallbackCategories?: string[];
 }
 
-export interface ConsultationSlotsCalendarProps {
-  focusedMonth: Date;
+export interface ConsultationSlotsHeaderProps {
+  name: string;
+  initials: string;
+  picture?: string | null;
+  rating?: number | null;
+  reviewCount?: number | null;
+  languages: string[];
+  feeLabel: string;
+}
+
+import type { ConsultationDaySlotSummary } from "@/types/consultation";
+
+export interface ConsultationSlotsDateStripProps {
   selectedDate: Date;
   today: Date;
-  onFocusedMonthChange: (date: Date) => void;
-  onSelectDate: (date: Date) => void;
+  windowOffset: number;
+  canWindowPrev: boolean;
+  canWindowNext: boolean;
+  slotSummariesByDate: Record<string, ConsultationDaySlotSummary>;
+  countsLoading?: boolean;
+  onSelectDate: (d: Date) => void;
+  onWindowPrev: () => void;
+  onWindowNext: () => void;
 }
 
-export interface ConsultationSlotsAvailabilityProps {
+export interface ConsultationSlotsTimePickerProps {
   slots: ConsultationSlot[];
   loading: boolean;
   selected: ConsultationSlot | null;
+  selectedDate: Date;
   onSelect: (slot: ConsultationSlot) => void;
 }
 

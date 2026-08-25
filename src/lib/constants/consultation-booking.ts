@@ -1,5 +1,3 @@
-import { CONSULTATION_SLOTS_ASSETS } from "@/lib/constants/consultation-slots";
-
 const flutterSvg = (file: string) => `/flutter-assets/svg/${file}` as const;
 
 export const CONSULTATION_BOOKING_SCREEN = {
@@ -39,7 +37,7 @@ export const CONSULTATION_BOOKING_SCREEN = {
 } as const;
 
 export const CONSULTATION_BOOKING_ASSETS = {
-  dashedLine: CONSULTATION_SLOTS_ASSETS.calendarLine,
+  dashedLine: "/flutter-assets/svg/astroCalenderLine.svg",
   queryIcon: flutterSvg("questions.svg"),
   dummyAvatar: "/flutter-assets/images/dummyImage.png",
 } as const;
