@@ -73,8 +73,5 @@ export function isConsultationCheckoutPath(pathname: string): boolean {
 }
 
 export function isConsultationGreenFullBleedPath(pathname: string): boolean {
-  return (
-    isConsultationAstrologerDetailPath(pathname) ||
-    isConsultationAstrologerSlotsPath(pathname)
-  );
+  return isConsultationAstrologerSlotsPath(pathname);
 }

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type {
   ConsultationAstrologer,
   ConsultationCouponResult,
-  ConsultationSlot,
+  ConsultationReviewEvent,
 } from "@/types/consultation";
 
 export interface ConsultationShellProps {
@@ -54,26 +54,12 @@ export interface ConsultationAuthGateProps {
   redirectPath: string;
 }
 
-export interface ConsultationSlotsShellProps {
-  title: string;
-  children: ReactNode;
-  footer?: ReactNode;
-  onBack?: () => void;
-}
-
-export interface ConsultationSlotsCalendarProps {
-  focusedMonth: Date;
-  selectedDate: Date;
-  today: Date;
-  onFocusedMonthChange: (date: Date) => void;
-  onSelectDate: (date: Date) => void;
-}
-
-export interface ConsultationSlotsAvailabilityProps {
-  slots: ConsultationSlot[];
-  loading: boolean;
-  selected: ConsultationSlot | null;
-  onSelect: (slot: ConsultationSlot) => void;
+export interface ConsultationDetailReviewsProps {
+  events: ConsultationReviewEvent[];
+  totalReviewCount: number;
+  averageRating?: number | null;
+  seeAllUrl?: string | null;
+  fallbackCategories?: string[];
 }
 
 export interface ConsultationCheckoutPricingProps {
