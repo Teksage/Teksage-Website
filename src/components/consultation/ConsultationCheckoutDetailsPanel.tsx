@@ -54,55 +54,53 @@ export function ConsultationCheckoutDetailsPanel({
   ];
 
   return (
-    <div className={L.detailsPanel}>
-      <div className={L.detailsSection}>
-        <div className={L.astroRow}>
-          <div className={L.astroAvatar}>
-            {astrologerPicture ? (
-              <Image
-                src={astrologerPicture}
-                alt={booking.astrologerName}
-                width={48}
-                height={48}
-                unoptimized
-                className={L.astroAvatarImg}
-              />
-            ) : (
-              <span className={L.astroAvatarInitials}>
-                {consultationInitialsFromDisplayName(booking.astrologerName)}
-              </span>
-            )}
+    <div className={L.leftCol}>
+      <div className={L.sessionCard}>
+        <div className={L.sessionHeader}>
+          <div className={L.astroRow}>
+            <div className={L.astroAvatar}>
+              {astrologerPicture ? (
+                <Image
+                  src={astrologerPicture}
+                  alt={booking.astrologerName}
+                  width={48}
+                  height={48}
+                  unoptimized
+                  className={L.astroAvatarImg}
+                />
+              ) : (
+                <span className={L.astroAvatarInitials}>
+                  {consultationInitialsFromDisplayName(booking.astrologerName)}
+                </span>
+              )}
+            </div>
+            <div className={L.astroMeta}>
+              <p className={L.astroName}>{booking.astrologerName}</p>
+              <p className={L.astroSub}>{astroSubtitle}</p>
+            </div>
+            <button type="button" onClick={onChangeAstrologer} className={L.textLink}>
+              {CC.changeAstrologer}
+            </button>
           </div>
-          <div className={L.astroMeta}>
-            <p className={L.astroName}>{booking.astrologerName}</p>
-            <p className={L.astroSub}>{astroSubtitle}</p>
+        </div>
+
+        <div className={L.sessionBody}>
+          <div className={L.whenRow}>
+            <div className={L.whenBlock}>
+              <p className={L.whenLabel}>{CC.whenLabel}</p>
+              <p className={L.whenValue}>
+                {formatConsultationBookingDate(booking.slotStart)} ·{" "}
+                {formatConsultationBookingTimeRange(booking.slotStart, booking.slotEnd)}
+              </p>
+            </div>
+            <button type="button" onClick={onReschedule} className={L.outlineBtn}>
+              {CC.reschedule}
+            </button>
           </div>
-          <button type="button" onClick={onChangeAstrologer} className={L.textLink}>
-            {CC.changeAstrologer}
-          </button>
         </div>
       </div>
 
-      <div className={L.detailsDivider} />
-
-      <div className={L.detailsSection}>
-        <div className={L.whenRow}>
-          <div className={L.whenBlock}>
-            <p className={L.whenLabel}>{CC.whenLabel}</p>
-            <p className={L.whenValue}>
-              {formatConsultationBookingDate(booking.slotStart)} ·{" "}
-              {formatConsultationBookingTimeRange(booking.slotStart, booking.slotEnd)}
-            </p>
-          </div>
-          <button type="button" onClick={onReschedule} className={L.outlineBtn}>
-            {CC.reschedule}
-          </button>
-        </div>
-      </div>
-
-      <div className={L.detailsDivider} />
-
-      <div className={L.detailsSection}>
+      <div className={cn(L.card, L.cardBody)}>
         <div className={L.birthHeader}>
           <h2 className={L.birthTitle}>{CC.birthDetailsTitle}</h2>
           <a href={ROUTES.profile} className={L.textLink}>
@@ -119,9 +117,7 @@ export function ConsultationCheckoutDetailsPanel({
         </div>
       </div>
 
-      <div className={L.detailsDivider} />
-
-      <div className={L.detailsSection}>
+      <div className={cn(L.card, L.cardBody)}>
         <h2 className={L.focusTitle}>
           {formatNameCopy(CC.focusTitle, booking.astrologerName.split(/\s+/)[0] ?? "them")}
         </h2>
