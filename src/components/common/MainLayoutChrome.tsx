@@ -27,6 +27,7 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
   const isConsultCheckout = isConsultationCheckoutPath(pathname);
   const isConsultSlots = isConsultationAstrologerSlotsPath(pathname);
+  const isConsultBookingFlow = isConsultCheckout || isConsultSlots;
   const isSubscriptionFlow = pathname.startsWith(ROUTES.settingsSubscriptions);
   const isPredictionPane =
     isPredictionsPath(pathname) || pathname.startsWith(ROUTES.matchmaking);
@@ -39,11 +40,13 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
       "min-h-dvh p-0 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pb-0",
     isConsultSlots &&
       "flex min-h-dvh flex-col overflow-hidden p-0 pb-0 lg:h-full lg:min-h-0",
+    isConsultCheckout &&
+      "flex min-h-dvh flex-col overflow-hidden p-0 pb-0 lg:h-full lg:min-h-0",
     isPredictionPane &&
       "flex min-h-0 flex-1 flex-col overflow-y-auto p-0 lg:h-full lg:min-h-0",
     !isFullHeightPane &&
       !isPredictionPane &&
-      !isConsultSlots &&
+      !isConsultBookingFlow &&
       cn(HOME_LAYOUT.bottomNavClearance, "min-h-0 lg:h-full lg:overflow-y-auto"),
     isConsultGreen && "bg-[var(--color-consult-user-bg)]",
     isConsultCheckout && "bg-white",

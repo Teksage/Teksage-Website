@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 import type {
   ConsultationAstrologer,
+  ConsultationBookingDraft,
   ConsultationCouponResult,
+  ConsultationDaySlotSummary,
   ConsultationReviewEvent,
   ConsultationSlot,
 } from "@/types/consultation";
+import type { UserProfile } from "@/types";
 
 export interface ConsultationShellProps {
   title: string;
@@ -73,8 +76,6 @@ export interface ConsultationSlotsHeaderProps {
   feeLabel: string;
 }
 
-import type { ConsultationDaySlotSummary } from "@/types/consultation";
-
 export interface ConsultationSlotsDateStripProps {
   selectedDate: Date;
   today: Date;
@@ -124,4 +125,45 @@ export interface ConsultationBookingFeesBlockProps {
   busy: boolean;
   onCouponChange: (value: string) => void;
   onApplyCoupon: () => void;
+}
+
+export interface ConsultationCheckoutDetailsPanelProps {
+  booking: ConsultationBookingDraft;
+  profile: UserProfile | null;
+  astrologerPicture: string | null;
+  langLabel: string;
+  focusTopics: string[];
+  question: string;
+  birthLabels: {
+    dob: string;
+    tob: string;
+    pob: string;
+    rasi: string;
+    nakshatram: string;
+  };
+  onToggleFocus: (category: string) => void;
+  onQuestionChange: (value: string) => void;
+  onChangeAstrologer: () => void;
+  onReschedule: () => void;
+}
+
+export interface ConsultationCheckoutPaymentPanelProps {
+  astrologerName: string;
+  currency: string;
+  totals: ConsultationCouponResult;
+  couponCode: string;
+  couponApplied: boolean;
+  referralLocked: boolean;
+  promoError: string | null;
+  shareHoroscope: boolean;
+  busy: boolean;
+  error: string | null;
+  promoAppliedLabel: string;
+  promoInvalidLabel: string;
+  referralDiscountLabel: string;
+  onCouponChange: (value: string) => void;
+  onApplyCoupon: () => void;
+  onShareChange: (checked: boolean) => void;
+  onPay: () => void;
+  formatFee: (amount: number, currency: string) => string;
 }

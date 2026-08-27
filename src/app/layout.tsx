@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
+import { GoogleTagManager } from "@/components/common/GoogleTagManager";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { htmlLangFromLocale } from "@/lib/i18n";
@@ -35,6 +36,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+        <GoogleTagManager />
         <AppProviders initialLocale={initialLocale}>{children}</AppProviders>
       </body>
     </html>

@@ -58,6 +58,15 @@ export function consultationAstrologerName(
     .join(" ");
 }
 
+/** Initials from a display name — e.g. "Subathra Devi E" → "SD", "Astrologer A" → "AA". */
+export function consultationInitialsFromDisplayName(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "A";
+  const a = parts[0]?.charAt(0) ?? "";
+  const b = parts[1]?.charAt(0) ?? parts[0]?.charAt(1) ?? "";
+  return `${a}${b}`.toUpperCase() || "A";
+}
+
 /** Initials for avatar fallback — e.g. "Karthik R S" → "KR". */
 export function consultationAstrologerInitials(
   user?: { first_name?: string | null; last_name?: string | null } | null
