@@ -37,7 +37,7 @@ export function ConsultationCheckoutPaymentPanel({
   const payLabel = CC.paySecurely.replace("{amount}", formatFee(totals.final_price, currency));
 
   return (
-    <div className={L.rightCol}>
+    <aside className={L.rightCol}>
       <div className={L.payCard}>
         <h2 className={L.payCardTitle}>{CC.paymentSummaryTitle}</h2>
 
@@ -103,9 +103,6 @@ export function ConsultationCheckoutPaymentPanel({
           <span className={L.consentText}>{CC.consentText}</span>
         </label>
         {error ? <p className={L.error}>{error}</p> : null}
-        {!shareHoroscope && !error ? (
-          <p className={L.consentHint}>{CC.consentHint}</p>
-        ) : null}
 
         <button
           type="button"
@@ -129,6 +126,6 @@ export function ConsultationCheckoutPaymentPanel({
           ))}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
