@@ -129,15 +129,13 @@ export function ProfileDetailsFields({
               errorMessage={errors.referralSource?.message}
             />
           ) : null}
-        </div>
-        {showPartner ? (
-          <div className="mt-4">
+          {showPartner ? (
             <PartnerReferralCodeSection
               show
               onApplied={onProfileRefresh}
             />
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </section>
 
       <ProfileDetailsBirthSection
