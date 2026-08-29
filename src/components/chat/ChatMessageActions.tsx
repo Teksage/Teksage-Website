@@ -7,6 +7,7 @@ import { writeAskAstrologerFlow } from "@/lib/ask-astrologer-session";
 import { consultationHubPath } from "@/lib/constants/consultation-routes";
 import { ROUTES } from "@/lib/constants/routes";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
+import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import type { ChatMessageActionsProps } from "@/types/ui/chat";
 
 /**
@@ -31,18 +32,18 @@ export function ChatMessageActions({
   }
 
   return (
-    <div className={cn("mt-2 flex flex-wrap items-center gap-2", className)}>
+    <div className={cn("mt-1 flex flex-wrap items-center gap-2", className)}>
       <button
         type="button"
         onClick={handleAskAstrologer}
-        className="inline-flex shrink-0 items-center justify-center rounded-full border border-[var(--color-brand-primary)] px-3 py-1.5 text-center text-[10px] font-semibold leading-tight text-[var(--color-brand-primary)] transition-colors hover:bg-[var(--color-brand-primary)]/10 active:bg-[var(--color-brand-primary)]/20 sm:text-xs"
+        className={CHAT_LAYOUT.askActionBtn}
       >
         {AA.askAstrologerLabel}
       </button>
       <button
         type="button"
         onClick={handleBookConsultation}
-        className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/20 px-3 py-1.5 text-center text-[10px] font-medium leading-tight text-black/70 transition-colors hover:border-black/40 hover:text-black active:bg-black/5 sm:text-xs"
+        className={CHAT_LAYOUT.consultActionBtn}
       >
         {AA.bookConsultationLabel}
       </button>

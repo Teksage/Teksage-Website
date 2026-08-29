@@ -2,6 +2,8 @@ import { TYPO } from "@/lib/constants/typography";
 
 export const WHATSAPP_UPDATES_SCREEN = {
   title: "WhatsApp Updates",
+  subtitle: "Get timely astrology alerts on WhatsApp.",
+  backLabel: "Settings",
   backAria: "Go back",
   heroLead: "Never Miss an",
   heroHighlight: "Important Astrological Opportunity",
@@ -60,12 +62,14 @@ export const WHATSAPP_CONSENT_POLL_MS = 5000;
 export const WHATSAPP_CONSENT_RESEND_COOLDOWN_MS = 120_000;
 
 export const WHATSAPP_UPDATES_UI = {
-  page: "relative z-10 flex min-h-0 flex-1 flex-col bg-[var(--color-surface-muted)]",
-  inner: "mx-auto flex w-full max-w-lg min-h-0 flex-1 flex-col px-4 pb-8",
+  page: "relative min-h-dvh mint-glow-surface",
+  panel:
+    "relative z-10 mx-auto flex w-full max-w-lg min-h-0 flex-1 flex-col px-4 pb-8 pt-5 lg:my-6 lg:max-w-6xl lg:px-8 lg:pb-10",
+  inner: "flex w-full min-h-0 flex-1 flex-col",
   heroTitle: `${TYPO.pageTitle} font-bold text-[var(--color-brand-black)] leading-tight`,
   heroHighlight: "text-[var(--color-brand-primary)]",
   heroBody: `${TYPO.body} text-[var(--color-brand-black)]/80 mt-3`,
-  card: "mt-6 rounded-2xl border border-black/5 bg-white p-4 shadow-sm",
+  card: "mt-6 overflow-hidden rounded-[1.25rem] border border-black/[0.06] bg-white p-4 shadow-[0_8px_28px_rgba(15,23,42,0.06)] sm:p-5",
   benefitsSectionTitle: `${TYPO.body} font-semibold text-[var(--color-brand-primary)]`,
   benefitRow: "flex gap-3 py-3 first:pt-0 last:pb-0",
   benefitIcon:
@@ -73,10 +77,12 @@ export const WHATSAPP_UPDATES_UI = {
   benefitTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
   benefitDesc: `${TYPO.bodySm} text-[var(--color-brand-black)]/65 mt-0.5`,
   footer: `${TYPO.bodySm} text-[var(--color-brand-primary)] text-center mt-4 px-2`,
-  statusBox: "mt-4 rounded-2xl border border-black/5 bg-white p-5 shadow-sm ring-1 ring-black/5 lg:p-6",
+  statusBox:
+    "mt-4 overflow-hidden rounded-[1.25rem] border border-black/[0.06] bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,0.06)] lg:p-6",
   statusTitle: `${TYPO.body} font-semibold text-[var(--color-brand-black)]`,
   statusBody: `${TYPO.bodySm} text-[var(--color-brand-black)]/70 mt-1`,
-  pendingCard: "mt-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 lg:rounded-3xl",
+  pendingCard:
+    "mt-6 overflow-hidden rounded-[1.25rem] border border-black/[0.06] bg-white shadow-[0_8px_28px_rgba(15,23,42,0.06)]",
   pendingCardInner: "px-5 py-6 text-center lg:px-7 lg:py-8",
   pendingIconWrap:
     "mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-[var(--color-brand-primary)]/10 lg:mb-5 lg:size-16",

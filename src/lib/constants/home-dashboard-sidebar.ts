@@ -16,19 +16,13 @@ export const HOME_DASHBOARD_SIDEBAR = {
   yearlyPredictions: "Yearly Predictions",
   lifePredictions: "Life Predictions",
   loveCompatibility: "Love Compatibility",
-  notifications: "Notifications",
-  whatsappUpdates: "WhatsApp Updates",
   panchangam: "Panchang",
   eventPlanner: "Event Planner (Muhurtha)",
   horoscope: "Horoscope",
-  settings: "Settings",
-  gettingStarted: "Getting Started",
   unlockPremium: "Unlock Premium",
-  unlockPremiumHint: "Get advanced insights and personalized guidance",
+  unlockPremiumHint: "Get advanced insights & personalized guidance",
+  premiumBadge: "PREMIUM",
   upgradeNow: "Upgrade Now",
-  chatLoginTitle: "Sign in to chat",
-  chatLoginHint: "Log in to use AI Voice Astro Chat on your dashboard.",
-  chatLoginCta: "Log in",
 } as const;
 
 export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
@@ -39,13 +33,9 @@ export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
   weeklyPredictions: DASHBOARD_ASSETS.sidebarWeekly,
   otherPredictions: DASHBOARD_ASSETS.sidebarFolder,
   loveCompatibility: DASHBOARD_ASSETS.sidebarMarriage,
-  notification: DASHBOARD_ASSETS.sidebarNotification,
-  whatsapp: DASHBOARD_ASSETS.sidebarWhatsapp,
   panchang: DASHBOARD_ASSETS.navPanchangOff,
   eventPlanner: DASHBOARD_ASSETS.sidebarMuhurtha,
   horoscope: DASHBOARD_ASSETS.navHoroscopeOff,
-  settings: DASHBOARD_ASSETS.navSettingsOff,
-  gettingStarted: DASHBOARD_ASSETS.sidebarGettingStarted,
   premiumCrown: DASHBOARD_ASSETS.sidebarPremiumCrown,
   predictionsChevron: DASHBOARD_ASSETS.sidebarChevronDown,
 } as const;
@@ -57,4 +47,4 @@ export const HOME_DASHBOARD_OTHER_PREDICTION_LINKS = [
 ] as const;
 
 /** Indented predictions submenu — aligns with sidebar icon + label. */
-export const HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT = "pl-[3.25rem]" as const;
+export const HOME_DASHBOARD_PREDICTIONS_SUBMENU_INDENT = "pl-11" as const;

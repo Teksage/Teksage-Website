@@ -27,6 +27,7 @@ export * from "./settings-screen";
 export * from "./routes";
 export * from "./default-region";
 export * from "./default-profile";
+export * from "./partner-referral";
 export * from "./downloads";
 export * from "./loader-ui";
 export * from "./brand-login-logo";
@@ -91,6 +92,7 @@ export const STORAGE_KEYS = {
   consultationDraft: "teksage_consultation_draft",
   consultationSummary: "teksage_consultation_summary",
   subscriptionCheckout: "teksage_subscription_checkout",
+  partnerRefCode: "teksage_partner_ref_code",
 } as const;
 
 /** Deprecated auth keys — migrated to `STORAGE_KEYS.authStore`; cleared on logout. */

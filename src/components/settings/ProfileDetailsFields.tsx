@@ -1,23 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useI18nConstants } from "@/hooks/useT";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/common/Loader";
 import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { ProfileChatLanguageField } from "@/components/settings/ProfileChatLanguageField";
-import { ProfileDateOfBirthField } from "@/components/settings/ProfileDateOfBirthField";
+import { ProfileDetailsBirthSection } from "@/components/settings/ProfileDetailsBirthSection";
 import { ProfileField } from "@/components/settings/ProfileField";
-import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { ProfileEmailRow } from "@/components/settings/ProfileEmailRow";
 import { ProfilePhoneRow } from "@/components/settings/ProfilePhoneRow";
 import { ProfileReferralSourceField } from "@/components/settings/ProfileReferralSourceField";
+import { PartnerReferralCodeSection } from "@/components/settings/PartnerReferralCodeSection";
 import { usePremiumAccess } from "@/hooks/usePremiumAccess";
-import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
+import {
+  PROFILE_DETAILS,
+  PROFILE_LAYOUT as L,
+} from "@/lib/constants/profile-details";
 import { useProfileRashiNakshatra } from "@/hooks/useProfileRashiNakshatra";
 import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
-import { cn } from "@/lib/utils";
 import type { ProfileDetailsFieldsProps } from "@/types";
 
 export function ProfileDetailsFields({
@@ -36,8 +38,13 @@ export function ProfileDetailsFields({
   } = useFormContext<ProfileDetailsFormValues>();
 
   const form = watch();
+  const rashiWatch = useWatch({ name: "rashi" }) ?? "";
+  const nakshatraWatch = useWatch({ name: "nakshatra" }) ?? "";
   const birthLocationForApi =
     form.birthLocationFull.trim() || form.placeOfBirth.trim();
+  const touch = { shouldDirty: true as const };
+  const showReferral = user.isProfileUpdated === false;
+  const showPartner = Boolean(user.showPartnerReferralSection);
 
   const { rashiBusy, rashiError, refreshRashi } = useProfileRashiNakshatra({
     enabled: isEditing,
@@ -45,16 +52,13 @@ export function ProfileDetailsFields({
     timeOfBirth: form.timeOfBirth,
     birthLocation: birthLocationForApi,
     onResolved: (rashi, nakshatra) => {
-      setValue("rashi", rashi);
-      setValue("nakshatra", nakshatra);
+      setValue("rashi", rashi, touch);
+      setValue("nakshatra", nakshatra, touch);
     },
   });
 
-  const touch = { shouldDirty: true as const };
-
   function guardBirthEdit(): boolean {
     if (!isEditing) return true;
-    // First-time profile save — Flutter skips premium gate when !isProfileUpdated
     if (user.isProfileUpdated === false) return true;
     if (hasPremiumAccess) return true;
     setSubscribeOpen(true);
@@ -62,168 +66,100 @@ export function ProfileDetailsFields({
   }
 
   return (
-    <div className="flex flex-col gap-3.5">
-      <ProfileField
-        appearance="profile"
-        required
-        label={PD.firstName}
-        value={form.firstName}
-        onChange={(v) => setValue("firstName", v, touch)}
-        isEditable={isEditing}
-        placeholder="First name"
-        hasError={Boolean(errors.firstName)}
-        errorMessage={errors.firstName?.message}
-      />
-      <ProfileField
-        appearance="profile"
-        required
-        label={PD.lastName}
-        value={form.lastName}
-        onChange={(v) => setValue("lastName", v, touch)}
-        isEditable={isEditing}
-        placeholder="Last name"
-        hasError={Boolean(errors.lastName)}
-        errorMessage={errors.lastName?.message}
-      />
-      <ProfileEmailRow
-        email={form.email}
-        onEmailChange={(v) => setValue("email", v, touch)}
-        isEmailVerified={user.isEmailVerified}
-        isEditing={isEditing}
-        onVerificationSuccess={onProfileRefresh}
-        hasError={Boolean(errors.email)}
-        errorMessage={errors.email?.message}
-        required={user.isMobileVerified !== true}
-      />
-
-      <ProfilePhoneRow
-        countryCode={form.countryCode}
-        mobile={form.mobile}
-        onCountryCodeChange={(v) => setValue("countryCode", v, touch)}
-        onMobileChange={(v) => setValue("mobile", v, touch)}
-        isMobileVerified={user.isMobileVerified}
-        isEditing={isEditing}
-        onVerificationSuccess={onProfileRefresh}
-        hasError={Boolean(errors.mobile)}
-        errorMessage={errors.mobile?.message}
-      />
-
-      <ProfileChatLanguageField
-        value={form.chatLanguages}
-        onChange={(v) => setValue("chatLanguages", v, touch)}
-        isEditing={isEditing}
-        hasError={Boolean(errors.chatLanguages)}
-        errorMessage={errors.chatLanguages?.message}
-      />
-
-      <ProfileDateOfBirthField
-        required
-        label={PD.dateOfBirth}
-        value={form.dateOfBirth}
-        onChange={(v) => setValue("dateOfBirth", v, touch)}
-        isEditable={isEditing}
-        onBlurCommit={() => void refreshRashi()}
-        onFocusAttempt={guardBirthEdit}
-        hasError={Boolean(errors.dateOfBirth)}
-        errorMessage={errors.dateOfBirth?.message}
-      />
-      <ProfileField
-        appearance="profile"
-        required
-        label={PD.timeOfBirth}
-        type="time"
-        value={form.timeOfBirth}
-        onChange={(v) => setValue("timeOfBirth", v, touch)}
-        isEditable={isEditing}
-        onBlurCommit={() => void refreshRashi()}
-        onFocusAttempt={guardBirthEdit}
-        hasError={Boolean(errors.timeOfBirth)}
-        errorMessage={errors.timeOfBirth?.message}
-      />
-
-      <ProfileLocationField
-        label={PD.placeOfBirth}
-        required
-        value={form.placeOfBirth}
-        fullLocation={form.birthLocationFull}
-        isEditable={isEditing}
-        placeholder="Place of birth"
-        onChange={(city, full) => {
-          setValue("placeOfBirth", city, touch);
-          setValue("birthLocationFull", full, touch);
-        }}
-        onBlurCommit={() => void refreshRashi()}
-        onFocusAttempt={guardBirthEdit}
-        hasError={Boolean(errors.placeOfBirth)}
-        errorMessage={errors.placeOfBirth?.message}
-      />
-      <ProfileLocationField
-        label={PD.currentLocation}
-        required
-        value={form.preferredLocation}
-        fullLocation={form.preferredLocationFull}
-        isEditable={isEditing}
-        placeholder="Current location"
-        onChange={(city, full) => {
-          setValue("preferredLocation", city, touch);
-          setValue("preferredLocationFull", full, touch);
-        }}
-        onFocusAttempt={guardBirthEdit}
-        hasError={Boolean(errors.preferredLocation)}
-        errorMessage={errors.preferredLocation?.message}
-      />
-
-      {rashiBusy ? (
-        <div className="flex items-center gap-2 text-xs font-medium text-black/55">
-          <Loader variant="inline" size="sm" />
-          {PD.rashiResolving}
+    <div className={L.sectionsStack}>
+      <section className={L.sectionCard}>
+        <h2 className={L.sectionTitle}>{PD.sectionPersonal}</h2>
+        <div className={L.fieldsGrid}>
+          <ProfileField
+            appearance="profile"
+            required
+            label={PD.firstName}
+            value={form.firstName}
+            onChange={(v) => setValue("firstName", v, touch)}
+            isEditable={isEditing}
+            placeholder="First name"
+            hasError={Boolean(errors.firstName)}
+            errorMessage={errors.firstName?.message}
+          />
+          <ProfileField
+            appearance="profile"
+            required
+            label={PD.lastName}
+            value={form.lastName}
+            onChange={(v) => setValue("lastName", v, touch)}
+            isEditable={isEditing}
+            placeholder="Last name"
+            hasError={Boolean(errors.lastName)}
+            errorMessage={errors.lastName?.message}
+          />
+          <ProfileEmailRow
+            email={form.email}
+            onEmailChange={(v) => setValue("email", v, touch)}
+            isEmailVerified={user.isEmailVerified}
+            isEditing={isEditing}
+            onVerificationSuccess={onProfileRefresh}
+            hasError={Boolean(errors.email)}
+            errorMessage={errors.email?.message}
+            required={user.isMobileVerified !== true}
+          />
+          <ProfilePhoneRow
+            countryCode={form.countryCode}
+            mobile={form.mobile}
+            onCountryCodeChange={(v) => setValue("countryCode", v, touch)}
+            onMobileChange={(v) => setValue("mobile", v, touch)}
+            isMobileVerified={user.isMobileVerified}
+            isEditing={isEditing}
+            onVerificationSuccess={onProfileRefresh}
+            hasError={Boolean(errors.mobile)}
+            errorMessage={errors.mobile?.message}
+          />
+          <ProfileChatLanguageField
+            value={form.chatLanguages}
+            onChange={(v) => setValue("chatLanguages", v, touch)}
+            isEditing={isEditing}
+            hasError={Boolean(errors.chatLanguages)}
+            errorMessage={errors.chatLanguages?.message}
+          />
+          {showReferral ? (
+            <ProfileReferralSourceField
+              value={form.referralSource}
+              onChange={(v) => setValue("referralSource", v, touch)}
+              isEditing={isEditing}
+              hasError={Boolean(errors.referralSource)}
+              errorMessage={errors.referralSource?.message}
+            />
+          ) : null}
         </div>
-      ) : null}
-      {rashiError ? (
-        <p className="text-xs font-semibold text-[var(--color-brand-error)]">{rashiError}</p>
-      ) : null}
+        {showPartner ? (
+          <div className="mt-4">
+            <PartnerReferralCodeSection
+              show
+              onApplied={onProfileRefresh}
+            />
+          </div>
+        ) : null}
+      </section>
 
-      <ProfileField
-        appearance="profile"
-        required
-        label={PD.rasi}
-        value={form.rashi}
-        onChange={(v) => setValue("rashi", v, touch)}
-        isEditable={false}
-        placeholder="Rasi"
+      <ProfileDetailsBirthSection
+        form={{ ...form, rashi: rashiWatch, nakshatra: nakshatraWatch }}
+        errors={errors}
+        setValue={setValue}
+        touch={touch}
+        isEditing={isEditing}
+        guardBirthEdit={guardBirthEdit}
+        refreshRashi={refreshRashi}
+        rashiBusy={rashiBusy}
+        rashiError={rashiError}
       />
-      <ProfileField
-        appearance="profile"
-        required
-        label={PD.nakshatram}
-        value={form.nakshatra}
-        onChange={(v) => setValue("nakshatra", v, touch)}
-        isEditable={false}
-        placeholder="Nakshatram"
-      />
-
-      {user.isProfileUpdated === false ? (
-        <ProfileReferralSourceField
-          value={form.referralSource}
-          onChange={(v) => setValue("referralSource", v, touch)}
-          isEditing={isEditing}
-          hasError={Boolean(errors.referralSource)}
-          errorMessage={errors.referralSource?.message}
-        />
-      ) : null}
 
       {isEditing ? (
-        <Button
-          type="submit"
-          disabled={isSaving}
-          className={cn(
-            "mt-4 h-11 w-full rounded-full bg-[var(--color-brand-primary)]",
-            "font-semibold text-white hover:bg-[var(--color-brand-primary)]/90"
-          )}
-        >
-          {isSaving ? <Loader variant="inline" size="sm" /> : PD.save}
-        </Button>
+        <div className={L.saveRow}>
+          <Button type="submit" disabled={isSaving} className={L.saveButton}>
+            {isSaving ? <Loader variant="inline" size="sm" /> : PD.save}
+          </Button>
+        </div>
       ) : null}
+
       <SubscribePromptDialog
         open={subscribeOpen}
         onClose={() => setSubscribeOpen(false)}

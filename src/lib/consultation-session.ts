@@ -54,6 +54,17 @@ export function clearConsultationDraft(): void {
   sessionStorage.removeItem(KEY);
 }
 
+/** Drop only the selected slot times from the booking draft. */
+export function clearConsultationDraftSlot(): void {
+  if (typeof window === "undefined") return;
+  const prev = readConsultationDraft();
+  if (!prev) return;
+  const next = { ...prev };
+  delete next.slotStart;
+  delete next.slotEnd;
+  sessionStorage.setItem(KEY, JSON.stringify(next));
+}
+
 const SUMMARY_KEY = STORAGE_KEYS.consultationSummary;
 
 export function writeConsultationSummary(summary: ConsultationCompletedBooking): void {

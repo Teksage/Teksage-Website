@@ -10,6 +10,7 @@ import { AskAnswerReadyPrompt } from "@/components/common/AskAnswerReadyPrompt";
 import { FeatureDiscoveryPrompt } from "@/components/common/FeatureDiscoveryPrompt";
 import { HOME_LAYOUT, ROUTES, isPredictionsPath } from "@/lib/constants";
 import {
+  isConsultationAstrologerSlotsPath,
   isConsultationCheckoutPath,
   isConsultationGreenFullBleedPath,
 } from "@/lib/constants/consultation-routes";
@@ -25,22 +26,27 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
   const isConsultCheckout = isConsultationCheckoutPath(pathname);
+  const isConsultSlots = isConsultationAstrologerSlotsPath(pathname);
+  const isConsultBookingFlow = isConsultCheckout || isConsultSlots;
   const isSubscriptionFlow = pathname.startsWith(ROUTES.settingsSubscriptions);
   const isPredictionPane =
     isPredictionsPath(pathname) || pathname.startsWith(ROUTES.matchmaking);
   const isFullHeightPane =
     isChatRoute || isHomeRoute || isSubscriptionFlow;
   const hideBottomNav = isChatRoute || isSubscriptionFlow;
-  /** Top header shows brand when logged in — avoid duplicating it in the sidebar. */
-  const hideSidebarBrand = isAuthenticated;
 
   const mainPaneClass = cn(
     isFullHeightPane &&
       "min-h-dvh p-0 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pb-0",
+    isConsultSlots &&
+      "flex min-h-dvh flex-col overflow-hidden p-0 pb-0 lg:h-full lg:min-h-0",
+    isConsultCheckout &&
+      "flex min-h-dvh flex-col overflow-hidden p-0 pb-0 lg:h-full lg:min-h-0",
     isPredictionPane &&
       "flex min-h-0 flex-1 flex-col overflow-y-auto p-0 lg:h-full lg:min-h-0",
     !isFullHeightPane &&
       !isPredictionPane &&
+      !isConsultBookingFlow &&
       cn(HOME_LAYOUT.bottomNavClearance, "min-h-0 lg:h-full lg:overflow-y-auto"),
     isConsultGreen && "bg-[var(--color-consult-user-bg)]",
     isConsultCheckout && "bg-white",
@@ -56,12 +62,12 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
         <FeatureDiscoveryPrompt />
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">
-        {isAuthenticated ? <HomeDesktopTopHeader /> : null}
-        <div className="flex min-h-0 flex-1">
+        <div className="relative z-0 flex min-h-0 flex-1">
           <div className={cn(isChatRoute && "hidden lg:block")}>
-            <DesktopMainNav hideBrand={hideSidebarBrand} className="h-full" />
+            <DesktopMainNav className="h-full" />
           </div>
           <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
+            {isAuthenticated ? <HomeDesktopTopHeader /> : null}
             <main className={mainPaneClass}>{children}</main>
             {hideBottomNav ? null : <BottomNav />}
           </div>

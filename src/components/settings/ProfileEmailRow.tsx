@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/common/Loader";
 import { ProfileContactActionButton } from "@/components/settings/ProfileContactActionButton";
-import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
+import { PROFILE_DETAILS, PROFILE_FIELD_UI as FU } from "@/lib/constants/profile-details";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
 import { buildChangeContactPath } from "@/lib/constants/settings-change-contact";
 import { OTP_LENGTH } from "@/lib/constants";
@@ -88,19 +88,15 @@ export function ProfileEmailRow({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-[var(--color-brand-black)]">
+      <span className={FU.label}>
         {PD.email}
-        {required ? (
-          <span className="text-[var(--color-brand-error)]">*</span>
-        ) : null}
+        {required ? <span className={FU.labelRequired}>*</span> : null}
       </span>
       <div
         className={cn(
-          "flex h-12 items-stretch overflow-hidden rounded-xl border bg-neutral-100",
-          "transition-colors focus-within:border-[var(--color-brand-primary)]",
-          hasError
-            ? "border-[var(--color-brand-error)]"
-            : "border-black/15",
+          FU.shell,
+          "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
+          hasError && FU.shellError,
           !canEdit && !showChange && "opacity-90"
         )}
       >

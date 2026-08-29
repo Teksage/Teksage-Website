@@ -1,3 +1,5 @@
+import type { CurrentDasaSummary } from "./astrology";
+
 /** Authenticated customer profile — mirrors Flutter user model fields used on web. */
 
 export interface UserProfile {
@@ -39,4 +41,12 @@ export interface UserProfile {
    * Mirrors Flutter `saveUserType(result['user_type'] == 'customer')` used for consultation banner vs astrologer flow.
    */
   userType?: string;
+  /** API `show_partner_referral_section` (derived from DB `hide_partner_referral_section`). */
+  showPartnerReferralSection?: boolean;
+  /** Active partner referral discount summary for Home / checkout. */
+  partnerDiscount?: import("./partner-referral").PartnerDiscountState;
+  /** Raw horoscope `current_dasa` string from profile API. */
+  currentDasa?: string;
+  /** Parsed dasa / bukti with days remaining for landing UI. */
+  currentDasaSummary?: CurrentDasaSummary;
 }

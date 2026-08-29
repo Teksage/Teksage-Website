@@ -27,14 +27,10 @@ export const useAuthStore = create<AuthState>()(
       updateUser: (updates) =>
         set((state) => {
           if (!state.user) return { user: null };
-          const next = { ...state.user };
-          (Object.keys(updates) as (keyof UserProfile)[]).forEach((key) => {
-            const value = updates[key];
-            if (value !== undefined) {
-              (next as Record<string, unknown>)[key as string] = value;
-            }
-          });
-          return { user: next };
+          const filtered = Object.fromEntries(
+            Object.entries(updates).filter(([, value]) => value !== undefined)
+          ) as Partial<UserProfile>;
+          return { user: { ...state.user, ...filtered } };
         }),
     }),
     {

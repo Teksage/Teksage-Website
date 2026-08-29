@@ -1,4 +1,6 @@
 import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
+import { TEKSAGE_APP_ASTROLOGER_PROFILE_SLUGS } from "@/lib/constants/consultation-featured-astrologers";
+import { buildAstrologerPublicProfileUrl } from "@/lib/astrologer-public-profile";
 import type { ConsultationAstrologer } from "@/types/consultation";
 
 /** API routes use astrologer `user_id` (Flutter `astro.userId`), not `astrologer_id` PK. */
@@ -54,4 +56,41 @@ export function consultationAstrologerName(
     .split(" ")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+/** Initials from a display name — e.g. "Subathra Devi E" → "SD", "Astrologer A" → "AA". */
+export function consultationInitialsFromDisplayName(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "A";
+  const a = parts[0]?.charAt(0) ?? "";
+  const b = parts[1]?.charAt(0) ?? parts[0]?.charAt(1) ?? "";
+  return `${a}${b}`.toUpperCase() || "A";
+}
+
+/** Initials for avatar fallback — e.g. "Karthik R S" → "KR". */
+export function consultationAstrologerInitials(
+  user?: { first_name?: string | null; last_name?: string | null } | null
+): string {
+  const first = user?.first_name?.trim() ?? "";
+  const last = user?.last_name?.trim() ?? "";
+  const a = first.charAt(0);
+  const b = last.charAt(0) || first.split(/\s+/).filter(Boolean)[1]?.charAt(0) || "";
+  const initials = `${a}${b}`.toUpperCase();
+  return initials || "A";
+}
+
+/**
+ * Public teksage.app profile URL — same destination as ask-answer “View profile”.
+ * Prefer API `profile_link`, then known marketing slug by `user_id`.
+ */
+export function consultationAstrologerPublicProfileUrl(
+  astrologer: ConsultationAstrologer
+): string | null {
+  const link = astrologer.profile_link?.trim();
+  if (link) return buildAstrologerPublicProfileUrl(link);
+
+  const userId = consultationRouteUserId(astrologer);
+  const slug = TEKSAGE_APP_ASTROLOGER_PROFILE_SLUGS[userId];
+  if (!slug) return null;
+  return buildAstrologerPublicProfileUrl(`/astrologers/${slug}`);
 }

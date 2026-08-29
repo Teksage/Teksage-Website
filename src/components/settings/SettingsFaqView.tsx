@@ -9,6 +9,7 @@ import { FaqAccordionItem } from "@/components/settings/FaqAccordionItem";
 import { SETTINGS_PAGE_ASSETS } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
 import { SETTINGS_FAQ_COPY } from "@/lib/constants/settings-faq";
+import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { fetchFaqs } from "@/lib/services/settings-faq";
 import { cn } from "@/lib/utils";
@@ -37,7 +38,7 @@ export function SettingsFaqView() {
     return () => {
       cancelled = true;
     };
-  }, [languageVersion]);
+  }, [languageVersion, SF.loadFailed]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -50,16 +51,10 @@ export function SettingsFaqView() {
   }, [items, query]);
 
   return (
-    <div className="relative z-10 flex min-h-0 flex-1 flex-col bg-white">
-      <div
-        className={cn(
-          SETTINGS_UI.contentPad,
-          "flex-1 overflow-y-auto pb-4 pt-6 lg:px-8"
-        )}
-      >
-        <div className={SETTINGS_UI.faqContent}>
-          <p className={SETTINGS_UI.faqSubtitle}>{SF.subtitle}</p>
-          <div className={cn(SETTINGS_UI.faqSearch, "mt-8")}>
+    <div>
+      <div className={SETTINGS_LAYOUT.contentCard}>
+        <div className={SETTINGS_LAYOUT.contentCardPad}>
+          <div className={SETTINGS_UI.faqSearch}>
             <input
               type="text"
               inputMode="search"
@@ -79,36 +74,39 @@ export function SettingsFaqView() {
               className={SETTINGS_UI.faqSearchIcon}
             />
           </div>
-          <div className="mt-5">
-          {loading ? (
-            <p className="py-8 text-center text-sm text-neutral-500">Loading…</p>
-          ) : null}
-          {error ? (
-            <p className="py-8 text-center text-sm text-[var(--color-brand-error)]">
-              {error}
-            </p>
-          ) : null}
-          {!loading && !error && filtered.length === 0 ? (
-            <p className="py-8 text-center text-base font-medium text-black/50">
-              {SF.empty}
-            </p>
-          ) : null}
-          {filtered.map((item) => (
-            <FaqAccordionItem
-              key={item.faqId}
-              question={item.question}
-              answer={item.answer}
-            />
-          ))}
+          <div className="mt-4">
+            {loading ? (
+              <p className="py-6 text-center text-sm text-black/45">Loading…</p>
+            ) : null}
+            {error ? (
+              <p className="py-6 text-center text-sm text-[var(--color-brand-error)]">
+                {error}
+              </p>
+            ) : null}
+            {!loading && !error && filtered.length === 0 ? (
+              <p className="py-6 text-center text-sm font-medium text-black/50">
+                {SF.empty}
+              </p>
+            ) : null}
+            {filtered.map((item) => (
+              <FaqAccordionItem
+                key={item.faqId}
+                question={item.question}
+                answer={item.answer}
+              />
+            ))}
           </div>
         </div>
       </div>
-      <footer className={SETTINGS_UI.faqFooter}>
-        <div className={SETTINGS_UI.faqFooterInner}>
-          <p className="text-center text-base font-medium text-[var(--color-brand-black)]">
+      <footer className={cn(SETTINGS_UI.faqFooter, SETTINGS_LAYOUT.contentCard, "mt-4")}>
+        <div className={cn(SETTINGS_LAYOUT.contentCardPad, SETTINGS_UI.faqFooterInner)}>
+          <p className="text-base font-medium text-[var(--color-brand-black)]">
             {SF.stillHaveQuestions}
           </p>
-          <Link href={`${ROUTES.settings}/support`} className={SETTINGS_UI.faqContactBtn}>
+          <Link
+            href={`${ROUTES.settings}/support`}
+            className={SETTINGS_UI.faqContactBtn}
+          >
             {SF.contactSupport}
           </Link>
         </div>
@@ -116,4 +114,3 @@ export function SettingsFaqView() {
     </div>
   );
 }
-

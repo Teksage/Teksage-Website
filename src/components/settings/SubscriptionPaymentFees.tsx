@@ -19,6 +19,7 @@ export function SubscriptionPaymentFees({
   promoApplied,
   promoError,
   busy,
+  referralLocked = false,
   onPromoChange,
   onApplyPromo,
 }: SubscriptionPaymentFeesProps) {
@@ -36,7 +37,7 @@ export function SubscriptionPaymentFees({
       </div>
       {totals.discount > 0 ? (
         <div className={cn(SUBSCRIPTION_PAYMENT_LAYOUT.feeRow, "mt-5")}>
-          <span>{P.discount}</span>
+          <span>{referralLocked ? P.referralDiscount : P.discount}</span>
           <span>
             {symbol}
             {totals.discount.toFixed(2)}
@@ -74,9 +75,19 @@ export function SubscriptionPaymentFees({
             applied={promoApplied}
             error={promoError}
             busy={busy}
+            disabled={referralLocked}
             placeholder={P.promoPlaceholder}
             applyLabel={P.apply}
             appliedLabel={promoCopy.applied}
+            savingsLabel={
+              promoApplied
+                ? referralLocked
+                  ? promoCopy.referralSaved
+                  : promoCopy.consultationSaved
+                : undefined
+            }
+            savingsAmount={promoApplied ? totals.discount : null}
+            currencySymbol={symbol}
             onChange={onPromoChange}
             onApply={onApplyPromo}
           />

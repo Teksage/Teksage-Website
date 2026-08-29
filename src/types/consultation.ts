@@ -17,9 +17,13 @@ export interface ConsultationAstrologer {
   local_consulting_fee?: number;
   foreign_consulting_fee?: number;
   customer_rating?: number | null;
+  /** Optional list payload — total completed review events when API sends it. */
+  review_count?: number | null;
   astrologer_profile_info?: string | null;
   picture?: string | null;
   match_percentage?: number;
+  /** Public marketing profile URL/path (teksage.app) — same as ask-answer “View profile”. */
+  profile_link?: string | null;
   user?: ConsultationAstrologerUser;
 }
 
@@ -39,6 +43,15 @@ export interface ConsultationSlot {
   start_datetime: string;
   end_datetime: string;
   event_booked: boolean;
+}
+
+/** Per-day availability for the slots date strip. */
+export type ConsultationDaySlotStatus = "open" | "full" | "none" | "check_later";
+
+export interface ConsultationDaySlotSummary {
+  open: number;
+  total: number;
+  status: ConsultationDaySlotStatus;
 }
 
 export interface ConsultationRazorpayOrder {

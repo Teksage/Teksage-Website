@@ -1,6 +1,9 @@
 import type { UserProfile } from "../user-profile";
 import type { PaymentTotals } from "@/lib/subscription-payment-totals";
+import type { ProfileDetailsFormValues } from "@/lib/profile-form-schema";
 import type { SubscriptionPlan } from "@/types/settings";
+import type { ReactNode } from "react";
+import type { FieldErrors, UseFormSetValue } from "react-hook-form";
 
 export type ProfileDetailsFormState = {
   firstName: string;
@@ -24,6 +27,18 @@ export interface ProfileDetailsFieldsProps {
   isEditing: boolean;
   isSaving: boolean;
   onProfileRefresh?: () => void | Promise<void>;
+}
+
+export interface ProfileDetailsBirthSectionProps {
+  form: ProfileDetailsFormValues;
+  errors: FieldErrors<ProfileDetailsFormValues>;
+  setValue: UseFormSetValue<ProfileDetailsFormValues>;
+  touch: { shouldDirty: true };
+  isEditing: boolean;
+  guardBirthEdit: () => boolean;
+  refreshRashi: () => void | Promise<void>;
+  rashiBusy: boolean;
+  rashiError: string | null;
 }
 
 export interface ProfileLocationFieldProps {
@@ -52,6 +67,17 @@ export interface ProfileDetailsFormProps {
   onProfileRefresh?: () => void | Promise<void>;
   className?: string;
 }
+
+export interface ProfilePageHeaderProps {
+  title: string;
+  subtitle?: string;
+  backLabel: string;
+  onBack: () => void;
+  action?: React.ReactNode;
+  className?: string;
+}
+
+export type SettingsPageHeaderProps = ProfilePageHeaderProps;
 
 export interface ProfileAvatarProps {
   name?: string;
@@ -179,6 +205,21 @@ export interface SettingsModalDialogProps {
   message: string;
   confirmLabel: string;
   onConfirm: () => void;
+  cancelLabel?: string;
+  confirmDisabled?: boolean;
+  body?: ReactNode;
+}
+
+export interface SubscriptionCancelReasonFieldsProps {
+  label: string;
+  reasons: readonly string[];
+  otherLabel: string;
+  selected: string | null;
+  otherText: string;
+  otherPlaceholder: string;
+  error: string | null;
+  onSelect: (reason: string) => void;
+  onOtherTextChange: (value: string) => void;
 }
 
 export interface SettingsRateDialogProps {
@@ -196,6 +237,8 @@ export interface SubscriptionPaymentFeesProps {
   promoApplied: boolean;
   promoError: string | null;
   busy: boolean;
+  /** Partner referral auto-applied (REFERRAL code locked). */
+  referralLocked?: boolean;
   onPromoChange: (value: string) => void;
   onApplyPromo: () => void;
 }

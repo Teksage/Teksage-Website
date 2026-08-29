@@ -39,7 +39,12 @@ export function useSyncAuthProfileRole(): void {
       .then((profile) => {
         if (cancelled) return;
         syncedForUserRef.current = userId;
-        useAuthStore.getState().updateUser(profile);
+        const token = useAuthStore.getState().token;
+        if (token) {
+          useAuthStore.getState().setAuth(profile, token);
+        } else {
+          useAuthStore.getState().updateUser(profile);
+        }
       })
       .catch(() => {
         /* non-blocking — feature pages may fetch again */

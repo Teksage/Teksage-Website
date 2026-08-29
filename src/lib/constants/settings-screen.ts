@@ -4,8 +4,20 @@
 
 import type { SettingsAssetKey } from "@/lib/constants/assets";
 import { ROUTES } from "@/lib/constants/routes";
+
+export {
+  SETTINGS_LAYOUT,
+  SETTINGS_SECTION_SUBTITLE,
+  SETTINGS_SHELL_GRADIENT_CLASS,
+} from "@/lib/constants/settings-layout";
+
 export const SETTINGS_SCREEN = {
   title: "Settings",
+  subtitle: "Manage your account, preferences, and support options.",
+  sectionAccount: "Account",
+  sectionPreferences: "Preferences",
+  sectionLegal: "Legal & help",
+  sectionDanger: "Account actions",
   logoutConfirm: "Are you sure you want to log out?",
   rateThanks: "Thanks for your support!",
   rateUsLabel: "Rate us",
@@ -104,6 +116,31 @@ export const SETTINGS_PRIMARY_LINKS: readonly SettingsPrimaryLink[] = [
   },
 ] as const;
 
+/** Desktop settings — grouped cards (2-column grid). */
+export const SETTINGS_MENU_SECTIONS = [
+  {
+    id: "account",
+    titleKey: "sectionAccount" as const,
+    linkIds: [
+      "profile",
+      "push-notifications",
+      "whatsapp-updates",
+      "subscriptions",
+    ] as const,
+  },
+  {
+    id: "preferences",
+    titleKey: "sectionPreferences" as const,
+    linkIds: ["language", "getting-started"] as const,
+    includeRateUs: true,
+  },
+  {
+    id: "legal",
+    titleKey: "sectionLegal" as const,
+    linkIds: ["terms", "privacy", "support", "faq"] as const,
+  },
+] as const;
+
 /** Sub-pages under `settings/[section]`. */
 export const SETTINGS_SECTION_SLUGS = [
   "push-notifications",
@@ -129,16 +166,3 @@ export const SETTINGS_SECTION_TITLE: Record<SettingsSectionSlug, string> = {
   support: "Support",
   "delete-account": "Delete Account",
 };
-
-/** `@layer utilities` in `globals.css` — mint shell gradient (opaque stops). */
-export const SETTINGS_SHELL_GRADIENT_CLASS = "settings-shell-gradient";
-
-export const SETTINGS_LAYOUT = {
-  pageRoot: "relative min-h-dvh lg:bg-[var(--color-brand-bg)]",
-  /** Solid bar on desktop — `blend` alone disappears on the mint gradient. */
-  headerChrome:
-    "lg:border-b lg:border-[var(--color-home-dashboard-rule)] lg:bg-white lg:shadow-[0_1px_3px_rgb(0_0_0_/0.06)] lg:backdrop-blur-none",
-  desktopPanel:
-    "relative z-10 mx-auto w-full max-w-lg pb-4 pt-6 lg:my-5 lg:max-w-2xl lg:rounded-2xl lg:border lg:border-[var(--color-home-dashboard-rule)] lg:bg-white lg:px-6 lg:py-6 lg:shadow-[0_4px_24px_rgb(0_0_0_/0.07)]",
-  menuContent: "flex flex-col gap-3",
-} as const;

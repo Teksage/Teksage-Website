@@ -10,6 +10,7 @@ import {
   fetchNotifications,
   type DailyPredictionSummary,
 } from "@/lib/services/home";
+import { fetchProfile } from "@/lib/services/profile";
 import { checkMatchMakingExists } from "@/lib/services/match-making";
 import type { Notification } from "@/types";
 
@@ -36,12 +37,17 @@ export function useDashboard() {
       fetchDailyPredictionSummary(),
       fetchNotifications(),
       checkMatchMakingExists().catch(() => false),
+      fetchProfile().catch(() => null),
     ])
-      .then(([prediction, notifs, hasMatch]) => {
+      .then(([prediction, notifs, hasMatch, profile]) => {
         if (!cancelled) {
           setDailyPrediction(prediction);
           setNotifications(notifs);
           setHasExistingMatch(hasMatch);
+          if (profile) {
+            const token = useAuthStore.getState().token;
+            if (token) useAuthStore.getState().setAuth(profile, token);
+          }
           setIsFetched(true);
         }
       })

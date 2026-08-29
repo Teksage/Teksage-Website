@@ -42,8 +42,6 @@ export interface BrandLoginLogoProps {
 
 export interface DesktopMainNavProps {
   className?: string;
-  /** Hide logo block — brand lives in `HomeDesktopTopHeader` on home. */
-  hideBrand?: boolean;
 }
 
 export interface VoiceAnswerPlayerProps {

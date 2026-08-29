@@ -1,6 +1,11 @@
 // Shared TypeScript interfaces — mirrors Flutter Model/ DTOs
 
 export type { UserProfile } from "./user-profile";
+export type { PartnerDiscountState } from "./partner-referral";
+export type {
+  PartnerReferralCodeSectionProps,
+  PartnerDiscountHomeBannerProps,
+} from "./ui/partner-referral";
 export type {
   ConsultationAstrologer,
   ConsultationAstrologerDetail,
@@ -123,7 +128,10 @@ export type { CountryDialInfo, CountryDialPickerProps } from "./country";
 export type {
   ProfileDetailsFormState,
   ProfileDetailsFieldsProps,
+  ProfileDetailsBirthSectionProps,
   ProfileDetailsFormProps,
+  ProfilePageHeaderProps,
+  SettingsPageHeaderProps,
   ProfileAvatarProps,
   ProfileFieldProps,
   ProfileDateOfBirthFieldProps,
@@ -135,6 +143,7 @@ export type {
   SettingsRowVariant,
   SettingsRowProps,
   SettingsModalDialogProps,
+  SubscriptionCancelReasonFieldsProps,
   SettingsRateDialogProps,
   SubscriptionPaymentFeesProps,
   SubscriptionPlanBenefitsProps,
@@ -192,7 +201,13 @@ export type {
   ChatPreferencePayload,
 } from "./chat";
 
-export type { LegalBlock } from "./settings-legal";
+export type {
+  LegalBlock,
+  LegalSectionGroup,
+  SettingsLegalViewProps,
+  SettingsLegalBlockProps,
+  SettingsLegalTocItem,
+} from "./settings-legal";
 
 export type {
   FaqItem,

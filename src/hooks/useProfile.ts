@@ -43,8 +43,13 @@ export function useProfile() {
       fetchProfile()
         .then((data) => {
           if (!cancelled) {
-            const updates: Partial<typeof data> = { ...data };
-            useAuthStore.getState().updateUser(updates);
+            const token = useAuthStore.getState().token;
+            if (token) {
+              // Replace user from profile API (source of truth for referral flag).
+              useAuthStore.getState().setAuth(data, token);
+            } else {
+              useAuthStore.getState().updateUser(data);
+            }
             setIsFetched(true);
           }
         })
@@ -84,7 +89,12 @@ export function useProfile() {
     setError(null);
     try {
       const data = await fetchProfile();
-      updateUser(data);
+      const token = useAuthStore.getState().token;
+      if (token) {
+        useAuthStore.getState().setAuth(data, token);
+      } else {
+        updateUser(data);
+      }
     } catch {
       setError("Failed to load profile.");
     }

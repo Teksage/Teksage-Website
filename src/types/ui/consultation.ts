@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
 import type {
   ConsultationAstrologer,
+  ConsultationBookingDraft,
   ConsultationCouponResult,
+  ConsultationDaySlotSummary,
+  ConsultationReviewEvent,
   ConsultationSlot,
 } from "@/types/consultation";
+import type { UserProfile } from "@/types";
 
 export interface ConsultationShellProps {
   title: string;
@@ -54,25 +58,42 @@ export interface ConsultationAuthGateProps {
   redirectPath: string;
 }
 
-export interface ConsultationSlotsShellProps {
-  title: string;
-  children: ReactNode;
-  footer?: ReactNode;
-  onBack?: () => void;
+export interface ConsultationDetailReviewsProps {
+  events: ConsultationReviewEvent[];
+  totalReviewCount: number;
+  averageRating?: number | null;
+  seeAllUrl?: string | null;
+  fallbackCategories?: string[];
 }
 
-export interface ConsultationSlotsCalendarProps {
-  focusedMonth: Date;
+export interface ConsultationSlotsHeaderProps {
+  name: string;
+  initials: string;
+  picture?: string | null;
+  rating?: number | null;
+  reviewCount?: number | null;
+  languages: string[];
+  feeLabel: string;
+}
+
+export interface ConsultationSlotsDateStripProps {
   selectedDate: Date;
   today: Date;
-  onFocusedMonthChange: (date: Date) => void;
-  onSelectDate: (date: Date) => void;
+  windowOffset: number;
+  canWindowPrev: boolean;
+  canWindowNext: boolean;
+  slotSummariesByDate: Record<string, ConsultationDaySlotSummary>;
+  countsLoading?: boolean;
+  onSelectDate: (d: Date) => void;
+  onWindowPrev: () => void;
+  onWindowNext: () => void;
 }
 
-export interface ConsultationSlotsAvailabilityProps {
+export interface ConsultationSlotsTimePickerProps {
   slots: ConsultationSlot[];
   loading: boolean;
   selected: ConsultationSlot | null;
+  selectedDate: Date;
   onSelect: (slot: ConsultationSlot) => void;
 }
 
@@ -98,8 +119,51 @@ export interface ConsultationBookingFeesBlockProps {
   currency: string;
   couponCode: string;
   couponApplied: boolean;
+  /** Partner referral auto-applied — disable promo input; show savings under SGST. */
+  referralLocked?: boolean;
   promoError: string | null;
   busy: boolean;
   onCouponChange: (value: string) => void;
   onApplyCoupon: () => void;
+}
+
+export interface ConsultationCheckoutDetailsPanelProps {
+  booking: ConsultationBookingDraft;
+  profile: UserProfile | null;
+  astrologerPicture: string | null;
+  langLabel: string;
+  focusTopics: string[];
+  question: string;
+  birthLabels: {
+    dob: string;
+    tob: string;
+    pob: string;
+    rasi: string;
+    nakshatram: string;
+  };
+  onToggleFocus: (category: string) => void;
+  onQuestionChange: (value: string) => void;
+  onChangeAstrologer: () => void;
+  onReschedule: () => void;
+}
+
+export interface ConsultationCheckoutPaymentPanelProps {
+  astrologerName: string;
+  currency: string;
+  totals: ConsultationCouponResult;
+  couponCode: string;
+  couponApplied: boolean;
+  referralLocked: boolean;
+  promoError: string | null;
+  shareHoroscope: boolean;
+  busy: boolean;
+  error: string | null;
+  promoAppliedLabel: string;
+  promoInvalidLabel: string;
+  referralDiscountLabel: string;
+  onCouponChange: (value: string) => void;
+  onApplyCoupon: () => void;
+  onShareChange: (checked: boolean) => void;
+  onPay: () => void;
+  formatFee: (amount: number, currency: string) => string;
 }

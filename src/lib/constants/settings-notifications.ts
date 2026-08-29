@@ -30,4 +30,5 @@ export const SETTINGS_NOTIFICATIONS_COPY = {
   loadFailed: "Could not load notification preferences.",
   updateFailed: "Failed to update preferences. Try again.",
   premiumRequired: "Subscribe to manage prediction notifications.",
+  viewSubscriptions: "View subscriptions",
 } as const;

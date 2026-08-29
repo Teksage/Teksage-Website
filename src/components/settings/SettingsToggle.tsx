@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 
 type SettingsToggleProps = {
   checked: boolean;
@@ -27,8 +28,8 @@ export function SettingsToggle({
     >
       <span
         className={cn(
-          "min-w-0 text-base font-medium leading-snug",
-          checked ? "text-[var(--color-brand-black)]" : "text-black/60"
+          SETTINGS_UI.toggleLabel,
+          checked ? SETTINGS_UI.toggleLabelOn : SETTINGS_UI.toggleLabelOff
         )}
       >
         {label}

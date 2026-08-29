@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
   /** `POST` — rashi/nakshatra resolution */
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",
+  supportWhatsAppIntent: "/api/auth/support/whatsapp-intent",
   notifyUpdate: "/api/auth/notify-update",
   /**
    * Web (same-origin): `app/api/auth/register-token` route handler → FastAPI.
@@ -42,6 +43,10 @@ export const API_ENDPOINTS = {
   updateAppLanguage: "/api/auth/update-app-language",
   deleteAccountRequest: "/api/auth/delete/request",
   deleteAccountConfirm: "/api/auth/delete/confirm",
+
+  // --- Partner referral codes ---
+  partnerCodeRedeem: "/api/partner-codes/redeem",
+  partnerMyDiscount: "/api/partner-codes/my-discount",
 
   // --- Notifications — `api/endpoints/notification.py` ---
   notifications: "/api/notifications",

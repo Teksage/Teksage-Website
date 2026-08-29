@@ -55,6 +55,10 @@ export const DASHBOARD_ASSETS = {
   /** Flutter `panchangBG` — non‑premium Panchang tab hero (`emptyPanchangPage.dart`). */
   panchangHero: flutterImage("panchangBG.png"),
   notification: flutterSvg("notification.svg"),
+  headerGift: flutterSvg("header-gift.svg"),
+  headerPlay: flutterSvg("header-play.svg"),
+  headerClock: flutterSvg("header-clock.svg"),
+  headerTimer: flutterSvg("header-timer.svg"),
   navHomeOn: flutterSvg("selectHome.svg"),
   navHomeOff: flutterSvg("unSelectHome.svg"),
   navPanchangOn: flutterSvg("selectPanchang.svg"),
@@ -68,12 +72,9 @@ export const DASHBOARD_ASSETS = {
   sidebarFolder: flutterSvg("sidebar-folder.svg"),
   sidebarWeekly: flutterSvg("sidebar-weekly.svg"),
   sidebarMarriage: flutterSvg("sidebar-marriage.svg"),
-  sidebarNotification: flutterSvg("sidebar-notification.svg"),
-  sidebarWhatsapp: flutterSvg("sidebar-whatsapp.svg"),
   sidebarProfile: flutterSvg("sidebar-profile.svg"),
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
-  sidebarGettingStarted: flutterSvg("sidebar-getting-started.svg"),
   /** Muhurtha — outline rings + star (matches desktop sidebar icon set). */
   sidebarMuhurtha: flutterSvg("sidebar-muhurtha.svg"),
   muhurthaHero: flutterSvg("sidebar-muhurtha.svg"),
@@ -91,6 +92,11 @@ export const DAILY_PREDICTION_ASSETS = {
   health: flutterSvg("health.svg"),
   /** Bala column separator (`divider_daily.svg`). */
   balaDivider: flutterSvg("divider_daily.svg"),
+} as const;
+
+/** Horoscope PDF — Flutter `download.svg`. */
+export const HOROSCOPE_ASSETS = {
+  download: flutterSvg("download.svg"),
 } as const;
 
 /** Prediction share sheet — Flutter `share.svg`. */

@@ -19,6 +19,11 @@ export function isSameCalendarDay(a: Date, b: Date): boolean {
   );
 }
 
+export function calendarDayOffset(from: Date, to: Date): number {
+  const ms = startOfDay(to).getTime() - startOfDay(from).getTime();
+  return Math.round(ms / 86_400_000);
+}
+
 export function isPastCalendarDay(day: Date, today: Date): boolean {
   return startOfDay(day).getTime() < startOfDay(today).getTime();
 }

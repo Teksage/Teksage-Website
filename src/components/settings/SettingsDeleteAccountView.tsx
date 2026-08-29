@@ -12,6 +12,7 @@ import {
   DELETE_ACCOUNT_REASONS,
   SETTINGS_DELETE_COPY,
 } from "@/lib/constants/settings-delete";
+import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import {
   confirmDeleteAccount,
@@ -80,7 +81,9 @@ export function SettingsDeleteAccountView() {
   }
 
   return (
-    <div className={DELETE_ACCOUNT_LAYOUT.shell}>
+    <div className={SETTINGS_LAYOUT.contentCard}>
+      <div className={SETTINGS_LAYOUT.contentCardPad}>
+        <div className={DELETE_ACCOUNT_LAYOUT.shell}>
       {phase === "reason" ? (
         <>
           <p className={DELETE_ACCOUNT_LAYOUT.prompt}>{SD.prompt}</p>
@@ -134,6 +137,8 @@ export function SettingsDeleteAccountView() {
       {phase !== "otp" && error ? (
         <p className="mt-4 text-center text-sm text-[var(--color-brand-error)]">{error}</p>
       ) : null}
+        </div>
+      </div>
     </div>
   );
 }

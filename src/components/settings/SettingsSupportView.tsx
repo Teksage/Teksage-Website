@@ -2,7 +2,9 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import { useState } from "react";
+import { SettingsSupportWhatsAppCta } from "@/components/settings/SettingsSupportWhatsAppCta";
 import { SETTINGS_SUPPORT_COPY } from "@/lib/constants/settings-support";
+import { SETTINGS_LAYOUT } from "@/lib/constants/settings-screen";
 import { SETTINGS_UI } from "@/lib/constants/settings-ui";
 import { showErrorAppSnackBar, showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { submitSupportQuery } from "@/lib/services/settings-support";
@@ -38,37 +40,33 @@ export function SettingsSupportView() {
   }
 
   return (
-    <div
-      className={cn(
-        SETTINGS_UI.contentPad,
-        "relative z-10 flex min-h-0 flex-1 flex-col bg-white pb-8 pt-10"
-      )}
-    >
-      <p className={cn(SETTINGS_UI.supportLead, "whitespace-pre-line")}>
-        {SU.lead}
-      </p>
-      <textarea
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        rows={6}
-        placeholder={SU.placeholder}
-        className={SETTINGS_UI.supportTextarea}
-      />
-      {error ? (
-        <p className="mt-2 text-sm text-[var(--color-brand-error)]">{error}</p>
-      ) : null}
-      {message ? (
-        <p className="mt-2 text-sm text-[var(--color-brand-primary)]">{message}</p>
-      ) : null}
-      <button
-        type="button"
-        disabled={!canSubmit}
-        className={cn(SETTINGS_UI.supportSubmit, "mt-8")}
-        onClick={() => void onSubmit()}
-      >
-        {busy ? SU.submitting : SU.submit}
-      </button>
+    <div className={SETTINGS_LAYOUT.contentCard}>
+      <div className={SETTINGS_LAYOUT.contentCardPad}>
+        <textarea
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          rows={6}
+          placeholder={SU.placeholder}
+          className={SETTINGS_UI.supportTextarea}
+        />
+        {error ? (
+          <p className="mt-2 text-sm text-[var(--color-brand-error)]">{error}</p>
+        ) : null}
+        {message ? (
+          <p className="mt-2 text-sm text-[var(--color-brand-primary)]">
+            {message}
+          </p>
+        ) : null}
+        <button
+          type="button"
+          disabled={!canSubmit}
+          className={cn(SETTINGS_UI.supportSubmit)}
+          onClick={() => void onSubmit()}
+        >
+          {busy ? SU.submitting : SU.submit}
+        </button>
+        <SettingsSupportWhatsAppCta />
+      </div>
     </div>
   );
 }
-

@@ -8,7 +8,7 @@ import { Loader } from "@/components/common/Loader";
 import { CountryDialPicker } from "@/components/common/CountryDialPicker";
 import { ProfileContactActionButton } from "@/components/settings/ProfileContactActionButton";
 import { ProfilePhoneOtpPanel } from "@/components/settings/ProfilePhoneOtpPanel";
-import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
+import { PROFILE_DETAILS, PROFILE_FIELD_UI as FU } from "@/lib/constants/profile-details";
 import {
   OTP_LENGTH,
   DEFAULT_COUNTRY_CODE_NUMERIC,
@@ -111,18 +111,16 @@ export function ProfilePhoneRow({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-[var(--color-brand-black)]">
-        {PD.phone}
-      </span>
+      <span className={FU.label}>{PD.phone}</span>
       <div
         className={cn(
-          "flex h-12 items-stretch overflow-hidden rounded-xl border bg-neutral-100",
-          "transition-colors focus-within:border-[var(--color-brand-primary)]",
-          hasError ? "border-[var(--color-brand-error)]" : "border-black/15",
+          FU.shell,
+          "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
+          hasError && FU.shellError,
           !canEdit && !showChange && "opacity-90"
         )}
       >
-        <div className="flex w-[5.5rem] shrink-0 items-center justify-center border-r border-black/15 text-sm font-semibold text-neutral-800">
+        <div className="flex w-[5.5rem] shrink-0 items-center justify-center border-r border-black/[0.08] text-sm font-semibold text-neutral-800">
           {isEditing && !isMobileVerified ? (
             <CountryDialPicker
               valueDial={`+${cc}`}

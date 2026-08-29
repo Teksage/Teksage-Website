@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { ChatAvatarPicker } from "@/components/chat/ChatAvatarPicker";
 import {
   CHAT_AVATAR_OPTIONS,
   CHAT_PREFERENCE_ASSETS,
 } from "@/lib/constants/chat-preferences";
+import { CHAT_OVERLAY_UI } from "@/lib/constants/chat-overlay-ui";
 import { cn } from "@/lib/utils";
 import type { ChatAvatarSheetProps } from "@/types/ui/chat";
 
@@ -16,44 +18,62 @@ export function ChatAvatarSheet({
   onConfirm,
 }: ChatAvatarSheetProps) {
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (open) setSelectedIndex(initialIndex);
   }, [open, initialIndex]);
+
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
 
   const dismiss = () => {
     onConfirm(selectedIndex);
     onClose();
   };
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
   const gradientClass =
-    CHAT_AVATAR_OPTIONS[selectedIndex]?.sheetClass ?? CHAT_AVATAR_OPTIONS[0].sheetClass;
+    CHAT_AVATAR_OPTIONS[selectedIndex]?.sheetClass ??
+    CHAT_AVATAR_OPTIONS[0].sheetClass;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+  return createPortal(
+    <div className={CHAT_OVERLAY_UI.root} role="dialog" aria-modal="true">
       <button
         type="button"
-        className="absolute inset-0 bg-black/40"
+        className={CHAT_OVERLAY_UI.backdrop}
         aria-label="Close avatar picker"
         onClick={dismiss}
       />
       <div
-        className={cn(
-          "relative z-10 w-full max-w-lg rounded-t-[3.125rem] pb-6 pt-3",
-          gradientClass
-        )}
+        className={cn(CHAT_OVERLAY_UI.avatarSheet, gradientClass)}
       >
         <img
           src={CHAT_PREFERENCE_ASSETS.sheetDecoration}
           alt=""
-          className="pointer-events-none absolute left-0 top-0 w-24 opacity-80"
+          className={CHAT_OVERLAY_UI.avatarDecoration}
           aria-hidden
         />
-        <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-white/30" />
-        <ChatAvatarPicker selectedIndex={selectedIndex} onSelectIndex={setSelectedIndex} />
+        <div className={CHAT_OVERLAY_UI.avatarHandle} />
+        <div className={CHAT_OVERLAY_UI.avatarBody}>
+          <ChatAvatarPicker
+            selectedIndex={selectedIndex}
+            onSelectIndex={setSelectedIndex}
+          />
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

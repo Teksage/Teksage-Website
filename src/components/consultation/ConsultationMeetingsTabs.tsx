@@ -20,7 +20,7 @@ export function ConsultationMeetingsTabs({
           onClick={() => onChange(true)}
           className={cn(
             CONSULTATION_HOME_LAYOUT.tab,
-            isUpcoming ? CONSULTATION_HOME_LAYOUT.tabActive : CONSULTATION_HOME_LAYOUT.tabInactive
+            isUpcoming ? CONSULTATION_HOME_LAYOUT.tabActive : CONSULTATION_HOME_LAYOUT.tabInactiveOutlined
           )}
         >
           {CH.tabUpcoming}
@@ -30,7 +30,7 @@ export function ConsultationMeetingsTabs({
           onClick={() => onChange(false)}
           className={cn(
             CONSULTATION_HOME_LAYOUT.tab,
-            !isUpcoming ? CONSULTATION_HOME_LAYOUT.tabActive : CONSULTATION_HOME_LAYOUT.tabInactive
+            !isUpcoming ? CONSULTATION_HOME_LAYOUT.tabActive : CONSULTATION_HOME_LAYOUT.tabInactiveOutlined
           )}
         >
           {CH.tabCompleted}
@@ -39,7 +39,7 @@ export function ConsultationMeetingsTabs({
               CONSULTATION_HOME_LAYOUT.tabBadge,
               !isUpcoming
                 ? CONSULTATION_HOME_LAYOUT.tabBadgeActive
-                : CONSULTATION_HOME_LAYOUT.tabBadgeInactive
+                : CONSULTATION_HOME_LAYOUT.tabBadgeOutlinedIdle
             )}
           >
             {completedCount}

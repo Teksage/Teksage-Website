@@ -31,3 +31,24 @@ export type LegalBlock =
   | LegalSubsectionBlock
   | LegalBulletBlock
   | LegalContactBlock;
+
+export type LegalSectionGroup = {
+  heading: string | null;
+  items: readonly LegalBlock[];
+};
+
+export interface SettingsLegalViewProps {
+  title: string;
+  blocks: readonly LegalBlock[];
+}
+
+export interface SettingsLegalBlockProps {
+  block: LegalBlock;
+  index: number;
+}
+
+export type SettingsLegalTocItem = {
+  id: string;
+  label: string;
+  level: 1 | 2;
+};

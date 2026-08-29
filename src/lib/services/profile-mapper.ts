@@ -1,4 +1,5 @@
 import type { UserProfile } from "@/types";
+import type { CurrentDasaSummary } from "@/types/astrology";
 
 /** Raw shape from `GET /api/auth/profile` success body (`profile.py`). */
 export interface RawProfileResponse {
@@ -27,6 +28,50 @@ export interface RawProfileResponse {
   user_type?: string | null;
   app_language?: string | null;
   is_profile_updated?: boolean | null;
+  show_partner_referral_section?: boolean | null;
+  partner_discount?: {
+    has_discount?: boolean;
+    consult_pct?: number;
+    yearly_pct?: number;
+    consult_status?: string;
+    yearly_status?: string;
+    expires_at?: string | null;
+    days_left?: number;
+    show_subscription_row?: boolean;
+    show_consultation_row?: boolean;
+    code?: string | null;
+    code_active?: boolean;
+    message?: string | null;
+  } | null;
+  current_dasa?: string | null;
+  current_dasa_summary?: {
+    dasa?: string;
+    bukti?: string;
+    label?: string;
+    start_date?: string;
+    end_date?: string;
+    days_remaining?: number;
+    raw?: string | null;
+  } | null;
+}
+
+function mapCurrentDasaSummary(
+  raw: RawProfileResponse["current_dasa_summary"]
+): CurrentDasaSummary | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const dasa = raw.dasa?.trim() ?? "";
+  const bukti = raw.bukti?.trim() ?? "";
+  const label = raw.label?.trim() ?? "";
+  if (!dasa && !bukti && !label) return undefined;
+  return {
+    dasa,
+    bukti,
+    label: label || `${dasa} / ${bukti}`.replace(/\s*\/\s*$/, "").trim(),
+    startDate: raw.start_date ?? "",
+    endDate: raw.end_date ?? "",
+    daysRemaining: Number(raw.days_remaining ?? 0),
+    raw: raw.raw?.trim() || undefined,
+  };
 }
 
 export function mapRawProfileToUserProfile(
@@ -102,6 +147,34 @@ export function mapRawProfileToUserProfile(
       (raw.is_profile_updated != null ? Boolean(raw.is_profile_updated) : true),
     userType: raw.user_type?.trim() || undefined,
     language: raw.app_language?.trim().toLowerCase() || undefined,
+    showPartnerReferralSection: Boolean(
+      raw.show_partner_referral_section === true
+    ),
+    partnerDiscount: raw.partner_discount
+      ? {
+          hasDiscount: Boolean(raw.partner_discount.has_discount),
+          consultPct: Number(raw.partner_discount.consult_pct || 0),
+          yearlyPct: Number(raw.partner_discount.yearly_pct || 0),
+          consultStatus: raw.partner_discount.consult_status || "na",
+          yearlyStatus: raw.partner_discount.yearly_status || "na",
+          expiresAt: raw.partner_discount.expires_at || undefined,
+          daysLeft: Number(raw.partner_discount.days_left || 0),
+          showSubscriptionRow: Boolean(
+            raw.partner_discount.show_subscription_row
+          ),
+          showConsultationRow: Boolean(
+            raw.partner_discount.show_consultation_row
+          ),
+          code: raw.partner_discount.code || undefined,
+          codeActive:
+            raw.partner_discount.code_active === undefined
+              ? true
+              : Boolean(raw.partner_discount.code_active),
+          message: raw.partner_discount.message || undefined,
+        }
+      : undefined,
+    currentDasa: raw.current_dasa?.trim() || undefined,
+    currentDasaSummary: mapCurrentDasaSummary(raw.current_dasa_summary),
   };
 }
 

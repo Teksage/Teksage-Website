@@ -21,7 +21,6 @@ export const HOME_DASHBOARD_UI = {
   exploreSectionTitle: `${TYPO.exploreTitle} text-[color:var(--color-home-dashboard-heading)]`,
   exploreCircleLabel: `${TYPO.exploreCircle} text-[color:var(--color-home-dashboard-heading)]`,
   headerGreeting: `truncate ${TYPO.h3Bold} ${TYPO.leadingTight} lg:text-xl text-[color:var(--color-home-dashboard-heading)]`,
-  sidebarGreeting: `${TYPO.h3Bold} ${TYPO.leadingTight} text-[color:var(--color-home-dashboard-heading)]`,
   chatBannerTitle: `min-w-0 shrink whitespace-pre-line text-left ${TYPO.bannerCta} text-white lg:text-lg`,
   chatBannerCta: `${TYPO.bannerFine} text-[var(--color-brand-banner-font)]`,
   eventPlannerBannerRow: "flex w-full items-center justify-between gap-3",

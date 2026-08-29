@@ -1,5 +1,3 @@
-import { CONSULTATION_SLOTS_ASSETS } from "@/lib/constants/consultation-slots";
-
 const flutterSvg = (file: string) => `/flutter-assets/svg/${file}` as const;
 
 export const CONSULTATION_BOOKING_SCREEN = {
@@ -11,6 +9,7 @@ export const CONSULTATION_BOOKING_SCREEN = {
   consultingOn: "Consulting on",
   language: "Language",
   consultationFee: "Consultation fee",
+  referralDiscount: "Referral discount",
   totalFee: "Total Fee",
   dob: "Date of Birth",
   tob: "Time of Birth",
@@ -38,7 +37,7 @@ export const CONSULTATION_BOOKING_SCREEN = {
 } as const;
 
 export const CONSULTATION_BOOKING_ASSETS = {
-  dashedLine: CONSULTATION_SLOTS_ASSETS.calendarLine,
+  dashedLine: "/flutter-assets/svg/astroCalenderLine.svg",
   queryIcon: flutterSvg("questions.svg"),
   dummyAvatar: "/flutter-assets/images/dummyImage.png",
 } as const;
@@ -72,6 +71,8 @@ export const CONSULTATION_BOOKING_LAYOUT = {
     "w-full rounded-[30px] bg-[var(--color-consult-user-bg)] py-4 text-center text-lg font-semibold text-white disabled:opacity-50",
   promoCard: "rounded-xl bg-[#f3f3f3] p-4",
   feeRow: "flex justify-between text-sm text-[var(--color-brand-black)]/80",
+  feeDiscountRow:
+    "flex justify-between text-sm font-semibold text-[var(--color-brand-primary)]",
   feeTotalRow: "flex justify-between text-base font-semibold text-[var(--color-brand-black)]",
 } as const;
 
