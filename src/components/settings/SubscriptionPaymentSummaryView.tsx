@@ -54,6 +54,7 @@ import { fetchProfile } from "@/lib/services/profile";
 import {
   applySubscriptionCoupon,
   fetchPremiumPlanById,
+  fetchPremiumPlans,
 } from "@/lib/services/settings-subscription";
 import { useAuthStore } from "@/store/auth.store";
 import type { SubscriptionPlan } from "@/types/settings";
@@ -89,18 +90,39 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     let cancelled = false;
     async function load() {
       const session = readSubscriptionCheckout();
-      if (!session) {
-        setError(P.invalidCheckout);
-        setLoading(false);
-        return;
+      let targetPlanId: number;
+      let targetCurrency: "INR" | "USD" = defaultCurrency;
+      let targetAutoPay = SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED;
+
+      if (session) {
+        targetPlanId = session.planId;
+        targetCurrency = session.currency;
+        targetAutoPay = session.autoPay ?? SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED;
+      } else {
+        try {
+          const catalog = await fetchPremiumPlans();
+          if (catalog.length === 0) {
+            setError(P.invalidCheckout);
+            setLoading(false);
+            return;
+          }
+          const defaultPlan = catalog.find((p) => p.planId === 1) ?? catalog[0];
+          targetPlanId = defaultPlan.planId;
+          targetCurrency = defaultCurrency;
+          targetAutoPay = isAutoPayEligiblePlan(targetPlanId, defaultCurrency);
+        } catch {
+          setError(P.invalidCheckout);
+          setLoading(false);
+          return;
+        }
       }
-      setCurrency(session.currency);
-      setAutoPayEnabled(
-        session.autoPay ?? SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED
-      );
+
+      setCurrency(targetCurrency);
+      setAutoPayEnabled(targetAutoPay);
+
       try {
         const [fetched, profile] = await Promise.all([
-          fetchPremiumPlanById(session.planId),
+          fetchPremiumPlanById(targetPlanId),
           fetchProfile().catch(() => null),
         ]);
         if (cancelled) return;
@@ -115,7 +137,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
         const discount = profile?.partnerDiscount ?? user?.partnerDiscount;
         setPlan(fetched);
         const partnerPct = partnerYearlyPct(discount, fetched.planId);
-        setTotals(totalsFromPlan(fetched, session.currency, partnerPct));
+        setTotals(totalsFromPlan(fetched, targetCurrency, partnerPct));
         if (partnerPct > 0) {
           setPromoApplied(true);
           setAppliedPromoCode(PARTNER_CHECKOUT_CODE);
@@ -274,7 +296,16 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
     return (
       <div className={SETTINGS_UI.subscriptionPageShell}>
         <SettingsSubpageHeader title={P.pageTitle} onBack={onBack} variant="dark" />
-        <p className="px-5 py-8 text-sm text-red-400">{error ?? P.loadFailed}</p>
+        <div className="flex flex-1 flex-col items-center justify-center px-5 py-12 text-center">
+          <p className="text-base font-medium text-red-400">{error ?? P.loadFailed}</p>
+          <button
+            type="button"
+            className="mt-6 cursor-pointer rounded-full bg-white px-6 py-3 text-sm font-semibold text-[var(--color-brand-primary)] transition-opacity hover:opacity-90"
+            onClick={() => router.replace(ROUTES.settingsSubscriptions)}
+          >
+            {SUB.pageTitle}
+          </button>
+        </div>
       </div>
     );
   }
