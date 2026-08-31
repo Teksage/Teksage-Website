@@ -321,11 +321,7 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
           <p className={SUBSCRIPTION_PAYMENT_LAYOUT.membershipPill}>{membershipLine}</p>
           <div className={SUBSCRIPTION_PAYMENT_LAYOUT.dashed} />
           {autoPayEligible ? (
-            <SubscriptionAutoPayToggle
-              enabled={autoPayEnabled}
-              onChange={setAutoPayEnabled}
-              disabled={busy}
-            />
+            <SubscriptionAutoPayToggle />
           ) : null}
           <SubscriptionPaymentFees
             totals={totals}

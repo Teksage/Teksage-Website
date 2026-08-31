@@ -114,7 +114,9 @@ export default function SettingsSectionPage() {
     <div
       className={cn(
         PAGE_SHELL.column,
-        isSubscription ? "flex min-h-dvh flex-1 flex-col" : PAGE_SHELL.root
+        isSubscription
+          ? "flex min-h-dvh flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden"
+          : PAGE_SHELL.root
       )}
     >
       <div
@@ -122,7 +124,10 @@ export default function SettingsSectionPage() {
           PAGE_SHELL.contentLayer,
           "flex min-h-0 flex-1 flex-col",
           isSubscription
-            ? cn(SETTINGS_UI.subscriptionPage, "flex min-h-0 flex-1 flex-col bg-black")
+            ? cn(
+                SETTINGS_UI.subscriptionPage,
+                "flex min-h-0 flex-1 flex-col bg-black lg:h-full lg:overflow-hidden"
+              )
             : SETTINGS_UI.whitePage
         )}
       >

@@ -14,6 +14,7 @@ export const CHAT_LANDING_UI = {
   subtitleLanguages: "All Languages · Spoken replies",
   profileMenuProfile: "Profile",
   profileMenuWhatsApp: "WhatsApp Updates",
+  profileMenuSubscriptions: "Subscriptions",
   profileMenuSupport: "Support",
   profileMenuLanguage: "Language",
   profileMenuAllSettings: "View all settings",
