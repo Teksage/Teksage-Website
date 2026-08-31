@@ -16,6 +16,7 @@ import {
   DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK,
   DESKTOP_SIDEBAR_PANCHANG_LINK,
   DESKTOP_SIDEBAR_EVENT_PLANNER_LINK,
+  DESKTOP_SIDEBAR_SUBSCRIPTION_LINK,
   DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK,
 } from "@/lib/constants/desktop-sidebar-nav";
 import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
@@ -109,6 +110,13 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           label={HDS.panchangam}
           active={pathname.startsWith(DESKTOP_SIDEBAR_PANCHANG_LINK.href)}
           onClick={() => go(DESKTOP_SIDEBAR_PANCHANG_LINK.href)}
+        />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_SUBSCRIPTION_LINK.icon}
+          label={HDS.subscriptions}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_SUBSCRIPTION_LINK.href)}
+          onClick={() => go(DESKTOP_SIDEBAR_SUBSCRIPTION_LINK.href)}
         />
 
         <DesktopNavOtherPredictionsMenu />
