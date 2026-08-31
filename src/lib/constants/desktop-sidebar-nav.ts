@@ -41,4 +41,10 @@ export const DESKTOP_SIDEBAR_EVENT_PLANNER_LINK = {
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.eventPlanner,
 } as const;
 
+export const DESKTOP_SIDEBAR_SUBSCRIPTION_LINK = {
+  href: ROUTES.settingsSubscriptions,
+  labelKey: "subscriptions" as const,
+  icon: HOME_DASHBOARD_SIDEBAR_ASSETS.subscriptions,
+} as const;
+
 export const DESKTOP_SIDEBAR_AI_CHAT_HREF = ROUTES.home;

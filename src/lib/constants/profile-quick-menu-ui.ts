@@ -30,6 +30,11 @@ export const PROFILE_QUICK_MENU_LINKS = [
     icon: SETTINGS_ASSETS.profile,
   },
   {
+    href: ROUTES.settingsSubscriptions,
+    labelKey: "profileMenuSubscriptions" as const,
+    icon: SETTINGS_ASSETS.subscription,
+  },
+  {
     href: ROUTES.whatsappUpdates,
     labelKey: "profileMenuWhatsApp" as const,
     icon: SETTINGS_ASSETS.whatsapp,

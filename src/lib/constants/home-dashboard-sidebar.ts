@@ -19,6 +19,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
   panchangam: "Panchang",
   eventPlanner: "Event Planner (Muhurtha)",
   horoscope: "Horoscope",
+  subscriptions: "Subscriptions",
   unlockPremium: "Unlock Premium",
   unlockPremiumHint: "Get advanced insights & personalized guidance",
   premiumBadge: "PREMIUM",
@@ -36,6 +37,7 @@ export const HOME_DASHBOARD_SIDEBAR_ASSETS = {
   panchang: DASHBOARD_ASSETS.navPanchangOff,
   eventPlanner: DASHBOARD_ASSETS.sidebarMuhurtha,
   horoscope: DASHBOARD_ASSETS.navHoroscopeOff,
+  subscriptions: DASHBOARD_ASSETS.sidebarPremiumCrown,
   premiumCrown: DASHBOARD_ASSETS.sidebarPremiumCrown,
   predictionsChevron: DASHBOARD_ASSETS.sidebarChevronDown,
 } as const;

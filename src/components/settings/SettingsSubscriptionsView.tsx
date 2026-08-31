@@ -48,10 +48,6 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
     cancelAutoPay,
     activatingPremium,
   } = useSubscriptionPage(currency);
-  const [autoPayEnabled, setAutoPayEnabled] = useState(
-    SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED
-  );
-
   const autoPayEligible =
     selectedPlan != null && isAutoPayEligiblePlan(selectedPlan.planId, currency);
 
@@ -60,7 +56,7 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
     writeSubscriptionCheckout({
       planId: selectedPlan.planId,
       currency,
-      autoPay: autoPayEligible && autoPayEnabled,
+      autoPay: autoPayEligible,
     });
     router.push(ROUTES.settingsSubscriptionPayment);
   }
@@ -146,10 +142,7 @@ export function SettingsSubscriptionsView({ onBack }: SettingsSubscriptionsViewP
             isPremium={isPremium}
           />
           {autoPayEligible && showUpgradeBtn ? (
-            <SubscriptionAutoPayToggle
-              enabled={autoPayEnabled}
-              onChange={setAutoPayEnabled}
-            />
+            <SubscriptionAutoPayToggle />
           ) : null}
           {activatingPremium && !isPremium ? (
             <p className="mt-3 rounded-lg bg-white/10 px-3 py-2 text-center text-sm text-white/90">
