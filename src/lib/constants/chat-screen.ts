@@ -24,6 +24,8 @@ export const CHAT_SCREEN = {
   sendLabel: "Send",
   bootError: "Could not start chat. Please try again.",
   wsConnectError: "Could not connect to chat. Check your network and try again.",
+  wsEnvMisconfigured:
+    "Chat could not connect to the server. Please try again in a few minutes.",
   wsProfileIncomplete:
     "Complete your birth details in Profile to use AI chat.",
   connecting: "Connecting…",

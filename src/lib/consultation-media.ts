@@ -1,13 +1,10 @@
-import { getPublicApiBaseUrl } from "@/lib/env";
+import { getPublicApiBaseUrl, getPublicWebSocketBaseUrl } from "@/lib/env";
 
 /** FastAPI origin for relative astrologer `picture` paths when REST uses same-origin `/api` proxy. */
 function astrologerMediaBaseUrl(): string {
   const api = getPublicApiBaseUrl();
   if (api) return api;
-  if (process.env.NEXT_PUBLIC_WS_BASE_URL?.trim()) {
-    return process.env.NEXT_PUBLIC_WS_BASE_URL.replace(/\/$/, "");
-  }
-  return "http://127.0.0.1:8000";
+  return getPublicWebSocketBaseUrl();
 }
 
 /** Resolve astrologer profile image — S3 absolute URL or path relative to API origin. */
