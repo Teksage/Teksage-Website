@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { API_ENDPOINTS } from "@/lib/constants/api";
 
 /**
@@ -58,22 +58,16 @@ http.interceptors.request.use((config) => {
   return config;
 });
 
-http.interceptors.response.use(
-  (response) => response,
-  (error: AxiosError) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
-      const url = error.config?.url ?? "";
-      // FCM token registration can fail before auth is fully ready — don't wipe session
-      if (!url.includes("/register-token")) {
-        clearAuthSession();
-        redirectHomeFromProtectedIfNeeded();
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+type AuthRetryConfig = InternalAxiosRequestConfig & { _authRetry?: boolean };
 
-export { http };
+let refreshInFlight: Promise<string> | null = null;
+
+function shouldAttemptTokenRefresh(url: string): boolean {
+  if (url.includes("/register-token")) return false;
+  if (url.includes("/auth/refresh")) return false;
+  if (typeof window === "undefined") return false;
+  return Boolean(localStorage.getItem(STORAGE_KEYS.refreshToken));
+}
 
 export async function refreshAccessToken(): Promise<string> {
   const refreshToken =
@@ -96,3 +90,44 @@ export async function refreshAccessToken(): Promise<string> {
   setAuthCookie(data.access_token);
   return data.access_token;
 }
+
+http.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const config = error.config as AuthRetryConfig | undefined;
+    const url = config?.url ?? "";
+
+    if (
+      error.response?.status === 401 &&
+      config &&
+      !config._authRetry &&
+      shouldAttemptTokenRefresh(url)
+    ) {
+      config._authRetry = true;
+      try {
+        if (!refreshInFlight) {
+          refreshInFlight = refreshAccessToken().finally(() => {
+            refreshInFlight = null;
+          });
+        }
+        const token = await refreshInFlight;
+        config.headers.Authorization = `Bearer ${token}`;
+        return http.request(config);
+      } catch {
+        clearAuthSession();
+        redirectHomeFromProtectedIfNeeded();
+        return Promise.reject(error);
+      }
+    }
+
+    if (error.response?.status === 401 && typeof window !== "undefined") {
+      if (!url.includes("/register-token")) {
+        clearAuthSession();
+        redirectHomeFromProtectedIfNeeded();
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export { http };

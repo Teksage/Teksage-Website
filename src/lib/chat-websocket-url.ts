@@ -1,30 +1,49 @@
 import { API_ENDPOINTS } from "@/lib/constants/api";
-import { getPublicApiBaseUrl } from "@/lib/env";
+import {
+  getPublicWebSocketBaseUrl,
+  isChatWebSocketEnvMisconfigured,
+} from "@/lib/env";
 
 function stripTrailingSlash(url: string): string {
   return url.replace(/\/$/, "");
 }
 
-function resolveHttpOriginForWebSocket(): string {
-  const wsOverride = process.env.NEXT_PUBLIC_WS_BASE_URL?.trim();
-  if (wsOverride) return stripTrailingSlash(wsOverride);
-
-  const apiBase = getPublicApiBaseUrl();
-  if (apiBase) return stripTrailingSlash(apiBase);
-
-  if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
-    console.warn(
-      "[chat] NEXT_PUBLIC_WS_BASE_URL is unset. Defaulting to http://127.0.0.1:8000 — set it in .env.local when using NEXT_PUBLIC_API_BASE_URL=same-origin."
-    );
+/** Upgrade http→https when the page is served over HTTPS (mixed-content safe WSS). */
+function secureHttpOriginForPage(httpOrigin: string): string {
+  if (
+    typeof window !== "undefined" &&
+    window.location.protocol === "https:" &&
+    httpOrigin.startsWith("http://")
+  ) {
+    return httpOrigin.replace(/^http:\/\//i, "https://");
   }
+  return httpOrigin;
+}
 
-  return "http://127.0.0.1:8000";
+export function describeChatWebSocketEndpoint(): string {
+  try {
+    return buildChatWebSocketUrl("…").replace(/token=[^&]+/, "token=…");
+  } catch {
+    return `${API_ENDPOINTS.chatWebSocket} (invalid base URL)`;
+  }
+}
+
+export function logChatWebSocketMisconfiguration(): void {
+  if (!isChatWebSocketEnvMisconfigured()) return;
+  console.error(
+    "[chat] WebSocket is misconfigured for production. Set NEXT_PUBLIC_WS_BASE_URL on Vercel to your FastAPI origin (same host as BACKEND_PROXY_TARGET). Next.js /api rewrites do not proxy WebSockets.",
+    { endpoint: describeChatWebSocketEndpoint() }
+  );
 }
 
 /** Browser WebSocket URL — token query param (backend `get_current_user_socket`). */
 export function buildChatWebSocketUrl(accessToken: string): string {
-  const httpOrigin = resolveHttpOriginForWebSocket();
-  const wsOrigin = httpOrigin.replace(/^http/i, (m) => (m.toLowerCase() === "https" ? "wss" : "ws"));
+  const httpOrigin = secureHttpOriginForPage(
+    stripTrailingSlash(getPublicWebSocketBaseUrl())
+  );
+  const wsOrigin = httpOrigin.replace(/^http/i, (m) =>
+    m.toLowerCase() === "https" ? "wss" : "ws"
+  );
   const url = new URL(API_ENDPOINTS.chatWebSocket, `${wsOrigin}/`);
   url.searchParams.set("token", accessToken);
   return url.toString();
