@@ -4,12 +4,6 @@ import { useEffect, useRef } from "react";
 import { useAuthStore } from "@/store/auth.store";
 import { fetchProfile } from "@/lib/services/profile";
 
-function hasBirthChartFields(
-  user: ReturnType<typeof useAuthStore.getState>["user"]
-) {
-  return Boolean(user?.nakshatra?.trim() && user?.rashi?.trim());
-}
-
 /**
  * Hydrates auth user from profile API after login.
  * Needed for role (`user_type`) and INR/USD (preferred_location, country_code, timezone).
@@ -18,7 +12,16 @@ function hasBirthChartFields(
 export function useSyncAuthProfileRole(): void {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const userId = useAuthStore((s) => s.user?.id);
-  const hasChart = useAuthStore((s) => hasBirthChartFields(s.user));
+  const preferredLocation = useAuthStore((s) => s.user?.preferredLocation);
+  const placeOfBirth = useAuthStore((s) => s.user?.placeOfBirth);
+  const countryCode = useAuthStore((s) => s.user?.countryCode);
+  const nakshatra = useAuthStore((s) => s.user?.nakshatra);
+  const rashi = useAuthStore((s) => s.user?.rashi);
+  const profileHydrated = Boolean(
+    nakshatra?.trim() &&
+      rashi?.trim() &&
+      (preferredLocation?.trim() || placeOfBirth?.trim() || countryCode?.trim())
+  );
   const syncedForUserRef = useRef<string | null>(null);
   const inFlightRef = useRef(false);
 
@@ -28,8 +31,8 @@ export function useSyncAuthProfileRole(): void {
       return;
     }
 
-    // Re-fetch when chart fields are missing (e.g. fresh login / idle re-auth).
-    if (syncedForUserRef.current === userId && hasChart) return;
+    // Re-fetch when chart or currency fields are missing (e.g. fresh login).
+    if (syncedForUserRef.current === userId && profileHydrated) return;
     if (inFlightRef.current) return;
 
     let cancelled = false;
@@ -56,5 +59,5 @@ export function useSyncAuthProfileRole(): void {
     return () => {
       cancelled = true;
     };
-  }, [isAuthenticated, userId, hasChart]);
+  }, [isAuthenticated, userId, profileHydrated]);
 }

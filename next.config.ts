@@ -6,7 +6,17 @@ const backendOrigin =
   process.env.BACKEND_URL?.replace(/\/$/, "") ??
   "http://127.0.0.1:8000";
 
+/**
+ * Browser WebSocket must hit FastAPI directly — Vercel rewrites do not upgrade WS.
+ * If NEXT_PUBLIC_WS_BASE_URL is unset, reuse BACKEND_PROXY_TARGET at build time.
+ */
+const publicWebSocketBase =
+  process.env.NEXT_PUBLIC_WS_BASE_URL?.trim().replace(/\/$/, "") || backendOrigin;
+
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_WS_BASE_URL: publicWebSocketBase,
+  },
   async rewrites() {
     return [
       {

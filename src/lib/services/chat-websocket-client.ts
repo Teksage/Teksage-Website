@@ -142,12 +142,7 @@ export class ChatWebSocketClient {
         };
       });
 
-    try {
-      await tryConnect(token);
-    } catch {
-      const refreshed = await refreshAccessToken();
-      await tryConnect(refreshed);
-    }
+    await tryConnect(token);
   }
 
   private handleMessage(raw: string): void {

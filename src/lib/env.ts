@@ -82,6 +82,34 @@ export function getPublicApiBaseUrl(): string {
 }
 
 /**
+ * FastAPI origin for browser WebSocket (`/chat`).
+ * Prefer `NEXT_PUBLIC_WS_BASE_URL`; otherwise same as REST API base.
+ * When REST is same-origin `/api` proxy, you must set `NEXT_PUBLIC_WS_BASE_URL`
+ * — Next.js rewrites do not forward WebSockets.
+ */
+export function getPublicWebSocketBaseUrl(): string {
+  const wsOverride = process.env.NEXT_PUBLIC_WS_BASE_URL?.trim();
+  if (wsOverride) return assertValidHttpUrl(wsOverride);
+
+  const apiBase = getPublicApiBaseUrl();
+  if (apiBase) return apiBase;
+
+  if (typeof window !== "undefined") {
+    return stripTrailingSlash(window.location.origin);
+  }
+
+  return "http://127.0.0.1:8000";
+}
+
+/** True when the browser cannot reach FastAPI /chat (same-origin REST without a WS base). */
+export function isChatWebSocketEnvMisconfigured(): boolean {
+  if (process.env.NEXT_PUBLIC_WS_BASE_URL?.trim()) return false;
+  if (getPublicApiBaseUrl()) return false;
+  if (typeof window === "undefined") return false;
+  return true;
+}
+
+/**
  * Cloudflare Turnstile site key (public).
  * Set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in `.env.local`.
  * Cloudflare always-pass test key: `1x00000000000000000000AA`

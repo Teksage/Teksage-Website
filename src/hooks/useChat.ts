@@ -18,6 +18,11 @@ import {
   fetchChatHistory,
   fetchChatPreference,
 } from "@/lib/services/chat";
+import {
+  describeChatWebSocketEndpoint,
+  logChatWebSocketMisconfiguration,
+} from "@/lib/chat-websocket-url";
+import { isChatWebSocketEnvMisconfigured } from "@/lib/env";
 import { ChatWebSocketClient } from "@/lib/services/chat-websocket-client";
 import { fetchProfile } from "@/lib/services/profile";
 import { fetchProfileSettings } from "@/lib/services/settings-profile";
@@ -54,6 +59,7 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
   const [chatHistoryRecords, setChatHistoryRecords] = useState<ChatHistoryRecord[]>([]);
 
   const clientRef = useRef<ChatWebSocketClient | null>(null);
+  const wsEverConnectedRef = useRef(false);
   const messagesRef = useRef<ChatMessage[]>([]);
   const historyRecordsRef = useRef<ChatHistoryRecord[]>([]);
   const awaitingResponseRef = useRef(false);
@@ -227,52 +233,77 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     clientRef.current = client;
 
     async function connectSocket() {
-      const handlers = {
-        onTextChunk: (chunk: string) => streamRef.current.onTextChunk(chunk),
-        onAudioBase64: (audio: string) => streamRef.current.onAudioBase64(audio),
-        onStreamEnd: () => {
-          awaitingResponseRef.current = false;
-          void streamRef.current.onStreamEnd();
-        },
-        onOpen: () => {
-          if (!cancelled) setWsConnected(true);
-        },
-        onClose: (event: CloseEvent) => {
-          if (!cancelled) {
-            setWsConnected(false);
-            const isFatalProfile = CHAT_WS_FATAL_PROFILE_CLOSE_CODES.includes(
-              event.code as (typeof CHAT_WS_FATAL_PROFILE_CLOSE_CODES)[number]
+      await new Promise<void>((resolve, reject) => {
+        let settled = false;
+        const settle = (fn: () => void) => {
+          if (settled || cancelled) return;
+          settled = true;
+          fn();
+        };
+
+        const timeoutId = window.setTimeout(() => {
+          settle(() => {
+            logChatWebSocketMisconfiguration();
+            console.error(
+              "[chat] Timed out connecting to",
+              describeChatWebSocketEndpoint()
             );
-            if (isFatalProfile) {
-              setChatUnavailableReason(CS.wsProfileIncomplete);
-              client.disconnect();
-              return;
+            reject(new Error("WebSocket connect timeout"));
+          });
+        }, CHAT_WS_CONNECT_TIMEOUT_MS);
+
+        const handlers = {
+          onTextChunk: (chunk: string) => streamRef.current.onTextChunk(chunk),
+          onAudioBase64: (audio: string) => streamRef.current.onAudioBase64(audio),
+          onStreamEnd: () => {
+            awaitingResponseRef.current = false;
+            void streamRef.current.onStreamEnd();
+          },
+          onOpen: () => {
+            if (!cancelled) {
+              wsEverConnectedRef.current = true;
+              setWsConnected(true);
             }
-            const stillStreaming = streamRef.current.isStreamingActive();
+            window.clearTimeout(timeoutId);
+            settle(resolve);
+          },
+          onClose: (event: CloseEvent) => {
+            if (!cancelled) {
+              setWsConnected(false);
+              const isFatalProfile = CHAT_WS_FATAL_PROFILE_CLOSE_CODES.includes(
+                event.code as (typeof CHAT_WS_FATAL_PROFILE_CLOSE_CODES)[number]
+              );
+              if (isFatalProfile) {
+                setChatUnavailableReason(CS.wsProfileIncomplete);
+                client.disconnect();
+                return;
+              }
+              const stillStreaming = streamRef.current.isStreamingActive();
+              if (
+                wsEverConnectedRef.current &&
+                awaitingResponseRef.current &&
+                !stillStreaming &&
+                event.code !== 1008 &&
+                event.code !== 4003
+              ) {
+                resetComposerAfterSendFailure();
+                setToast(CS.wsConnectError);
+              }
+            }
+          },
+          onError: () => {
             if (
-              awaitingResponseRef.current &&
-              !stillStreaming &&
-              event.code !== 1008 &&
-              event.code !== 4003
+              wsEverConnectedRef.current &&
+              !streamRef.current.isStreamingActive()
             ) {
               resetComposerAfterSendFailure();
               setToast(CS.wsConnectError);
             }
-          }
-        },
-        onError: () => {
-          if (!streamRef.current.isStreamingActive()) {
-            resetComposerAfterSendFailure();
-            setToast(CS.wsConnectError);
-          }
-        },
-      };
+          },
+        };
 
-      const timeout = new Promise<never>((_, reject) => {
-        window.setTimeout(() => reject(new Error("WebSocket connect timeout")), CHAT_WS_CONNECT_TIMEOUT_MS);
+        void client.connect(handlers);
       });
-
-      await Promise.race([client.connect(handlers), timeout]);
     }
 
     async function boot() {
@@ -323,6 +354,10 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
           await connectSocket();
         } catch {
           if (!cancelled) {
+            if (isChatWebSocketEnvMisconfigured()) {
+              logChatWebSocketMisconfiguration();
+              setChatUnavailableReason(CS.wsEnvMisconfigured);
+            }
             setToast(CS.wsConnectError);
           }
         }
@@ -337,10 +372,11 @@ export function useChat({ enabled, styleFormat, avatarIndex }: UseChatOptions) {
     void boot();
     return () => {
       cancelled = true;
+      wsEverConnectedRef.current = false;
       setWsConnected(false);
       client.disconnect();
     };
-  }, [CS.bootError, CS.wsConnectError, enabled, resetComposerAfterSendFailure]);
+  }, [CS.bootError, CS.wsConnectError, CS.wsEnvMisconfigured, enabled, resetComposerAfterSendFailure]);
 
   const subscribeMessage =
     planStatus.trim().toLowerCase() === "expired"
