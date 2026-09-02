@@ -26,8 +26,22 @@ export const API_ENDPOINTS = {
   // --- Profile — `api/endpoints/profile.py`, same `/auth` prefix ---
   profile: "/api/auth/profile",
   updateProfile: "/api/auth/update-profile",
-  /** `GET` — user horoscope payload */
+  /** `GET` — user horoscope payload (D1 + D9 + birth details) */
   horoscope: "/api/auth/horoscope",
+  /** `GET` — all D1–D60 divisional charts as HTML */
+  horoscopeCharts: "/api/auth/horoscope/charts",
+  /** `GET` — full Vimshottari Dasa/Bukti/Antra tree */
+  horoscopeDasa: "/api/auth/horoscope/dasa",
+  /** `GET` — Ashtavarga bindus for all planets */
+  horoscopeAshtaVarga: "/api/auth/horoscope/ashta-varga",
+  /** `GET` — Special Lagnas (mandi, horaLagna, dhanaLagna, arudhaLagna) */
+  horoscopeSpecialLagna: "/api/auth/horoscope/special-lagna",
+  /** `GET` — Shadbala (Ishta/Kashta Phala) */
+  horoscopeShadbala: "/api/auth/horoscope/shadbala",
+  /** `GET` — Bhava position details */
+  horoscopeBhavaPosition: "/api/auth/horoscope/bhava-position",
+  /** `GET` — Planetary position details */
+  horoscopePlanetaryPosition: "/api/auth/horoscope/planetary-position",
   /** `POST` — rashi/nakshatra resolution */
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",

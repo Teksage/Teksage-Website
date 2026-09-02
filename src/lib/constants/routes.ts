@@ -8,6 +8,7 @@ export const ROUTES = {
   home: "/home",
   panchang: "/panchang",
   horoscope: "/horoscope",
+  horoscopeFull: "/horoscope/full",
   settings: "/settings",
   settingsChangeContact: "/settings/change-contact",
   settingsSubscriptions: "/settings/subscriptions",

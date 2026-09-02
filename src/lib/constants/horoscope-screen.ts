@@ -34,6 +34,23 @@ export const HOROSCOPE_SCREEN = {
   northChartLines: ["NORTH", "INDIAN", "CHART"] as const,
   /** i18n key — mirrors Flutter `COMING SOON`.tr */
   comingSoonMarquee: "COMING SOON",
+  /** Full horoscope page entry CTA */
+  viewFullHoroscope: "View Full Horoscope",
+  /** Full horoscope page title */
+  fullHoroscopeTitle: "Full Horoscope",
+  /** Full horoscope tabs */
+  tabCharts: "Charts",
+  tabDasa: "Dasa",
+  tabAshtavarga: "Ashtavarga",
+  tabMore: "More",
+  /** Section headings */
+  sectionSpecialLagna: "Special Lagna",
+  sectionShadbala: "Shadbala",
+  sectionBhavaPosition: "Bhava Position",
+  sectionPlanetaryPosition: "Planetary Position",
+  /** Generic fallbacks */
+  loadingLabel: "Loading…",
+  errorLoadLabel: "Could not load this section",
 } as const;
 
 const horoscopeCardBorder =
