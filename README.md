@@ -55,6 +55,22 @@ NEXT_PUBLIC_TURNSTILE_SITE_KEY=
 NEXT_PUBLIC_POSTHOG_ENABLE_IN_DEV=false
 ```
 
+**Production (`my.teksage.app` on Vercel)**
+
+```env
+# REST — either direct API or same-origin proxy
+NEXT_PUBLIC_API_BASE_URL=same-origin
+BACKEND_PROXY_TARGET=https://<your-fastapi-host>
+
+# WebSocket — must be the FastAPI origin (wss:// on HTTPS).
+# If omitted, next.config.ts copies BACKEND_PROXY_TARGET into the client bundle.
+NEXT_PUBLIC_WS_BASE_URL=https://<your-fastapi-host>
+```
+
+Use **`https://`** for the API host in production (becomes **`wss://`** for chat). `http://` backends are auto-upgraded to `https://` when the site is on HTTPS.
+
+`NEXT_PUBLIC_WS_BASE_URL` is **required for AI chat** if you do not set `BACKEND_PROXY_TARGET` — Next.js `/api` rewrites do **not** proxy WebSockets.
+
 **Other public vars** (when features are needed):
 
 - Firebase: `NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY`

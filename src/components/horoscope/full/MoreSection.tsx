@@ -1,7 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import {
+  PlanetsIcon,
+  BhavaIcon,
+  ShadbalaIcon,
+  SpecialLagnaIcon,
+  EphemerisIcon,
+} from "@/components/horoscope/full/FullHoroscopeIcons";
+import {
+  PlanetsTable,
+  BhavaTable,
+  ShadbalaTable,
+  SpecialLagnaTable,
+} from "@/components/horoscope/full/MoreSectionTables";
 import type {
   SpecialLagnaPayload,
   ShadbalaPayload,
@@ -9,8 +23,11 @@ import type {
   PlanetaryPositionPayload,
   FullHoroscopeSection,
 } from "@/types";
+import type { ComponentType } from "react";
 
-interface MoreSectionProps {
+type MoreTab = "planets" | "bhava" | "shadbala" | "lagna" | "ephemeris";
+
+interface Props {
   specialLagna: FullHoroscopeSection<SpecialLagnaPayload>;
   shadbala: FullHoroscopeSection<ShadbalaPayload>;
   bhavaPosition: FullHoroscopeSection<BhavaPositionPayload>;
@@ -18,103 +35,80 @@ interface MoreSectionProps {
   className?: string;
 }
 
-const CARD = "rounded-2xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white shadow-sm overflow-hidden";
-const CARD_TITLE = "bg-[var(--color-brand-panchang)] px-4 py-2.5 text-sm font-bold text-white";
-const ROW = "flex items-center justify-between border-b border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] px-4 py-2.5 last:border-0";
-const LABEL = "text-xs font-semibold text-[var(--color-brand-panchang)]";
-const VALUE = "text-xs font-medium text-[var(--color-brand-black)]";
+const MORE_TABS: { id: MoreTab; label: string; Icon: ComponentType<{ className?: string }> }[] = [
+  { id: "planets",   label: HOROSCOPE_SCREEN.moreTabPlanets,   Icon: PlanetsIcon },
+  { id: "bhava",     label: HOROSCOPE_SCREEN.moreTabBhava,     Icon: BhavaIcon },
+  { id: "shadbala",  label: HOROSCOPE_SCREEN.moreTabShadbala,  Icon: ShadbalaIcon },
+  { id: "lagna",     label: HOROSCOPE_SCREEN.moreTabLagna,     Icon: SpecialLagnaIcon },
+  { id: "ephemeris", label: HOROSCOPE_SCREEN.moreTabEphemeris, Icon: EphemerisIcon },
+];
 
-function SectionPlaceholder({ msg }: { msg: string }) {
-  return <p className="px-4 py-3 text-xs text-black/40">{msg}</p>;
-}
+const TAB_BTN_BASE =
+  "flex flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-2 text-center transition-colors min-w-[3.5rem]";
+const TAB_BTN_ACTIVE =
+  "bg-[var(--color-brand-primary)] text-white shadow-sm";
+const TAB_BTN_IDLE =
+  "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]";
 
-function SpecialLagnaCard({ section }: { section: FullHoroscopeSection<SpecialLagnaPayload> }) {
-  const d = section.data;
-  const rows = d ? Object.entries(d).map(([k, v]) => ({
-    key: k.replace(/([A-Z])/g, " $1").trim(),
-    sign: (v as { sign?: string })?.sign ?? "—",
-    degree: (v as { degree?: number | string })?.degree ?? "",
-  })) : [];
+/** More section — 5 internal sub-tabs: Planets, Bhava, Shadbala, Special Lagna, Ephemeris. */
+export function MoreSection({ specialLagna, shadbala, bhavaPosition, planetaryPosition, className }: Props) {
+  const [activeTab, setActiveTab] = useState<MoreTab>("planets");
 
-  return (
-    <div className={CARD}>
-      <p className={CARD_TITLE}>{HOROSCOPE_SCREEN.sectionSpecialLagna}</p>
-      {section.isLoading && <SectionPlaceholder msg={HOROSCOPE_SCREEN.loadingLabel} />}
-      {!section.isLoading && (section.error || !rows.length) && (
-        <SectionPlaceholder msg={section.error ?? HOROSCOPE_SCREEN.errorLoadLabel} />
-      )}
-      {rows.map((r) => (
-        <div key={r.key} className={ROW}>
-          <span className={LABEL}>{r.key}</span>
-          <span className={VALUE}>{r.sign}{r.degree ? ` · ${r.degree}°` : ""}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ShadbalaCard({ section }: { section: FullHoroscopeSection<ShadbalaPayload> }) {
-  const d = section.data;
-  const rows = d ? Object.entries(d).filter(([, v]) => typeof v === "object" && v !== null) : [];
-
-  return (
-    <div className={CARD}>
-      <p className={CARD_TITLE}>{HOROSCOPE_SCREEN.sectionShadbala}</p>
-      {section.isLoading && <SectionPlaceholder msg={HOROSCOPE_SCREEN.loadingLabel} />}
-      {!section.isLoading && (section.error || !rows.length) && (
-        <SectionPlaceholder msg={section.error ?? HOROSCOPE_SCREEN.errorLoadLabel} />
-      )}
-      {rows.map(([planet, entry]) => {
-        const e = entry as Record<string, unknown>;
-        const ishta = typeof e.ishtaPhala === "number" ? e.ishtaPhala.toFixed(1) : "—";
-        const kashta = typeof e.kashtaPhala === "number" ? e.kashtaPhala.toFixed(1) : "—";
-        return (
-          <div key={planet} className={ROW}>
-            <span className={LABEL}>{planet}</span>
-            <span className={VALUE}>Ishta: {ishta} · Kashta: {kashta}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function SimpleDataCard({ title, section }: { title: string; section: FullHoroscopeSection<BhavaPositionPayload | PlanetaryPositionPayload> }) {
-  const d = section.data;
-  const rows = d ? Object.entries(d).filter(([, v]) => typeof v === "object" && v !== null) : [];
-
-  return (
-    <div className={CARD}>
-      <p className={CARD_TITLE}>{title}</p>
-      {section.isLoading && <SectionPlaceholder msg={HOROSCOPE_SCREEN.loadingLabel} />}
-      {!section.isLoading && (section.error || !rows.length) && (
-        <SectionPlaceholder msg={section.error ?? HOROSCOPE_SCREEN.errorLoadLabel} />
-      )}
-      {rows.map(([key, entry]) => {
-        const e = entry as Record<string, unknown>;
-        const sign = typeof e.sign === "string" ? e.sign : "";
-        const degree = typeof e.signPosition === "number" ? `${e.signPosition.toFixed(1)}°` : "";
-        const isRetro = e.isRetro === true ? " (R)" : "";
-        const detail = [sign, degree].filter(Boolean).join(" ") + isRetro;
-        return (
-          <div key={key} className={ROW}>
-            <span className={LABEL}>{key}</span>
-            <span className={VALUE}>{detail || "—"}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-/** More tab — Special Lagna, Shadbala, Bhava Position, Planetary Position cards. */
-export function MoreSection({ specialLagna, shadbala, bhavaPosition, planetaryPosition, className }: MoreSectionProps) {
   return (
     <div className={cn("flex flex-col gap-4", className)}>
-      <SpecialLagnaCard section={specialLagna} />
-      <ShadbalaCard section={shadbala} />
-      <SimpleDataCard title={HOROSCOPE_SCREEN.sectionBhavaPosition} section={bhavaPosition} />
-      <SimpleDataCard title={HOROSCOPE_SCREEN.sectionPlanetaryPosition} section={planetaryPosition} />
+      {/* Inner tab bar — horizontal scroll on small screens */}
+      <div className="overflow-x-auto">
+        <div className="flex min-w-max gap-1 rounded-2xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-1.5 shadow-sm">
+          {MORE_TABS.map(({ id, label, Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setActiveTab(id)}
+              className={cn(TAB_BTN_BASE, activeTab === id ? TAB_BTN_ACTIVE : TAB_BTN_IDLE)}
+            >
+              <Icon className="size-4 shrink-0" />
+              <span className="text-[10px] font-semibold leading-tight">{label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab content */}
+      {activeTab === "planets" && (
+        <PlanetsTable section={planetaryPosition} />
+      )}
+      {activeTab === "bhava" && (
+        <BhavaTable section={bhavaPosition} />
+      )}
+      {activeTab === "shadbala" && (
+        <ShadbalaTable section={shadbala} />
+      )}
+      {activeTab === "lagna" && (
+        <SpecialLagnaTable section={specialLagna} />
+      )}
+      {activeTab === "ephemeris" && (
+        <EphemerisPlaceholder planetaryPosition={planetaryPosition} />
+      )}
+    </div>
+  );
+}
+
+/** Ephemeris — shows current day's snapshot (dedicated API endpoint coming soon). */
+function EphemerisPlaceholder({ planetaryPosition }: { planetaryPosition: FullHoroscopeSection<PlanetaryPositionPayload> }) {
+  const d = planetaryPosition.data;
+  const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_20%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_4%,white)] px-4 py-3">
+        <div className="flex items-center gap-2">
+          <EphemerisIcon className="size-4 text-[var(--color-brand-primary)]" />
+          <p className="text-xs font-semibold text-[var(--color-brand-panchang)]">
+            {HOROSCOPE_SCREEN.ephemerisLabel} — {today}
+          </p>
+        </div>
+        <p className="mt-1 text-xs text-black/50">{HOROSCOPE_SCREEN.ephemerisNote}</p>
+      </div>
+      {d && <PlanetsTable section={planetaryPosition} />}
     </div>
   );
 }

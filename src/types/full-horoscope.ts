@@ -68,27 +68,40 @@ export interface ShadbalaEntry {
 export type ShadbalaPayload = Record<string, ShadbalaEntry | number | string>;
 
 // --- Bhava Position ---
+/** One house row from `/horoscope/bhava-position` (`data.bhava["1"]`…). */
 export interface BhavaPositionEntry {
-  bhava?: number;
-  sign?: string;
-  degree?: number;
+  house?: string;
+  start?: number;
+  mid?: number;
+  end?: number;
+  length?: number;
   [key: string]: unknown;
 }
 
-export type BhavaPositionPayload = Record<string, BhavaPositionEntry | unknown>;
+/** Raw payload: `{ bhava: { "1": { house, start, mid, end, length }, … } }`. */
+export type BhavaPositionPayload = Record<string, unknown>;
 
 // --- Planetary Position ---
+/** Normalized planet row used by the UI (after normalizePlanetaryPayload). */
 export interface PlanetaryPositionEntry {
   planet: string;
+  /** Absolute ecliptic longitude in degrees (Astrosoft Longitude column). */
+  position?: number;
   sign?: string;
   signNumber?: number;
   signPosition?: number;
   isRetro?: boolean;
   nakshatraPada?: { nak: string; pada: number };
+  /** Jaimini karaka name when provided by API. */
+  karaka?: string;
   [key: string]: unknown;
 }
 
-export type PlanetaryPositionPayload = Record<string, PlanetaryPositionEntry>;
+/**
+ * Raw `/horoscope/planetary-position` payload:
+ * `{ Sun: { planetPosition, planetRasi, planetRasiPosition, planetKaraka }, planetNakshathra: {...} }`
+ */
+export type PlanetaryPositionPayload = Record<string, unknown>;
 
 // --- Aggregate type used by useFullHoroscope ---
 export interface FullHoroscopeSection<T> {

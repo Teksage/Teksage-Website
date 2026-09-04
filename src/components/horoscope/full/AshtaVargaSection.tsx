@@ -1,110 +1,117 @@
 "use client";
 
 import { useState } from "react";
+import { AshtaVargaBinduChart } from "@/components/horoscope/full/AshtaVargaBinduChart";
+import { ASHTA_PLANET_TAB_ORDER, sumBindus } from "@/lib/ashta-varga-chart";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
-import type { AshtaVargaPayload, SignName, FullHoroscopeSection } from "@/types";
-
-const SIGN_ORDER: SignName[] = [
-  "Mesha", "Vrishabha", "Mithuna", "Kataka",
-  "Simha", "Kanya", "Thula", "Vrichika",
-  "Dhanus", "Makara", "Kumbha", "Meena",
-];
-
-const SIGN_ABBR: Record<SignName, string> = {
-  Mesha: "Ari", Vrishabha: "Tau", Mithuna: "Gem", Kataka: "Can",
-  Simha: "Leo", Kanya: "Vir", Thula: "Lib", Vrichika: "Sco",
-  Dhanus: "Sag", Makara: "Cap", Kumbha: "Aqu", Meena: "Pis",
-};
+import type { AshtaVargaPayload, FullHoroscopeSection } from "@/types";
 
 interface Props {
   section: FullHoroscopeSection<AshtaVargaPayload>;
   className?: string;
 }
 
-function getStrength(bindu: number): string {
-  if (bindu >= 6) return "text-[var(--color-brand-primary)] font-bold";
-  if (bindu <= 2) return "text-red-500 font-semibold";
-  return "";
-}
-
-/** Planet bindu grid + Rasi/Graha Guna — adapted from astrochart/ashtaVargaTable.js. */
+/** Astrosoft-style Ashtavarga — planet tabs + 3 bindu charts + gunahara. */
 export function AshtaVargaSection({ section, className }: Props) {
   const data = section.data;
-  const planets = data ? Object.keys(data) : [];
-  const [selected, setSelected] = useState<string>("");
-
-  const activePlanet = selected || planets[0] || "";
+  const tabs = data
+    ? ASHTA_PLANET_TAB_ORDER.filter((p) => Boolean(data[p]))
+    : [];
+  const [selected, setSelected] = useState("");
+  const activePlanet = selected || tabs[0] || "";
   const planetData = data?.[activePlanet];
+  const isSarva = activePlanet === "SarvaAshtavarga";
 
   if (section.isLoading) {
     return <p className="py-10 text-center text-sm text-black/50">{HOROSCOPE_SCREEN.loadingLabel}</p>;
   }
-  if (section.error || !data || !planets.length) {
+  if (section.error || !data || !tabs.length) {
     return <p className="py-10 text-center text-sm text-red-500">{section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}</p>;
   }
+  if (!planetData) {
+    return <p className="py-10 text-center text-sm text-red-500">{HOROSCOPE_SCREEN.errorLoadLabel}</p>;
+  }
+
+  const total = sumBindus(planetData.ashtavarga);
+  const rasiGuna = planetData.rasiGuna ?? 0;
+  const grahaGuna = planetData.grahaGuna ?? 0;
+  const suthdha = rasiGuna + grahaGuna;
+  const tabLabel = (p: string) =>
+    p === "SarvaAshtavarga" ? HOROSCOPE_SCREEN.ashtaTabSarva : p;
 
   return (
-    <div className={cn("flex flex-col gap-4", className)}>
-      {/* Planet selector */}
-      <select
-        value={activePlanet}
-        onChange={(e) => setSelected(e.target.value)}
-        className="w-full rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_40%,transparent)] bg-white px-3 py-2 text-sm font-semibold text-[var(--color-brand-black)] shadow-sm focus:outline-none"
-        aria-label="Select planet"
-      >
-        {planets.map((p) => (
-          <option key={p} value={p}>{p}</option>
-        ))}
-      </select>
+    <div className={cn("flex flex-col gap-3", className)}>
+      {/* Planet tabs — mirrors Astrosoft tab strip */}
+      <div className="overflow-x-auto">
+        <div
+          role="tablist"
+          className="flex min-w-max gap-1 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-1 shadow-sm"
+        >
+          {tabs.map((p) => {
+            const active = p === activePlanet;
+            return (
+              <button
+                key={p}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setSelected(p)}
+                className={cn(
+                  "rounded-lg px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors sm:px-3 sm:text-sm",
+                  active
+                    ? "bg-[var(--color-brand-primary)] text-white"
+                    : "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]"
+                )}
+              >
+                {tabLabel(p)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-      {planetData && (
-        <>
-          {/* Summary row */}
-          <div className="flex gap-3 text-xs font-semibold">
-            <span className="rounded-full border border-[color-mix(in_srgb,var(--color-brand-primary)_40%,transparent)] px-3 py-1 text-[var(--color-brand-panchang)]">
-              Rasi Guna: {planetData.rasiGuna}
-            </span>
-            <span className="rounded-full border border-[color-mix(in_srgb,var(--color-brand-primary)_40%,transparent)] px-3 py-1 text-[var(--color-brand-panchang)]">
-              Graha Guna: {planetData.grahaGuna}
-            </span>
-          </div>
+      {/* Three charts: Ashtavarga | Trikona | Ekathipathya */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3">
+        <AshtaVargaBinduChart
+          title={`${tabLabel(activePlanet)} ( ${total} )`}
+          bindus={planetData.ashtavarga}
+          planetPos={isSarva ? null : planetData.planetPos}
+        />
+        <AshtaVargaBinduChart
+          title={HOROSCOPE_SCREEN.ashtaChartTrikona}
+          bindus={planetData.trikonaReduced}
+        />
+        <AshtaVargaBinduChart
+          title={HOROSCOPE_SCREEN.ashtaChartEkathipathya}
+          bindus={planetData.ekathipathiyaReduced}
+        />
+      </div>
 
-          {/* Bindu grid */}
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white shadow-sm">
-              <thead>
-                <tr>
-                  {SIGN_ORDER.map((s) => (
-                    <th key={s} className="bg-[var(--color-brand-panchang)] px-2 py-2 text-center text-xs font-bold text-white">
-                      {SIGN_ABBR[s]}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {SIGN_ORDER.map((s) => {
-                    const bindu = planetData.ashtavarga?.[s] ?? 0;
-                    return (
-                      <td key={s} className={cn("px-2 py-2 text-center text-sm", getStrength(bindu))}>
-                        {bindu}
-                      </td>
-                    );
-                  })}
-                </tr>
-                <tr className="border-t border-[color-mix(in_srgb,var(--color-brand-primary)_15%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_4%,white)]">
-                  {SIGN_ORDER.map((s) => (
-                    <td key={s} className="px-2 py-1.5 text-center text-xs text-black/50">
-                      {planetData.trikonaReduced?.[s] ?? 0}↓
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+      {/* Gunahara summary — hidden for Sarva like Astrosoft */}
+      {!isSarva && (
+        <div className="mx-auto w-full max-w-sm rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_20%,transparent)] bg-white px-4 py-3 shadow-sm">
+          <div className="flex flex-col gap-1.5 text-sm">
+            <div className="flex justify-between gap-4">
+              <span className="font-semibold text-[var(--color-brand-panchang)]">
+                {HOROSCOPE_SCREEN.ashtaRasiGunahara}
+              </span>
+              <span className="font-bold text-[var(--color-brand-primary)]">{rasiGuna}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="font-semibold text-[var(--color-brand-panchang)]">
+                {HOROSCOPE_SCREEN.ashtaGrahaGunahara}
+              </span>
+              <span className="font-bold text-[var(--color-brand-primary)]">{grahaGuna}</span>
+            </div>
+            <div className="flex justify-between gap-4 border-t border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] pt-1.5">
+              <span className="font-semibold text-[var(--color-brand-panchang)]">
+                {HOROSCOPE_SCREEN.ashtaSuthdhaBindus}
+              </span>
+              <span className="font-bold text-[var(--color-brand-primary)]">{suthdha}</span>
+            </div>
           </div>
-          <p className="text-xs text-black/40">Row 1: Ashtavarga bindus · Row 2: Trikona-reduced</p>
-        </>
+        </div>
       )}
     </div>
   );
