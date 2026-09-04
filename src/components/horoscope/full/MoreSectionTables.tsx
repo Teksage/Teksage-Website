@@ -10,7 +10,6 @@ import { buildBhavaRows } from "@/lib/format-bhava-position";
 import { buildPlanetaryRows } from "@/lib/format-planetary-position";
 import type {
   SpecialLagnaPayload,
-  ShadbalaPayload,
   BhavaPositionPayload,
   PlanetaryPositionPayload,
   FullHoroscopeSection,
@@ -114,38 +113,6 @@ export function BhavaTable({ section }: { section: FullHoroscopeSection<BhavaPos
               <td className={cn(TD, "whitespace-nowrap text-center")}>{r.length}</td>
             </tr>
           ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-/** Shadbala table — Ishta Phala & Kashta Phala per planet. */
-export function ShadbalaTable({ section }: { section: FullHoroscopeSection<ShadbalaPayload> }) {
-  const d = section.data;
-  const rows = d ? Object.entries(d).filter(([, v]) => typeof v === "object" && v !== null) : [];
-  if (!rows.length) return <Placeholder section={section} />;
-  return (
-    <div className="overflow-x-auto">
-      <table className={TABLE}>
-        <thead>
-          <tr>
-            <th className={TH}>{HOROSCOPE_SCREEN.colPlanet}</th>
-            <th className={TH}>{HOROSCOPE_SCREEN.colIshta}</th>
-            <th className={TH}>{HOROSCOPE_SCREEN.colKashta}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(([planet, entry]) => {
-            const e = entry as Record<string, unknown>;
-            return (
-              <tr key={planet} className={TR}>
-                <td className={cn(TD, LABEL_COL)}>{planet}</td>
-                <td className={TD}>{typeof e.ishtaPhala === "number" ? e.ishtaPhala.toFixed(2) : "—"}</td>
-                <td className={TD}>{typeof e.kashtaPhala === "number" ? e.kashtaPhala.toFixed(2) : "—"}</td>
-              </tr>
-            );
-          })}
         </tbody>
       </table>
     </div>

@@ -13,9 +13,9 @@ import {
 import {
   PlanetsTable,
   BhavaTable,
-  ShadbalaTable,
   SpecialLagnaTable,
 } from "@/components/horoscope/full/MoreSectionTables";
+import { ShadbalaTable } from "@/components/horoscope/full/ShadbalaTable";
 import type {
   SpecialLagnaPayload,
   ShadbalaPayload,

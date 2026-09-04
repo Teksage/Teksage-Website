@@ -1,5 +1,7 @@
 /** User-facing copy for Horoscope tab. */
 
+import { HOROSCOPE_SHADBALA } from "@/lib/constants/horoscope-shadbala";
+
 export const HOROSCOPE_SCREEN = {
   headerTitle: "Horoscope",
   loginTitle: "Sign in to view your horoscope",
@@ -107,8 +109,7 @@ export const HOROSCOPE_SCREEN = {
   colMid: "Mid",
   colEnd: "End",
   colLength: "Length",
-  colIshta: "Ishta Phala",
-  colKashta: "Kashta Phala",
+  ...HOROSCOPE_SHADBALA,
   colLagna: "Lagna",
   sectionPlanetaryPositions: "Planetary Positions",
   sectionBhavaPositions: "Bhava Positions",

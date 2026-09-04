@@ -10,6 +10,7 @@ export type {
   AshtaVargaPayload,
   LagnaPoint,
   SpecialLagnaPayload,
+  ShadbalaEntry,
   ShadbalaPayload,
   BhavaPositionPayload,
   PlanetaryPositionPayload,

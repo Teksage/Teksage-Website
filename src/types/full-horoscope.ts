@@ -58,14 +58,39 @@ export interface SpecialLagnaPayload {
 }
 
 // --- Shadbala ---
+/** One planet object from `/horoscope/shadbala` (AstroSoft `/shadBala`). */
 export interface ShadbalaEntry {
-  planet: string;
+  planet?: string;
+  ResidentialStrength?: number;
+  residentialStrength?: number;
+  SthanaBala?: number;
+  sthanaBala?: number;
+  DigBala?: number;
+  digBala?: number;
+  KalaBala?: number;
+  kalaBala?: number;
+  DrikBala?: number;
+  drikBala?: number;
+  ChestaBala?: number;
+  chestaBala?: number;
+  NaisargikaBala?: number;
+  naisargikaBala?: number;
+  ShadBala?: number;
+  shadBala?: number;
+  rupa?: number;
+  balaPercentage?: number;
+  rank?: number;
+  IshtaBala?: number;
   ishtaPhala?: number;
+  ishtaBala?: number;
+  KashtaBala?: number;
   kashtaPhala?: number;
+  kashtaBala?: number;
   [key: string]: unknown;
 }
 
-export type ShadbalaPayload = Record<string, ShadbalaEntry | number | string>;
+/** Flat `{ Sun: {…}, Moon: {…} }` or nested `{ planetBala: {…} }`. */
+export type ShadbalaPayload = Record<string, ShadbalaEntry | number | string | object>;
 
 // --- Bhava Position ---
 /** One house row from `/horoscope/bhava-position` (`data.bhava["1"]`…). */
