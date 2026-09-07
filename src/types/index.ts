@@ -13,6 +13,7 @@ export type {
   ShadbalaEntry,
   ShadbalaPayload,
   BhavaPositionPayload,
+  PlanetaryPositionEntry,
   PlanetaryPositionPayload,
   EphemerisMode,
   EphemerisCell,

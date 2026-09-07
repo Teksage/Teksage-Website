@@ -4,7 +4,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { HOROSCOPE_SHADBALA } from "@/lib/constants/horoscope-shadbala";
+import { HOROSCOPE_SCREEN } from "@/lib/constants";
 import type { ShadbalaRow } from "@/lib/format-shadbala";
 import {
   ShadbalaDataTable,
@@ -13,7 +13,7 @@ import {
   shadCell,
 } from "@/components/horoscope/full/ShadbalaTableChrome";
 
-const S = HOROSCOPE_SHADBALA;
+const S = HOROSCOPE_SCREEN;
 
 const STHANA_HEADERS = [
   S.colPlanet,

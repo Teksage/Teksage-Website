@@ -28,7 +28,10 @@ export function AshtaVargaBinduChart({ title, bindus, planetPos, className }: Pr
   const activeCell = highlightedCell(planetPos);
 
   /** Grid slots 1–13 where slot 6 is the center title. */
-  const slots: { kind: "center" } | { kind: "house"; boxIndex: number; cellIndex: number }[] = [];
+  const slots: Array<
+    | { kind: "center" }
+    | { kind: "house"; boxIndex: number; cellIndex: number }
+  > = [];
   for (let i = 1; i <= 13; i++) {
     if (i === 6) {
       slots.push({ kind: "center" });

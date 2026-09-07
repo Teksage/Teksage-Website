@@ -18,10 +18,10 @@ export const SHAD_LABEL = "text-center font-semibold text-[var(--color-brand-pan
 export function shadCell(
   value: number | null,
   blank: boolean,
-  digits = 2
+  pattern: "000.00" | "00.0" | "0.0" = "000.00"
 ): string {
   if (blank) return "";
-  return formatShadbalaNum(value, digits);
+  return formatShadbalaNum(value, pattern);
 }
 
 export function ShadbalaDataTable({
