@@ -1,5 +1,27 @@
 // Shared TypeScript interfaces — mirrors Flutter Model/ DTOs
 
+export type {
+  DivisionalChart,
+  DasaEntry,
+  DasaPayload,
+  SignName,
+  SignBindus,
+  AshtaVargaPlanet,
+  AshtaVargaPayload,
+  LagnaPoint,
+  SpecialLagnaPayload,
+  ShadbalaEntry,
+  ShadbalaPayload,
+  BhavaPositionPayload,
+  PlanetaryPositionEntry,
+  PlanetaryPositionPayload,
+  EphemerisMode,
+  EphemerisCell,
+  EphemerisRow,
+  EphemerisPayload,
+  FullHoroscopeSection,
+} from "./full-horoscope";
+
 export type { UserProfile } from "./user-profile";
 export type { PartnerDiscountState } from "./partner-referral";
 export type {
@@ -165,6 +187,9 @@ export type {
   HoroscopeChartVariant,
   HoroscopeChartToggleProps,
   HoroscopeLoadedViewProps,
+  HoroscopeFullEntryCardProps,
+  FullHoroscopeTab,
+  FullHoroscopeTabsProps,
 } from "./ui/panchang-horoscope";
 
 export type {

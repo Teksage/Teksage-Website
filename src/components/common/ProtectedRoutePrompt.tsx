@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { pathRequiresAuth } from "@/lib/constants/auth-guard";
+import { pathRequiresAuth, isFullHoroscopePath } from "@/lib/constants/auth-guard";
 import { isClientLoggedIn } from "@/lib/auth-session";
 import { useLoginPrompt } from "@/contexts/LoginPromptContext";
 
@@ -20,6 +20,8 @@ export function ProtectedRoutePrompt() {
       return;
     }
     if (!pathRequiresAuth(pathname)) return;
+    /** Full Horoscope uses middleware + hard redirect to `/login?redirect=…`. */
+    if (isFullHoroscopePath(pathname)) return;
 
     const key = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
     if (promptedKeyRef.current === key) return;

@@ -5,6 +5,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
 import { HoroscopeChartToggle } from "@/components/horoscope/HoroscopeChartToggle";
+import { HoroscopeFullEntryCard } from "@/components/horoscope/HoroscopeFullEntryCard";
 import { HoroscopeNorthPlaceholder } from "@/components/horoscope/HoroscopeNorthPlaceholder";
 import { HoroscopeProfileCard } from "@/components/horoscope/HoroscopeProfileCard";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
@@ -94,6 +95,7 @@ export function HoroscopeLoadedView({
             </div>
           )}
         </div>
+        <HoroscopeFullEntryCard />
       </div>
     </div>
   );

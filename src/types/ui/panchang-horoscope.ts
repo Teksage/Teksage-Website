@@ -77,3 +77,24 @@ export interface HoroscopeLoadedViewProps {
   onChartVariantChange: (next: HoroscopeChartVariant) => void;
   onDownloadPdf?: () => Promise<void>;
 }
+
+export interface HoroscopeFullEntryCardProps {
+  className?: string;
+}
+
+/** Main tabs on Full Horoscope (no nested More). */
+export type FullHoroscopeTab =
+  | "charts"
+  | "dasa"
+  | "ashtavarga"
+  | "planets"
+  | "bhava"
+  | "shadbala"
+  | "lagna"
+  | "ephemeris";
+
+export interface FullHoroscopeTabsProps {
+  active: FullHoroscopeTab;
+  onChange: (tab: FullHoroscopeTab) => void;
+  className?: string;
+}
