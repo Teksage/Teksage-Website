@@ -128,6 +128,34 @@ export interface PlanetaryPositionEntry {
  */
 export type PlanetaryPositionPayload = Record<string, unknown>;
 
+// --- Ephemeris (Astrosoft Daily / Monthly) ---
+export type EphemerisMode = "daily" | "monthly";
+
+export interface EphemerisCell {
+  text: string;
+  deg?: number;
+  min?: number;
+  sign?: string;
+  retro?: boolean;
+  longitude?: number;
+}
+
+export interface EphemerisRow {
+  label: string;
+  index: number;
+  planets: Record<string, EphemerisCell>;
+}
+
+export interface EphemerisPayload {
+  place: string;
+  timeLabel: string;
+  mode: EphemerisMode;
+  year: number;
+  month: number;
+  planets: string[];
+  rows: EphemerisRow[];
+}
+
 // --- Aggregate type used by useFullHoroscope ---
 export interface FullHoroscopeSection<T> {
   data: T | null;

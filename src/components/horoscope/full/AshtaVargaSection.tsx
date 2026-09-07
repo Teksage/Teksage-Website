@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AshtaVargaBinduChart } from "@/components/horoscope/full/AshtaVargaBinduChart";
 import { ASHTA_PLANET_TAB_ORDER, sumBindus } from "@/lib/ashta-varga-chart";
 import { cn } from "@/lib/utils";
-import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
 import type { AshtaVargaPayload, FullHoroscopeSection } from "@/types";
 
 interface Props {
@@ -42,37 +42,31 @@ export function AshtaVargaSection({ section, className }: Props) {
 
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      {/* Planet tabs — mirrors Astrosoft tab strip */}
-      <div className="overflow-x-auto">
-        <div
-          role="tablist"
-          className="flex min-w-max gap-1 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-1 shadow-sm"
-        >
-          {tabs.map((p) => {
-            const active = p === activePlanet;
-            return (
-              <button
-                key={p}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                onClick={() => setSelected(p)}
-                className={cn(
-                  "rounded-lg px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors sm:px-3 sm:text-sm",
-                  active
-                    ? "bg-[var(--color-brand-primary)] text-white"
-                    : "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]"
-                )}
-              >
-                {tabLabel(p)}
-              </button>
-            );
-          })}
-        </div>
+      <div role="tablist" className={HOROSCOPE_LAYOUT.pillTabListScroll}>
+        {tabs.map((p) => {
+          const active = p === activePlanet;
+          return (
+            <button
+              key={p}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => setSelected(p)}
+              className={cn(
+                HOROSCOPE_LAYOUT.pillTabScroll,
+                active
+                  ? HOROSCOPE_LAYOUT.pillTabActive
+                  : HOROSCOPE_LAYOUT.pillTabIdle
+              )}
+            >
+              {tabLabel(p)}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Three charts: Ashtavarga | Trikona | Ekathipathya */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3">
+      {/* Three charts: stack on mobile, 3-col on sm+ */}
+      <div className="mx-auto grid w-full max-w-sm grid-cols-1 gap-4 sm:max-w-none sm:grid-cols-3 sm:gap-3">
         <AshtaVargaBinduChart
           title={`${tabLabel(activePlanet)} ( ${total} )`}
           bindus={planetData.ashtavarga}

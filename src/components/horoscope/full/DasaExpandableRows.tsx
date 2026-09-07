@@ -42,13 +42,13 @@ function PeriodRow({ entry, isExpanded, onToggle, hasChildren }: RowProps) {
           <span className="inline-block size-5" />
         )}
       </td>
-      <td className={cn("px-3 py-2 text-xs font-semibold sm:text-sm", isRunning ? "text-[var(--color-brand-primary)]" : "text-[var(--color-brand-black)]")}>
+      <td className={cn("px-3 py-2 text-center text-xs font-semibold sm:text-sm", isRunning ? "text-[var(--color-brand-primary)]" : "text-[var(--color-brand-black)]")}>
         {entry.name}
       </td>
-      <td className={cn("px-3 py-2 text-xs whitespace-nowrap sm:text-sm", isRunning && "font-medium text-[var(--color-brand-primary)]")}>
+      <td className={cn("px-3 py-2 text-center text-xs whitespace-nowrap sm:text-sm", isRunning && "font-medium text-[var(--color-brand-primary)]")}>
         {formatDasaDate(entry.startDate)}
       </td>
-      <td className={cn("px-3 py-2 text-xs whitespace-nowrap sm:text-sm", isRunning && "font-medium text-[var(--color-brand-primary)]")}>
+      <td className={cn("px-3 py-2 text-center text-xs whitespace-nowrap sm:text-sm", isRunning && "font-medium text-[var(--color-brand-primary)]")}>
         {formatDasaDate(entry.endDate)}
       </td>
       <td className="px-3 py-2 text-center text-xs sm:text-sm">
@@ -87,7 +87,7 @@ export function DasaExpandableRows({ dasa, dasaOpen, expandedBuktiKey, onToggleD
                     <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColPlanet}</th>
                     <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStart}</th>
                     <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColEnd}</th>
-                    <th className={cn(DASA_SUB_TH, "text-center")}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
+                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,7 +129,7 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
         <td className={cn(DASA_SUB_TD, "font-semibold", isRunning && "text-[var(--color-brand-primary)]")}>{bukti.name}</td>
         <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(bukti.startDate)}</td>
         <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(bukti.endDate)}</td>
-        <td className={cn(DASA_SUB_TD, "text-center")}>
+        <td className={DASA_SUB_TD}>
           {isRunning && (
             <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-[9px] font-bold text-white">
               {HOROSCOPE_SCREEN.dasaActiveBadge}
@@ -148,7 +148,7 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
                     <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColPlanet}</th>
                     <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStart}</th>
                     <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColEnd}</th>
-                    <th className={cn(DASA_SUB_TH, "text-center")}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
+                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -157,7 +157,7 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
                       <td className={cn(DASA_SUB_TD, "font-semibold", antra.isRunning && "text-[var(--color-brand-primary)]")}>{antra.name}</td>
                       <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(antra.startDate)}</td>
                       <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(antra.endDate)}</td>
-                      <td className={cn(DASA_SUB_TD, "text-center")}>
+                      <td className={DASA_SUB_TD}>
                         {antra.isRunning && (
                           <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-[9px] font-bold text-white">
                             {HOROSCOPE_SCREEN.dasaActiveBadge}

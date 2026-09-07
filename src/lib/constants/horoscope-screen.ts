@@ -1,6 +1,8 @@
 /** User-facing copy for Horoscope tab. */
 
 import { HOROSCOPE_SHADBALA } from "@/lib/constants/horoscope-shadbala";
+import { HOROSCOPE_EPHEMERIS } from "@/lib/constants/horoscope-ephemeris";
+import { HOROSCOPE_FULL_UI } from "@/lib/constants/horoscope-full-ui";
 
 export const HOROSCOPE_SCREEN = {
   headerTitle: "Horoscope",
@@ -36,15 +38,21 @@ export const HOROSCOPE_SCREEN = {
   northChartLines: ["NORTH", "INDIAN", "CHART"] as const,
   /** i18n key — mirrors Flutter `COMING SOON`.tr */
   comingSoonMarquee: "COMING SOON",
-  /** Full horoscope page entry CTA */
-  viewFullHoroscope: "View Full Horoscope",
+  /** Full horoscope page entry strip */
+  viewFullHoroscope: "Full Horoscope",
+  viewFullHoroscopeHint: "Dasa, Shadbala, Ashtavarga & more",
+  viewFullHoroscopeCta: "Open",
   /** Full horoscope page title */
   fullHoroscopeTitle: "Full Horoscope",
   /** Full horoscope tabs */
   tabCharts: "Charts",
   tabDasa: "Dasa",
   tabAshtavarga: "Ashtavarga",
-  tabMore: "More",
+  tabPlanets: "Planets",
+  tabBhava: "Bhava",
+  tabShadbala: "Shadbala",
+  tabLagna: "Lagna",
+  tabEphemeris: "Ephemeris",
   /** Section headings */
   sectionSpecialLagna: "Special Lagna",
   sectionShadbala: "Shadbala",
@@ -83,15 +91,7 @@ export const HOROSCOPE_SCREEN = {
   ashtaSuthdhaBindus: "Suthdha Bindus:",
   ashtaRowHint: "Row 1: Ashtavarga bindus · Row 2: Trikona-reduced",
   ashtaColPlanet: "Planet",
-  /** More section inner sub-tabs */
-  moreTabPlanets: "Planets",
-  moreTabBhava: "Bhava",
-  moreTabShadbala: "Shadbala",
-  moreTabLagna: "Lagna",
-  moreTabEphemeris: "Ephemeris",
-  /** Ephemeris */
-  ephemerisLabel: "Planetary Snapshot",
-  ephemerisNote: "Showing birth-chart planetary positions. Full day-by-day ephemeris coming soon.",
+  ...HOROSCOPE_EPHEMERIS,
   /** Table column headers — Planetary Positions mirrors Astrosoft */
   colPlanet: "Planet",
   colLongitude: "Longitude",
@@ -134,17 +134,24 @@ export const HOROSCOPE_LAYOUT = {
     "text-center text-2xl font-bold leading-none tracking-tight",
   content:
     "relative z-10 mx-auto -mt-6 flex w-full max-w-md flex-col items-center gap-3 px-5 pt-0 text-[var(--color-brand-black)] lg:max-w-4xl lg:gap-6 lg:px-8 lg:pb-8",
-  /** Mobile: stacked. Desktop: Rasi + Navamsa in one row. */
+  /** Shared pill tab strip (Ashtavarga / Shadbala / section sub-tabs). */
+  pillTabList:
+    "flex w-full gap-1 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-1 shadow-sm",
+  pillTab:
+    "min-w-0 flex-1 rounded-lg px-1.5 py-1.5 text-center text-[10px] font-semibold leading-tight transition-colors sm:px-2.5 sm:text-xs md:text-sm",
+  pillTabActive: "bg-[var(--color-brand-primary)] text-white",
+  pillTabIdle:
+    "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]",
+  ...HOROSCOPE_FULL_UI,
   chartStack:
     "flex w-full max-w-md flex-col items-center gap-3 lg:max-w-3xl lg:grid lg:grid-cols-2 lg:justify-items-center lg:gap-5 xl:max-w-4xl xl:gap-6",
-  chartFrame: "w-full max-w-[17.5rem] sm:max-w-xs lg:max-w-[20rem]",
+  chartFrame: "mx-auto w-full max-w-[min(100%,20rem)] sm:max-w-xs lg:max-w-[20rem]",
   chartShell:
-    "w-full overflow-hidden rounded-[20px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white",
-  chartIframe: "block w-full border-0 bg-transparent",
+    "relative aspect-square w-full overflow-hidden rounded-[20px] border border-[color-mix(in_srgb,var(--color-brand-primary)_50%,transparent)] bg-white",
+  chartIframe: "absolute inset-0 block size-full border-0 bg-transparent",
   chartTitle:
     "mb-2 text-center text-sm font-semibold uppercase tracking-wide text-[var(--color-brand-panchang)]",
   northComingSoonWrap: "w-full lg:col-span-2",
-  /** Flutter `ComingSoonContainer` — watermark + centered marquee on mint (no white card). */
   northComingSoonStage:
     "relative flex w-full min-h-[min(52vw,20rem)] items-center justify-center py-8 sm:min-h-[18rem] sm:py-10 lg:min-h-[20rem] lg:py-12",
   northWatermarkBlock:

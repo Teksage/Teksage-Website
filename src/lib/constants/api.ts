@@ -42,6 +42,8 @@ export const API_ENDPOINTS = {
   horoscopeBhavaPosition: "/api/auth/horoscope/bhava-position",
   /** `GET` — Planetary position details */
   horoscopePlanetaryPosition: "/api/auth/horoscope/planetary-position",
+  /** `GET` — Daily/Monthly ephemeris (query: year, month, mode) */
+  horoscopeEphemeris: "/api/auth/horoscope/ephemeris",
   /** `POST` — rashi/nakshatra resolution */
   rashiNakshatra: "/api/auth/rashi-nakshatra",
   support: "/api/auth/support",

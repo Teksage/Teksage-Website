@@ -14,6 +14,10 @@ export type {
   ShadbalaPayload,
   BhavaPositionPayload,
   PlanetaryPositionPayload,
+  EphemerisMode,
+  EphemerisCell,
+  EphemerisRow,
+  EphemerisPayload,
   FullHoroscopeSection,
 } from "./full-horoscope";
 
@@ -182,6 +186,9 @@ export type {
   HoroscopeChartVariant,
   HoroscopeChartToggleProps,
   HoroscopeLoadedViewProps,
+  HoroscopeFullEntryCardProps,
+  FullHoroscopeTab,
+  FullHoroscopeTabsProps,
 } from "./ui/panchang-horoscope";
 
 export type {

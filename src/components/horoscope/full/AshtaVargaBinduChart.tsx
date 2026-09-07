@@ -41,7 +41,7 @@ export function AshtaVargaBinduChart({ title, bindus, planetPos, className }: Pr
   return (
     <div className={cn("flex min-w-0 flex-col gap-1", className)}>
       <div
-        className="grid aspect-square w-full max-w-[17rem] grid-cols-4 grid-rows-4 gap-0.5 self-center rounded-lg border border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] p-0.5 sm:max-w-none"
+        className="grid aspect-square w-full grid-cols-4 grid-rows-4 gap-0.5 rounded-lg border border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] p-0.5"
         aria-label={title}
       >
         {slots.map((slot) => {

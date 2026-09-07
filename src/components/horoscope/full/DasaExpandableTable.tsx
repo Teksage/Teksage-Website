@@ -15,7 +15,7 @@ interface Props {
 }
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-3 py-2 text-left text-[10px] font-bold uppercase tracking-wide text-white sm:text-xs";
+  "bg-[var(--color-brand-panchang)] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wide text-white sm:text-xs";
 const TABLE =
   "w-full border-collapse overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white shadow-sm";
 
@@ -45,15 +45,15 @@ export function DasaExpandableTable({ entries, initialDasaKey, initialBuktiKey, 
   }
 
   return (
-    <div className={cn("overflow-x-auto", className)}>
+    <div className={cn("scrollbar-hidden overflow-x-auto", className)}>
       <table className={TABLE}>
         <thead>
           <tr>
-            <th className={cn(TH, "w-8 text-center")} aria-hidden />
+            <th className={cn(TH, "w-8")} aria-hidden />
             <th className={TH}>{HOROSCOPE_SCREEN.dasaColPlanet}</th>
             <th className={TH}>{HOROSCOPE_SCREEN.dasaColStart}</th>
             <th className={TH}>{HOROSCOPE_SCREEN.dasaColEnd}</th>
-            <th className={cn(TH, "text-center")}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
+            <th className={TH}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
           </tr>
         </thead>
         <tbody>

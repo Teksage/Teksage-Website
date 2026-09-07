@@ -1,22 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
 import { HoroscopeChartToggle } from "@/components/horoscope/HoroscopeChartToggle";
+import { HoroscopeFullEntryCard } from "@/components/horoscope/HoroscopeFullEntryCard";
 import { HoroscopeNorthPlaceholder } from "@/components/horoscope/HoroscopeNorthPlaceholder";
 import { HoroscopeProfileCard } from "@/components/horoscope/HoroscopeProfileCard";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   HOROSCOPE_ASSETS,
   HOROSCOPE_LAYOUT,
   HOROSCOPE_SCREEN,
   MAIN_TAB_VIEWPORT_BACKDROP,
   PAGE_SHELL,
-  ROUTES,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { HoroscopeLoadedViewProps } from "@/types";
@@ -73,16 +72,6 @@ export function HoroscopeLoadedView({
             {isDownloading ? H.downloadBusyCta : H.downloadPdfCta}
           </Button>
         ) : null}
-        <Link
-          href={ROUTES.horoscopeFull}
-          className={cn(
-            buttonVariants({ variant: "outline", size: "sm" }),
-            L.downloadBtn,
-            "justify-center"
-          )}
-        >
-          {H.viewFullHoroscope}
-        </Link>
         <HoroscopeChartToggle value={chartVariant} onChange={onChartVariantChange} />
         <div className={L.chartStack}>
           {chartVariant === "south" ? (
@@ -106,6 +95,7 @@ export function HoroscopeLoadedView({
             </div>
           )}
         </div>
+        <HoroscopeFullEntryCard />
       </div>
     </div>
   );

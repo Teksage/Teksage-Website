@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -12,24 +11,29 @@ import { FullHoroscopeTabs } from "@/components/horoscope/full/FullHoroscopeTabs
 import { DivisionalChartsSection } from "@/components/horoscope/full/DivisionalChartsSection";
 import { DasaTableSection } from "@/components/horoscope/full/DasaTableSection";
 import { AshtaVargaSection } from "@/components/horoscope/full/AshtaVargaSection";
-import { MoreSection } from "@/components/horoscope/full/MoreSection";
+import {
+  PlanetsTable,
+  BhavaTable,
+  SpecialLagnaTable,
+} from "@/components/horoscope/full/MoreSectionTables";
+import { ShadbalaTable } from "@/components/horoscope/full/ShadbalaTable";
+import { EphemerisTable } from "@/components/horoscope/full/EphemerisTable";
 import { useFullHoroscope } from "@/hooks/useFullHoroscope";
 import { cn } from "@/lib/utils";
 import {
   HOROSCOPE_SCREEN,
+  HOROSCOPE_LAYOUT,
   MAIN_TAB_VIEWPORT_BACKDROP,
   PAGE_SHELL,
   ROUTES,
 } from "@/lib/constants";
-import type { FullHoroscopeTab } from "@/components/horoscope/full/FullHoroscopeTabs";
+import type { FullHoroscopeTab } from "@/types";
 
 /** Full Horoscope page — all AstroSoft sections behind auth gate. */
 export function FullHoroscopePage() {
   const H = HOROSCOPE_SCREEN;
   const state = useFullHoroscope();
   const [activeTab, setActiveTab] = useState<FullHoroscopeTab>("charts");
-
-  const showContent = state.isAuthenticated;
 
   return (
     <div className={cn(PAGE_SHELL.column, PAGE_SHELL.root)}>
@@ -60,7 +64,7 @@ export function FullHoroscopePage() {
         <div
           className={cn(
             PAGE_SHELL.contentLayer,
-            "mx-auto flex w-full max-w-md flex-col gap-4 px-4 pb-8 pt-4 lg:max-w-4xl lg:px-8"
+            HOROSCOPE_LAYOUT.fullPage
           )}
         >
           <FullHoroscopeTabs active={activeTab} onChange={setActiveTab} />
@@ -68,24 +72,29 @@ export function FullHoroscopePage() {
           {activeTab === "charts" && (
             <DivisionalChartsSection section={state.charts} />
           )}
-          {activeTab === "dasa" && (
-            <DasaTableSection section={state.dasa} />
-          )}
+          {activeTab === "dasa" && <DasaTableSection section={state.dasa} />}
           {activeTab === "ashtavarga" && (
             <AshtaVargaSection section={state.ashtaVarga} />
           )}
-          {activeTab === "more" && (
-            <MoreSection
-              specialLagna={state.specialLagna}
-              shadbala={state.shadbala}
-              bhavaPosition={state.bhavaPosition}
-              planetaryPosition={state.planetaryPosition}
-            />
+          {activeTab === "planets" && (
+            <PlanetsTable section={state.planetaryPosition} />
           )}
+          {activeTab === "bhava" && (
+            <BhavaTable section={state.bhavaPosition} />
+          )}
+          {activeTab === "shadbala" && (
+            <ShadbalaTable section={state.shadbala} />
+          )}
+          {activeTab === "lagna" && (
+            <SpecialLagnaTable section={state.specialLagna} />
+          )}
+          {activeTab === "ephemeris" && <EphemerisTable />}
         </div>
       )}
 
-      <LoadingOverlay open={Boolean(showContent && state.isAnyLoading)} />
+      <LoadingOverlay
+        open={Boolean(state.isAuthenticated && state.isAnyLoading)}
+      />
     </div>
   );
 }

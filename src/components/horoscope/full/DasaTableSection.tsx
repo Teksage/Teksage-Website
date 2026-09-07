@@ -78,19 +78,26 @@ export function DasaTableSection({ section, className }: Props) {
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       {runningPath.dasa && (
-        <div className="flex items-center gap-3 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] px-4 py-3">
-          <DasaIcon className="size-5 shrink-0 text-[var(--color-brand-primary)]" />
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold text-[var(--color-brand-panchang)]">{HOROSCOPE_SCREEN.currentDasaLabel}</p>
-            <p className="text-sm font-bold text-[var(--color-brand-primary)]">{bannerParts.join(" › ")}</p>
-            <p className="text-xs text-black/50">
-              {formatDasaDate(runningPath.dasa.startDate)} — {formatDasaDate(runningPath.dasa.endDate)}
-            </p>
+        <div className="flex flex-col gap-3 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] px-3 py-3 sm:flex-row sm:items-center sm:px-4">
+          <div className="flex min-w-0 flex-1 items-start gap-3">
+            <DasaIcon className="mt-0.5 size-5 shrink-0 text-[var(--color-brand-primary)]" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-[var(--color-brand-panchang)]">
+                {HOROSCOPE_SCREEN.currentDasaLabel}
+              </p>
+              <p className="text-sm font-bold text-[var(--color-brand-primary)]">
+                {bannerParts.join(" › ")}
+              </p>
+              <p className="text-xs text-black/50">
+                {formatDasaDate(runningPath.dasa.startDate)} —{" "}
+                {formatDasaDate(runningPath.dasa.endDate)}
+              </p>
+            </div>
           </div>
           <button
             type="button"
             onClick={goToCurrent}
-            className="shrink-0 rounded-full border border-[var(--color-brand-primary)] px-3 py-1.5 text-[10px] font-bold text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]"
+            className="w-full shrink-0 rounded-full border border-[var(--color-brand-primary)] px-3 py-2 text-[10px] font-bold text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] sm:w-auto sm:py-1.5"
           >
             {HOROSCOPE_SCREEN.dasaViewCurrent}
           </button>
@@ -99,14 +106,14 @@ export function DasaTableSection({ section, className }: Props) {
 
       <p className="text-xs text-black/50">{HOROSCOPE_SCREEN.dasaTableHint}</p>
 
-      <div className="flex gap-2">
+      <div className="flex w-full gap-2">
         {(["all", "running"] as DasaFilter[]).map((f) => (
           <button
             key={f}
             type="button"
             onClick={() => setFilter(f)}
             className={cn(
-              "rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors",
+              "min-w-0 flex-1 rounded-full border px-3 py-2 text-xs font-semibold transition-colors sm:flex-none sm:px-4 sm:py-1.5",
               filter === f
                 ? "border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)] text-white"
                 : "border-[color-mix(in_srgb,var(--color-brand-primary)_40%,transparent)] text-[var(--color-brand-panchang)]"

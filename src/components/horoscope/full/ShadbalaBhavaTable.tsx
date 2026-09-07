@@ -7,9 +7,9 @@ import { buildBhavaBalaRows } from "@/lib/format-bhava-bala";
 import type { ShadbalaPayload } from "@/types";
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-0.5 py-2 text-center text-[9px] font-bold uppercase leading-tight tracking-wide text-white sm:px-1 sm:text-[10px]";
+  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-[10px] font-bold uppercase leading-tight tracking-wide text-white sm:px-2 sm:text-xs";
 const TD =
-  "px-0.5 py-2 text-center text-[9px] tabular-nums text-[var(--color-brand-black)] sm:px-1 sm:text-[10px]";
+  "px-1 py-3 text-center text-[10px] tabular-nums text-[var(--color-brand-black)] sm:px-2 sm:text-xs";
 const TR =
   "border-b border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] last:border-0";
 const TABLE =
@@ -17,9 +17,7 @@ const TABLE =
 const PLACEHOLDER = "py-8 text-center text-xs text-black/40";
 const RED = "font-semibold text-[var(--color-brand-error)]";
 const RANK = "font-bold text-[var(--color-brand-ios)]";
-const LABEL =
-  "pl-2 text-left font-semibold text-[var(--color-brand-panchang)] sm:pl-3";
-const HOUSE_TH = cn(TH, "pl-2 text-left sm:pl-3");
+const LABEL = "font-semibold text-[var(--color-brand-panchang)]";
 
 export function ShadbalaBhavaTable({ payload }: { payload: ShadbalaPayload }) {
   const rows = buildBhavaBalaRows(payload);
@@ -30,7 +28,7 @@ export function ShadbalaBhavaTable({ payload }: { payload: ShadbalaPayload }) {
     <table className={TABLE}>
       <thead>
         <tr>
-          <th className={HOUSE_TH}>{HOROSCOPE_SCREEN.colHouse}</th>
+          <th className={TH}>{HOROSCOPE_SCREEN.colHouse}</th>
           <th className={TH}>{HOROSCOPE_SCREEN.colBhava}</th>
           <th className={TH}>{HOROSCOPE_SCREEN.colBhavaAdhipathi}</th>
           <th className={TH}>{HOROSCOPE_SCREEN.colBhavaDig}</th>
