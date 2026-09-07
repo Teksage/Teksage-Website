@@ -25,6 +25,7 @@ export * from "./consultation-routes";
 export * from "./getting-started";
 export * from "./settings-screen";
 export * from "./routes";
+export * from "./web-embed";
 export * from "./default-region";
 export * from "./default-profile";
 export * from "./partner-referral";

@@ -31,11 +31,22 @@ function settingsSectionRequiresAuth(pathname: string): boolean {
   return !SETTINGS_PUBLIC_SECTIONS.has(section);
 }
 
+/** Cookie name for web session — keep in sync with `STORAGE_KEYS.authToken`. */
+export const AUTH_TOKEN_COOKIE = "teksage_auth_token" as const;
+
 /** True when middleware / server should require `teksage_auth_token` cookie. */
 export function pathRequiresAuth(pathname: string): boolean {
   if (pathname === ROUTES.profile) return true;
   if (settingsSectionRequiresAuth(pathname)) return true;
   return AUTH_PATH_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+}
+
+/** Full Horoscope — guests must log in, then return here. */
+export function isFullHoroscopePath(pathname: string): boolean {
+  return (
+    pathname === ROUTES.horoscopeFull ||
+    pathname.startsWith(`${ROUTES.horoscopeFull}/`)
   );
 }
