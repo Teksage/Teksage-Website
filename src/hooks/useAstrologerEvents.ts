@@ -20,8 +20,8 @@ export function useAstrologerEvents() {
       const data = await fetchAstrologerEvents(user.id);
       const sorted = [...data].sort(
         (a, b) =>
-          new Date(a.start_datetime).getTime() -
-          new Date(b.start_datetime).getTime()
+          new Date(b.start_datetime).getTime() -
+          new Date(a.start_datetime).getTime()
       );
       setEvents(sorted);
     } catch {

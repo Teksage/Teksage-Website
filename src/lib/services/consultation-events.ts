@@ -59,5 +59,5 @@ export async function fetchUserConsultationEvents(
   return (body?.data ?? [])
     .filter((e) => e.status === "confirmed" || e.status === "completed")
     .map(mapEvent)
-    .sort((a, b) => a.startDatetime.localeCompare(b.startDatetime));
+    .sort((a, b) => b.startDatetime.localeCompare(a.startDatetime));
 }

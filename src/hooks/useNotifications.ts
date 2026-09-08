@@ -60,8 +60,10 @@ export function useNotifications(initialTab: NotificationTab = "general") {
             created_at: r.created_at,
             answered_by_astrologer_name: r.answered_by_astrologer_name ?? null,
             answered_by_astrologer_profile_path: r.answered_by_astrologer_profile_path ?? null,
+            answer_ready_acknowledged: r.answer_ready_acknowledged ?? false,
           }))
       );
+
     } catch {
       setError("loadFailed");
     } finally {

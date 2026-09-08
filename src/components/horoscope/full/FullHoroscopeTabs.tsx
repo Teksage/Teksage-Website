@@ -43,8 +43,8 @@ export function FullHoroscopeTabs({ active, onChange, className }: FullHoroscope
             className={cn(
               HOROSCOPE_LAYOUT.mainTab,
               isActive
-                ? "bg-[var(--color-brand-primary)] text-white"
-                : "text-black/70 hover:bg-transparent"
+                ? HOROSCOPE_LAYOUT.mainTabActive
+                : HOROSCOPE_LAYOUT.mainTabIdle
             )}
           >
             <Icon className="size-4 shrink-0" />

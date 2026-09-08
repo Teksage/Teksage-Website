@@ -12,16 +12,10 @@ interface Props {
   className?: string;
 }
 
-const SIDEBAR_ITEM =
-  "w-full cursor-pointer rounded-lg px-3 py-2 text-left text-xs font-medium transition-colors";
-const SIDEBAR_ACTIVE =
-  "bg-[var(--color-brand-primary)] text-white font-semibold shadow-sm";
-const SIDEBAR_IDLE =
-  "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,white)]";
-
-/** Astrosoft-style sidebar: click a chart name on the left to view it on the right. */
+/** Professional workspace: chart rail + large canvas viewer. */
 export function DivisionalChartsSection({ section, className }: Props) {
   const [selectedId, setSelectedId] = useState<string>("");
+  const L = HOROSCOPE_LAYOUT;
 
   if (section.isLoading) {
     return (
@@ -44,19 +38,16 @@ export function DivisionalChartsSection({ section, className }: Props) {
   const activeChart = charts.find((c) => c.id === activeId) ?? charts[0];
 
   return (
-    <div className={cn("flex flex-col gap-3 md:flex-row md:gap-4", className)}>
-      {/* ── Mobile: pill chip scroller ── */}
-      <div className={cn(HOROSCOPE_LAYOUT.pillTabListScroll, "md:hidden")}>
+    <div className={cn(L.chartsRoot, className)}>
+      <div className={cn(L.pillTabListScroll, "md:hidden")}>
         {charts.map((c) => (
           <button
             key={c.id}
             type="button"
             onClick={() => setSelectedId(c.id)}
             className={cn(
-              HOROSCOPE_LAYOUT.pillTabScroll,
-              c.id === activeId
-                ? HOROSCOPE_LAYOUT.pillTabActive
-                : HOROSCOPE_LAYOUT.pillTabIdle
+              L.pillTabScroll,
+              c.id === activeId ? L.pillTabActive : L.pillTabIdle
             )}
           >
             {c.label}
@@ -64,44 +55,53 @@ export function DivisionalChartsSection({ section, className }: Props) {
         ))}
       </div>
 
-      {/* ── Desktop: sticky left sidebar (mirrors Astrosoft) ── */}
-      <aside className="hidden w-44 shrink-0 md:block">
-        <div className="scrollbar-hidden sticky top-4 flex max-h-[80vh] flex-col gap-1 overflow-y-auto rounded-2xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-2 shadow-sm">
-          <div className="mb-1 flex items-center gap-1.5 px-2 py-1">
-            <ChartsIcon className="size-4 text-[var(--color-brand-panchang)]" />
-            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-brand-panchang)]">
-              {HOROSCOPE_SCREEN.tabCharts}
-            </span>
+      <div className={L.chartsStage}>
+        <aside className={L.chartsSidebar} aria-label={HOROSCOPE_SCREEN.tabCharts}>
+          <div className={L.chartsSidebarHeader}>
+            <ChartsIcon className="size-3.5 text-[var(--color-brand-panchang)]" />
+            <span className={L.chartsSidebarTitle}>{HOROSCOPE_SCREEN.tabCharts}</span>
           </div>
-          {charts.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => setSelectedId(c.id)}
-              className={cn(SIDEBAR_ITEM, c.id === activeId ? SIDEBAR_ACTIVE : SIDEBAR_IDLE)}
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
-      </aside>
+          <div className={L.chartsSidebarList}>
+            {charts.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setSelectedId(c.id)}
+                className={cn(
+                  L.chartsSidebarItem,
+                  c.id === activeId ? L.chartsSidebarActive : L.chartsSidebarIdle
+                )}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </aside>
 
-      {/* ── Chart display area (square, full width on mobile) ── */}
-      <div className="flex min-w-0 flex-1 flex-col items-center gap-2 px-1 sm:px-0">
-        {activeChart && (
-          <>
-            <p className="text-center text-sm font-bold uppercase tracking-wide text-[var(--color-brand-panchang)]">
-              {activeChart.label}
-            </p>
-            <div className="w-full max-w-[min(100%,22rem)] sm:max-w-xs lg:max-w-[20rem]">
-              <HoroscopeChartFrame
-                title={activeChart.label}
-                html={activeChart.html}
-                showTitle={false}
-              />
-            </div>
-          </>
-        )}
+        <div className={L.chartsDisplay}>
+          {activeChart ? (
+            <>
+              <header className={L.chartsDisplayHeader}>
+                <div className="min-w-0">
+                  <p className={L.chartsDisplayEyebrow}>
+                    {HOROSCOPE_SCREEN.chartsViewerEyebrow}
+                  </p>
+                  <h2 className={L.chartsDisplayTitle}>{activeChart.label}</h2>
+                </div>
+              </header>
+              <div className={L.chartsCanvas}>
+                <div className={L.chartsFrameWrap}>
+                  <HoroscopeChartFrame
+                    title={activeChart.label}
+                    html={activeChart.html}
+                    showTitle={false}
+                    frameClassName={L.chartsFrame}
+                  />
+                </div>
+              </div>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );

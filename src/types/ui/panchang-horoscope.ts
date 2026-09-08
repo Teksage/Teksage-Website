@@ -5,6 +5,8 @@ export interface HoroscopeChartFrameProps {
   title: string;
   html: string;
   className?: string;
+  /** Overrides default `chartFrame` max-width (e.g. Full Horoscope large stage). */
+  frameClassName?: string;
   /** When false, only the iframe is shown (chart type comes from a parent toggle). */
   showTitle?: boolean;
 }

@@ -82,7 +82,7 @@ export const NOTIFICATIONS_UI = {
   notificationQuestion:
     "line-clamp-2 text-sm font-semibold leading-snug text-[var(--color-brand-black)] lg:text-base",
   notificationMeta: "text-xs leading-none text-black/45 lg:text-sm",
-  notificationPaidDate: "text-[11px] leading-none text-black/40 lg:text-xs",
+  notificationPaidDate: "text-xs font-medium leading-none text-black/55 lg:text-sm",
   notificationActionRow: "mt-2.5 flex justify-end",
   consultationMeetBtn:
     "shrink-0 rounded-full bg-[var(--color-brand-primary)] px-3 py-[9px] text-xs font-semibold leading-none text-white",

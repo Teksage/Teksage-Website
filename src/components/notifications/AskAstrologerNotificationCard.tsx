@@ -18,11 +18,12 @@ import {
 } from "@/lib/constants/chat-ask-astrologer";
 import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { parseApiDateTime, isValidDate } from "@/lib/api-datetime";
+import { askDisplayDateIso } from "@/lib/notifications-consultation-feed";
 import { acknowledgeAnswerReady } from "@/lib/services/ask-astrologer";
 import { cn } from "@/lib/utils";
 import type { AskAstrologerNotificationItem } from "@/types/notifications";
 
-function formatPaidAt(iso: string): string {
+function formatAskDate(iso: string): string {
   const d = parseApiDateTime(iso);
   if (!isValidDate(d)) return iso;
   return format(d, NOTIFICATION_ASK_PAID_AT_FORMAT);
@@ -40,6 +41,7 @@ export function AskAstrologerNotificationCard({
   const statusColor =
     ASK_NOTIFICATION_STATUS_COLOR[item.status] ?? "bg-neutral-100 text-black/60";
   const isAnswered = item.status === "answered";
+  const displayDateIso = askDisplayDateIso(item);
 
   return (
     <li className={NOTIFICATIONS_UI.listCard}>
@@ -74,7 +76,7 @@ export function AskAstrologerNotificationCard({
             {item.user_question}
           </p>
 
-            {!isAnswered ? (
+          {!isAnswered ? (
             <p className={cn(NOTIFICATIONS_UI.notificationMeta, "mt-1")}>
               {AA.askSlaLabel}
             </p>
@@ -84,9 +86,9 @@ export function AskAstrologerNotificationCard({
             </p>
           ) : null}
 
-          {item.paid_at ? (
+          {displayDateIso ? (
             <p className={cn(NOTIFICATIONS_UI.notificationPaidDate, "mt-1")}>
-              {formatPaidAt(item.paid_at)}
+              {formatAskDate(displayDateIso)}
             </p>
           ) : null}
 

@@ -12,7 +12,7 @@ interface Props {
   className?: string;
 }
 
-/** Astrosoft-style Ashtavarga — planet tabs + 3 bindu charts + gunahara. */
+/** Ashtavarga workspace — planet chips + bindu charts (distinct from Dasa tabs). */
 export function AshtaVargaSection({ section, className }: Props) {
   const data = section.data;
   const tabs = data
@@ -22,15 +22,28 @@ export function AshtaVargaSection({ section, className }: Props) {
   const activePlanet = selected || tabs[0] || "";
   const planetData = data?.[activePlanet];
   const isSarva = activePlanet === "SarvaAshtavarga";
+  const L = HOROSCOPE_LAYOUT;
 
   if (section.isLoading) {
-    return <p className="py-10 text-center text-sm text-black/50">{HOROSCOPE_SCREEN.loadingLabel}</p>;
+    return (
+      <p className="py-10 text-center text-sm text-black/50">
+        {HOROSCOPE_SCREEN.loadingLabel}
+      </p>
+    );
   }
   if (section.error || !data || !tabs.length) {
-    return <p className="py-10 text-center text-sm text-red-500">{section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}</p>;
+    return (
+      <p className="py-10 text-center text-sm text-red-500">
+        {section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}
+      </p>
+    );
   }
   if (!planetData) {
-    return <p className="py-10 text-center text-sm text-red-500">{HOROSCOPE_SCREEN.errorLoadLabel}</p>;
+    return (
+      <p className="py-10 text-center text-sm text-red-500">
+        {HOROSCOPE_SCREEN.errorLoadLabel}
+      </p>
+    );
   }
 
   const total = sumBindus(planetData.ashtavarga);
@@ -41,72 +54,81 @@ export function AshtaVargaSection({ section, className }: Props) {
     p === "SarvaAshtavarga" ? HOROSCOPE_SCREEN.ashtaTabSarva : p;
 
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
-      <div role="tablist" className={HOROSCOPE_LAYOUT.pillTabListScroll}>
-        {tabs.map((p) => {
-          const active = p === activePlanet;
-          return (
-            <button
-              key={p}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              onClick={() => setSelected(p)}
-              className={cn(
-                HOROSCOPE_LAYOUT.pillTabScroll,
-                active
-                  ? HOROSCOPE_LAYOUT.pillTabActive
-                  : HOROSCOPE_LAYOUT.pillTabIdle
-              )}
-            >
-              {tabLabel(p)}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Three charts: stack on mobile, 3-col on sm+ */}
-      <div className="mx-auto grid w-full max-w-sm grid-cols-1 gap-4 sm:max-w-none sm:grid-cols-3 sm:gap-3">
-        <AshtaVargaBinduChart
-          title={`${tabLabel(activePlanet)} ( ${total} )`}
-          bindus={planetData.ashtavarga}
-          planetPos={isSarva ? null : planetData.planetPos}
-        />
-        <AshtaVargaBinduChart
-          title={HOROSCOPE_SCREEN.ashtaChartTrikona}
-          bindus={planetData.trikonaReduced}
-        />
-        <AshtaVargaBinduChart
-          title={HOROSCOPE_SCREEN.ashtaChartEkathipathya}
-          bindus={planetData.ekathipathiyaReduced}
-        />
-      </div>
-
-      {/* Gunahara summary — hidden for Sarva like Astrosoft */}
-      {!isSarva && (
-        <div className="mx-auto w-full max-w-sm rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_20%,transparent)] bg-white px-4 py-3 shadow-sm">
-          <div className="flex flex-col gap-1.5 text-sm">
-            <div className="flex justify-between gap-4">
-              <span className="font-semibold text-[var(--color-brand-panchang)]">
-                {HOROSCOPE_SCREEN.ashtaRasiGunahara}
-              </span>
-              <span className="font-bold text-[var(--color-brand-primary)]">{rasiGuna}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="font-semibold text-[var(--color-brand-panchang)]">
-                {HOROSCOPE_SCREEN.ashtaGrahaGunahara}
-              </span>
-              <span className="font-bold text-[var(--color-brand-primary)]">{grahaGuna}</span>
-            </div>
-            <div className="flex justify-between gap-4 border-t border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] pt-1.5">
-              <span className="font-semibold text-[var(--color-brand-panchang)]">
-                {HOROSCOPE_SCREEN.ashtaSuthdhaBindus}
-              </span>
-              <span className="font-bold text-[var(--color-brand-primary)]">{suthdha}</span>
+    <div className={cn(L.ashtaRoot, className)}>
+      <div className={L.ashtaStage}>
+        <header className={L.ashtaHeader}>
+          <div>
+            <p className={L.ashtaHeaderEyebrow}>
+              {HOROSCOPE_SCREEN.ashtaSectionEyebrow}
+            </p>
+            <h2 className={L.ashtaHeaderTitle}>{HOROSCOPE_SCREEN.tabAshtavarga}</h2>
+          </div>
+          <div className="space-y-1.5">
+            <p className={L.ashtaPlanetLabel}>
+              {HOROSCOPE_SCREEN.ashtaPlanetPickerLabel}
+            </p>
+            <div role="tablist" className={L.ashtaPlanetRail}>
+              {tabs.map((p) => {
+                const active = p === activePlanet;
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setSelected(p)}
+                    className={cn(
+                      L.ashtaPlanetChip,
+                      active ? L.ashtaPlanetChipActive : L.ashtaPlanetChipIdle
+                    )}
+                  >
+                    {tabLabel(p)}
+                  </button>
+                );
+              })}
             </div>
           </div>
+        </header>
+
+        <div className={L.ashtaChartsGrid}>
+          <AshtaVargaBinduChart
+            title={`${tabLabel(activePlanet)} ( ${total} )`}
+            bindus={planetData.ashtavarga}
+            planetPos={isSarva ? null : planetData.planetPos}
+          />
+          <AshtaVargaBinduChart
+            title={HOROSCOPE_SCREEN.ashtaChartTrikona}
+            bindus={planetData.trikonaReduced}
+          />
+          <AshtaVargaBinduChart
+            title={HOROSCOPE_SCREEN.ashtaChartEkathipathya}
+            bindus={planetData.ekathipathiyaReduced}
+          />
         </div>
-      )}
+
+        {!isSarva ? (
+          <div className={L.ashtaGunahara}>
+            <div className={L.ashtaGunaharaItem}>
+              <span className={L.ashtaGunaharaLabel}>
+                {HOROSCOPE_SCREEN.ashtaRasiGunahara}
+              </span>
+              <span className={L.ashtaGunaharaValue}>{rasiGuna}</span>
+            </div>
+            <div className={L.ashtaGunaharaItem}>
+              <span className={L.ashtaGunaharaLabel}>
+                {HOROSCOPE_SCREEN.ashtaGrahaGunahara}
+              </span>
+              <span className={L.ashtaGunaharaValue}>{grahaGuna}</span>
+            </div>
+            <div className={L.ashtaGunaharaItem}>
+              <span className={L.ashtaGunaharaLabel}>
+                {HOROSCOPE_SCREEN.ashtaSuthdhaBindus}
+              </span>
+              <span className={L.ashtaGunaharaValue}>{suthdha}</span>
+            </div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { DasaIcon } from "@/components/horoscope/full/FullHoroscopeIcons";
 import { DasaExpandableTable } from "@/components/horoscope/full/DasaExpandableTable";
 import { cn } from "@/lib/utils";
-import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
 import { dasaEntryKey, formatDasaDate } from "@/lib/format-dasa-date";
 import type { DasaEntry, DasaPayload, FullHoroscopeSection } from "@/types";
 
@@ -74,37 +74,32 @@ export function DasaTableSection({ section, className }: Props) {
   }
 
   const bannerParts = [runningPath.dasa?.name, runningPath.bukti?.name, runningPath.antra?.name].filter(Boolean);
+  const periodEntry =
+    runningPath.antra ?? runningPath.bukti ?? runningPath.dasa;
+  const L = HOROSCOPE_LAYOUT;
 
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      {runningPath.dasa && (
-        <div className="flex flex-col gap-3 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-brand-primary)_6%,white)] px-3 py-3 sm:flex-row sm:items-center sm:px-4">
+      {runningPath.dasa && periodEntry && (
+        <div className={L.dasaBanner}>
           <div className="flex min-w-0 flex-1 items-start gap-3">
-            <DasaIcon className="mt-0.5 size-5 shrink-0 text-[var(--color-brand-primary)]" />
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-[var(--color-brand-panchang)]">
-                {HOROSCOPE_SCREEN.currentDasaLabel}
-              </p>
-              <p className="text-sm font-bold text-[var(--color-brand-primary)]">
-                {bannerParts.join(" › ")}
-              </p>
-              <p className="text-xs text-black/50">
-                {formatDasaDate(runningPath.dasa.startDate)} —{" "}
-                {formatDasaDate(runningPath.dasa.endDate)}
+            <div className={L.dasaBannerIconWrap}>
+              <DasaIcon className="size-4" />
+            </div>
+            <div className="min-w-0 flex-1 space-y-0.5">
+              <p className={L.dasaBannerLabel}>{HOROSCOPE_SCREEN.currentDasaLabel}</p>
+              <p className={L.dasaBannerPath}>{bannerParts.join(" › ")}</p>
+              <p className={L.dasaBannerDates}>
+                {formatDasaDate(periodEntry.startDate)} —{" "}
+                {formatDasaDate(periodEntry.endDate)}
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={goToCurrent}
-            className="w-full shrink-0 rounded-full border border-[var(--color-brand-primary)] px-3 py-2 text-[10px] font-bold text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] sm:w-auto sm:py-1.5"
-          >
+          <button type="button" onClick={goToCurrent} className={L.dasaBannerCta}>
             {HOROSCOPE_SCREEN.dasaViewCurrent}
           </button>
         </div>
       )}
-
-      <p className="text-xs text-black/50">{HOROSCOPE_SCREEN.dasaTableHint}</p>
 
       <div className="flex w-full gap-2">
         {(["all", "running"] as DasaFilter[]).map((f) => (

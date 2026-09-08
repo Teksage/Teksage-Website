@@ -3,8 +3,7 @@
 
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
-import { buildBhavaBalaRows } from "@/lib/format-bhava-bala";
-import type { ShadbalaPayload } from "@/types";
+import type { BhavaBalaRow } from "@/lib/format-bhava-bala";
 
 const TH =
   "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-[10px] font-bold uppercase leading-tight tracking-wide text-white sm:px-2 sm:text-xs";
@@ -19,8 +18,7 @@ const RED = "font-semibold text-[var(--color-brand-error)]";
 const RANK = "font-bold text-[var(--color-brand-ios)]";
 const LABEL = "font-semibold text-[var(--color-brand-panchang)]";
 
-export function ShadbalaBhavaTable({ payload }: { payload: ShadbalaPayload }) {
-  const rows = buildBhavaBalaRows(payload);
+export function ShadbalaBhavaTable({ rows }: { rows: BhavaBalaRow[] }) {
   if (!rows.length) {
     return <p className={PLACEHOLDER}>{HOROSCOPE_SCREEN.shadbalaBhavaUnavailable}</p>;
   }
