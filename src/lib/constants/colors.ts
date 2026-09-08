@@ -128,6 +128,12 @@ export const COLORS = {
   muhurthaBannerTop: "#D4F1D1",
   muhurthaBannerMid: "#E0F5DD",
   muhurthaBannerBottom: "#ECF9EB",
+
+  /** Planetary Positions / charts — Astrosoft `PlanetCellRenderer` + chart glyphs. */
+  horoscopeMoonHighlight: "#C2185B",
+  horoscopeAscHighlight: "#E60000",
+  /** Astrosoft `UIConsts.GREENISH_BLUE` for retrograde. */
+  horoscopeRetroHighlight: "#00468C",
 } as const;
 
 export type ColorKey = keyof typeof COLORS;

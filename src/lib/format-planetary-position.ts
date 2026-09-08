@@ -16,7 +16,8 @@ export interface PlanetaryPositionRow {
   nakshatraPada: string;
   jaiminiKaraka: string;
   isRetro: boolean;
-  highlight: boolean;
+  /** Astrosoft chart/table accent: Moon=magenta, Asc=red, retro=blue. */
+  highlight: "moon" | "asc" | "retro" | null;
 }
 
 function pad2(n: number): string {
@@ -101,14 +102,23 @@ export function buildPlanetaryRows(
         ? apiKaraka
         : karakas[name] ?? "";
 
+    const isRetro = e.isRetro === true;
+    const highlight: PlanetaryPositionRow["highlight"] = isRetro
+      ? "retro"
+      : name === "Moon"
+        ? "moon"
+        : name === "Ascendant"
+          ? "asc"
+          : null;
+
     return {
       planet: name === "Ascendant" ? "Asc" : name,
       longitude: formatLongitudeDms(absolute),
       rasi: formatRasiName(e.sign),
       nakshatraPada: formatNakshatraPada(e.nakshatraPada?.nak, e.nakshatraPada?.pada),
       jaiminiKaraka: karaka || "—",
-      isRetro: e.isRetro === true,
-      highlight: name === "Moon" || name === "Ascendant",
+      isRetro,
+      highlight,
     };
   });
 }

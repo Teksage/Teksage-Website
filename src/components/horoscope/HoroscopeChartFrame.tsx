@@ -11,6 +11,7 @@ export function HoroscopeChartFrame({
   title,
   html,
   className,
+  frameClassName,
   showTitle,
 }: HoroscopeChartFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -30,7 +31,12 @@ export function HoroscopeChartFrame({
       {showTitle !== false && title?.trim() ? (
         <p className={HOROSCOPE_LAYOUT.chartTitle}>{title}</p>
       ) : null}
-      <div className={cn(HOROSCOPE_LAYOUT.chartShell, HOROSCOPE_LAYOUT.chartFrame)}>
+      <div
+        className={cn(
+          HOROSCOPE_LAYOUT.chartShell,
+          frameClassName ?? HOROSCOPE_LAYOUT.chartFrame
+        )}
+      >
         <iframe
           ref={iframeRef}
           title={title}

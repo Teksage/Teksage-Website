@@ -3,6 +3,8 @@
 import { HOROSCOPE_SHADBALA } from "@/lib/constants/horoscope-shadbala";
 import { HOROSCOPE_EPHEMERIS } from "@/lib/constants/horoscope-ephemeris";
 import { HOROSCOPE_FULL_UI } from "@/lib/constants/horoscope-full-ui";
+import { HOROSCOPE_DASA_ASHTA_UI } from "@/lib/constants/horoscope-dasa-ashta-ui";
+import { HOROSCOPE_SHADBALA_UI } from "@/lib/constants/horoscope-shadbala-ui";
 
 export const HOROSCOPE_SCREEN = {
   headerTitle: "Horoscope",
@@ -53,6 +55,7 @@ export const HOROSCOPE_SCREEN = {
   tabShadbala: "Shadbala",
   tabLagna: "Lagna",
   tabEphemeris: "Ephemeris",
+  chartsViewerEyebrow: "Divisional chart",
   /** Section headings */
   sectionSpecialLagna: "Special Lagna",
   sectionShadbala: "Shadbala",
@@ -60,13 +63,15 @@ export const HOROSCOPE_SCREEN = {
   sectionPlanetaryPosition: "Planetary Position",
   /** Dasa section */
   currentDasaLabel: "Current Dasa",
+  dasaPeriodAntra: "Antra period",
+  dasaPeriodBukti: "Bukti period",
+  dasaPeriodDasa: "Dasa period",
   dasaFilterAll: "All Dasas",
   dasaFilterRunning: "Active Only",
   dasaLevelDasa: "Dasa",
   dasaLevelBukti: "Bukti",
   dasaLevelAntra: "Antra",
   dasaActiveBadge: "Active",
-  dasaTableHint: "Tap ▶ on a row to expand sub-periods below it",
   dasaShowingBuktiFor: "Bukti periods for",
   dasaShowingAntraFor: "Antra periods for",
   dasaViewCurrent: "Go to current",
@@ -81,14 +86,16 @@ export const HOROSCOPE_SCREEN = {
   dasaColEnd: "End",
   dasaColStatus: "Status",
   /** Ashtavarga — Astrosoft layout */
+  ashtaSectionEyebrow: "Bindu charts",
+  ashtaPlanetPickerLabel: "Select planet",
   ashtaTabPlanet: "By Planet",
   ashtaTabAll: "All Planets",
   ashtaTabSarva: "SarvaAshtavarga",
   ashtaChartTrikona: "Trikona",
   ashtaChartEkathipathya: "Ekathipathya",
-  ashtaRasiGunahara: "Rasi Gunahara:",
-  ashtaGrahaGunahara: "Graha Gunahara:",
-  ashtaSuthdhaBindus: "Suthdha Bindus:",
+  ashtaRasiGunahara: "Rasi Gunahara",
+  ashtaGrahaGunahara: "Graha Gunahara",
+  ashtaSuthdhaBindus: "Suthdha Bindus",
   ashtaRowHint: "Row 1: Ashtavarga bindus · Row 2: Trikona-reduced",
   ashtaColPlanet: "Planet",
   ...HOROSCOPE_EPHEMERIS,
@@ -143,6 +150,8 @@ export const HOROSCOPE_LAYOUT = {
   pillTabIdle:
     "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]",
   ...HOROSCOPE_FULL_UI,
+  ...HOROSCOPE_DASA_ASHTA_UI,
+  ...HOROSCOPE_SHADBALA_UI,
   chartStack:
     "flex w-full max-w-md flex-col items-center gap-3 lg:max-w-3xl lg:grid lg:grid-cols-2 lg:justify-items-center lg:gap-5 xl:max-w-4xl xl:gap-6",
   chartFrame: "mx-auto w-full max-w-[min(100%,20rem)] sm:max-w-xs lg:max-w-[20rem]",
