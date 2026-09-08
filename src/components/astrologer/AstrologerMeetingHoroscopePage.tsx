@@ -4,9 +4,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
 import { Loader } from "@/components/common/Loader";
 import { AstrologerMeetingHoroscope } from "@/components/astrologer/AstrologerMeetingHoroscope";
+import { FullHoroscopePanels } from "@/components/horoscope/full/FullHoroscopePanels";
 import { useAstrologerEventDetail } from "@/hooks/useAstrologerEvents";
+import { useEventFullHoroscope } from "@/hooks/useEventFullHoroscope";
 import {
-  ASTRO_PORTAL_COLORS,
   ASTRO_PORTAL_UI,
   MEETING_DETAIL_QUERY,
 } from "@/lib/constants/astrologer-portal";
@@ -24,12 +25,17 @@ export function AstrologerMeetingHoroscopePage({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { event, loading, error } = useAstrologerEventDetail(eventId);
+  const fullState = useEventFullHoroscope(
+    event?.share_horoscope ? eventId : null
+  );
   const nameParam = searchParams.get(MEETING_DETAIL_QUERY.name);
   const fullName = event
     ? nameFromDetailEvent(event, nameParam).fullName
     : (nameParam?.trim() ?? "");
 
   const backHref = `${ROUTES.astrologerMeetings}/${eventId}?${searchParams.toString()}`;
+  const hasBasic = hasAstrologerMeetingHoroscope(event?.userHoroscope ?? null);
+  const canFull = Boolean(event?.share_horoscope);
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
@@ -51,20 +57,22 @@ export function AstrologerMeetingHoroscopePage({
         <p className="px-6 py-12 text-center text-sm text-gray-600">{error}</p>
       )}
 
-      {!loading &&
-        !error &&
-        event &&
-        hasAstrologerMeetingHoroscope(event.userHoroscope) && (
-        <div className="mx-auto w-full max-w-2xl px-5 py-4">
+      {!loading && !error && event && hasBasic && (
+        <div className="mx-auto w-full max-w-4xl px-3 pb-10 pt-3 sm:px-5">
           <p className="mb-4 text-base font-semibold text-gray-900">{fullName}</p>
           <AstrologerMeetingHoroscope horoscope={event.userHoroscope!} />
+          {canFull ? (
+            <div className="mt-8 border-t border-black/10 pt-6">
+              <p className="mb-3 text-sm font-semibold text-gray-900">
+                {ASTRO_PORTAL_UI.fullHoroscopeTitle}
+              </p>
+              <FullHoroscopePanels state={fullState} eventId={eventId} />
+            </div>
+          ) : null}
         </div>
       )}
 
-      {!loading &&
-        !error &&
-        event &&
-        !hasAstrologerMeetingHoroscope(event.userHoroscope) && (
+      {!loading && !error && event && !hasBasic && (
         <p className="px-6 py-12 text-center text-sm text-gray-500">
           {ASTRO_PORTAL_UI.detail.horoscopeUnavailable}
         </p>

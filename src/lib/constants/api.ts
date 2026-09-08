@@ -98,6 +98,11 @@ export const API_ENDPOINTS = {
   astrologerBook: "/api/astrologer/book",
   astrologerQuestions: "/api/astrologer/questions",
   astroEvents: "/api/astrologer/events",
+  /**
+   * Consultation Full Horoscope for assigned astrologer.
+   * Append `/{eventId}/horoscope/{charts|dasa|…}`.
+   */
+  astroEventHoroscope: "/api/astrologer/events",
 
   // --- AI chat — `main.py` registers `/chat`; router also exposes `/api/chat` (same handler) ---
   /** WebSocket path — matches Flutter `ApiEndpoint.chatUrl` (`ws://<host>/chat`). */

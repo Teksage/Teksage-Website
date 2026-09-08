@@ -10,6 +10,7 @@ export const ASTRO_PORTAL_UI = {
   availabilityTitle: "My Availability",
   meetingDetailTitle: "Meeting Details",
   horoscopeDetailTitle: "Horoscope Details",
+  fullHoroscopeTitle: "Full Horoscope",
 
   // Dashboard cards — mirrors dashBoardCard.dart
   card: {

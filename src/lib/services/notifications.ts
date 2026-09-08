@@ -40,14 +40,20 @@ export async function fetchAppNotifications(): Promise<AppNotification[]> {
     API_ENDPOINTS.notifications
   );
   const raw = body?.notifications ?? [];
-  return raw.map((n) => ({
-    id: String(n.id),
-    title: n.title,
-    message: n.message,
-    createdAt: n.sent_at ?? "",
-    isRead: Boolean(n.read_by),
-    recipientType: n.recipient_type,
-  }));
+  return raw
+    .map((n) => ({
+      id: String(n.id),
+      title: n.title,
+      message: n.message,
+      createdAt: n.sent_at ?? "",
+      isRead: Boolean(n.read_by),
+      recipientType: n.recipient_type,
+    }))
+    .sort((a, b) => {
+      const ta = Date.parse(a.createdAt) || 0;
+      const tb = Date.parse(b.createdAt) || 0;
+      return tb - ta;
+    });
 }
 
 export async function markNotificationsRead(ids: number[]): Promise<void> {
@@ -90,5 +96,10 @@ export async function fetchConsultationNotificationEvents(
       astrologerPicture: e.astrologer_picture,
       astrologerFirstName: e.astrologer_first_name,
       astrologerLastName: e.astrologer_last_name,
-    }));
+    }))
+    .sort((a, b) => {
+      const ta = Date.parse(a.startDatetime) || 0;
+      const tb = Date.parse(b.startDatetime) || 0;
+      return tb - ta;
+    });
 }
