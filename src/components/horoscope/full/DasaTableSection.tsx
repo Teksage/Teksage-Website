@@ -67,7 +67,7 @@ export function DasaTableSection({ section, className }: Props) {
   }
 
   if (section.isLoading) {
-    return <p className="py-10 text-center text-sm text-black/50">{HOROSCOPE_SCREEN.loadingLabel}</p>;
+    return null;
   }
   if (section.error || !entries.length) {
     return <p className="py-10 text-center text-sm text-red-500">{section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}</p>;

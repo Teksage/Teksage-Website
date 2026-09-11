@@ -9,7 +9,7 @@ export function FullHoroscopeTablePlaceholder({
   section: { isLoading: boolean; error: string | null };
 }) {
   if (section.isLoading) {
-    return <p className={FH_TABLE.placeholder}>{HOROSCOPE_SCREEN.loadingLabel}</p>;
+    return null;
   }
   if (section.error) {
     return <p className={FH_TABLE.placeholder}>{section.error}</p>;

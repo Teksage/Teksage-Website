@@ -7,14 +7,7 @@ import {
   PROFILE_FIELD_UI as FU,
 } from "@/lib/constants/profile-details";
 import { cn } from "@/lib/utils";
-
-type ProfileChatLanguageFieldProps = {
-  value: string;
-  onChange: (value: string) => void;
-  isEditing: boolean;
-  hasError?: boolean;
-  errorMessage?: string;
-};
+import type { ProfileChatLanguageFieldProps } from "@/types";
 
 export function ProfileChatLanguageField({
   value,
@@ -38,9 +31,8 @@ export function ProfileChatLanguageField({
           disabled={!isEditing}
           className={cn(
             FU.select,
-            "text-[var(--color-brand-black)]",
-            hasError && FU.shellError,
-            !isEditing && "cursor-not-allowed opacity-90"
+            !isEditing ? FU.selectDisabled : null,
+            hasError && FU.shellError
           )}
         >
           {CHAT_LANGUAGE_OPTIONS.map((opt) => (
@@ -52,7 +44,10 @@ export function ProfileChatLanguageField({
         <svg
           aria-hidden
           viewBox="0 0 20 20"
-          className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-black/40"
+          className={cn(
+            FU.selectChevron,
+            !isEditing && FU.selectChevronHidden
+          )}
         >
           <path
             d="M5.5 7.5 10 12l4.5-4.5"

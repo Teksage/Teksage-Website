@@ -25,11 +25,7 @@ export function AshtaVargaSection({ section, className }: Props) {
   const L = HOROSCOPE_LAYOUT;
 
   if (section.isLoading) {
-    return (
-      <p className="py-10 text-center text-sm text-black/50">
-        {HOROSCOPE_SCREEN.loadingLabel}
-      </p>
-    );
+    return null;
   }
   if (section.error || !data || !tabs.length) {
     return (
