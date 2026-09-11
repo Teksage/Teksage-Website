@@ -57,6 +57,10 @@ export interface AstroHoroscope {
   [key: string]: unknown;
 }
 
+export interface AstrologerMeetingHoroscopeProps {
+  horoscope: AstroHoroscope;
+}
+
 export interface AstroQuestion {
   id: number;
   question: string;

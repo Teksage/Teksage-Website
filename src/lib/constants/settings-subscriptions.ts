@@ -5,10 +5,12 @@ export const SUBSCRIPTION_AUTO_PAY_PLAN_ID = 1;
 export const SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED = true;
 
 export const SETTINGS_SUBSCRIPTIONS_AUTO_PAY = {
-  toggleLabel: "Enable auto-renewal",
-  toggleHint: "Renews monthly. Cancel anytime from this page.",
+  toggleLabel: "I agree to recurring payments",
+  toggleHint: "You can cancel anytime through the app.",
   autoRenewsEveryMonth: "Auto-renews every month",
-  autoRenewMessage: "Auto-renews every month. Cancel anytime in Subscriptions.",
+  cancelAnytimeNote: "You can cancel anytime through the app.",
+  autoRenewMessage:
+    "Auto-renews every month. You can cancel anytime through the app.",
   activeLabel: "Auto-renewal is on",
   nextBilling: "Next billing",
   cancelCta: "Cancel auto-renew",
@@ -25,6 +27,15 @@ export const SETTINGS_SUBSCRIPTIONS_AUTO_PAY = {
   accessUntil: "Your premium access will continue until",
   cancelFailed: "Could not cancel auto-renew. Please try again.",
   monthlyBadge: "Auto-renew available",
+} as const;
+
+export const SUBSCRIPTION_AUTO_PAY_CHECKBOX_UI = {
+  wrap: "mt-4 rounded-lg border border-white/15 bg-white/5 px-4 py-3",
+  row: "flex cursor-pointer items-start gap-3 text-left",
+  checkbox:
+    "mt-0.5 size-4 shrink-0 cursor-pointer accent-[var(--color-brand-primary)]",
+  label: "text-sm font-semibold leading-snug text-white",
+  hint: "mt-1.5 pl-7 text-xs font-medium leading-snug text-white/70",
 } as const;
 
 export const SUBSCRIPTION_CANCEL_REASONS = [

@@ -53,5 +53,5 @@ export const HOROSCOPE_SHADBALA = {
   shadbalaSortHouse: "House",
   shadbalaSortAsc: "Low → High",
   shadbalaSortDesc: "High → Low",
-  sectionShadbalaTitle: "Shadbala",
+  sectionShadbalaTitle: "Shadbala Table",
 } as const;
