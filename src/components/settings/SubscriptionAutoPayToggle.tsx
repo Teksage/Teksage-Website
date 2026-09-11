@@ -1,37 +1,37 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { SETTINGS_SUBSCRIPTIONS_AUTO_PAY } from "@/lib/constants/settings-subscriptions";
+import {
+  SETTINGS_SUBSCRIPTIONS_AUTO_PAY,
+  SUBSCRIPTION_AUTO_PAY_CHECKBOX_UI,
+  SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED,
+} from "@/lib/constants/settings-subscriptions";
 import { cn } from "@/lib/utils";
+import type { SubscriptionAutoPayToggleProps } from "@/types/ui/subscription-auto-pay";
 
-type SubscriptionAutoPayToggleProps = {
-  enabled?: boolean;
-  onChange?: (enabled: boolean) => void;
-  disabled?: boolean;
-  className?: string;
-};
-
+/** Mirrors Flutter subscription checkbox — default on; uncheck for one-time pay. */
 export function SubscriptionAutoPayToggle({
+  enabled = SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED,
+  onChange,
+  disabled = false,
   className,
 }: SubscriptionAutoPayToggleProps) {
   const copy = useI18nConstants(SETTINGS_SUBSCRIPTIONS_AUTO_PAY);
+  const U = SUBSCRIPTION_AUTO_PAY_CHECKBOX_UI;
 
   return (
-    <div
-      className={cn(
-        "mt-4 flex flex-col items-center justify-center gap-1 rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center",
-        className
-      )}
-    >
-      <div className="flex items-center justify-center gap-2.5">
-        <span className="size-2 shrink-0 rounded-full bg-[var(--color-brand-primary)]" />
-        <span className="text-sm font-semibold text-white">
-          {copy.autoRenewsEveryMonth}
-        </span>
-      </div>
-      <p className="text-xs font-medium leading-snug text-white/70">
-        {copy.cancelAnytimeNote}
-      </p>
+    <div className={cn(U.wrap, className)}>
+      <label className={U.row}>
+        <input
+          type="checkbox"
+          checked={enabled}
+          disabled={disabled}
+          onChange={(e) => onChange?.(e.target.checked)}
+          className={U.checkbox}
+        />
+        <span className={U.label}>{copy.toggleLabel}</span>
+      </label>
+      <p className={U.hint}>{copy.cancelAnytimeNote}</p>
     </div>
   );
 }

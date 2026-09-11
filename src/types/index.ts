@@ -171,6 +171,8 @@ export type {
   SubscriptionPlanBenefitsProps,
 } from "./ui/settings";
 
+export type { SubscriptionAutoPayToggleProps } from "./ui/subscription-auto-pay";
+
 export type {
   HoroscopeChartFrameProps,
   PanchangDetailViewProps,
