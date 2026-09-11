@@ -172,6 +172,7 @@ export type {
 } from "./ui/settings";
 
 export type { SubscriptionAutoPayToggleProps } from "./ui/subscription-auto-pay";
+export type { ProfileChatLanguageFieldProps } from "./ui/profile-chat-language";
 
 export type {
   HoroscopeChartFrameProps,

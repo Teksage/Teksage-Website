@@ -59,10 +59,12 @@ export function ProfileField({
                 ? FU.inputError
                 : FU.inputIdle
             : disabled
-              ? "cursor-not-allowed border-transparent bg-[var(--color-brand-bg)] text-gray-500"
+              ? FU.inputDisabled
               : hasError
                 ? "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]"
-                : "border-black/20 focus-visible:border-[var(--color-brand-primary)]"
+                : "border-black/20 focus-visible:border-[var(--color-brand-primary)]",
+          type === "time" &&
+            "[&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-datetime-edit]:text-[var(--color-brand-black)]"
         )}
       />
       {hasError && errorMessage ? (

@@ -87,7 +87,7 @@ export function ShadbalaTable({
   const sortValue = viewTab === "bhava" ? bhavaSortKey : planetSortKey;
 
   if (section.isLoading) {
-    return <p className={PLACEHOLDER}>{HOROSCOPE_SCREEN.loadingLabel}</p>;
+    return null;
   }
   if (section.error || !section.data) {
     return (

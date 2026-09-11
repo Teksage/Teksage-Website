@@ -50,9 +50,10 @@ export const PROFILE_DATE_PICKER_LAYOUT = {
   dayCellDefault: "text-[var(--color-brand-black)] hover:bg-black/5",
   dayCellDisabled: "cursor-not-allowed text-black/25",
   fieldBtn:
-    "flex h-12 w-full items-center rounded-xl border border-black/15 bg-neutral-100 px-4 text-left text-sm font-medium transition-colors",
+    "flex h-12 w-full items-center rounded-xl border px-4 text-left text-sm font-medium text-[var(--color-brand-black)] transition-colors",
   fieldBtnEditable:
-    "cursor-pointer focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none",
-  fieldBtnDisabled: "cursor-not-allowed border-black/10 text-neutral-800",
+    "cursor-pointer border-black/[0.08] bg-[var(--color-brand-bg)] focus-visible:border-[var(--color-brand-primary)] focus-visible:bg-white focus-visible:outline-none",
+  fieldBtnDisabled:
+    "cursor-not-allowed border-black/[0.06] bg-[var(--color-brand-bg)] text-[var(--color-brand-black)] opacity-100 pointer-events-none",
   fieldPlaceholder: "text-black/45",
 } as const;

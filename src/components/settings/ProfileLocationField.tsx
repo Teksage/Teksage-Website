@@ -147,8 +147,11 @@ export function ProfileLocationField({
         placeholder={placeholder}
         className={cn(
           FU.inputBase,
-          hasError ? FU.inputError : FU.inputIdle,
-          !isEditable && "cursor-not-allowed opacity-90",
+          !isEditable
+            ? FU.inputDisabled
+            : hasError
+              ? FU.inputError
+              : FU.inputIdle,
           inputClassName
         )}
       />

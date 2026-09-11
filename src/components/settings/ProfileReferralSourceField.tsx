@@ -40,9 +40,8 @@ export function ProfileReferralSourceField({
           disabled={!isEditing}
           className={cn(
             FU.select,
-            "text-[var(--color-brand-black)]",
             hasError && FU.shellError,
-            !isEditing && "cursor-not-allowed opacity-90"
+            !isEditing && FU.selectDisabled
           )}
         >
           <option value="">{PR.placeholder}</option>

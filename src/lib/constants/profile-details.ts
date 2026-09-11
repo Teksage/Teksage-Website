@@ -84,18 +84,29 @@ export const PROFILE_LAYOUT = {
 export const PROFILE_FIELD_UI = {
   label: `${TYPO.sizeSm} ${TYPO.weightMedium} text-[var(--color-brand-black)]/70`,
   labelRequired: "text-[var(--color-brand-error)]",
-  inputBase: `h-12 rounded-xl px-4 ${TYPO.sizeSm} ${TYPO.weightMedium} transition-colors focus-visible:ring-0`,
+  inputBase: `h-12 rounded-xl px-4 ${TYPO.sizeSm} ${TYPO.weightMedium} text-[var(--color-brand-black)] transition-colors focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-100`,
   inputIdle:
     "border border-black/[0.08] bg-[var(--color-brand-bg)] focus-visible:border-[var(--color-brand-primary)] focus-visible:bg-white",
+  /** Same look for all locked/non-edit fields (overrides Input disabled:bg-input/50). */
   inputDisabled:
-    "cursor-not-allowed border border-black/[0.06] bg-[var(--color-brand-bg)] text-neutral-700",
+    "cursor-not-allowed border border-black/[0.06] bg-[var(--color-brand-bg)] text-[var(--color-brand-black)] disabled:border-black/[0.06] disabled:bg-[var(--color-brand-bg)] disabled:opacity-100",
   inputError:
     "border-[var(--color-brand-error)] focus-visible:border-[var(--color-brand-error)]",
   shell:
     "flex h-12 items-stretch overflow-hidden rounded-xl border border-black/[0.08] bg-[var(--color-brand-bg)]",
+  shellDisabled: "border-black/[0.06] bg-[var(--color-brand-bg)]",
   shellError: "border-[var(--color-brand-error)]",
+  shellInput: `h-full min-w-0 flex-1 rounded-none border-0 bg-transparent px-4 ${TYPO.sizeSm} ${TYPO.weightMedium} text-[var(--color-brand-black)] shadow-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:bg-transparent disabled:opacity-100`,
+  shellDial:
+    "flex w-[5.5rem] shrink-0 items-center justify-center border-r border-black/[0.08] text-sm font-semibold text-[var(--color-brand-black)]",
+  shellDialDisabled: "pointer-events-none",
   errorText: `${TYPO.sizeXs} ${TYPO.weightSemibold} text-[var(--color-brand-error)]`,
-  select: `h-12 w-full appearance-none rounded-xl border border-black/[0.08] bg-[var(--color-brand-bg)] px-4 pr-11 ${TYPO.sizeSm} ${TYPO.weightMedium} focus-visible:border-[var(--color-brand-primary)] focus-visible:bg-white focus-visible:outline-none`,
+  select: `h-12 w-full appearance-none rounded-xl border border-black/[0.08] bg-[var(--color-brand-bg)] px-4 pr-11 ${TYPO.sizeSm} ${TYPO.weightMedium} text-[var(--color-brand-black)] focus-visible:border-[var(--color-brand-primary)] focus-visible:bg-white focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-100`,
+  selectDisabled:
+    "border-black/[0.06] bg-[var(--color-brand-bg)] disabled:border-black/[0.06] disabled:bg-[var(--color-brand-bg)]",
+  selectChevron:
+    "pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-black/40",
+  selectChevronHidden: "hidden",
 } as const;
 
 /** Default chat options — align with backend `VALID_LANGUAGES` / Flutter. */
