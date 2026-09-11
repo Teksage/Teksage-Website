@@ -6,9 +6,11 @@ export const SUBSCRIPTION_AUTO_PAY_DEFAULT_ENABLED = true;
 
 export const SETTINGS_SUBSCRIPTIONS_AUTO_PAY = {
   toggleLabel: "Enable auto-renewal",
-  toggleHint: "Renews monthly. Cancel anytime from this page.",
+  toggleHint: "You can cancel anytime through the app.",
   autoRenewsEveryMonth: "Auto-renews every month",
-  autoRenewMessage: "Auto-renews every month. Cancel anytime in Subscriptions.",
+  cancelAnytimeNote: "You can cancel anytime through the app.",
+  autoRenewMessage:
+    "Auto-renews every month. You can cancel anytime through the app.",
   activeLabel: "Auto-renewal is on",
   nextBilling: "Next billing",
   cancelCta: "Cancel auto-renew",

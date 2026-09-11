@@ -101,12 +101,9 @@ export function ShadbalaTable({
     <div className={L.shadbalaRoot}>
       <div className={L.shadbalaStage}>
         <header className={L.shadbalaHeader}>
-          <div>
-            <p className={L.shadbalaHeaderEyebrow}>{HOROSCOPE_SCREEN.tabShadbala}</p>
-            <h2 className={L.shadbalaHeaderTitle}>
-              {HOROSCOPE_SCREEN.sectionShadbalaTitle}
-            </h2>
-          </div>
+          <h2 className={L.shadbalaHeaderTitle}>
+            {HOROSCOPE_SCREEN.sectionShadbalaTitle}
+          </h2>
           <div role="tablist" className={L.shadbalaTabRail}>
             {VIEW_TABS.map((t) => {
               const active = t.id === viewTab;

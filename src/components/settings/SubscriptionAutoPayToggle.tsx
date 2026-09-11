@@ -19,14 +19,19 @@ export function SubscriptionAutoPayToggle({
   return (
     <div
       className={cn(
-        "mt-4 flex items-center justify-center gap-2.5 rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center",
+        "mt-4 flex flex-col items-center justify-center gap-1 rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center",
         className
       )}
     >
-      <span className="size-2 shrink-0 rounded-full bg-[var(--color-brand-primary)]" />
-      <span className="text-sm font-semibold text-white">
-        {copy.autoRenewsEveryMonth}
-      </span>
+      <div className="flex items-center justify-center gap-2.5">
+        <span className="size-2 shrink-0 rounded-full bg-[var(--color-brand-primary)]" />
+        <span className="text-sm font-semibold text-white">
+          {copy.autoRenewsEveryMonth}
+        </span>
+      </div>
+      <p className="text-xs font-medium leading-snug text-white/70">
+        {copy.cancelAnytimeNote}
+      </p>
     </div>
   );
 }
