@@ -278,6 +278,7 @@ export type {
   AstroEvent,
   AstroEventDetail,
   AstroHoroscope,
+  AstrologerMeetingHoroscopeProps,
   AstroQuestion,
   AstroSlot,
   SlotCreatePayload,

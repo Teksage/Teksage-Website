@@ -39,6 +39,7 @@ export * from "./horoscope-shadbala";
 export * from "./horoscope-ephemeris";
 export * from "./horoscope-full-ui";
 export * from "./horoscope-chart-frame";
+export * from "./meeting-horoscope-ui";
 export * from "./prediction-circle-nav";
 export * from "./login-email-form";
 export * from "./login-mobile-form";

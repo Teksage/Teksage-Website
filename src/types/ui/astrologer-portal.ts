@@ -44,3 +44,11 @@ export interface AskAnswerVoiceInputProps {
   onVoiceFileChange: (file: File | null, durationSec?: number | null) => void;
   disabled?: boolean;
 }
+
+export interface MeetingHoroscopeExpandableSectionProps {
+  fieldKey: string;
+  label: string;
+  value: string;
+  periods: string[] | null;
+}
+
