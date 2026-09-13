@@ -103,6 +103,11 @@ export const API_ENDPOINTS = {
    * Append `/{eventId}/horoscope/{charts|dasa|…}`.
    */
   astroEventHoroscope: "/api/astrologer/events",
+  /**
+   * Single question consultation Full Horoscope for assigned astrologer.
+   * Append `/{requestId}/horoscope/{charts|dasa|…}`.
+   */
+  astroAskRequestHoroscope: "/api/astrologer/ask-requests",
 
   // --- AI chat — `main.py` registers `/chat`; router also exposes `/api/chat` (same handler) ---
   /** WebSocket path — matches Flutter `ApiEndpoint.chatUrl` (`ws://<host>/chat`). */

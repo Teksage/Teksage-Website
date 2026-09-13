@@ -20,6 +20,8 @@ export type {
   EphemerisRow,
   EphemerisPayload,
   FullHoroscopeSection,
+  FullHoroscopeState,
+  FullHoroscopePanelsProps,
 } from "./full-horoscope";
 
 export type { UserProfile } from "./user-profile";
@@ -292,6 +294,7 @@ export type {
   AstrologerAvailabilityProps,
   AstrologerAvailabilityState,
   AstrologerMeetingDetailProps,
+  AstrologerMeetingHoroscopeCardProps,
   AstrologerMeetingQuestionsSectionProps,
 } from "./ui/astrologer-portal";
 

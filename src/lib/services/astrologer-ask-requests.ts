@@ -7,6 +7,15 @@ export async function fetchAstrologerAskRequests(): Promise<AskAstrologerRequest
   return (res.data as { requests: AskAstrologerRequest[] }).requests ?? [];
 }
 
+export async function fetchAstrologerAskRequestDetail(
+  requestId: number | string
+): Promise<AskAstrologerRequest> {
+  const res = await http.get<AskAstrologerRequest>(
+    `${API_ENDPOINTS.astrologerAskRequests}/${requestId}`
+  );
+  return res.data;
+}
+
 export async function submitAskAnswer(
   requestId: number,
   answerText: string | null,

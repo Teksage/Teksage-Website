@@ -7,6 +7,12 @@ const SKIP_KEYS = new Set([
   "rasi_chart_label",
   "navamsa_chart_label",
   "horoscope_data",
+  "horoscope_id",
+  "horoscope_details",
+  "horoscope_detail",
+  "dasa_bukti",
+  "dasa_bukti_details",
+  "dasa_bukti_detail",
 ]);
 
 const LONG_TEXT_KEYS = new Set([
@@ -25,7 +31,6 @@ const FACT_ORDER: Array<{ key: string; label: string }> = [
   { key: "time_of_birth", label: "Time of birth" },
   { key: "place_of_birth", label: "Place of birth" },
   { key: "current_dasa", label: "Current Dasa" },
-  { key: "horoscope_id", label: "Horoscope ID" },
 ];
 
 export type MeetingHoroscopeField = {

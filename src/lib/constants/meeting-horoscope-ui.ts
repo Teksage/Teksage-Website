@@ -14,7 +14,7 @@ export const MEETING_HOROSCOPE_UI = {
   headerEyebrow: `${TYPO.caption} font-medium uppercase tracking-[0.06em] text-black/40`,
   headerTitle: `${TYPO.h3} leading-tight text-[var(--color-brand-black)]`,
   factsGrid:
-    "grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 sm:gap-3 sm:p-5 lg:grid-cols-3",
+    "grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 sm:gap-3 sm:p-5 lg:grid-cols-3 xl:grid-cols-6",
   factCard:
     "rounded-lg border border-black/[0.06] bg-[color-mix(in_srgb,var(--color-brand-bg)_55%,white)] px-3.5 py-3",
   factLabel: `${TYPO.caption} font-semibold uppercase tracking-[0.04em] text-[var(--color-brand-panchang)]`,

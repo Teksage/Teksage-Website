@@ -162,3 +162,24 @@ export interface FullHoroscopeSection<T> {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface FullHoroscopeState {
+  charts: FullHoroscopeSection<DivisionalChart[]>;
+  dasa: FullHoroscopeSection<DasaPayload>;
+  ashtaVarga: FullHoroscopeSection<AshtaVargaPayload>;
+  specialLagna: FullHoroscopeSection<SpecialLagnaPayload>;
+  shadbala: FullHoroscopeSection<ShadbalaPayload>;
+  bhavaPosition: FullHoroscopeSection<BhavaPositionPayload>;
+  planetaryPosition: FullHoroscopeSection<PlanetaryPositionPayload>;
+  isAnyLoading: boolean;
+  reload?: () => void;
+}
+
+export interface FullHoroscopePanelsProps {
+  state: FullHoroscopeState;
+  /** When set, ephemeris uses consultation customer birth place (meeting). */
+  eventId?: string;
+  /** When set, ephemeris uses Ask Astrologer customer birth place (single question). */
+  askRequestId?: string;
+  className?: string;
+}

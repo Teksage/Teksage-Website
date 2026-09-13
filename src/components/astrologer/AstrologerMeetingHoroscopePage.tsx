@@ -58,7 +58,7 @@ export function AstrologerMeetingHoroscopePage({
       )}
 
       {!loading && !error && event && hasBasic && (
-        <div className="w-full px-3 pb-10 pt-3 sm:px-4 lg:px-5">
+        <div className="w-full px-4 pb-12 pt-4 sm:px-6 lg:px-8 xl:px-10">
           <p className="mb-4 text-base font-semibold text-gray-900">{fullName}</p>
           <AstrologerMeetingHoroscope horoscope={event.userHoroscope!} />
           {canFull ? (

@@ -1,16 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useAuthStore } from "@/store/auth.store";
 import {
-  fetchDivisionalCharts,
-  fetchHoroscopeDasa,
-  fetchHoroscopeAshtaVarga,
-  fetchHoroscopeSpecialLagna,
-  fetchHoroscopeShadbala,
-  fetchHoroscopeBhavaPosition,
-  fetchHoroscopePlanetaryPosition,
-} from "@/lib/services/full-horoscope";
+  fetchAskRequestDivisionalCharts,
+  fetchAskRequestHoroscopeDasa,
+  fetchAskRequestHoroscopeAshtaVarga,
+  fetchAskRequestHoroscopeSpecialLagna,
+  fetchAskRequestHoroscopeShadbala,
+  fetchAskRequestHoroscopeBhavaPosition,
+  fetchAskRequestHoroscopePlanetaryPosition,
+} from "@/lib/services/ask-request-full-horoscope";
 import type {
   DivisionalChart,
   DasaPayload,
@@ -20,10 +19,8 @@ import type {
   BhavaPositionPayload,
   PlanetaryPositionPayload,
   FullHoroscopeSection,
-  FullHoroscopeState,
 } from "@/types";
-
-export type { FullHoroscopeState } from "@/types";
+import type { FullHoroscopeState } from "@/hooks/useFullHoroscope";
 
 function makeSection<T>(): FullHoroscopeSection<T> {
   return { data: null, isLoading: false, error: null };
@@ -34,8 +31,11 @@ function errorMsg(err: unknown): string {
   return "Failed to load";
 }
 
-export function useFullHoroscope() {
-  const { isAuthenticated } = useAuthStore();
+/** Full Horoscope sections for an Ask Astrologer consultation customer. */
+export function useAskRequestFullHoroscope(requestId: string | null): FullHoroscopeState & {
+  enabled: boolean;
+} {
+  const enabled = Boolean(requestId?.trim());
 
   const [charts, setCharts] = useState<FullHoroscopeSection<DivisionalChart[]>>(makeSection);
   const [dasa, setDasa] = useState<FullHoroscopeSection<DasaPayload>>(makeSection);
@@ -46,8 +46,8 @@ export function useFullHoroscope() {
   const [planetaryPosition, setPlanetaryPosition] = useState<FullHoroscopeSection<PlanetaryPositionPayload>>(makeSection);
 
   const load = useCallback(() => {
-    if (!isAuthenticated) return;
-
+    if (!requestId?.trim()) return;
+    const id = requestId.trim();
     const loading = { data: null, isLoading: true, error: null };
     setCharts(loading);
     setDasa(loading);
@@ -58,13 +58,13 @@ export function useFullHoroscope() {
     setPlanetaryPosition(loading);
 
     Promise.allSettled([
-      fetchDivisionalCharts(),
-      fetchHoroscopeDasa(),
-      fetchHoroscopeAshtaVarga(),
-      fetchHoroscopeSpecialLagna(),
-      fetchHoroscopeShadbala(),
-      fetchHoroscopeBhavaPosition(),
-      fetchHoroscopePlanetaryPosition(),
+      fetchAskRequestDivisionalCharts(id),
+      fetchAskRequestHoroscopeDasa(id),
+      fetchAskRequestHoroscopeAshtaVarga(id),
+      fetchAskRequestHoroscopeSpecialLagna(id),
+      fetchAskRequestHoroscopeShadbala(id),
+      fetchAskRequestHoroscopeBhavaPosition(id),
+      fetchAskRequestHoroscopePlanetaryPosition(id),
     ]).then(([r0, r1, r2, r3, r4, r5, r6]) => {
       setCharts({ data: r0.status === "fulfilled" ? r0.value : null, isLoading: false, error: r0.status === "rejected" ? errorMsg(r0.reason) : null });
       setDasa({ data: r1.status === "fulfilled" ? r1.value : null, isLoading: false, error: r1.status === "rejected" ? errorMsg(r1.reason) : null });
@@ -74,20 +74,24 @@ export function useFullHoroscope() {
       setBhavaPosition({ data: r5.status === "fulfilled" ? r5.value : null, isLoading: false, error: r5.status === "rejected" ? errorMsg(r5.reason) : null });
       setPlanetaryPosition({ data: r6.status === "fulfilled" ? r6.value : null, isLoading: false, error: r6.status === "rejected" ? errorMsg(r6.reason) : null });
     });
-  }, [isAuthenticated]);
+  }, [requestId]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!enabled) return;
     queueMicrotask(load);
-  }, [isAuthenticated, load]);
+  }, [enabled, load]);
 
   const isAnyLoading =
-    charts.isLoading || dasa.isLoading || ashtaVarga.isLoading ||
-    specialLagna.isLoading || shadbala.isLoading || bhavaPosition.isLoading ||
+    charts.isLoading ||
+    dasa.isLoading ||
+    ashtaVarga.isLoading ||
+    specialLagna.isLoading ||
+    shadbala.isLoading ||
+    bhavaPosition.isLoading ||
     planetaryPosition.isLoading;
 
   return {
-    isAuthenticated,
+    enabled,
     charts,
     dasa,
     ashtaVarga,
@@ -96,5 +100,6 @@ export function useFullHoroscope() {
     bhavaPosition,
     planetaryPosition,
     isAnyLoading,
+    reload: load,
   };
 }

@@ -119,17 +119,25 @@ export const ASK_ASTROLOGER_SCREEN = {
   astrologerDetailPob: "POB",
   astrologerDetailRasi: "Rasi",
   astrologerDetailNakshatra: "Nakshatra",
+  astrologerDetailLagna: "Lagna",
+  astrologerDetailCurrentDasa: "Current Dasa",
   astrologerDetailLanguage: "Language",
   astrologerAnswerPlaceholder: "Type your answer here…",
   astrologerCustomerSection: "Client details",
   astrologerStatusAssigned: "Awaiting answer",
   astrologerStatusAnswered: "Answered",
   astrologerPageSubtitle: "Review client details and submit text or voice answers.",
+  astrologerOpenDetailsBtn: "View & Answer",
+  astrologerOpenAnsweredBtn: "View Details",
+  astrologerDetailPageTitle: "Consultation Details",
+  astrologerConsultationProfile: "Consultation Profile",
+  astrologerAiReferenceSubtitle: "AI suggestion provided to the customer",
+  astrologerEventPlanSubtitle: "Event planner muhurtha timeline generated for this question",
 } as const;
 
 export const ASK_ASTROLOGER_LAYOUT = {
   page:
-    "relative flex min-h-dvh flex-col bg-white -mb-[var(--main-bottom-nav-clearance)] pb-[var(--main-bottom-nav-clearance)]",
+    "relative flex min-h-dvh flex-col mint-glow-surface -mb-[var(--main-bottom-nav-clearance)] pb-[var(--main-bottom-nav-clearance)]",
   body: "relative flex min-h-0 flex-1 flex-col",
   scroll: "flex-1 overflow-y-auto px-5 pb-4 pt-1 lg:px-8",
   contentColumn: "w-full space-y-4 lg:space-y-5",
@@ -174,7 +182,7 @@ export const ASK_ASTROLOGER_UI = {
   languageNotesTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-black)]`,
   languageNotesItem: `${TYPO.sizeSm} leading-relaxed text-black/70`,
   portalVoiceAnswerPrimary:
-    "rounded-xl border-2 border-[var(--color-brand-primary)]/35 bg-[var(--color-brand-primary)]/5 p-4 lg:p-5",
+    "rounded-2xl border border-[var(--color-brand-primary)]/25 bg-[color-mix(in_srgb,var(--color-home-screen-mint)_20%,white)] p-4 sm:p-5 shadow-sm",
   waConsentBenefits: "space-y-2.5",
   waConsentBenefitRow: "flex items-start gap-2.5 text-sm text-black/70 lg:text-base",
   waConsentBenefitIcon: "mt-0.5 size-4 shrink-0 text-[var(--color-brand-primary)]",
@@ -199,37 +207,42 @@ export const ASK_ASTROLOGER_UI = {
   answerBlock: "rounded-xl bg-neutral-50 p-4 lg:p-5",
   answerAttributionLink:
     "font-semibold text-[var(--color-brand-primary)] underline underline-offset-2 hover:opacity-80",
-  portalList: "mx-auto w-full max-w-2xl flex-1 px-4 py-5 lg:max-w-3xl lg:px-8 lg:py-8",
+  portalList: "w-full flex-1 px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 xl:px-10",
   portalCard:
-    "overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 lg:rounded-2xl",
+    "overflow-hidden rounded-2xl border border-[var(--color-chat-bot-border)] bg-white shadow-[0_1px_6px_rgb(0_0_0_/_0.06)] transition-all hover:border-[var(--color-brand-primary)]/40 hover:shadow-[0_4px_18px_rgb(0_0_0_/_0.08)]",
   portalCardInner: "space-y-5 p-5 lg:space-y-6 lg:p-7",
   portalQuestion:
     "text-base font-semibold leading-snug text-[var(--color-brand-black)] lg:text-lg",
   portalMetaRow: "flex flex-wrap items-center gap-2",
   portalRequestId: `${TYPO.sizeXs} ${TYPO.weightSemibold} uppercase tracking-wide text-black/45`,
   portalStatusBadge:
-    "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset lg:text-sm",
-  portalStatusAssigned: "bg-amber-50 text-amber-900 ring-amber-200/80",
-  portalStatusAnswered: "bg-emerald-50 text-emerald-900 ring-emerald-200/80",
+    "inline-flex items-center rounded-full px-3.5 py-1 text-xs font-bold leading-tight shadow-sm",
+  portalStatusAssigned:
+    "border-[1.5px] border-[var(--color-chat-ask-btn-border)] bg-[var(--color-chat-ask-btn-bg)] text-[var(--color-chat-ask-btn-text)]",
+  portalStatusAnswered:
+    "border-[1.5px] border-[var(--color-chat-consult-btn-border)] bg-[var(--color-chat-consult-btn-bg)] text-[var(--color-chat-consult-btn-text)]",
   portalSectionTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-black)] lg:text-base`,
   portalSectionDivider: "border-t border-dashed border-black/15",
-  portalDetailGrid: "grid gap-3 sm:grid-cols-2 lg:gap-4",
-  portalDetailLabel: `${TYPO.sizeXs} ${TYPO.weightMedium} text-black/50 lg:text-sm`,
-  portalDetailValue: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-black)] lg:text-base`,
+  portalDetailGrid: "grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:gap-3",
+  portalDetailCard:
+    "min-w-0 rounded-2xl border border-[color-mix(in_srgb,var(--color-brand-primary)_18%,transparent)] bg-[color-mix(in_srgb,var(--color-home-screen-mint)_16%,white)] px-4 py-3 shadow-[0_1px_4px_rgb(0_0_0_/_0.03)]",
+  portalDetailLabel: `${TYPO.caption} font-bold uppercase tracking-[0.06em] text-[var(--color-brand-panchang)]`,
+  portalDetailValue: `${TYPO.bodySmSemibold} mt-0.5 text-[var(--color-brand-black)] leading-snug`,
   portalBody: `${TYPO.sizeSm} leading-relaxed text-black/75 lg:text-base lg:leading-relaxed`,
   portalAnswerPanel:
-    "rounded-xl border border-emerald-200/80 bg-emerald-50/60 p-4 lg:p-5",
+    "rounded-2xl border border-[var(--color-chat-bot-border)] bg-white p-5 shadow-[0_1px_6px_rgb(0_0_0_/_0.06)] sm:p-6 lg:p-7",
   portalAnswerTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-emerald-800 lg:text-base`,
   portalAvatar:
-    "flex size-11 shrink-0 items-center justify-center rounded-full border-[3px] border-[var(--color-brand-primary)] bg-white text-base font-semibold text-[var(--color-brand-primary)] lg:size-12 lg:text-lg",
+    "flex size-11 sm:size-12 shrink-0 items-center justify-center rounded-full border-[2.5px] border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-home-screen-mint)_30%,white)] text-base font-bold text-[var(--color-brand-primary)] shadow-sm",
   portalCustomerName: `${TYPO.sizeBase} ${TYPO.weightSemibold} text-gray-800 lg:text-lg`,
   portalAnswerBtn:
-    "shrink-0 rounded-full bg-[var(--color-brand-primary)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90 lg:px-5 lg:py-2.5 lg:text-sm",
+    "shrink-0 rounded-full bg-[var(--color-brand-primary)] px-8 py-3 text-sm font-bold text-white shadow-[0_2px_10px_rgb(16_177_0_/_0.2)] transition-opacity hover:opacity-95 disabled:opacity-50",
   portalCancelBtn:
-    "shrink-0 rounded-full border border-black/15 bg-white px-4 py-2 text-xs font-semibold text-black/70 lg:px-5 lg:py-2.5 lg:text-sm",
-  portalFormPanel: "rounded-xl border border-black/10 bg-neutral-50/80 p-4 lg:p-5",
+    "shrink-0 rounded-full border border-black/15 bg-white px-5 py-2.5 text-xs font-semibold text-black/70 lg:text-sm",
+  portalFormPanel:
+    "rounded-2xl border border-[var(--color-chat-bot-border)] bg-white p-5 shadow-[0_1px_6px_rgb(0_0_0_/_0.06)] sm:p-6 lg:p-7",
   portalTextarea:
-    "w-full rounded-xl border border-black/15 bg-white px-3 py-3 text-sm leading-relaxed text-[var(--color-brand-black)] placeholder:text-black/35 focus:border-[var(--color-brand-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/20 lg:py-3.5 lg:text-base",
+    "w-full rounded-2xl border border-black/15 bg-white px-4 py-3 text-body-sm font-medium leading-relaxed text-[var(--color-brand-black)] placeholder:text-black/35 focus:border-[var(--color-brand-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/20 shadow-sm",
   answerReadyPopupPanel:
     "relative z-10 w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 sm:p-7 lg:max-w-lg lg:rounded-3xl lg:p-8",
   answerReadyPopupIcon:
