@@ -13,23 +13,17 @@ import {
 } from "@/components/horoscope/full/MoreSectionTables";
 import { ShadbalaTable } from "@/components/horoscope/full/ShadbalaTable";
 import { EventEphemerisTable } from "@/components/horoscope/full/EventEphemerisTable";
+import { AskRequestEphemerisTable } from "@/components/horoscope/full/AskRequestEphemerisTable";
 import { EphemerisTable } from "@/components/horoscope/full/EphemerisTable";
-import type { FullHoroscopeState } from "@/hooks/useFullHoroscope";
 import { HOROSCOPE_LAYOUT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import type { FullHoroscopeTab } from "@/types";
+import type { FullHoroscopePanelsProps, FullHoroscopeTab } from "@/types";
 
-type FullHoroscopePanelsProps = {
-  state: FullHoroscopeState;
-  /** When set, ephemeris uses consultation customer birth place. */
-  eventId?: string;
-  className?: string;
-};
-
-/** Shared Full Horoscope tab body — current user or consultation event. */
+/** Shared Full Horoscope tab body — current user or consultation event / ask request. */
 export function FullHoroscopePanels({
   state,
   eventId,
+  askRequestId,
   className,
 }: FullHoroscopePanelsProps) {
   const [activeTab, setActiveTab] = useState<FullHoroscopeTab>("charts");
@@ -54,7 +48,13 @@ export function FullHoroscopePanels({
         <SpecialLagnaTable section={state.specialLagna} />
       )}
       {activeTab === "ephemeris" &&
-        (eventId ? <EventEphemerisTable eventId={eventId} /> : <EphemerisTable />)}
+        (eventId ? (
+          <EventEphemerisTable eventId={eventId} />
+        ) : askRequestId ? (
+          <AskRequestEphemerisTable requestId={askRequestId} />
+        ) : (
+          <EphemerisTable />
+        ))}
 
       <LoadingOverlay open={Boolean(state.isAnyLoading)} />
     </div>

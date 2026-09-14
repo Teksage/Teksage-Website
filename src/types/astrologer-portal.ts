@@ -1,3 +1,5 @@
+import type { AskAstrologerRequest } from "@/types/ask-astrologer";
+
 /** Astrologer portal types — mirrors Flutter `AstroConsultationEventModel`, `SlotModel`, `ConsultationEventModel`. */
 
 export interface AstroEvent {
@@ -57,8 +59,21 @@ export interface AstroHoroscope {
   [key: string]: unknown;
 }
 
+export interface AskRequestHoroscopeDetailResponse {
+  request_id: number;
+  customer_name: string | null;
+  user_question: string | null;
+  user_horoscope: AstroHoroscope | null;
+  share_horoscope: boolean;
+}
+
 export interface AstrologerMeetingHoroscopeProps {
   horoscope: AstroHoroscope;
+}
+
+export interface AskRequestProfileCardProps {
+  req: AskAstrologerRequest;
+  horoscope?: AstroHoroscope | null;
 }
 
 export interface AstroQuestion {

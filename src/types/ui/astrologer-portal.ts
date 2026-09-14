@@ -52,3 +52,14 @@ export interface MeetingHoroscopeExpandableSectionProps {
   periods: string[] | null;
 }
 
+export interface AstrologerAskRequestHoroscopePageProps {
+  requestId: string;
+}
+
+export interface AstrologerMeetingHoroscopeCardProps {
+  eventId: string | number;
+  hasHoroscope: boolean;
+  queryString?: string;
+  href?: string;
+}
+

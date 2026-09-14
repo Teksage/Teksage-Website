@@ -100,5 +100,6 @@ export function useEventFullHoroscope(eventId: string | null): FullHoroscopeStat
     bhavaPosition,
     planetaryPosition,
     isAnyLoading,
+    reload: load,
   };
 }
