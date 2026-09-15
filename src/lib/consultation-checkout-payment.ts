@@ -101,6 +101,7 @@ export async function runConsultationCheckoutPayment({
               currency: ev.currency ?? currency,
               astrologerName: draft.astrologerName,
               astrologerPicture: draft.astrologerPicture,
+              status: ev.status ?? "confirmed",
             });
           }
           clearConsultationDraft();

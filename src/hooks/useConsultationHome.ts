@@ -54,6 +54,7 @@ export function useConsultationHome() {
     upcomingMeetings,
     completedMeetings,
     completedCount: completedMeetings.length,
+    meetingCount: upcomingMeetings.length + completedMeetings.length,
     reload: load,
   };
 }

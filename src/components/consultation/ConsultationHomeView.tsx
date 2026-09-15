@@ -17,8 +17,7 @@ import { CONSULTATION_HUB_TAB_MEETING } from "@/lib/constants/consultation-route
 export function ConsultationHomeView() {
   const CH = useI18nConstants(CONSULTATION_HOME_SCREEN);
   const { tab, setTab } = useConsultationHubTab();
-  const { upcomingMeetings } = useConsultationHome();
-  const meetingCount = upcomingMeetings.length;
+  const { meetingCount } = useConsultationHome();
 
   return (
     <div className={CONSULTATION_HOME_LAYOUT.page}>
