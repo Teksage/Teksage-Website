@@ -22,7 +22,9 @@ export const HOROSCOPE_FULL_UI = {
   pillTabScroll:
     "shrink-0 rounded-lg px-3 py-2 text-center text-xs font-semibold whitespace-nowrap transition-colors md:min-w-0 md:flex-1 md:px-1.5 md:text-[10px] lg:text-sm",
   fullPage:
-    "flex w-full flex-col gap-3 pb-8 pt-2",
+    "flex w-full flex-col gap-3 px-3 pb-8 pt-2 sm:px-4",
+  /** Settings-style intro on Full Horoscope — full width, light side pad only. */
+  fullPageHeader: "mb-2 px-3 pt-3 sm:px-4 sm:pt-4",
 
   /** Section tabs — soft segmented control (desktop-friendly). */
   mainTabList:
