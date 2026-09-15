@@ -10,6 +10,7 @@ export const ASTRO_PORTAL_UI = {
   availabilityTitle: "My Availability",
   meetingDetailTitle: "Meeting Details",
   horoscopeDetailTitle: "Horoscope Details",
+  fullHoroscopeTitle: "Full Horoscope",
 
   // Dashboard cards — mirrors dashBoardCard.dart
   card: {
@@ -61,9 +62,12 @@ export const ASTRO_PORTAL_UI = {
     noLink: "Link not available yet",
     customerInfo: "Customer Info",
     horoscope: "Customer Horoscope",
+    horoscopeEyebrow: "Consultation profile",
     horoscopeDetails: "Horoscope Details",
     horoscopeView: "View",
     horoscopeUnavailable: "Horoscope details are not available",
+    horoscopeShowMore: "Show more",
+    horoscopeShowLess: "Show less",
     questions: "Questions",
     noQuestions: "No questions submitted.",
     booked: "Booked a slot for",

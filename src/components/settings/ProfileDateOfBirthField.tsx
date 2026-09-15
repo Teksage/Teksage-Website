@@ -9,6 +9,7 @@ import {
   PROFILE_DATE_PICKER,
   PROFILE_DATE_PICKER_LAYOUT,
 } from "@/lib/constants/profile-date-picker";
+import { PROFILE_FIELD_UI as FU } from "@/lib/constants/profile-details";
 import {
   formatProfileDobForDisplay,
   formatProfileDobToIso,
@@ -62,43 +63,43 @@ export function ProfileDateOfBirthField({
   const dialog =
     open && mounted
       ? createPortal(
+        <div
+          className={PROFILE_DATE_PICKER_LAYOUT.overlay}
+          role="dialog"
+          aria-modal
+          aria-labelledby="profile-dob-picker-title"
+          onClick={() => setOpen(false)}
+        >
           <div
-            className={PROFILE_DATE_PICKER_LAYOUT.overlay}
-            role="dialog"
-            aria-modal
-            aria-labelledby="profile-dob-picker-title"
-            onClick={() => setOpen(false)}
+            className={PROFILE_DATE_PICKER_LAYOUT.sheet}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className={PROFILE_DATE_PICKER_LAYOUT.sheet}
-              onClick={(e) => e.stopPropagation()}
+            <p
+              id="profile-dob-picker-title"
+              className={PROFILE_DATE_PICKER_LAYOUT.title}
             >
-              <p
-                id="profile-dob-picker-title"
-                className={PROFILE_DATE_PICKER_LAYOUT.title}
-              >
-                {P.dialogTitle}
-              </p>
-              <ProfileBirthDateCalendar
-                focusedMonth={focusedMonth}
-                selectedDate={selected}
-                today={today}
-                onFocusedMonthChange={setFocusedMonth}
-                onSelectDate={handleSelect}
-              />
-            </div>
-          </div>,
-          document.body,
-        )
+              {P.dialogTitle}
+            </p>
+            <ProfileBirthDateCalendar
+              focusedMonth={focusedMonth}
+              selectedDate={selected}
+              today={today}
+              onFocusedMonthChange={setFocusedMonth}
+              onSelectDate={handleSelect}
+            />
+          </div>
+        </div>,
+        document.body,
+      )
       : null;
 
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       {label ? (
-        <Label className="text-sm font-medium text-[var(--color-brand-black)]">
+        <Label className={FU.label}>
           {label}
           {required ? (
-            <span className="text-[var(--color-brand-error)]">*</span>
+            <span className={FU.labelRequired}>*</span>
           ) : null}
         </Label>
       ) : null}
@@ -107,11 +108,14 @@ export function ProfileDateOfBirthField({
         disabled={disabled}
         onClick={handleOpen}
         className={cn(
-          PROFILE_DATE_PICKER_LAYOUT.fieldBtn,
+          FU.inputBase,
+          "flex w-full items-center justify-start text-left",
           disabled
-            ? PROFILE_DATE_PICKER_LAYOUT.fieldBtnDisabled
-            : PROFILE_DATE_PICKER_LAYOUT.fieldBtnEditable,
-          hasError && "border-[var(--color-brand-error)]",
+            ? FU.inputDisabled
+            : hasError
+              ? FU.inputError
+              : FU.inputIdle,
+          !disabled && "cursor-pointer",
         )}
       >
         <span
@@ -121,9 +125,7 @@ export function ProfileDateOfBirthField({
         </span>
       </button>
       {hasError && errorMessage ? (
-        <p className="text-xs font-semibold text-[var(--color-brand-error)]">
-          {errorMessage}
-        </p>
+        <p className={FU.errorText}>{errorMessage}</p>
       ) : null}
       {dialog}
     </div>

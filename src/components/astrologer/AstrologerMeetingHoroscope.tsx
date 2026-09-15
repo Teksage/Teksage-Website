@@ -1,63 +1,63 @@
 "use client";
 
-import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
+import { MEETING_HOROSCOPE_UI } from "@/lib/constants/meeting-horoscope-ui";
 import {
-  horoscopeChartHtml,
-  horoscopeChartLabel,
   horoscopeTextFields,
+  splitDasaBuktiPeriods,
 } from "@/lib/astrologer-horoscope-display";
-import type { AstroHoroscope } from "@/types/astrologer-portal";
+import { MeetingHoroscopeExpandableSection } from "@/components/astrologer/MeetingHoroscopeExpandableSection";
+import type { AstrologerMeetingHoroscopeProps } from "@/types/astrologer-portal";
 
-interface AstrologerMeetingHoroscopeProps {
-  horoscope: AstroHoroscope;
+function isDasaBuktiKey(key: string): boolean {
+  return key.includes("dasa_bukti") || key.includes("dasa bukti");
 }
 
-/** Customer horoscope on meeting detail — mirrors Flutter `HoroscopeDetailsPage` + `ChartWidget`. */
+/** Customer birth summary for consultation — charts are on Full Horoscope below. */
 export function AstrologerMeetingHoroscope({
   horoscope,
 }: AstrologerMeetingHoroscopeProps) {
-  const textRows = horoscopeTextFields(horoscope);
-  const rasiHtml = horoscopeChartHtml(horoscope, "rasi_chart");
-  const navamsaHtml = horoscopeChartHtml(horoscope, "navamsa_chart");
+  const fields = horoscopeTextFields(horoscope);
+  if (fields.length === 0) return null;
 
-  if (textRows.length === 0 && !rasiHtml && !navamsaHtml) return null;
+  const facts = fields.filter((f) => f.kind === "fact");
+  const narratives = fields.filter((f) => f.kind === "narrative");
+  const U = MEETING_HOROSCOPE_UI;
+  const copy = ASTRO_PORTAL_UI.detail;
 
   return (
-    <div className="rounded-xl border border-black/[0.04] bg-white p-5">
-      <p className="mb-3 text-sm font-semibold text-gray-700">
-        {ASTRO_PORTAL_UI.detail.horoscope}
-      </p>
+    <section className={U.root}>
+      <header className={U.header}>
+        <p className={U.headerEyebrow}>{copy.horoscopeEyebrow}</p>
+        <h2 className={U.headerTitle}>{copy.horoscope}</h2>
+      </header>
 
-      {textRows.length > 0 ? (
-        <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {textRows.map(({ key, label, value }) => (
-            <div key={key} className="border-b border-black/[0.06] pb-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-brand-primary)]">
-                {label}
-              </p>
-              <p className="mt-0.5 text-sm font-medium text-gray-900">{value}</p>
+      {facts.length > 0 ? (
+        <div className={U.factsGrid}>
+          {facts.map(({ key, label, value }) => (
+            <div key={key} className={U.factCard}>
+              <p className={U.factLabel}>{label}</p>
+              <p className={U.factValue}>{value}</p>
             </div>
           ))}
         </div>
       ) : null}
 
-      <div className="flex flex-col gap-4">
-        {rasiHtml ? (
-          <HoroscopeChartFrame
-            title={horoscopeChartLabel(horoscope, "rasi_chart") ?? "Rasi chart"}
-            html={rasiHtml}
-          />
-        ) : null}
-        {navamsaHtml ? (
-          <HoroscopeChartFrame
-            title={
-              horoscopeChartLabel(horoscope, "navamsa_chart") ?? "Navamsa chart"
-            }
-            html={navamsaHtml}
-          />
-        ) : null}
-      </div>
-    </div>
+      {narratives.length > 0 ? (
+        <div className={U.sections}>
+          {narratives.map(({ key, label, value }) => (
+            <MeetingHoroscopeExpandableSection
+              key={key}
+              fieldKey={key}
+              label={label}
+              value={value}
+              periods={
+                isDasaBuktiKey(key) ? splitDasaBuktiPeriods(value) : null
+              }
+            />
+          ))}
+        </div>
+      ) : null}
+    </section>
   );
 }

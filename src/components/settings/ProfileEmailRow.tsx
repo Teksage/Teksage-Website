@@ -95,9 +95,10 @@ export function ProfileEmailRow({
       <div
         className={cn(
           FU.shell,
-          "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
-          hasError && FU.shellError,
-          !canEdit && !showChange && "opacity-90"
+          !canEdit && FU.shellDisabled,
+          canEdit &&
+            "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
+          hasError && FU.shellError
         )}
       >
         <Input
@@ -106,11 +107,7 @@ export function ProfileEmailRow({
           onChange={(e) => onEmailChange(e.target.value)}
           disabled={!canEdit}
           placeholder="Email"
-          className={cn(
-            "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-4 text-sm font-medium shadow-none",
-            "focus-visible:ring-0 focus-visible:ring-offset-0",
-            !canEdit && "cursor-not-allowed"
-          )}
+          className={FU.shellInput}
         />
         {canEdit ? (
           <ProfileContactActionButton

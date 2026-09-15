@@ -14,12 +14,14 @@ import {
   isConsultationCheckoutPath,
   isConsultationGreenFullBleedPath,
 } from "@/lib/constants/consultation-routes";
+import { useWebEmbed } from "@/hooks/useWebEmbed";
 import { useAuthStore } from "@/store/auth.store";
 import { cn } from "@/lib/utils";
 import { useSyncAuthProfileRole } from "@/hooks/useSyncAuthProfileRole";
 
-export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
+function MainLayoutChromeInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const embed = useWebEmbed();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   useSyncAuthProfileRole();
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
@@ -33,7 +35,7 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
     isPredictionsPath(pathname) || pathname.startsWith(ROUTES.matchmaking);
   const isFullHeightPane =
     isChatRoute || isHomeRoute || isSubscriptionFlow;
-  const hideBottomNav = isChatRoute || isSubscriptionFlow;
+  const hideBottomNav = embed || isChatRoute || isSubscriptionFlow;
 
   const mainPaneClass = cn(
     isFullHeightPane &&
@@ -44,7 +46,8 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
       "flex min-h-dvh flex-col overflow-hidden p-0 pb-0 lg:h-full lg:min-h-0",
     isPredictionPane &&
       "flex min-h-0 flex-1 flex-col overflow-y-auto p-0 lg:h-full lg:min-h-0",
-    !isFullHeightPane &&
+    !embed &&
+      !isFullHeightPane &&
       !isPredictionPane &&
       !isConsultBookingFlow &&
       cn(HOME_LAYOUT.bottomNavClearance, "min-h-0 lg:h-full lg:overflow-y-auto"),
@@ -63,16 +66,26 @@ export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">
         <div className="relative z-0 flex min-h-0 flex-1">
-          <div className={cn(isChatRoute && "hidden lg:block")}>
-            <DesktopMainNav className="h-full" />
-          </div>
+          {embed ? null : (
+            <div className={cn(isChatRoute && "hidden lg:block")}>
+              <DesktopMainNav className="h-full" />
+            </div>
+          )}
           <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
-            {isAuthenticated ? <HomeDesktopTopHeader /> : null}
+            {embed || !isAuthenticated ? null : <HomeDesktopTopHeader />}
             <main className={mainPaneClass}>{children}</main>
             {hideBottomNav ? null : <BottomNav />}
           </div>
         </div>
       </div>
     </>
+  );
+}
+
+export function MainLayoutChrome({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={null}>
+      <MainLayoutChromeInner>{children}</MainLayoutChromeInner>
+    </Suspense>
   );
 }

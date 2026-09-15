@@ -3,8 +3,8 @@
 export const HOROSCOPE_CHART_FRAME = {
   resizeMessageType: "teksage-horoscope-chart-size",
   frameWidthPx: 339,
-  /** Initial guess until the iframe reports the grid height. */
-  fallbackHeightPx: 248,
+  /** Square charts — height matches width until measured. */
+  fallbackHeightPx: 339,
   srcDocPaddingPx: 8,
 } as const;
 

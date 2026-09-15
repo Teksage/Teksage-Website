@@ -115,15 +115,22 @@ export function ProfilePhoneRow({
       <div
         className={cn(
           FU.shell,
-          "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
-          hasError && FU.shellError,
-          !canEdit && !showChange && "opacity-90"
+          !canEdit && FU.shellDisabled,
+          canEdit &&
+            "transition-colors focus-within:border-[var(--color-brand-primary)] focus-within:bg-white",
+          hasError && FU.shellError
         )}
       >
-        <div className="flex w-[5.5rem] shrink-0 items-center justify-center border-r border-black/[0.08] text-sm font-semibold text-neutral-800">
-          {isEditing && !isMobileVerified ? (
+        <div
+          className={cn(
+            FU.shellDial,
+            !canEdit && FU.shellDialDisabled
+          )}
+        >
+          {canEdit ? (
             <CountryDialPicker
               valueDial={`+${cc}`}
+              disabled={!canEdit}
               ariaLabel={LOGIN_MOBILE_FORM.countryCodeAria}
               onSelect={(country) => {
                 onCountryCodeChange(
@@ -147,11 +154,7 @@ export function ProfilePhoneRow({
           disabled={!canEdit}
           placeholder="Mobile"
           maxLength={maxDigits}
-          className={cn(
-            "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-4 text-sm font-medium shadow-none",
-            "focus-visible:ring-0 focus-visible:ring-offset-0",
-            !canEdit && "cursor-not-allowed"
-          )}
+          className={FU.shellInput}
         />
         {canEdit ? (
           <ProfileContactActionButton

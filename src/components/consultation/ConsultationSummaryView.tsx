@@ -62,13 +62,16 @@ export function ConsultationSummaryView() {
           categories: refreshed.category ?? data.categories,
           languages: refreshed.languages ?? data.languages,
           currency: refreshed.currency ?? data.currency,
+          status: refreshed.status ?? data.status,
         };
         setSummary(next);
         writeConsultationSummary(next);
       }
       const list = await loadQuestions(data.eventId);
       setLoading(false);
-      if (list.length < CONSULTATION_QUERY_LIMIT) {
+      const isCompleted =
+        (refreshed?.status ?? data.status) === "completed";
+      if (!isCompleted && list.length < CONSULTATION_QUERY_LIMIT) {
         setQueryStartIndex(list.length);
         setShowQuery(true);
       }
@@ -88,7 +91,9 @@ export function ConsultationSummaryView() {
 
   const categoriesLabel = summary.categories.map(formatConsultationCategoryLabel).join(", ");
   const languagesLabel = formatConsultationLanguageList(summary.languages);
-  const canAddQuery = questions.length < CONSULTATION_QUERY_LIMIT;
+  const isCompleted = summary.status === "completed";
+  const canAddQuery = !isCompleted && questions.length < CONSULTATION_QUERY_LIMIT;
+  const showQueriesSection = !isCompleted || questions.length > 0;
 
   return (
     <>
@@ -140,33 +145,37 @@ export function ConsultationSummaryView() {
             value={formatFeeSlash(summary.consultationFee, summary.currency)}
           />
         </div>
-        <ConsultationBookingSectionDivider title={CB.queriesTitle} />
-        {!loading ? (
+        {showQueriesSection ? (
           <>
-            {canAddQuery ? (
-              <button
-                type="button"
-                className={CONSULTATION_BOOKING_LAYOUT.addQueryBtn}
-                onClick={() => {
-                  setQueryStartIndex(questions.length);
-                  setShowQuery(true);
-                }}
-              >
-                {CB.addQueryCta}
-              </button>
+            <ConsultationBookingSectionDivider title={CB.queriesTitle} />
+            {!loading ? (
+              <>
+                {canAddQuery ? (
+                  <button
+                    type="button"
+                    className={CONSULTATION_BOOKING_LAYOUT.addQueryBtn}
+                    onClick={() => {
+                      setQueryStartIndex(questions.length);
+                      setShowQuery(true);
+                    }}
+                  >
+                    {CB.addQueryCta}
+                  </button>
+                ) : null}
+                <ul className="mt-4 space-y-4">
+                  {questions.map((q) => (
+                    <li key={q.id} className={CONSULTATION_BOOKING_LAYOUT.queryCard}>
+                      {q.question}
+                    </li>
+                  ))}
+                  {questions.length === 0 ? (
+                    <p className="text-center text-sm text-[var(--color-brand-black)]/50">
+                      {CB.noQueries}
+                    </p>
+                  ) : null}
+                </ul>
+              </>
             ) : null}
-            <ul className="mt-4 space-y-4">
-              {questions.map((q) => (
-                <li key={q.id} className={CONSULTATION_BOOKING_LAYOUT.queryCard}>
-                  {q.question}
-                </li>
-              ))}
-              {questions.length === 0 ? (
-                <p className="text-center text-sm text-[var(--color-brand-black)]/50">
-                  {CB.noQueries}
-                </p>
-              ) : null}
-            </ul>
           </>
         ) : null}
       </ConsultationCheckoutShell>

@@ -17,7 +17,7 @@ export const SETTINGS_SUBSCRIPTION_PAYMENT = {
   loadFailed: "Could not load plan details.",
   invalidCheckout: "Select a plan from subscriptions first.",
   autoPayToggle: "Pay with auto-renewal (monthly)",
-  autoPayHint: "Billed automatically each month via Razorpay. Cancel anytime in Subscriptions.",
+  autoPayHint: "You can cancel anytime through the app.",
 } as const;
 
 export const SUBSCRIPTION_PAYMENT_LAYOUT = {

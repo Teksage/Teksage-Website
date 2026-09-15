@@ -5,6 +5,8 @@ export interface HoroscopeChartFrameProps {
   title: string;
   html: string;
   className?: string;
+  /** Overrides default `chartFrame` max-width (e.g. Full Horoscope large stage). */
+  frameClassName?: string;
   /** When false, only the iframe is shown (chart type comes from a parent toggle). */
   showTitle?: boolean;
 }
@@ -76,4 +78,25 @@ export interface HoroscopeLoadedViewProps {
   chartVariant: HoroscopeChartVariant;
   onChartVariantChange: (next: HoroscopeChartVariant) => void;
   onDownloadPdf?: () => Promise<void>;
+}
+
+export interface HoroscopeFullEntryCardProps {
+  className?: string;
+}
+
+/** Main tabs on Full Horoscope (no nested More). */
+export type FullHoroscopeTab =
+  | "charts"
+  | "dasa"
+  | "ashtavarga"
+  | "planets"
+  | "bhava"
+  | "shadbala"
+  | "lagna"
+  | "ephemeris";
+
+export interface FullHoroscopeTabsProps {
+  active: FullHoroscopeTab;
+  onChange: (tab: FullHoroscopeTab) => void;
+  className?: string;
 }

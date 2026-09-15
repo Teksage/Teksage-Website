@@ -1,5 +1,29 @@
 // Shared TypeScript interfaces — mirrors Flutter Model/ DTOs
 
+export type {
+  DivisionalChart,
+  DasaEntry,
+  DasaPayload,
+  SignName,
+  SignBindus,
+  AshtaVargaPlanet,
+  AshtaVargaPayload,
+  LagnaPoint,
+  SpecialLagnaPayload,
+  ShadbalaEntry,
+  ShadbalaPayload,
+  BhavaPositionPayload,
+  PlanetaryPositionEntry,
+  PlanetaryPositionPayload,
+  EphemerisMode,
+  EphemerisCell,
+  EphemerisRow,
+  EphemerisPayload,
+  FullHoroscopeSection,
+  FullHoroscopeState,
+  FullHoroscopePanelsProps,
+} from "./full-horoscope";
+
 export type { UserProfile } from "./user-profile";
 export type { PartnerDiscountState } from "./partner-referral";
 export type {
@@ -149,6 +173,9 @@ export type {
   SubscriptionPlanBenefitsProps,
 } from "./ui/settings";
 
+export type { SubscriptionAutoPayToggleProps } from "./ui/subscription-auto-pay";
+export type { ProfileChatLanguageFieldProps } from "./ui/profile-chat-language";
+
 export type {
   HoroscopeChartFrameProps,
   PanchangDetailViewProps,
@@ -165,6 +192,9 @@ export type {
   HoroscopeChartVariant,
   HoroscopeChartToggleProps,
   HoroscopeLoadedViewProps,
+  HoroscopeFullEntryCardProps,
+  FullHoroscopeTab,
+  FullHoroscopeTabsProps,
 } from "./ui/panchang-horoscope";
 
 export type {
@@ -253,6 +283,7 @@ export type {
   AstroEvent,
   AstroEventDetail,
   AstroHoroscope,
+  AstrologerMeetingHoroscopeProps,
   AstroQuestion,
   AstroSlot,
   SlotCreatePayload,
@@ -263,6 +294,7 @@ export type {
   AstrologerAvailabilityProps,
   AstrologerAvailabilityState,
   AstrologerMeetingDetailProps,
+  AstrologerMeetingHoroscopeCardProps,
   AstrologerMeetingQuestionsSectionProps,
 } from "./ui/astrologer-portal";
 
