@@ -90,6 +90,7 @@ export interface ConsultationBookingDraft extends ConsultationFilter {
 
 export interface ConsultationEventSummary {
   id: number;
+  status?: string;
   start_datetime?: string;
   end_datetime?: string;
   event_link?: string | null;
@@ -117,6 +118,8 @@ export interface ConsultationCompletedBooking {
   currency: string;
   astrologerName: string;
   astrologerPicture?: string | null;
+  /** When completed with no saved queries, summary hides the query UI. */
+  status?: string;
 }
 
 /** User consultation home — mirrors Flutter `AstroConsultationEventModel`. */

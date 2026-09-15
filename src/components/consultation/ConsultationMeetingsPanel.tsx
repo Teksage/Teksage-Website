@@ -31,6 +31,7 @@ function toSummary(event: ConsultationUserEvent) {
     currency: event.currency,
     astrologerName,
     astrologerPicture: event.astrologerPicture,
+    status: event.status,
   };
 }
 
