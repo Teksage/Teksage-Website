@@ -56,7 +56,7 @@ export function AppHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-40",
+        "sticky top-0 z-40 w-full",
         "relative flex min-h-[52px] items-center justify-center px-4 py-3",
         blend
           ? "border-transparent bg-white/50 backdrop-blur-[2px]"
