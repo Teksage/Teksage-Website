@@ -46,6 +46,8 @@ export const HOROSCOPE_SCREEN = {
   viewFullHoroscopeCta: "Open",
   /** Full horoscope page title */
   fullHoroscopeTitle: "Full Horoscope",
+  fullHoroscopeSubtitle: "Dasa, Shadbala, Ashtavarga & more",
+  fullHoroscopeBack: "Horoscope",
   /** Full horoscope tabs */
   tabCharts: "Charts",
   tabDasa: "Dasa",
