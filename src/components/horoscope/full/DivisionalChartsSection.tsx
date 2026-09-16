@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HoroscopeChartFrame } from "@/components/horoscope/HoroscopeChartFrame";
 import { ChartsIcon } from "@/components/horoscope/full/FullHoroscopeIcons";
 import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import type { DivisionalChart, FullHoroscopeSection } from "@/types";
 
@@ -14,6 +15,8 @@ interface Props {
 
 /** Professional workspace: chart rail + large canvas viewer. */
 export function DivisionalChartsSection({ section, className }: Props) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
+  const { t } = useT();
   const [selectedId, setSelectedId] = useState<string>("");
   const L = HOROSCOPE_LAYOUT;
 
@@ -24,7 +27,7 @@ export function DivisionalChartsSection({ section, className }: Props) {
   if (section.error || !section.data?.length) {
     return (
       <p className="py-10 text-center text-sm text-red-500">
-        {section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}
+        {H.errorLoadLabel}
       </p>
     );
   }
@@ -46,16 +49,16 @@ export function DivisionalChartsSection({ section, className }: Props) {
               c.id === activeId ? L.pillTabActive : L.pillTabIdle
             )}
           >
-            {c.label}
+            {t(c.label)}
           </button>
         ))}
       </div>
 
       <div className={L.chartsStage}>
-        <aside className={L.chartsSidebar} aria-label={HOROSCOPE_SCREEN.tabCharts}>
+        <aside className={L.chartsSidebar} aria-label={H.tabCharts}>
           <div className={L.chartsSidebarHeader}>
             <ChartsIcon className="size-3.5 text-[var(--color-brand-panchang)]" />
-            <span className={L.chartsSidebarTitle}>{HOROSCOPE_SCREEN.tabCharts}</span>
+            <span className={L.chartsSidebarTitle}>{H.tabCharts}</span>
           </div>
           <div className={L.chartsSidebarList}>
             {charts.map((c) => (
@@ -68,7 +71,7 @@ export function DivisionalChartsSection({ section, className }: Props) {
                   c.id === activeId ? L.chartsSidebarActive : L.chartsSidebarIdle
                 )}
               >
-                {c.label}
+                {t(c.label)}
               </button>
             ))}
           </div>
@@ -80,15 +83,15 @@ export function DivisionalChartsSection({ section, className }: Props) {
               <header className={L.chartsDisplayHeader}>
                 <div className="min-w-0">
                   <p className={L.chartsDisplayEyebrow}>
-                    {HOROSCOPE_SCREEN.chartsViewerEyebrow}
+                    {H.chartsViewerEyebrow}
                   </p>
-                  <h2 className={L.chartsDisplayTitle}>{activeChart.label}</h2>
+                  <h2 className={L.chartsDisplayTitle}>{t(activeChart.label)}</h2>
                 </div>
               </header>
               <div className={L.chartsCanvas}>
                 <div className={L.chartsFrameWrap}>
                   <HoroscopeChartFrame
-                    title={activeChart.label}
+                    title={t(activeChart.label)}
                     html={activeChart.html}
                     showTitle={false}
                     frameClassName={L.chartsFrame}

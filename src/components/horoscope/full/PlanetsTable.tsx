@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { useI18nConstants } from "@/hooks/useT";
 import {
   FH_TABLE,
   FH_TABLE_STICKY_TH,
@@ -18,6 +19,7 @@ export function PlanetsTable({
 }: {
   section: FullHoroscopeSection<PlanetaryPositionPayload>;
 }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const rows = buildPlanetaryRows(section.data);
   if (section.isLoading || section.error) {
     return <FullHoroscopeTablePlaceholder section={section} />;
@@ -27,17 +29,17 @@ export function PlanetsTable({
   return (
     <div className="flex flex-col gap-2">
       <p className="text-center text-sm font-bold text-[var(--color-brand-panchang)]">
-        {HOROSCOPE_SCREEN.sectionPlanetaryPositions}
+        {H.sectionPlanetaryPositions}
       </p>
       <FullHoroscopeTableScroll>
         <table className={cn(FH_TABLE.table, "min-w-[32rem]")}>
           <thead>
             <tr>
-              <th className={FH_TABLE_STICKY_TH}>{HOROSCOPE_SCREEN.colPlanet}</th>
-              <th className={FH_TABLE.th}>{HOROSCOPE_SCREEN.colLongitude}</th>
-              <th className={FH_TABLE.th}>{HOROSCOPE_SCREEN.colRasi}</th>
-              <th className={FH_TABLE.th}>{HOROSCOPE_SCREEN.colNakshatraPada}</th>
-              <th className={FH_TABLE.th}>{HOROSCOPE_SCREEN.colJaiminiKaraka}</th>
+              <th className={FH_TABLE_STICKY_TH}>{H.colPlanet}</th>
+              <th className={FH_TABLE.th}>{H.colLongitude}</th>
+              <th className={FH_TABLE.th}>{H.colRasi}</th>
+              <th className={FH_TABLE.th}>{H.colNakshatraPada}</th>
+              <th className={FH_TABLE.th}>{H.colJaiminiKaraka}</th>
             </tr>
           </thead>
           <tbody>
@@ -55,7 +57,7 @@ export function PlanetsTable({
                     )}
                   >
                     {r.planet}
-                    {r.isRetro ? HOROSCOPE_SCREEN.retroSuffix : ""}
+                    {r.isRetro ? H.retroSuffix : ""}
                   </td>
                   <td className={cn(FH_TABLE.td, "whitespace-nowrap", rowAccent && accent)}>
                     {r.longitude}

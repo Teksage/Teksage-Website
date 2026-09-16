@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
 import { useAskRequestEphemeris } from "@/hooks/useAskRequestEphemeris";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import {
   ephemerisFirstColLabel,
   ephemerisMonthLabel,
@@ -37,6 +38,8 @@ function shiftMonth(year: number, month: number, delta: number) {
 }
 
 export function AskRequestEphemerisTable({ requestId }: { requestId: string }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
+  const { t } = useT();
   const now = useMemo(() => new Date(), []);
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
@@ -48,7 +51,10 @@ export function AskRequestEphemerisTable({ requestId }: { requestId: string }) {
     mode
   );
   const planets = data?.planets ?? [...HOROSCOPE_SCREEN.ephemerisPlanets];
-  const firstCol = ephemerisFirstColLabel(mode);
+  const firstCol = ephemerisFirstColLabel(mode, {
+    month: H.ephemerisColMonth,
+    date: H.ephemerisColDate,
+  });
   const yearSpan = HOROSCOPE_SCREEN.ephemerisYearSpan;
   const years = useMemo(
     () =>
@@ -72,27 +78,29 @@ export function AskRequestEphemerisTable({ requestId }: { requestId: string }) {
     <div className="flex w-full min-w-0 flex-col gap-3">
       <div className={HOROSCOPE_LAYOUT.toolbarMobile}>
         <div className="flex items-center justify-center gap-1 sm:justify-start">
-          <button type="button" className={NAV_BTN} disabled={isRefreshing} onClick={() => step(-1)}>
-            {HOROSCOPE_SCREEN.ephemerisPrevSymbol}
+          <button type="button" className={NAV_BTN} aria-label={H.ephemerisPrevLabel} disabled={isRefreshing} onClick={() => step(-1)}>
+            {H.ephemerisPrevSymbol}
           </button>
           {mode === "daily" ? (
-            <select className={cn(CTRL, "min-w-[4.5rem]")} value={month} disabled={isRefreshing} onChange={(e) => setMonth(Number(e.target.value))}>
-              {HOROSCOPE_SCREEN.ephemerisMonths.map((label, i) => (
+            <select className={cn(CTRL, "min-w-[4.5rem]")} aria-label={H.ephemerisMonthAria} value={month} disabled={isRefreshing} onChange={(e) => setMonth(Number(e.target.value))}>
+              {H.ephemerisMonths.map((label, i) => (
                 <option key={label} value={i + 1}>{label}</option>
               ))}
             </select>
           ) : null}
-          <select className={cn(CTRL, "min-w-[4.25rem]")} value={year} disabled={isRefreshing} onChange={(e) => setYear(Number(e.target.value))}>
+          <select className={cn(CTRL, "min-w-[4.25rem]")} aria-label={H.ephemerisYearAria} value={year} disabled={isRefreshing} onChange={(e) => setYear(Number(e.target.value))}>
             {years.map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
-          <button type="button" className={NAV_BTN} disabled={isRefreshing} onClick={() => step(1)}>
-            {HOROSCOPE_SCREEN.ephemerisNextSymbol}
+          <button type="button" className={NAV_BTN} aria-label={H.ephemerisNextLabel} disabled={isRefreshing} onClick={() => step(1)}>
+            {H.ephemerisNextSymbol}
           </button>
         </div>
         <p className="order-first text-center text-xs font-bold text-[var(--color-brand-black)] sm:order-none sm:flex-1 sm:text-sm">
-          {data ? ephemerisTitle(data) : ephemerisMonthLabel(month, year)}
+          {data
+            ? ephemerisTitle(data, { fallback: H.tabEphemeris, prefix: H.ephemerisTitlePrefix, at: H.ephemerisTitleAt })
+            : ephemerisMonthLabel(month, year, H.ephemerisMonths)}
         </p>
         <div className="flex w-full items-center gap-1 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-1 sm:w-auto">
           {(["daily", "monthly"] as const).map((m) => (
@@ -108,16 +116,16 @@ export function AskRequestEphemerisTable({ requestId }: { requestId: string }) {
                   : "text-[var(--color-brand-black)]"
               )}
             >
-              {m === "daily" ? HOROSCOPE_SCREEN.ephemerisModeDaily : HOROSCOPE_SCREEN.ephemerisModeMonthly}
+              {m === "daily" ? H.ephemerisModeDaily : H.ephemerisModeMonthly}
             </button>
           ))}
         </div>
       </div>
 
       {isLoading && !data ? (
-        <p className={PLACEHOLDER}>{HOROSCOPE_SCREEN.ephemerisLoading}</p>
+        <p className={PLACEHOLDER}>{H.ephemerisLoading}</p>
       ) : error && !data ? (
-        <p className={PLACEHOLDER}>{error}</p>
+        <p className={PLACEHOLDER}>{H.ephemerisError}</p>
       ) : data ? (
         <div className="scrollbar-hidden relative max-h-[70vh] overflow-auto rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] shadow-sm sm:max-h-[28rem]">
           <table className={cn(TABLE, isRefreshing && "opacity-60")}>
@@ -125,7 +133,7 @@ export function AskRequestEphemerisTable({ requestId }: { requestId: string }) {
               <tr>
                 <th className={TH_DATE}>{firstCol}</th>
                 {planets.map((p) => (
-                  <th key={p} className={TH}>{p}</th>
+                  <th key={p} className={TH}>{t(p)}</th>
                 ))}
               </tr>
             </thead>

@@ -6,6 +6,34 @@ export function formatMuhurthaWindow(window: string): string {
   return `${parts[0].trim()} – ${parts[1].trim()}`;
 }
 
+export function formatMuhurthaDateRange(
+  start: string,
+  end: string,
+  locale: string
+): string {
+  const formatDate = (value: string) =>
+    new Date(`${value}T12:00:00`).toLocaleDateString(locale, {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  return `${formatDate(start)} – ${formatDate(end)}`;
+}
+
+export function formatMuhurthaDisplayDate(
+  isoDate: string,
+  fallback: string,
+  locale: string
+): string {
+  const date = new Date(`${isoDate}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return fallback;
+  return date.toLocaleDateString(locale, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 export function formatMuhurthaWindows(day: {
   windows?: string[];
   window?: string;
@@ -40,14 +68,17 @@ export function formatMuhurthaStatusLabel(args: {
     notSuitable: string;
   };
 }): string {
-  if (!args.suitable) return args.labels.notSuitable;
+  if (!args.suitable) return `🔴 ${args.labels.notSuitable}`;
   const tone = muhurthaRatingTone(args.rating ?? "");
-  if (tone === "average") return args.labels.average;
-  if (tone === "good") return args.labels.good;
-  return args.labels.veryGood;
+  if (tone === "average") return `🟠 ${args.labels.average}`;
+  if (tone === "good") return `🟡 ${args.labels.good}`;
+  return `🟢 ${args.labels.veryGood}`;
 }
 
-export function formatMuhurthaMoreReasons(extraCount: number): string {
+export function formatMuhurthaMoreReasons(
+  extraCount: number,
+  moreLabel: string
+): string {
   if (extraCount <= 0) return "";
-  return `+${extraCount} more`;
+  return `+${extraCount} ${moreLabel}`;
 }

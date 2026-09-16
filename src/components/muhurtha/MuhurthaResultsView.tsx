@@ -12,7 +12,9 @@ import {
 import {
   shareMuhurthaResultImage,
 } from "@/lib/muhurtha-share";
+import { formatMuhurthaDateRange } from "@/lib/muhurtha-format";
 import { cn } from "@/lib/utils";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import type { MuhurthaResultsViewProps } from "@/types";
@@ -21,18 +23,10 @@ interface MuhurthaResultsViewExtendedProps extends MuhurthaResultsViewProps {
   onAskAstrologer?: () => void;
 }
 
-function formatRange(start: string, end: string) {
-  const s = new Date(`${start}T12:00:00`);
-  const e = new Date(`${end}T12:00:00`);
-  const fmt = (d: Date) =>
-    d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
-  return `${fmt(s)} – ${fmt(e)}`;
-}
-
 export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResultsViewExtendedProps) {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
-  const { t } = useT();
+  const { t, locale } = useT();
   const captureRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
   const rows = result.days?.length ? result.days : result.dates;
@@ -47,6 +41,8 @@ export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResults
       const outcome = await shareMuhurthaResultImage({
         element,
         pageUrl: window.location.href,
+        title: shareCopy.shareTitle,
+        credit: shareCopy.shareCredit,
       });
       if (outcome === "cancelled") return;
       if (outcome === "sharedNeedsPaste") {
@@ -101,7 +97,11 @@ export function MuhurthaResultsView({ result, onAskAstrologer }: MuhurthaResults
                   </h2>
                   <div className={L.resultsMetaRow}>
                     <span className={L.metaChip}>
-                      {formatRange(result.start_date, result.end_date)}
+                      {formatMuhurthaDateRange(
+                        result.start_date,
+                        result.end_date,
+                        bcp47FromAppLocale(locale)
+                      )}
                     </span>
                     <span className={L.metaChip}>{result.location}</span>
                   </div>

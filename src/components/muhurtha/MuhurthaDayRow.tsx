@@ -2,7 +2,12 @@
 
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { MUHURTHA_LAYOUT, MUHURTHA_SCREEN } from "@/lib/constants";
-import { formatMuhurthaMoreReasons, formatMuhurthaWindows } from "@/lib/muhurtha-format";
+import {
+  formatMuhurthaDisplayDate,
+  formatMuhurthaMoreReasons,
+  formatMuhurthaWindows,
+} from "@/lib/muhurtha-format";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { MuhurthaDayResult } from "@/types/muhurtha";
 import { MuhurthaReasonInfo } from "@/components/muhurtha/MuhurthaReasonInfo";
 import {
@@ -39,15 +44,20 @@ function shouldSplitMuhurthaDay(day: MuhurthaDayResult): boolean {
 export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
   const M = useI18nConstants(MUHURTHA_SCREEN);
   const L = MUHURTHA_LAYOUT;
-  const { t } = useT();
+  const { t, locale } = useT();
+  const displayDate = formatMuhurthaDisplayDate(
+    day.iso_date,
+    day.date,
+    bcp47FromAppLocale(locale)
+  );
   const splitSegments = shouldSplitMuhurthaDay(day) ? day.segments! : null;
 
   if (splitSegments) {
     return (
       <div className={L.dayRowStatic}>
         <div className={L.tableColDate}>
-          <p className={L.dayRowDate}>{day.date}</p>
-          {day.weekday ? <p className={L.dayRowWeekday}>{day.weekday}</p> : null}
+          <p className={L.dayRowDate}>{displayDate}</p>
+          {day.weekday ? <p className={L.dayRowWeekday}>{t(day.weekday)}</p> : null}
         </div>
 
         <div className={L.tableColStatus}>
@@ -100,8 +110,8 @@ export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
   return (
     <div className={L.dayRowStatic}>
       <div className={L.tableColDate}>
-        <p className={L.dayRowDate}>{day.date}</p>
-        {day.weekday ? <p className={L.dayRowWeekday}>{day.weekday}</p> : null}
+        <p className={L.dayRowDate}>{displayDate}</p>
+        {day.weekday ? <p className={L.dayRowWeekday}>{t(day.weekday)}</p> : null}
       </div>
 
       <div className={L.tableColStatus}>
@@ -133,7 +143,7 @@ export function MuhurthaDayRow({ day }: { day: MuhurthaDayResult }) {
               <MuhurthaReasonInfo
                 reasons={reasons}
                 ariaLabel={M.reasonInfoAria}
-                triggerLabel={formatMuhurthaMoreReasons(extraReasonCount)}
+                triggerLabel={formatMuhurthaMoreReasons(extraReasonCount, t("more"))}
                 triggerClassName={L.reasonMoreBtn}
               />
             ) : null}

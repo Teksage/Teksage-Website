@@ -5,6 +5,7 @@
 
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { useI18nConstants } from "@/hooks/useT";
 import type { ShadbalaRow } from "@/lib/format-shadbala";
 import {
   ShadbalaDataTable,
@@ -13,37 +14,20 @@ import {
   shadCell,
 } from "@/components/horoscope/full/ShadbalaTableChrome";
 
-const S = HOROSCOPE_SCREEN;
-
-const STHANA_HEADERS = [
-  S.colPlanet,
-  S.colOchcha,
-  S.colSaptavargaja,
-  S.colOjaYugma,
-  S.colKendra,
-  S.colDrekkana,
-  S.colSthanaTotal,
-];
-
-const KALA_HEADERS = [
-  S.colPlanet,
-  S.colAbda,
-  S.colMasa,
-  S.colVara,
-  S.colHora,
-  S.colPaksha,
-  S.colTribhaga,
-  S.colNatonnata,
-  S.colAyana,
-  S.colYuddha,
-  S.colKalaTotal,
-];
-
 export function ShadbalaSthanaTable({ rows }: { rows: ShadbalaRow[] }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const data = rows.filter((r) => !r.partial);
   return (
     <ShadbalaDataTable
-      headers={STHANA_HEADERS}
+      headers={[
+        H.colPlanet,
+        H.colOchcha,
+        H.colSaptavargaja,
+        H.colOjaYugma,
+        H.colKendra,
+        H.colDrekkana,
+        H.colSthanaTotal,
+      ]}
       rows={data}
       renderCells={(r) => [
         <span key="p" className={SHAD_LABEL}>{r.planet}</span>,
@@ -59,10 +43,23 @@ export function ShadbalaSthanaTable({ rows }: { rows: ShadbalaRow[] }) {
 }
 
 export function ShadbalaKalaTable({ rows }: { rows: ShadbalaRow[] }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const data = rows.filter((r) => !r.partial);
   return (
     <ShadbalaDataTable
-      headers={KALA_HEADERS}
+      headers={[
+        H.colPlanet,
+        H.colAbda,
+        H.colMasa,
+        H.colVara,
+        H.colHora,
+        H.colPaksha,
+        H.colTribhaga,
+        H.colNatonnata,
+        H.colAyana,
+        H.colYuddha,
+        H.colKalaTotal,
+      ]}
       rows={data}
       renderCells={(r) => [
         <span key="p" className={SHAD_LABEL}>{r.planet}</span>,
