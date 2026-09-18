@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/common/AppHeader";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { EmptyState } from "@/components/common/EmptyState";
 import { AskAstrologerRequestCard } from "@/components/astrologer/AskAstrologerRequestCard";
+import { useI18nConstants } from "@/hooks/useT";
 import { fetchAstrologerAskRequests } from "@/lib/services/astrologer-ask-requests";
 import { ROUTES } from "@/lib/constants/routes";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
@@ -16,6 +17,8 @@ import type { AskAstrologerRequest } from "@/types/ask-astrologer";
 type AskRequestTab = "assigned" | "answered";
 
 export default function AstrologerAskRequestsPage() {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const router = useRouter();
   const [requests, setRequests] = useState<AskAstrologerRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,14 +32,15 @@ export default function AstrologerAskRequestsPage() {
       const data = await fetchAstrologerAskRequests();
       setRequests(data);
     } catch {
-      setError("Failed to load requests");
+      setError(AA.astrologerLoadFailed);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [AA.astrologerLoadFailed]);
 
   useEffect(() => {
-    void load();
+    const timeoutId = window.setTimeout(() => void load(), 0);
+    return () => window.clearTimeout(timeoutId);
   }, [load]);
 
   const filteredRequests = useMemo(() => {
@@ -61,7 +65,7 @@ export default function AstrologerAskRequestsPage() {
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <AppHeader
-          title={ASTRO_PORTAL_UI.card.askRequests.title}
+          title={AP.card.askRequests.title}
           showBack
           onBackClick={() => router.push(ROUTES.astrologer)}
           blend
@@ -74,11 +78,11 @@ export default function AstrologerAskRequestsPage() {
               {(
                 [
                   {
-                    label: ASK_ASTROLOGER_SCREEN.astrologerStatusAssigned,
+                    label: AA.astrologerStatusAssigned,
                     value: "assigned" as const,
                   },
                   {
-                    label: ASK_ASTROLOGER_SCREEN.astrologerStatusAnswered,
+                    label: AA.astrologerStatusAnswered,
                     value: "answered" as const,
                   },
                 ] as const
@@ -108,7 +112,7 @@ export default function AstrologerAskRequestsPage() {
             </p>
           ) : filteredRequests.length === 0 ? (
             <EmptyState
-              title={ASK_ASTROLOGER_SCREEN.emptyAskRequests}
+              title={AA.emptyAskRequests}
               className="py-16"
             />
           ) : (

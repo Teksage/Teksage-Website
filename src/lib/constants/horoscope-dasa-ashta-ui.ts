@@ -12,7 +12,7 @@ export const HOROSCOPE_DASA_ASHTA_UI = {
   dasaBannerPeriodKind: `${TYPO.caption} font-semibold uppercase tracking-[0.04em] text-[var(--color-brand-primary)]`,
   dasaBannerDates: `${TYPO.caption} font-semibold text-[var(--color-brand-black)]`,
   dasaBannerCta:
-    "w-full shrink-0 rounded-full border border-[var(--color-brand-primary)] bg-white px-3 py-2 text-[10px] font-bold text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] sm:w-auto sm:py-1.5",
+    "w-full shrink-0 rounded-full border border-[var(--color-brand-primary)] bg-white px-3 py-2 text-micro font-bold text-[var(--color-brand-primary)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] sm:w-auto sm:py-1.5",
 
   /** Ashtavarga — distinct from main/Dasa pill tabs. */
   ashtaRoot: "flex w-full flex-col gap-3",

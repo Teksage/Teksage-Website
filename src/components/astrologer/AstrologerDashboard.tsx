@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ConsultationBanner } from "@/components/home/ConsultationBanner";
+import { useI18nConstants } from "@/hooks/useT";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
 import { ASTROLOGER_ASSETS } from "@/lib/constants/assets";
 import { HOME_LAYOUT } from "@/lib/constants";
@@ -54,6 +55,8 @@ function DashCard({ title, subtitle, href, iconSrc }: DashCardProps) {
 
 /** Astrologer portal — Flutter `AstrologerHomePage` cards; banner matches home `ConsultationBanner`. */
 export function AstrologerDashboard() {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+
   return (
     <div
       className={cn(
@@ -76,7 +79,7 @@ export function AstrologerDashboard() {
           unoptimized
         />
         <p className="shrink-0 whitespace-nowrap text-sm font-medium leading-none text-gray-900/50">
-          {ASTRO_PORTAL_UI.loginBadge}
+          {AP.loginBadge}
         </p>
         <Image
           src={ASTROLOGER_ASSETS.dashLine}
@@ -90,22 +93,22 @@ export function AstrologerDashboard() {
 
       <div className="flex gap-4">
         <DashCard
-          title={ASTRO_PORTAL_UI.card.meetings.title}
-          subtitle={ASTRO_PORTAL_UI.card.meetings.subtitle}
+          title={AP.card.meetings.title}
+          subtitle={AP.card.meetings.subtitle}
           href={ROUTES.astrologerMeetings}
           iconSrc={ASTROLOGER_ASSETS.meetingIcon}
         />
         <DashCard
-          title={ASTRO_PORTAL_UI.card.availability.title}
-          subtitle={ASTRO_PORTAL_UI.card.availability.subtitle}
+          title={AP.card.availability.title}
+          subtitle={AP.card.availability.subtitle}
           href={ROUTES.astrologerAvailability}
           iconSrc={ASTROLOGER_ASSETS.calendarIcon}
         />
       </div>
       <div className="flex gap-4">
         <DashCard
-          title={ASTRO_PORTAL_UI.card.askRequests.title}
-          subtitle={ASTRO_PORTAL_UI.card.askRequests.subtitle}
+          title={AP.card.askRequests.title}
+          subtitle={AP.card.askRequests.subtitle}
           href={ROUTES.astrologerAskRequests}
           iconSrc={ASTROLOGER_ASSETS.meetingIcon}
         />

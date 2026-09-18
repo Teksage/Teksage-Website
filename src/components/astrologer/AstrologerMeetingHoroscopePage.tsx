@@ -7,6 +7,7 @@ import { AstrologerMeetingHoroscope } from "@/components/astrologer/AstrologerMe
 import { FullHoroscopePanels } from "@/components/horoscope/full/FullHoroscopePanels";
 import { useAstrologerEventDetail } from "@/hooks/useAstrologerEvents";
 import { useEventFullHoroscope } from "@/hooks/useEventFullHoroscope";
+import { useI18nConstants } from "@/hooks/useT";
 import {
   ASTRO_PORTAL_UI,
   MEETING_DETAIL_QUERY,
@@ -22,6 +23,7 @@ interface AstrologerMeetingHoroscopePageProps {
 export function AstrologerMeetingHoroscopePage({
   eventId,
 }: AstrologerMeetingHoroscopePageProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { event, loading, error } = useAstrologerEventDetail(eventId);
@@ -40,7 +42,7 @@ export function AstrologerMeetingHoroscopePage({
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <AppHeader
-        title={ASTRO_PORTAL_UI.horoscopeDetailTitle}
+        title={AP.horoscopeDetailTitle}
         showBack
         onBackClick={() => router.push(backHref)}
         className="border-b border-black/10"
@@ -64,7 +66,7 @@ export function AstrologerMeetingHoroscopePage({
           {canFull ? (
             <div className="mt-8 border-t border-black/10 pt-6">
               <p className="mb-3 text-sm font-semibold text-gray-900">
-                {ASTRO_PORTAL_UI.fullHoroscopeTitle}
+                {AP.fullHoroscopeTitle}
               </p>
               <FullHoroscopePanels state={fullState} eventId={eventId} />
             </div>
@@ -74,7 +76,7 @@ export function AstrologerMeetingHoroscopePage({
 
       {!loading && !error && event && !hasBasic && (
         <p className="px-6 py-12 text-center text-sm text-gray-500">
-          {ASTRO_PORTAL_UI.detail.horoscopeUnavailable}
+          {AP.detail.horoscopeUnavailable}
         </p>
       )}
     </div>

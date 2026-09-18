@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationDetailExpertiseBar } from "@/components/consultation/ConsultationDetailExpertiseBar";
 import { ConsultationDetailProfileCard } from "@/components/consultation/ConsultationDetailProfileCard";
@@ -42,8 +42,9 @@ type Props = {
 };
 
 export function ConsultationDetailView({ astrologerId }: Props) {
-  const CD = CONSULTATION_DETAIL_SCREEN;
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
   const C = useI18nConstants(CONSULTATION_SCREEN);
+  const { t } = useT();
   const router = useRouter();
   const [data, setData] = useState<ConsultationAstrologerDetail | null>(null);
   const [slots, setSlots] = useState<ConsultationSlot[]>([]);
@@ -94,7 +95,7 @@ export function ConsultationDetailView({ astrologerId }: Props) {
 
   const astrologer = data?.astrologer;
   const name = astrologer
-    ? consultationAstrologerName(astrologer.user)
+    ? consultationAstrologerName(astrologer.user, t)
     : "";
   const fee = astrologer
     ? consultationFeeForAstrologer(astrologer, currency)
@@ -140,7 +141,7 @@ export function ConsultationDetailView({ astrologerId }: Props) {
               type="button"
               onClick={() => router.push(ROUTES.consultation)}
               className={CONSULTATION_DETAIL_LAYOUT.backBtn}
-              aria-label="Back"
+              aria-label={t("Go back")}
             >
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path
@@ -225,7 +226,7 @@ export function ConsultationDetailView({ astrologerId }: Props) {
                     }
                   >
                     {slots.length > 0
-                      ? `${CD.today} · ${slots.length} slots`
+                      ? `${CD.today} · ${slots.length} ${t("slots")}`
                       : CD.noSlotsToday}
                   </p>
                 </div>

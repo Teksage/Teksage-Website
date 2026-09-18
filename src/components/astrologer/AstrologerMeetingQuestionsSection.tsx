@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useI18nConstants } from "@/hooks/useT";
 import type { AstroQuestion } from "@/types/astrologer-portal";
 import { AstrologerAnswerQuestionDialog } from "@/components/astrologer/AstrologerAnswerQuestionDialog";
 import {
@@ -15,14 +16,14 @@ import {
 import { deleteAstrologerQuestion } from "@/lib/services/astrologer-portal";
 import type { AstrologerMeetingQuestionsSectionProps } from "@/types";
 
-const Q = ASTRO_PORTAL_UI.questions;
-
 export function AstrologerMeetingQuestionsSection({
   questions,
   startDatetime,
   consultationDuration,
   onQuestionsUpdated,
 }: AstrologerMeetingQuestionsSectionProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const Q = AP.questions;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
@@ -30,7 +31,11 @@ export function AstrologerMeetingQuestionsSection({
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
-    setDisplayQuestions(questions);
+    const timeoutId = window.setTimeout(
+      () => setDisplayQuestions(questions),
+      0
+    );
+    return () => window.clearTimeout(timeoutId);
   }, [questions]);
 
   const hasAnswered = allQuestionsAnswered(displayQuestions);

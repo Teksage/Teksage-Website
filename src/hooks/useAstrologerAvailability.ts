@@ -16,9 +16,11 @@ import {
 } from "@/lib/services/astrologer-portal";
 import { showErrorAppSnackBar, showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
+import { useI18nConstants } from "@/hooks/useT";
 
 export function useAstrologerAvailability(selectedDate: Date) {
-  const user = useAuthStore((s) => s.user);
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const userId = useAuthStore((s) => s.user?.id);
   const dateStr = format(selectedDate, "yyyy-MM-dd");
 
   const [draftByDate, setDraftByDate] = useState<SlotsByDate>({});
@@ -54,11 +56,11 @@ export function useAstrologerAvailability(selectedDate: Date) {
 
   const loadDate = useCallback(
     async (targetDate: string, options?: { syncDraftFromServer?: boolean }) => {
-      if (!user?.id) return;
+      if (!userId) return;
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchAstrologerSlots(user.id, targetDate);
+        const data = await fetchAstrologerSlots(userId, targetDate);
         const available = availableRangesFromSlots(data);
         const booked = bookedRangesFromSlots(data);
 
@@ -70,16 +72,17 @@ export function useAstrologerAvailability(selectedDate: Date) {
           return { ...prev, [targetDate]: cloneSet(available) };
         });
       } catch {
-        setError("Failed to load slots.");
+        setError(AP.avail.loadFail);
       } finally {
         setLoading(false);
       }
     },
-    [user?.id]
+    [AP.avail.loadFail, userId]
   );
 
   useEffect(() => {
-    void loadDate(dateStr);
+    const timeoutId = window.setTimeout(() => void loadDate(dateStr), 0);
+    return () => window.clearTimeout(timeoutId);
   }, [dateStr, loadDate]);
 
   const setSelectedRanges = useCallback(
@@ -115,19 +118,26 @@ export function useAstrologerAvailability(selectedDate: Date) {
         return next;
       });
       await loadDate(dateStr, { syncDraftFromServer: true });
-      const successText = ASTRO_PORTAL_UI.avail.saveSuccess;
+      const successText = AP.avail.saveSuccess;
       setSaveMessage({ type: "success", text: successText });
       showSuccessAppSnackBar(successText);
       return true;
     } catch {
-      const failText = ASTRO_PORTAL_UI.avail.saveFail;
+      const failText = AP.avail.saveFail;
       setSaveMessage({ type: "error", text: failText });
       showErrorAppSnackBar(failText);
       return false;
     } finally {
       setSaving(false);
     }
-  }, [draftByDate, originalByDate, dateStr, loadDate]);
+  }, [
+    AP.avail.saveFail,
+    AP.avail.saveSuccess,
+    draftByDate,
+    originalByDate,
+    dateStr,
+    loadDate,
+  ]);
 
   return {
     bookedRanges,

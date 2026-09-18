@@ -46,8 +46,8 @@ export function firstWeekdayOffset(year: number, month: number): number {
   return new Date(year, month, 1).getDay();
 }
 
-export function formatSlotTime12(iso: string): string {
-  return new Date(iso).toLocaleTimeString(undefined, {
+export function formatSlotTime12(iso: string, locale?: string): string {
+  return new Date(iso).toLocaleTimeString(locale, {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,

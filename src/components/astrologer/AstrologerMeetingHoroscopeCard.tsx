@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useI18nConstants } from "@/hooks/useT";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
 import { ROUTES } from "@/lib/constants/routes";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ export function AstrologerMeetingHoroscopeCard({
   queryString,
   href,
 }: AstrologerMeetingHoroscopeCardProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const targetHref =
     href ??
     `${ROUTES.astrologerMeetings}/${eventId}/horoscope${
@@ -23,7 +25,7 @@ export function AstrologerMeetingHoroscopeCard({
     <div className="rounded-xl border border-black/[0.04] bg-white p-5">
       <div className="flex items-center justify-between gap-3">
         <p className="text-base font-semibold text-gray-900/80">
-          {ASTRO_PORTAL_UI.detail.horoscopeDetails}
+          {AP.detail.horoscopeDetails}
         </p>
         {hasHoroscope ? (
           <Link
@@ -36,11 +38,11 @@ export function AstrologerMeetingHoroscopeCard({
               color: ASTRO_PORTAL_COLORS.brandGreen,
             }}
           >
-            {ASTRO_PORTAL_UI.detail.horoscopeView}
+            {AP.detail.horoscopeView}
           </Link>
         ) : (
           <span className="text-xs font-medium text-gray-400">
-            {ASTRO_PORTAL_UI.detail.horoscopeUnavailable}
+            {AP.detail.horoscopeUnavailable}
           </span>
         )}
       </div>

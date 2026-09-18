@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationSlotsDateStrip } from "@/components/consultation/ConsultationSlotsDateStrip";
 import { ConsultationSlotsProfileHeader } from "@/components/consultation/ConsultationSlotsProfileHeader";
@@ -37,6 +38,7 @@ import {
 } from "@/lib/consultation-session";
 import { fetchAstrologerDetail, fetchAstrologerSlots } from "@/lib/services/consultation";
 import { consultationCheckoutPath } from "@/lib/constants/consultation-routes";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type {
   ConsultationAstrologer,
   ConsultationDaySlotSummary,
@@ -78,8 +80,8 @@ function matchDraftSlot(
   );
 }
 
-function formatSlotDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(undefined, {
+function formatSlotDate(iso: string, locale: string): string {
+  return new Date(iso).toLocaleDateString(locale, {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -87,12 +89,14 @@ function formatSlotDate(iso: string): string {
   });
 }
 
-function formatSlotRange(start: string, end: string): string {
-  return `${formatSlotDate(start)} · ${formatSlotTime12(start)} – ${formatSlotTime12(end)}`;
+function formatSlotRange(start: string, end: string, locale: string): string {
+  return `${formatSlotDate(start, locale)} · ${formatSlotTime12(start, locale)} – ${formatSlotTime12(end, locale)}`;
 }
 
 export function ConsultationSlotsView({ astrologerId }: Props) {
-  const CS = CONSULTATION_SLOTS_SCREEN;
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
+  const { locale, t } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const router = useRouter();
   const today = useMemo(() => new Date(), []);
 
@@ -119,7 +123,7 @@ export function ConsultationSlotsView({ astrologerId }: Props) {
   const unit = currency === "INR" ? "₹" : "$";
   const fee = astrologer ? consultationFeeForAstrologer(astrologer, currency) : 0;
   const name = astrologer
-    ? consultationAstrologerName(astrologer.user)
+    ? consultationAstrologerName(astrologer.user, t)
     : CS.defaultTitle;
   const initials = consultationAstrologerInitials(astrologer?.user);
   const feeLabel = `${unit}${fee.toLocaleString()} ${CS.perSessionSuffix}`;
@@ -128,8 +132,8 @@ export function ConsultationSlotsView({ astrologerId }: Props) {
     ensureConsultationFilter();
     let cancelled = false;
     const days = buildUpcomingDays(today, CONSULTATION_SLOTS_PREFETCH_DAY_COUNT);
-    setCountsLoading(true);
     (async () => {
+      setCountsLoading(true);
       try {
         const [detail, summaries] = await Promise.all([
           fetchAstrologerDetail(astrologerId),
@@ -187,8 +191,15 @@ export function ConsultationSlotsView({ astrologerId }: Props) {
     try {
       const filter = readConsultationFilter();
       if (!filter || !astrologer) return;
+      const astrologerLanguages = astrologer.languages
+        .map((language) => language.trim())
+        .filter(Boolean);
       writeConsultationDraft({
         ...filter,
+        languages:
+          astrologerLanguages.length > 0
+            ? astrologerLanguages
+            : filter.languages,
         astrologerId,
         astrologerName: name,
         astrologerPicture: astrologer.picture,
@@ -224,7 +235,7 @@ export function ConsultationSlotsView({ astrologerId }: Props) {
               type="button"
               onClick={() => router.back()}
               className={CONSULTATION_SLOTS_LAYOUT.backBtn}
-              aria-label="Back"
+              aria-label={t("Go back")}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path
@@ -296,7 +307,11 @@ export function ConsultationSlotsView({ astrologerId }: Props) {
                       {CS.yourSelection}
                     </p>
                     <p className={CONSULTATION_SLOTS_LAYOUT.footerSelValue}>
-                      {formatSlotRange(selected.start_datetime, selected.end_datetime)}
+                      {formatSlotRange(
+                        selected.start_datetime,
+                        selected.end_datetime,
+                        dateLocale
+                      )}
                     </p>
                   </div>
                   <div className={CONSULTATION_SLOTS_LAYOUT.footerTotalWrap}>

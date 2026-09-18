@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_CHECKOUT_LAYOUT,
@@ -7,11 +8,11 @@ import {
 } from "@/lib/constants/consultation-checkout";
 
 export function ConsultationCheckoutStepIndicator() {
-  const CC = CONSULTATION_CHECKOUT_SCREEN;
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
   const L = CONSULTATION_CHECKOUT_LAYOUT;
 
   return (
-    <nav className={L.stepRow} aria-label="Booking steps">
+    <nav className={L.stepRow} aria-label={CC.title}>
       <div className={L.stepItem}>
         <span className={cn(L.stepBadge, L.stepBadgeDone)} aria-hidden>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">

@@ -1,15 +1,15 @@
 "use client";
 
-import { format } from "date-fns";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { AstrologerMeetingHoroscopeCard } from "@/components/astrologer/AstrologerMeetingHoroscopeCard";
 import { AstrologerMeetingQuestionsSection } from "@/components/astrologer/AstrologerMeetingQuestionsSection";
 import { hasAstrologerMeetingHoroscope } from "@/lib/astrologer-horoscope-display";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
 import { updateAstrologerEventStatus } from "@/lib/services/astrologer-portal";
 import { ROUTES } from "@/lib/constants/routes";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { AstrologerMeetingDetailProps } from "@/types";
 
 function LabelRow({ label, value }: { label: string; value: string }) {
@@ -36,6 +36,9 @@ export function AstrologerMeetingDetail({
   meetingLinkFallback,
   onRefresh,
 }: AstrologerMeetingDetailProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const { locale } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const router = useRouter();
   const [isCompleted, setIsCompleted] = useState(event.status === "completed");
   const [completing, setCompleting] = useState(false);
@@ -50,7 +53,7 @@ export function AstrologerMeetingDetail({
       setIsCompleted(true);
       if (onRefresh) await onRefresh();
     } catch {
-      setCompleteError(ASTRO_PORTAL_UI.detail.markCompleteFail);
+      setCompleteError(AP.detail.markCompleteFail);
     } finally {
       setCompleting(false);
     }
@@ -61,12 +64,24 @@ export function AstrologerMeetingDetail({
   let endTime = "";
   try {
     const dt = new Date(event.start_datetime);
-    meetingDate = format(dt, "d MMMM, yyyy");
-    startTime = format(dt, "h:mm a");
+    meetingDate = new Intl.DateTimeFormat(dateLocale, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(dt);
+    startTime = new Intl.DateTimeFormat(dateLocale, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(dt);
     const endDt = event.consultation_duration
       ? new Date(dt.getTime() + event.consultation_duration * 60_000)
       : new Date(dt.getTime() + 30 * 60_000);
-    endTime = format(endDt, "h:mm a");
+    endTime = new Intl.DateTimeFormat(dateLocale, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(endDt);
   } catch {
     meetingDate = event.start_datetime;
   }
@@ -90,8 +105,8 @@ export function AstrologerMeetingDetail({
                 {fullName}
               </p>
               <p className="mt-1 text-sm font-medium leading-none text-gray-800/80">
-                {ASTRO_PORTAL_UI.detail.booked}{" "}
-                {event.consultation_duration ?? 30} {ASTRO_PORTAL_UI.detail.min}
+                {AP.detail.booked}{" "}
+                {event.consultation_duration ?? 30} {AP.detail.min}
               </p>
             </div>
           </div>
@@ -99,14 +114,14 @@ export function AstrologerMeetingDetail({
           <DashedDivider />
 
           {/* Date / time / other rows */}
-          <LabelRow label={ASTRO_PORTAL_UI.detail.date} value={meetingDate} />
+          <LabelRow label={AP.detail.date} value={meetingDate} />
           <LabelRow
-            label={ASTRO_PORTAL_UI.detail.time}
+            label={AP.detail.time}
             value={`${startTime} - ${endTime}`}
           />
           {event.category && event.category.length > 0 && (
             <LabelRow
-              label={ASTRO_PORTAL_UI.detail.consultingOn}
+              label={AP.detail.consultingOn}
               value={event.category
                 .map((c) => c.charAt(0).toUpperCase() + c.slice(1))
                 .join(", ")}
@@ -114,7 +129,7 @@ export function AstrologerMeetingDetail({
           )}
           {event.languages && event.languages.length > 0 && (
             <LabelRow
-              label={ASTRO_PORTAL_UI.detail.language}
+              label={AP.detail.language}
               value={event.languages
                 .map((l) => l.charAt(0).toUpperCase() + l.slice(1))
                 .join(", ")}
@@ -122,7 +137,7 @@ export function AstrologerMeetingDetail({
           )}
           {event.consultation_fee != null && (
             <LabelRow
-              label={ASTRO_PORTAL_UI.detail.feesPaid}
+              label={AP.detail.feesPaid}
               value={`${event.currency ?? "₹"} ${event.consultation_fee.toFixed(2)}/-`}
             />
           )}
@@ -134,7 +149,7 @@ export function AstrologerMeetingDetail({
                 className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-base font-semibold"
                 style={{ color: ASTRO_PORTAL_COLORS.brandGreen }}
               >
-                <span>{ASTRO_PORTAL_UI.detail.submitted}</span>
+                <span>{AP.detail.submitted}</span>
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -149,14 +164,14 @@ export function AstrologerMeetingDetail({
                     className="block w-full rounded-full py-2.5 text-center text-base font-semibold text-white transition-opacity hover:opacity-90"
                     style={{ backgroundColor: ASTRO_PORTAL_COLORS.brandGreen }}
                   >
-                    {ASTRO_PORTAL_UI.detail.joinMeeting}
+                    {AP.detail.joinMeeting}
                   </a>
                 ) : (
                   <div
                     className="w-full rounded-full border py-2.5 text-center text-base font-semibold"
                     style={{ borderColor: "#87AE0E", color: "#87AE0E" }}
                   >
-                    {ASTRO_PORTAL_UI.detail.noLink}
+                    {AP.detail.noLink}
                   </div>
                 )}
                 <button
@@ -166,8 +181,8 @@ export function AstrologerMeetingDetail({
                   className="w-full rounded-full border border-white/40 py-2 text-center text-sm font-semibold text-white transition-opacity hover:opacity-80 disabled:opacity-50"
                 >
                   {completing
-                    ? ASTRO_PORTAL_UI.detail.markCompleting
-                    : ASTRO_PORTAL_UI.detail.markComplete}
+                    ? AP.detail.markCompleting
+                    : AP.detail.markComplete}
                 </button>
               </>
             )}
@@ -198,7 +213,7 @@ export function AstrologerMeetingDetail({
 
         {event.questions.length === 0 && (
           <p className="text-center text-sm font-medium text-white/70">
-            {ASTRO_PORTAL_UI.detail.noQuestions}
+            {AP.detail.noQuestions}
           </p>
         )}
 
@@ -208,7 +223,7 @@ export function AstrologerMeetingDetail({
           onClick={() => router.push(ROUTES.astrologerMeetings)}
           className="mt-4 w-full rounded-full border border-white/40 py-2.5 text-center text-sm font-semibold text-white transition-opacity hover:opacity-80"
         >
-          {ASTRO_PORTAL_UI.detail.backToMeetings}
+          {AP.detail.backToMeetings}
         </button>
       </div>
     </div>

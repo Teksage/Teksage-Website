@@ -5,6 +5,7 @@ import {
   CONSULTATION_DETAIL_LAYOUT,
   CONSULTATION_DETAIL_SCREEN,
 } from "@/lib/constants/consultation-detail";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import {
   consultationAstrologerInitials,
   consultationAstrologerName,
@@ -24,8 +25,9 @@ export function ConsultationDetailProfileCard({
   astrologer,
   consultationCount,
 }: Props) {
-  const CD = CONSULTATION_DETAIL_SCREEN;
-  const name = consultationAstrologerName(astrologer.user) || "Astrologer";
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
+  const { t } = useT();
+  const name = consultationAstrologerName(astrologer.user, t);
   const initials = consultationAstrologerInitials(astrologer.user);
   const langs = formatConsultationLanguageList(astrologer.languages);
   const location = astrologer.user?.preferred_location?.trim() || "";

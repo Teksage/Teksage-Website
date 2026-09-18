@@ -20,7 +20,7 @@ export const HOROSCOPE_FULL_UI = {
   pillTabListScroll:
     "scrollbar-hidden flex w-full gap-1 overflow-x-auto rounded-xl border border-black/[0.08] bg-white p-1 shadow-sm md:overflow-visible",
   pillTabScroll:
-    "shrink-0 rounded-lg px-3 py-2 text-center text-xs font-semibold whitespace-nowrap transition-colors md:min-w-0 md:flex-1 md:px-1.5 md:text-[10px] lg:text-sm",
+    "shrink-0 rounded-lg px-3 py-2 text-center text-xs font-semibold whitespace-nowrap transition-colors md:min-w-0 md:flex-1 md:px-1.5 md:text-micro lg:text-sm",
   fullPage:
     "flex w-full flex-col gap-3 px-3 pb-8 pt-2 sm:px-4",
   /** Settings-style intro on Full Horoscope — full width, light side pad only. */
@@ -35,7 +35,7 @@ export const HOROSCOPE_FULL_UI = {
     "bg-white text-[var(--color-brand-panchang)] shadow-sm ring-1 ring-black/[0.06]",
   mainTabIdle: "text-black/55 hover:bg-white/70 hover:text-black/80",
   mainTabLabel:
-    "max-w-full text-[10px] font-semibold leading-tight md:truncate md:text-[10px] lg:text-xs",
+    "max-w-full text-micro font-semibold leading-tight md:truncate md:text-micro lg:text-xs",
   tableScroll:
     "scrollbar-hidden w-full min-w-0 overflow-x-auto overscroll-x-contain rounded-xl [-webkit-overflow-scrolling:touch]",
   toolbarMobile:

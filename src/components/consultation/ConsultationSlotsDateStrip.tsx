@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_SLOTS_DAY_COUNT,
@@ -9,20 +10,9 @@ import {
 } from "@/lib/constants/consultation-slots";
 import { isSameCalendarDay, isPastCalendarDay, toIsoDate } from "@/lib/consultation-calendar";
 import { buildUpcomingDays } from "@/lib/consultation-slots-counts";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { ConsultationDaySlotStatus } from "@/types/consultation";
 import type { ConsultationSlotsDateStripProps } from "@/types/ui/consultation";
-
-function dayLabel(
-  status: ConsultationDaySlotStatus | "loading",
-  open: number
-): string {
-  const CS = CONSULTATION_SLOTS_SCREEN;
-  if (status === "loading") return CS.slotsLoading;
-  if (status === "open") return `${open} ${CS.slotsSuffix}`;
-  if (status === "full") return CS.full;
-  if (status === "none") return CS.noSlotsDay;
-  return CS.checkLater;
-}
 
 function labelClass(
   status: ConsultationDaySlotStatus | "loading",
@@ -63,9 +53,11 @@ export function ConsultationSlotsDateStrip({
   onWindowPrev,
   onWindowNext,
 }: ConsultationSlotsDateStripProps) {
-  const CS = CONSULTATION_SLOTS_SCREEN;
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
+  const { locale } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const days = buildUpcomingDays(today, CONSULTATION_SLOTS_DAY_COUNT, windowOffset);
-  const monthHint = selectedDate.toLocaleDateString(undefined, {
+  const monthHint = selectedDate.toLocaleDateString(dateLocale, {
     month: "long",
     year: "numeric",
   });
@@ -110,7 +102,17 @@ export function ConsultationSlotsDateStrip({
             ? "loading"
             : (summary?.status ?? "none");
           const open = summary?.open ?? 0;
-          const label = isPast ? CS.full : dayLabel(status, open);
+          const label = isPast
+            ? CS.full
+            : status === "loading"
+              ? CS.slotsLoading
+              : status === "open"
+                ? `${open} ${CS.slotsSuffix}`
+                : status === "full"
+                  ? CS.full
+                  : status === "none"
+                    ? CS.noSlotsDay
+                    : CS.checkLater;
           const muted = isMutedDay(isPast, status, isSelected);
 
           return (
@@ -138,7 +140,7 @@ export function ConsultationSlotsDateStrip({
                       : CONSULTATION_SLOTS_LAYOUT.dateDayLabelDefault
                 )}
               >
-                {CS.weekdays[d.getDay()]}
+                {d.toLocaleDateString(dateLocale, { weekday: "short" })}
               </span>
               <span
                 className={cn(

@@ -55,11 +55,11 @@ export function AskAstrologerRequestCard({
               </div>
               <div>
                 <p className={ASK_ASTROLOGER_UI.portalCustomerName}>
-                  {req.customer_name ?? "Client"}
+                  {req.customer_name ?? AA.astrologerClientFallback}
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-2">
                   <span className={ASK_ASTROLOGER_UI.portalRequestId}>
-                    Request #{req.id}
+                    {AA.astrologerRequestLabel} #{req.id}
                   </span>
                   <span
                     className={cn(

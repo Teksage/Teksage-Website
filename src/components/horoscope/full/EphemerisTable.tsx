@@ -16,11 +16,11 @@ import {
 import type { EphemerisMode } from "@/types";
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-[10px] font-bold uppercase tracking-wide text-white sm:text-xs";
+  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-micro font-bold uppercase tracking-wide text-white sm:text-xs";
 const TD =
-  "whitespace-nowrap px-1.5 py-3 text-center text-[10px] font-medium tabular-nums text-[var(--color-brand-black)] sm:text-xs";
+  "whitespace-nowrap px-1.5 py-3 text-center text-micro font-medium tabular-nums text-[var(--color-brand-black)] sm:text-xs";
 const TD_DATE =
-  "sticky left-0 z-[1] whitespace-nowrap bg-white px-2 py-3 text-center text-[10px] font-bold tabular-nums text-[var(--color-brand-black)] sm:text-xs";
+  "sticky left-0 z-[1] whitespace-nowrap bg-white px-2 py-3 text-center text-micro font-bold tabular-nums text-[var(--color-brand-black)] sm:text-xs";
 const TH_DATE = cn(TH, "sticky left-0 z-[2]");
 const TR =
   "border-b border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] last:border-0";

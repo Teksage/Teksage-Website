@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import {
   CONSULTATION_HOME_SCREEN,
   CONSULTATION_HUB_ASTRO_CARD as CARD,
@@ -25,7 +25,8 @@ export function ConsultationHubAstroCard({
 }: ConsultationHubAstroCardProps) {
   const CH = useI18nConstants(CONSULTATION_HOME_SCREEN);
   const CL = useI18nConstants(CONSULTATION_LISTING_SCREEN);
-  const name = consultationAstrologerName(astrologer.user);
+  const { t } = useT();
+  const name = consultationAstrologerName(astrologer.user, t);
   const fee = consultationFeeForAstrologer(astrologer, currency);
   const unit = currency === "INR" ? "₹" : "$";
   const amount = Math.round(fee).toLocaleString("en-IN");

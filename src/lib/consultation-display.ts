@@ -46,12 +46,13 @@ export function formatConsultationLanguageList(languages: string[]): string {
 }
 
 export function consultationAstrologerName(
-  user?: { first_name?: string | null; last_name?: string | null } | null
+  user?: { first_name?: string | null; last_name?: string | null } | null,
+  translate: (value: string) => string = (value) => value
 ): string {
   const first = user?.first_name?.trim() ?? "";
   const last = user?.last_name?.trim() ?? "";
   const full = [first, last].filter(Boolean).join(" ");
-  if (!full) return "Astrologer";
+  if (!full) return translate("Astrologer");
   return full
     .split(" ")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

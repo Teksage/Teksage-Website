@@ -55,7 +55,7 @@ function PeriodRow({ entry, isExpanded, onToggle, hasChildren }: RowProps) {
       </td>
       <td className="px-3 py-2 text-center text-xs sm:text-sm">
         {isRunning && (
-          <span className="rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-bold text-white">
+          <span className="rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-micro font-bold text-white">
             {H.dasaActiveBadge}
           </span>
         )}
@@ -128,14 +128,14 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
         )}
       >
         <td className="w-7 px-1.5 py-1.5 text-center text-[var(--color-brand-primary)]">
-          {hasAntra ? <span className="text-[10px] font-bold">{buktiOpen ? "▾" : "▸"}</span> : null}
+          {hasAntra ? <span className="text-micro font-bold">{buktiOpen ? "▾" : "▸"}</span> : null}
         </td>
         <td className={cn(DASA_SUB_TD, "font-semibold", isRunning && "text-[var(--color-brand-primary)]")}>{bukti.name}</td>
         <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(bukti.startDate)}</td>
         <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(bukti.endDate)}</td>
         <td className={DASA_SUB_TD}>
           {isRunning && (
-            <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-[9px] font-bold text-white">
+            <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-2xs font-bold text-white">
               {H.dasaActiveBadge}
             </span>
           )}
@@ -163,7 +163,7 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
                       <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(antra.endDate)}</td>
                       <td className={DASA_SUB_TD}>
                         {antra.isRunning && (
-                          <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                          <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-2xs font-bold text-white">
                             {H.dasaActiveBadge}
                           </span>
                         )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import {
   ASTRO_PORTAL_COLORS,
@@ -10,8 +11,6 @@ import { updateAstrologerQuestionAnswer } from "@/lib/services/astrologer-portal
 import type { AstroQuestion } from "@/types/astrologer-portal";
 import type { AstrologerAnswerQuestionDialogProps } from "@/types";
 
-const Q = ASTRO_PORTAL_UI.questions;
-
 export function AstrologerAnswerQuestionDialog({
   open,
   questions,
@@ -19,6 +18,9 @@ export function AstrologerAnswerQuestionDialog({
   onClose,
   onAnswerSaved,
 }: AstrologerAnswerQuestionDialogProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const { t } = useT();
+  const Q = AP.questions;
   const [localQuestions, setLocalQuestions] = useState<AstroQuestion[]>(questions);
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [text, setText] = useState("");
@@ -101,7 +103,7 @@ export function AstrologerAnswerQuestionDialog({
         type="button"
         className="absolute inset-0 bg-black/10 backdrop-blur-sm"
         onClick={onClose}
-        aria-label="Close"
+        aria-label={t("Close")}
       />
       <div className="relative z-10 w-full max-w-md rounded-[20px] bg-white p-5">
         <p className="text-base font-semibold text-gray-900">{current.question}</p>

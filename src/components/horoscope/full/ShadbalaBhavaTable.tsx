@@ -7,9 +7,9 @@ import { useI18nConstants } from "@/hooks/useT";
 import type { BhavaBalaRow } from "@/lib/format-bhava-bala";
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-[10px] font-bold uppercase leading-tight tracking-wide text-white sm:px-2 sm:text-xs";
+  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-micro font-bold uppercase leading-tight tracking-wide text-white sm:px-2 sm:text-xs";
 const TD =
-  "px-1 py-3 text-center text-[10px] tabular-nums text-[var(--color-brand-black)] sm:px-2 sm:text-xs";
+  "px-1 py-3 text-center text-micro tabular-nums text-[var(--color-brand-black)] sm:px-2 sm:text-xs";
 const TR =
   "border-b border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] last:border-0";
 const TABLE =

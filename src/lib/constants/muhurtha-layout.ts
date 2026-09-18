@@ -67,21 +67,21 @@ export const MUHURTHA_LAYOUT = {
   tableColStatus: "min-w-0",
   tableColDetails: "flex min-w-0 items-center justify-end",
   dayRowDate: "text-xs font-semibold text-[var(--color-brand-black)] sm:text-sm",
-  dayRowWeekday: "text-[10px] text-[var(--color-brand-black)]/50 sm:text-xs",
+  dayRowWeekday: "text-micro text-[var(--color-brand-black)]/50 sm:text-xs",
   statusStack: "flex flex-col items-start gap-1",
   statusPeriodLabel:
-    "text-[9px] font-semibold uppercase tracking-wide text-[var(--color-brand-black)]/45 sm:text-[10px]",
+    "text-2xs font-semibold uppercase tracking-wide text-[var(--color-brand-black)]/45 sm:text-micro",
   segmentDetailsStack: "flex min-w-0 flex-col items-end gap-1.5 text-right",
   segmentDetailBlock: "flex min-w-0 flex-col items-end gap-0.5",
   statusBadgeBase:
-    "inline-flex w-fit max-w-full items-center text-left text-[11px] font-semibold leading-snug text-[var(--color-brand-black)] sm:text-xs",
+    "inline-flex w-fit max-w-full items-center text-left text-nav font-semibold leading-snug text-[var(--color-brand-black)] sm:text-xs",
   statusSeparator: "font-semibold opacity-80",
   detailsTimeBlock: "flex min-w-0 flex-col items-end gap-0.5 text-right",
-  dayRowWindow: "text-[10px] font-medium leading-tight text-[var(--color-brand-black)]/80 sm:text-sm",
+  dayRowWindow: "text-micro font-medium leading-tight text-[var(--color-brand-black)]/80 sm:text-sm",
   reasonPreviewText:
-    "max-w-full text-right text-[10px] font-semibold leading-snug text-[var(--color-brand-black)] sm:text-xs",
+    "max-w-full text-right text-micro font-semibold leading-snug text-[var(--color-brand-black)] sm:text-xs",
   reasonMoreBtn:
-    "text-[10px] font-semibold text-[var(--color-brand-black)] underline underline-offset-2 hover:opacity-70 sm:text-xs",
+    "text-micro font-semibold text-[var(--color-brand-black)] underline underline-offset-2 hover:opacity-70 sm:text-xs",
   reasonPreviewWrap: "flex min-w-0 flex-col items-end gap-0.5 text-right",
   reasonInfoBtn:
     "inline-flex size-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-[var(--color-brand-black)]/65 shadow-sm transition-colors hover:border-[var(--color-brand-primary)]/35 hover:bg-[var(--color-brand-bg)] hover:text-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/30",

@@ -16,7 +16,7 @@ interface Props {
 }
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wide text-white sm:text-xs";
+  "bg-[var(--color-brand-panchang)] px-3 py-2 text-center text-micro font-bold uppercase tracking-wide text-white sm:text-xs";
 const TABLE =
   "w-full border-collapse overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white shadow-sm";
 
