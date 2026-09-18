@@ -6,6 +6,7 @@
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { ShadbalaBhavaTable } from "@/components/horoscope/full/ShadbalaBhavaTable";
 import { ShadbalaPlanetGrid } from "@/components/horoscope/full/ShadbalaPlanetGrid";
 import { FullHoroscopeTableScroll } from "@/components/horoscope/full/FullHoroscopeTableScroll";
@@ -29,27 +30,6 @@ import type { FullHoroscopeSection, ShadbalaPayload } from "@/types";
 
 const PLACEHOLDER = "py-8 text-center text-xs text-black/40";
 
-const VIEW_TABS: { id: ShadbalaInnerTab; label: string }[] = [
-  { id: "shadbala", label: HOROSCOPE_SCREEN.shadbalaInnerShadbala },
-  { id: "sthana", label: HOROSCOPE_SCREEN.shadbalaInnerSthana },
-  { id: "kala", label: HOROSCOPE_SCREEN.shadbalaInnerKala },
-  { id: "bhava", label: HOROSCOPE_SCREEN.shadbalaInnerBhava },
-];
-
-const PLANET_SORT_OPTIONS: { key: ShadbalaSortKey; label: string }[] = [
-  { key: "rank", label: HOROSCOPE_SCREEN.shadbalaSortRank },
-  { key: "shadbala", label: HOROSCOPE_SCREEN.shadbalaSortShadbala },
-  { key: "ishta", label: HOROSCOPE_SCREEN.shadbalaSortIshta },
-  { key: "balaPercent", label: HOROSCOPE_SCREEN.shadbalaSortBalaPercent },
-];
-
-const BHAVA_SORT_OPTIONS: { key: BhavaBalaSortKey; label: string }[] = [
-  { key: "rank", label: HOROSCOPE_SCREEN.shadbalaSortRank },
-  { key: "bhavaBala", label: HOROSCOPE_SCREEN.shadbalaSortBhavaBala },
-  { key: "rupa", label: HOROSCOPE_SCREEN.shadbalaSortRupa },
-  { key: "house", label: HOROSCOPE_SCREEN.shadbalaSortHouse },
-];
-
 function colsForTab(tab: ShadbalaInnerTab): ShadbalaCol[] {
   if (tab === "sthana") return SHADBALA_STHANA_COLS;
   if (tab === "kala") return SHADBALA_KALA_COLS;
@@ -61,6 +41,26 @@ export function ShadbalaTable({
 }: {
   section: FullHoroscopeSection<ShadbalaPayload>;
 }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
+  const { t } = useT();
+  const viewTabs = [
+    { id: "shadbala", label: H.shadbalaInnerShadbala },
+    { id: "sthana", label: H.shadbalaInnerSthana },
+    { id: "kala", label: H.shadbalaInnerKala },
+    { id: "bhava", label: H.shadbalaInnerBhava },
+  ] as const;
+  const planetSortOptions = [
+    { key: "rank", label: H.shadbalaSortRank },
+    { key: "shadbala", label: H.shadbalaSortShadbala },
+    { key: "ishta", label: H.shadbalaSortIshta },
+    { key: "balaPercent", label: H.shadbalaSortBalaPercent },
+  ] as const;
+  const bhavaSortOptions = [
+    { key: "rank", label: H.shadbalaSortRank },
+    { key: "bhavaBala", label: H.shadbalaSortBhavaBala },
+    { key: "rupa", label: H.shadbalaSortRupa },
+    { key: "house", label: H.shadbalaSortHouse },
+  ] as const;
   const [viewTab, setViewTab] = useState<ShadbalaInnerTab>("shadbala");
   const [planetSortKey, setPlanetSortKey] = useState<ShadbalaSortKey>("rank");
   const [bhavaSortKey, setBhavaSortKey] = useState<BhavaBalaSortKey>("rank");
@@ -81,7 +81,7 @@ export function ShadbalaTable({
   );
   const showSortFilters = viewTab === "shadbala" || viewTab === "bhava";
   const sortOptions =
-    viewTab === "bhava" ? BHAVA_SORT_OPTIONS : PLANET_SORT_OPTIONS;
+    viewTab === "bhava" ? bhavaSortOptions : planetSortOptions;
   const sortSelectId =
     viewTab === "bhava" ? "bhava-bala-sort" : "shadbala-sort";
   const sortValue = viewTab === "bhava" ? bhavaSortKey : planetSortKey;
@@ -92,7 +92,7 @@ export function ShadbalaTable({
   if (section.error || !section.data) {
     return (
       <p className={PLACEHOLDER}>
-        {section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}
+        {H.errorLoadLabel}
       </p>
     );
   }
@@ -102,24 +102,24 @@ export function ShadbalaTable({
       <div className={L.shadbalaStage}>
         <header className={L.shadbalaHeader}>
           <h2 className={L.shadbalaHeaderTitle}>
-            {HOROSCOPE_SCREEN.sectionShadbalaTitle}
+            {H.sectionShadbalaTitle}
           </h2>
           <div role="tablist" className={L.shadbalaTabRail}>
-            {VIEW_TABS.map((t) => {
-              const active = t.id === viewTab;
+            {viewTabs.map((tab) => {
+              const active = tab.id === viewTab;
               return (
                 <button
-                  key={t.id}
+                  key={tab.id}
                   type="button"
                   role="tab"
                   aria-selected={active}
-                  onClick={() => setViewTab(t.id)}
+                  onClick={() => setViewTab(tab.id)}
                   className={cn(
                     L.shadbalaTabBtn,
                     active ? L.shadbalaTabActive : L.shadbalaTabIdle
                   )}
                 >
-                  {t.label}
+                  {tab.label}
                 </button>
               );
             })}
@@ -130,7 +130,7 @@ export function ShadbalaTable({
           <div className={L.shadbalaToolbar}>
             <div className={L.shadbalaSortGroup}>
               <label htmlFor={sortSelectId} className={L.shadbalaSortLabel}>
-                {HOROSCOPE_SCREEN.shadbalaSortLabel}
+                {H.shadbalaSortLabel}
               </label>
               <select
                 id={sortSelectId}
@@ -157,8 +157,8 @@ export function ShadbalaTable({
               className={L.shadbalaOrderBtn}
             >
               {ascending
-                ? HOROSCOPE_SCREEN.shadbalaSortAsc
-                : HOROSCOPE_SCREEN.shadbalaSortDesc}
+                ? H.shadbalaSortAsc
+                : H.shadbalaSortDesc}
             </button>
           </div>
         ) : null}
@@ -170,7 +170,10 @@ export function ShadbalaTable({
             </FullHoroscopeTableScroll>
           ) : (
             <FullHoroscopeTableScroll>
-              <ShadbalaPlanetGrid rows={sorted} cols={colsForTab(viewTab)} />
+              <ShadbalaPlanetGrid
+                rows={sorted}
+                cols={colsForTab(viewTab).map((col) => ({ ...col, label: t(col.label) }))}
+              />
             </FullHoroscopeTableScroll>
           )}
         </div>

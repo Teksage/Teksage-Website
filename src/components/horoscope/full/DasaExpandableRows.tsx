@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { useI18nConstants } from "@/hooks/useT";
 import { dasaEntryKey, formatDasaDate } from "@/lib/format-dasa-date";
 import {
   DASA_ANTRA_WRAP,
@@ -22,6 +23,7 @@ interface RowProps {
 }
 
 function PeriodRow({ entry, isExpanded, onToggle, hasChildren }: RowProps) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const isRunning = entry.isRunning;
   return (
     <tr
@@ -53,8 +55,8 @@ function PeriodRow({ entry, isExpanded, onToggle, hasChildren }: RowProps) {
       </td>
       <td className="px-3 py-2 text-center text-xs sm:text-sm">
         {isRunning && (
-          <span className="rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-bold text-white">
-            {HOROSCOPE_SCREEN.dasaActiveBadge}
+          <span className="rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-micro font-bold text-white">
+            {H.dasaActiveBadge}
           </span>
         )}
       </td>
@@ -71,6 +73,7 @@ interface DasaRowsProps {
 }
 
 export function DasaExpandableRows({ dasa, dasaOpen, expandedBuktiKey, onToggleDasa, onToggleBukti }: DasaRowsProps) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const hasBukti = dasa.subDasa.length > 0;
   return (
     <>
@@ -79,15 +82,15 @@ export function DasaExpandableRows({ dasa, dasaOpen, expandedBuktiKey, onToggleD
         <tr>
           <td colSpan={DASA_COL_COUNT} className="p-0">
             <div className={DASA_SUB_WRAP}>
-              <p className={DASA_SUB_LABEL}>{HOROSCOPE_SCREEN.dasaLevelBukti}</p>
+              <p className={DASA_SUB_LABEL}>{H.dasaLevelBukti}</p>
               <table className={DASA_SUB_TABLE}>
                 <thead>
                   <tr>
                     <th className={cn(DASA_SUB_TH, "w-7")} aria-hidden />
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColPlanet}</th>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStart}</th>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColEnd}</th>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColPlanet}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColStart}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColEnd}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColStatus}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,6 +113,7 @@ export function DasaExpandableRows({ dasa, dasaOpen, expandedBuktiKey, onToggleD
 }
 
 function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen: boolean; onToggle: () => void }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const hasAntra = bukti.subDasa.length > 0;
   const isRunning = bukti.isRunning;
   return (
@@ -124,15 +128,15 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
         )}
       >
         <td className="w-7 px-1.5 py-1.5 text-center text-[var(--color-brand-primary)]">
-          {hasAntra ? <span className="text-[10px] font-bold">{buktiOpen ? "▾" : "▸"}</span> : null}
+          {hasAntra ? <span className="text-micro font-bold">{buktiOpen ? "▾" : "▸"}</span> : null}
         </td>
         <td className={cn(DASA_SUB_TD, "font-semibold", isRunning && "text-[var(--color-brand-primary)]")}>{bukti.name}</td>
         <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(bukti.startDate)}</td>
         <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(bukti.endDate)}</td>
         <td className={DASA_SUB_TD}>
           {isRunning && (
-            <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-[9px] font-bold text-white">
-              {HOROSCOPE_SCREEN.dasaActiveBadge}
+            <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-2xs font-bold text-white">
+              {H.dasaActiveBadge}
             </span>
           )}
         </td>
@@ -141,14 +145,14 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
         <tr>
           <td colSpan={DASA_COL_COUNT} className="p-0">
             <div className={DASA_ANTRA_WRAP}>
-              <p className={DASA_SUB_LABEL}>{HOROSCOPE_SCREEN.dasaLevelAntra}</p>
+              <p className={DASA_SUB_LABEL}>{H.dasaLevelAntra}</p>
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColPlanet}</th>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStart}</th>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColEnd}</th>
-                    <th className={DASA_SUB_TH}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColPlanet}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColStart}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColEnd}</th>
+                    <th className={DASA_SUB_TH}>{H.dasaColStatus}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -159,8 +163,8 @@ function BuktiRows({ bukti, buktiOpen, onToggle }: { bukti: DasaEntry; buktiOpen
                       <td className={cn(DASA_SUB_TD, "whitespace-nowrap")}>{formatDasaDate(antra.endDate)}</td>
                       <td className={DASA_SUB_TD}>
                         {antra.isRunning && (
-                          <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-[9px] font-bold text-white">
-                            {HOROSCOPE_SCREEN.dasaActiveBadge}
+                          <span className="rounded-full bg-[var(--color-brand-primary)] px-1.5 py-0.5 text-2xs font-bold text-white">
+                            {H.dasaActiveBadge}
                           </span>
                         )}
                       </td>

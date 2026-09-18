@@ -2,7 +2,7 @@
 // Size tokens are wired in `src/app/globals.css` `@theme` (keep values in sync).
 
 export const FONT_FAMILY = {
-  sans: "var(--font-urbanist)",
+  sans: "var(--font-app-sans)",
 } as const;
 
 /** Font size scale — also exposed as Tailwind `text-*` via `globals.css`. */
@@ -107,14 +107,16 @@ export const TYPO = {
   hintSm: "text-sm font-medium",
   error: "text-sm font-medium",
   errorSemibold: "text-sm font-semibold",
-  h3: "text-lg font-semibold",
-  h3Bold: "text-lg font-bold",
-  h2: "text-xl font-bold leading-tight",
-  h2Semibold: "text-xl font-semibold",
-  h1: "text-2xl font-bold",
-  h1Semibold: "text-2xl font-semibold",
-  pageTitle: "text-page-title font-semibold leading-tight",
-  cardTitle: "text-card-title font-bold leading-tight",
+  h3: "locale-heading-h3 text-lg font-semibold",
+  h3Bold: "locale-heading-h3 text-lg font-bold",
+  h2: "locale-heading-h2 text-xl font-bold leading-tight",
+  h2Semibold: "locale-heading-h2 text-xl font-semibold",
+  h1: "locale-heading-h1 text-2xl font-bold",
+  h1Semibold: "locale-heading-h1 text-2xl font-semibold",
+  pageTitle:
+    "locale-heading-h1 text-page-title font-semibold leading-tight",
+  cardTitle:
+    "locale-heading-card text-card-title font-bold leading-tight",
   displayLanding: "text-display font-bold",
   displayLandingSm: "text-display-sm font-bold leading-none",
   displayDesktop: "text-2xl-display font-bold leading-tight",

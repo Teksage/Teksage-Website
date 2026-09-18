@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
 import { PageLoadingCenter } from "@/components/common/Loader";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import {
   meetingDetailQueryString,
   nameFromListEvent,
@@ -19,10 +20,20 @@ interface AstrologerMeetingsListProps {
   loading: boolean;
 }
 
-function formatMeetingDate(iso: string): string {
+function formatMeetingDate(iso: string, locale: string): string {
   try {
     const d = new Date(iso);
-    return format(d, "dd MMM, yyyy - h:mm a");
+    const date = new Intl.DateTimeFormat(locale, {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(d);
+    const time = new Intl.DateTimeFormat(locale, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(d);
+    return `${date} - ${time}`;
   } catch {
     return iso;
   }
@@ -30,13 +41,17 @@ function formatMeetingDate(iso: string): string {
 
 interface MeetingRowProps {
   event: AstroEvent;
-  isUpcoming: boolean;
 }
 
-function MeetingRow({ event, isUpcoming }: MeetingRowProps) {
+function MeetingRow({ event }: MeetingRowProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const { locale } = useT();
   const router = useRouter();
   const { initials, firstName } = nameFromListEvent(event);
-  const date = formatMeetingDate(event.start_datetime);
+  const date = formatMeetingDate(
+    event.start_datetime,
+    bcp47FromAppLocale(locale)
+  );
   const detailHref = `${ROUTES.astrologerMeetings}/${event.id}?${meetingDetailQueryString(event)}`;
 
   return (
@@ -58,7 +73,7 @@ function MeetingRow({ event, isUpcoming }: MeetingRowProps) {
         <div className="flex flex-col gap-1">
           <p className="text-xs font-medium text-gray-800/80">
             {firstName}{" "}
-            <span className="font-normal">{ASTRO_PORTAL_UI.bookedSlotOn}</span>
+            <span className="font-normal">{AP.bookedSlotOn}</span>
           </p>
           <p className="text-sm font-semibold text-gray-900">{date}</p>
         </div>
@@ -71,19 +86,21 @@ function MeetingRow({ event, isUpcoming }: MeetingRowProps) {
         className="flex-shrink-0 whitespace-pre-line rounded-full px-3 py-1.5 text-center text-xs font-semibold leading-none text-white transition-opacity hover:opacity-90"
         style={{ backgroundColor: ASTRO_PORTAL_COLORS.brandGreen }}
       >
-        {ASTRO_PORTAL_UI.viewDetails}
+        {AP.viewDetails}
       </button>
     </div>
   );
 }
 
 function EmptyState({ isUpcoming }: { isUpcoming: boolean }) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+
   return (
     <div className="flex flex-col items-center px-5 pt-24 text-center">
       <p className="text-sm font-medium text-gray-400">
         {isUpcoming
-          ? ASTRO_PORTAL_UI.emptyUpcoming
-          : ASTRO_PORTAL_UI.emptyCompleted}
+          ? AP.emptyUpcoming
+          : AP.emptyCompleted}
       </p>
     </div>
   );
@@ -94,6 +111,7 @@ export function AstrologerMeetingsList({
   completedEvents,
   loading,
 }: AstrologerMeetingsListProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const [isUpcoming, setIsUpcoming] = useState(true);
   const meetings = isUpcoming ? upcomingEvents : completedEvents;
 
@@ -104,8 +122,8 @@ export function AstrologerMeetingsList({
         className="mx-4 mb-0 flex justify-center gap-2 border-b border-black/30 pb-5 pt-2"
       >
         {[
-          { label: ASTRO_PORTAL_UI.tab.upcoming, value: true },
-          { label: ASTRO_PORTAL_UI.tab.completed, value: false },
+          { label: AP.tab.upcoming, value: true },
+          { label: AP.tab.completed, value: false },
         ].map(({ label, value }) => (
           <button
             key={label}
@@ -138,7 +156,7 @@ export function AstrologerMeetingsList({
           <ul className="px-5 py-2.5">
             {meetings.map((e) => (
               <li key={e.id}>
-                <MeetingRow event={e} isUpcoming={isUpcoming} />
+                <MeetingRow event={e} />
               </li>
             ))}
           </ul>

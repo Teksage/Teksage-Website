@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_CHECKOUT_FOCUS_CATEGORIES,
@@ -15,6 +16,7 @@ import {
   formatProfileDateOfBirth,
   formatProfileTimeOfBirth,
 } from "@/lib/consultation-booking-format";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { ConsultationCheckoutDetailsPanelProps } from "@/types/ui/consultation";
 
 function formatNameCopy(template: string, name: string): string {
@@ -34,7 +36,9 @@ export function ConsultationCheckoutDetailsPanel({
   onChangeAstrologer,
   onReschedule,
 }: ConsultationCheckoutDetailsPanelProps) {
-  const CC = CONSULTATION_CHECKOUT_SCREEN;
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
+  const { locale, t } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const L = CONSULTATION_CHECKOUT_LAYOUT;
   const astroSubtitle = [
     CC.videoCallLabel,
@@ -45,11 +49,20 @@ export function ConsultationCheckoutDetailsPanel({
     .join(" · ");
 
   const birthCells = [
-    { label: birthLabels.dob, value: formatProfileDateOfBirth(profile?.dateOfBirth) },
-    { label: birthLabels.tob, value: formatProfileTimeOfBirth(profile?.timeOfBirth) },
+    {
+      label: birthLabels.dob,
+      value: formatProfileDateOfBirth(profile?.dateOfBirth, dateLocale),
+    },
+    {
+      label: birthLabels.tob,
+      value: formatProfileTimeOfBirth(profile?.timeOfBirth, dateLocale),
+    },
     { label: birthLabels.pob, value: profile?.placeOfBirth?.trim() || "—" },
     { label: birthLabels.rasi, value: profile?.rashi?.trim() || "—" },
-    { label: birthLabels.nakshatram, value: profile?.nakshatra?.trim() || "—" },
+    {
+      label: birthLabels.nakshatram,
+      value: profile?.nakshatra?.trim() || "—",
+    },
     { label: CC.callLanguageLabel, value: langLabel || "—" },
   ];
 
@@ -89,8 +102,16 @@ export function ConsultationCheckoutDetailsPanel({
             <div className={L.whenBlock}>
               <p className={L.whenLabel}>{CC.whenLabel}</p>
               <p className={L.whenValue}>
-                {formatConsultationBookingDate(booking.slotStart)} ·{" "}
-                {formatConsultationBookingTimeRange(booking.slotStart, booking.slotEnd)}
+                {formatConsultationBookingDate(
+                  booking.slotStart,
+                  dateLocale
+                )}{" "}
+                ·{" "}
+                {formatConsultationBookingTimeRange(
+                  booking.slotStart,
+                  booking.slotEnd,
+                  dateLocale
+                )}
               </p>
             </div>
             <button type="button" onClick={onReschedule} className={L.outlineBtn}>
@@ -133,7 +154,7 @@ export function ConsultationCheckoutDetailsPanel({
                 focusTopics.includes(cat) ? L.focusChipActive : L.focusChipDefault
               )}
             >
-              {cat}
+              {t(cat)}
             </button>
           ))}
         </div>

@@ -65,8 +65,8 @@ export const NOTIFICATIONS_UI = {
   itemUnread: "bg-[#f6f6f6]",
   itemRead: "bg-white",
   itemTitle: "text-sm font-semibold text-[var(--color-brand-black)]",
-  itemMessage: "mt-1 line-clamp-2 text-[13px] font-medium text-black/80",
-  itemDate: "mt-1 text-[11px] font-medium text-black/45",
+  itemMessage: "mt-1 line-clamp-2 text-sm-plus font-medium text-black/80",
+  itemDate: "mt-1 text-nav font-medium text-black/45",
   consultationCard:
     "mb-3 flex items-center justify-between gap-3 rounded-xl border border-black/[0.04] bg-[#f6f6f6] p-4 lg:p-5",
   /** Row layout — mirrors Flutter `NotificationCardShell` + avatar-left column. */

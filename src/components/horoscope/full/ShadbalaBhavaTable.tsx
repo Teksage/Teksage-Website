@@ -3,12 +3,13 @@
 
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { useI18nConstants } from "@/hooks/useT";
 import type { BhavaBalaRow } from "@/lib/format-bhava-bala";
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-[10px] font-bold uppercase leading-tight tracking-wide text-white sm:px-2 sm:text-xs";
+  "bg-[var(--color-brand-panchang)] px-1 py-3 text-center text-micro font-bold uppercase leading-tight tracking-wide text-white sm:px-2 sm:text-xs";
 const TD =
-  "px-1 py-3 text-center text-[10px] tabular-nums text-[var(--color-brand-black)] sm:px-2 sm:text-xs";
+  "px-1 py-3 text-center text-micro tabular-nums text-[var(--color-brand-black)] sm:px-2 sm:text-xs";
 const TR =
   "border-b border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] last:border-0";
 const TABLE =
@@ -19,21 +20,22 @@ const RANK = "font-bold text-[var(--color-brand-ios)]";
 const LABEL = "font-semibold text-[var(--color-brand-panchang)]";
 
 export function ShadbalaBhavaTable({ rows }: { rows: BhavaBalaRow[] }) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   if (!rows.length) {
-    return <p className={PLACEHOLDER}>{HOROSCOPE_SCREEN.shadbalaBhavaUnavailable}</p>;
+    return <p className={PLACEHOLDER}>{H.shadbalaBhavaUnavailable}</p>;
   }
   return (
     <table className={TABLE}>
       <thead>
         <tr>
-          <th className={TH}>{HOROSCOPE_SCREEN.colHouse}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colBhava}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colBhavaAdhipathi}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colBhavaDig}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colBhavaDrishti}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colBhavaBala}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colRupa}</th>
-          <th className={TH}>{HOROSCOPE_SCREEN.colRank}</th>
+          <th className={TH}>{H.colHouse}</th>
+          <th className={TH}>{H.colBhava}</th>
+          <th className={TH}>{H.colBhavaAdhipathi}</th>
+          <th className={TH}>{H.colBhavaDig}</th>
+          <th className={TH}>{H.colBhavaDrishti}</th>
+          <th className={TH}>{H.colBhavaBala}</th>
+          <th className={TH}>{H.colRupa}</th>
+          <th className={TH}>{H.colRank}</th>
         </tr>
       </thead>
       <tbody>

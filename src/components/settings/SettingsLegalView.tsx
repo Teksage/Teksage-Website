@@ -9,6 +9,7 @@ import {
 import { groupLegalBlocks } from "@/lib/group-legal-blocks";
 import type { SettingsLegalViewProps } from "@/types";
 
+/** Only the settings shell title/subtitle are localized; all legal page copy stays English. */
 export function SettingsLegalView({ title, blocks }: SettingsLegalViewProps) {
   const sections = groupLegalBlocks(blocks);
 

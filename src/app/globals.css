@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-urbanist);
+  --font-sans: var(--font-app-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-urbanist);
+  --font-heading: var(--font-app-sans);
 
   /* Typography scale — sync with `src/lib/constants/typography.ts` `FONT_SIZE` */
   --text-3xs: 0.5rem;
@@ -35,6 +35,14 @@
   --text-price: 1.5625rem;
   --text-3xl: 2rem;
   --text-4xl: 2.25rem;
+  --text-match-score: clamp(1.75rem, 6vw, 2.25rem);
+  --text-horoscope-watermark: clamp(2.75rem, 18vw, 4.6875rem);
+  --text-energy-score: 0.875rem;
+  --text-locale-heading-h3: 0.9375rem;
+  --text-locale-heading-h2: 1.125rem;
+  --text-locale-heading-h1: 1.25rem;
+  --text-locale-heading-card: 1.0625rem;
+  --size-energy-star: 0.875rem;
   --text-button-sm: 0.8rem;
   /* shadcn `sm` button */
 
@@ -229,6 +237,7 @@
 }
 
 :root {
+  --font-app-sans: var(--font-urbanist), sans-serif;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -298,6 +307,105 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/**
+ * Indic scripts render visually larger than English in the shared Urbanist
+ * fallback stack. Reduce only typography tokens; rem-based spacing, icons and
+ * component dimensions remain unchanged.
+ */
+html:lang(ta),
+html:lang(hi),
+html:lang(te),
+html:lang(kn),
+html:lang(ml),
+html:lang(mr) {
+  --text-3xs: 0.4375rem;
+  --text-2xs: 0.5rem;
+  --text-micro: 0.5625rem;
+  --text-nav: 0.625rem;
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-sm-plus: 0.75rem;
+  --text-body-sm: 0.875rem;
+  --text-base: 0.9375rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.4375rem;
+  --text-page-title: 1.4375rem;
+  --text-card-title: 1.125rem;
+  --text-title-md: 0.9375rem;
+  --text-title-lg: 1.125rem;
+  --text-2xl-display: 1.625rem;
+  --text-display: 1.5rem;
+  --text-display-sm: 1.5rem;
+  --text-price: 1.3125rem;
+  --text-3xl: 1.625rem;
+  --text-4xl: 1.875rem;
+  --text-match-score: clamp(1.5rem, 5.1vw, 1.9125rem);
+  --text-horoscope-watermark: clamp(2.3375rem, 15.3vw, 3.9875rem);
+  --text-energy-score: 0.625rem;
+  --size-energy-star: 0.75rem;
+  --text-button-sm: 0.7375rem;
+}
+
+html:lang(ta) {
+  --font-app-sans: var(--font-anek-tamil), var(--font-urbanist), sans-serif;
+}
+
+html:lang(te) {
+  --font-app-sans: var(--font-anek-telugu), var(--font-urbanist), sans-serif;
+}
+
+html:lang(kn) {
+  --font-app-sans: var(--font-anek-kannada), var(--font-urbanist), sans-serif;
+}
+
+html:lang(ml) {
+  --font-app-sans: var(--font-anek-malayalam), var(--font-urbanist), sans-serif;
+}
+
+html:lang(hi),
+html:lang(mr) {
+  --font-app-sans:
+    var(--font-anek-devanagari), var(--font-urbanist), sans-serif;
+}
+
+html:lang(ta) .locale-heading-h3,
+html:lang(hi) .locale-heading-h3,
+html:lang(te) .locale-heading-h3,
+html:lang(kn) .locale-heading-h3,
+html:lang(ml) .locale-heading-h3,
+html:lang(mr) .locale-heading-h3 {
+  font-size: var(--text-locale-heading-h3);
+}
+
+html:lang(ta) .locale-heading-h2,
+html:lang(hi) .locale-heading-h2,
+html:lang(te) .locale-heading-h2,
+html:lang(kn) .locale-heading-h2,
+html:lang(ml) .locale-heading-h2,
+html:lang(mr) .locale-heading-h2 {
+  font-size: var(--text-locale-heading-h2);
+}
+
+html:lang(ta) .locale-heading-h1,
+html:lang(hi) .locale-heading-h1,
+html:lang(te) .locale-heading-h1,
+html:lang(kn) .locale-heading-h1,
+html:lang(ml) .locale-heading-h1,
+html:lang(mr) .locale-heading-h1 {
+  font-size: var(--text-locale-heading-h1);
+}
+
+html:lang(ta) .locale-heading-card,
+html:lang(hi) .locale-heading-card,
+html:lang(te) .locale-heading-card,
+html:lang(kn) .locale-heading-card,
+html:lang(ml) .locale-heading-card,
+html:lang(mr) .locale-heading-card {
+  font-size: var(--text-locale-heading-card);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -318,6 +426,15 @@
  * bleed through semi-transparent whites (which made green disappear).
  */
 @layer utilities {
+  html:lang(ta) .chat-energy-section,
+  html:lang(hi) .chat-energy-section,
+  html:lang(te) .chat-energy-section,
+  html:lang(kn) .chat-energy-section,
+  html:lang(ml) .chat-energy-section,
+  html:lang(mr) .chat-energy-section {
+    width: min(calc(100% + 8rem), calc(100vw - 2rem));
+  }
+
   .settings-shell-gradient {
     background: linear-gradient(to top,
         color-mix(in srgb, var(--color-home-screen-mint) 88%, white) 0%,

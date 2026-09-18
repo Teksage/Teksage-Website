@@ -39,10 +39,17 @@ export async function loadConsultationCheckoutData(
   const fee = consultationFeeForAstrologer(detail.astrologer, currency);
   const partnerPct = partnerConsultPct(liveDiscount ?? userProfile.partnerDiscount);
   const pricing = initialConsultationPricing(fee, currency, partnerPct);
+  const astrologerLanguages = detail.astrologer.languages
+    .map((language) => language.trim())
+    .filter(Boolean);
 
   return {
     draft: {
       ...draft,
+      languages:
+        astrologerLanguages.length > 0
+          ? astrologerLanguages
+          : draft.languages,
       currency,
       fee,
       astrologerName:

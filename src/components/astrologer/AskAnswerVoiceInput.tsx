@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChatVoiceWaveform } from "@/components/chat/ChatVoiceWaveform";
 import { VoiceAnswerPlayer } from "@/components/common/VoiceAnswerPlayer";
 import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
+import { useI18nConstants } from "@/hooks/useT";
 import { readAudioDurationFromFile } from "@/lib/audio-duration";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
@@ -12,14 +13,14 @@ import { formatVoiceTimer } from "@/lib/format-voice-timer";
 import { cn } from "@/lib/utils";
 import type { AskAnswerVoiceInputProps } from "@/types/ui/astrologer-portal";
 
-const VOICE = ASTRO_PORTAL_UI.askAnswerVoice;
-
 export function AskAnswerVoiceInput({
   voiceFile,
   voiceDurationSec,
   onVoiceFileChange,
   disabled = false,
 }: AskAnswerVoiceInputProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const VOICE = AP.askAnswerVoice;
   const fileRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,13 +35,19 @@ export function AskAnswerVoiceInput({
   });
 
   useEffect(() => {
-    if (!voiceFile) {
-      setPreviewUrl(null);
-      return;
-    }
-    const url = URL.createObjectURL(voiceFile);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
+    let url: string | null = null;
+    const timeoutId = window.setTimeout(() => {
+      if (!voiceFile) {
+        setPreviewUrl(null);
+        return;
+      }
+      url = URL.createObjectURL(voiceFile);
+      setPreviewUrl(url);
+    }, 0);
+    return () => {
+      window.clearTimeout(timeoutId);
+      if (url) URL.revokeObjectURL(url);
+    };
   }, [voiceFile]);
 
   function handleRemove() {

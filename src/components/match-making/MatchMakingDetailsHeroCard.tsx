@@ -40,7 +40,7 @@ export function MatchMakingDetailsHeroCard({ data }: { data: MatchMakingExisting
           />
         </div>
         <MatchMakingDashedLine className="mx-auto my-4 max-w-md" />
-        <p className="text-center text-[clamp(1.75rem,6vw,2.25rem)] font-semibold text-[var(--color-brand-black)]">
+        <p className="text-match-score text-center font-semibold text-[var(--color-brand-black)]">
           {gained}/{maxScore}
         </p>
         <p className="mt-1 text-center text-base font-medium text-[var(--color-match-button-text)]">

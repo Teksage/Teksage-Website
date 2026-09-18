@@ -5,6 +5,7 @@ import { DasaIcon } from "@/components/horoscope/full/FullHoroscopeIcons";
 import { DasaExpandableTable } from "@/components/horoscope/full/DasaExpandableTable";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
+import { useI18nConstants } from "@/hooks/useT";
 import { dasaEntryKey, formatDasaDate } from "@/lib/format-dasa-date";
 import type { DasaEntry, DasaPayload, FullHoroscopeSection } from "@/types";
 
@@ -52,6 +53,7 @@ function filterTopLevel(entries: DasaEntry[], filter: DasaFilter): DasaEntry[] {
 
 /** Dasa table with inline expandable Bukti / Antra sub-tables below each row. */
 export function DasaTableSection({ section, className }: Props) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const entries = section.data?.dasaInfo ?? [];
   const runningPath = useMemo(() => findRunningPath(entries), [entries]);
 
@@ -70,7 +72,7 @@ export function DasaTableSection({ section, className }: Props) {
     return null;
   }
   if (section.error || !entries.length) {
-    return <p className="py-10 text-center text-sm text-red-500">{section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}</p>;
+    return <p className="py-10 text-center text-sm text-red-500">{H.errorLoadLabel}</p>;
   }
 
   const bannerParts = [runningPath.dasa?.name, runningPath.bukti?.name, runningPath.antra?.name].filter(Boolean);
@@ -87,7 +89,7 @@ export function DasaTableSection({ section, className }: Props) {
               <DasaIcon className="size-4" />
             </div>
             <div className="min-w-0 flex-1 space-y-0.5">
-              <p className={L.dasaBannerLabel}>{HOROSCOPE_SCREEN.currentDasaLabel}</p>
+              <p className={L.dasaBannerLabel}>{H.currentDasaLabel}</p>
               <p className={L.dasaBannerPath}>{bannerParts.join(" › ")}</p>
               <p className={L.dasaBannerDates}>
                 {formatDasaDate(periodEntry.startDate)} —{" "}
@@ -96,7 +98,7 @@ export function DasaTableSection({ section, className }: Props) {
             </div>
           </div>
           <button type="button" onClick={goToCurrent} className={L.dasaBannerCta}>
-            {HOROSCOPE_SCREEN.dasaViewCurrent}
+            {H.dasaViewCurrent}
           </button>
         </div>
       )}
@@ -114,7 +116,7 @@ export function DasaTableSection({ section, className }: Props) {
                 : "border-[color-mix(in_srgb,var(--color-brand-primary)_40%,transparent)] text-[var(--color-brand-panchang)]"
             )}
           >
-            {f === "all" ? HOROSCOPE_SCREEN.dasaFilterAll : HOROSCOPE_SCREEN.dasaFilterRunning}
+            {f === "all" ? H.dasaFilterAll : H.dasaFilterRunning}
           </button>
         ))}
       </div>

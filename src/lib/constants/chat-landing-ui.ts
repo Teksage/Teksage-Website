@@ -51,13 +51,17 @@ export const CHAT_LANDING_LAYOUT = {
   metaValue: `${TYPO.sizeSm} ${TYPO.weightBold} text-[var(--color-brand-black)]`,
   metaThemeValue: `${TYPO.sizeSm} ${TYPO.weightBold} inline-flex items-center gap-1.5 text-[var(--color-brand-black)]`,
   metaThemeIcon: "size-3.5 shrink-0",
-  energySection: "relative z-[1] w-full px-1 pb-3 pt-1",
+  energySection:
+    "chat-energy-section relative z-[1] w-full px-1 pb-3 pt-1",
   energyBar:
-    "mx-auto flex w-full max-w-4xl flex-nowrap items-center justify-center gap-x-1.5 overflow-x-auto whitespace-nowrap rounded-full border border-[var(--color-chat-landing-pill-border)] bg-[var(--color-chat-landing-bg)] px-5 py-3 shadow-[0_1px_4px_rgb(0_0_0_/_0.06)]",
-  energyTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} shrink-0 text-[var(--color-chat-landing-label)]`,
+    "scrollbar-hidden mx-auto w-full max-w-5xl overflow-x-auto rounded-full border border-[var(--color-chat-landing-pill-border)] bg-[var(--color-chat-landing-bg)] shadow-[0_1px_4px_rgb(0_0_0_/_0.06)]",
+  energyContent:
+    "mx-auto flex w-max min-w-full flex-nowrap items-center justify-center gap-x-1.5 whitespace-nowrap px-5 py-3",
+  energyTitle: `text-energy-score ${TYPO.weightSemibold} shrink-0 text-[var(--color-chat-landing-label)]`,
   energyItem: "inline-flex shrink-0 items-center gap-1",
-  energyCategory: `${TYPO.sizeSm} ${TYPO.weightBold} shrink-0 text-[var(--color-brand-black)]`,
-  energySeparator: `${TYPO.sizeSm} shrink-0 text-[var(--color-chat-landing-label)]`,
+  energyCategory: `text-energy-score ${TYPO.weightBold} shrink-0 text-[var(--color-brand-black)]`,
+  energySeparator:
+    "text-energy-score shrink-0 text-[var(--color-chat-landing-label)]",
   tryAskingSection: "relative z-[1] w-full pt-2",
   tryAskingTitle: `${TYPO.sizeXs} mb-3 text-center ${TYPO.weightSemibold} uppercase tracking-[0.12em] text-black/40`,
   tabRow: "mb-4 flex flex-wrap items-center justify-center gap-3",

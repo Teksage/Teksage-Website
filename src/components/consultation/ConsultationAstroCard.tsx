@@ -1,6 +1,6 @@
 "use client";
 
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
@@ -24,7 +24,7 @@ export function ConsultationAstroCard({
   variant,
 }: ConsultationAstroCardProps) {
   const CLS = useI18nConstants(CONSULTATION_LISTING_SCREEN);
-  const CL = useI18nConstants(CONSULTATION_LISTING_SCREEN);
+  const { t } = useT();
   const fee = consultationFeeForAstrologer(astrologer, currency);
   const unit = currency === "INR" ? "₹" : "$";
   const amount = Math.round(fee).toString();
@@ -74,7 +74,7 @@ export function ConsultationAstroCard({
         )}
       </div>
       <p className={cn(CONSULTATION_ASTRO_CARD.name, "mt-2")}>
-        {consultationAstrologerName(astrologer.user)}
+        {consultationAstrologerName(astrologer.user, t)}
       </p>
       <p className={CONSULTATION_ASTRO_CARD.langs}>
         {formatConsultationLanguageList(astrologer.languages)}

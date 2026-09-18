@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 
 /** Shared Full Horoscope data-table chrome. */
 export const FH_TABLE = {
-  th: "bg-[var(--color-brand-panchang)] px-2 py-3 text-center text-[10px] font-bold uppercase tracking-wide text-white sm:px-3 sm:text-xs",
-  td: "px-2 py-3 text-center text-[10px] text-[var(--color-brand-black)] sm:px-3 sm:text-xs",
+  th: "bg-[var(--color-brand-panchang)] px-2 py-3 text-center text-micro font-bold uppercase tracking-wide text-white sm:px-3 sm:text-xs",
+  td: "px-2 py-3 text-center text-micro text-[var(--color-brand-black)] sm:px-3 sm:text-xs",
   tr: "border-b border-[color-mix(in_srgb,var(--color-brand-primary)_12%,transparent)] last:border-0",
   table:
     "w-full min-w-[20rem] border-collapse overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white shadow-sm",

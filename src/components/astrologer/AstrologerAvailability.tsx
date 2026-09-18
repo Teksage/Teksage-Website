@@ -1,20 +1,22 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { format, addDays, startOfWeek, isBefore, isToday, isSameDay } from "date-fns";
+import { format, addDays, isBefore, isToday, isSameDay } from "date-fns";
 import { PageLoadingCenter } from "@/components/common/Loader";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS, SLOT_SESSIONS } from "@/lib/constants/astrologer-portal";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { AstrologerAvailabilityProps } from "@/types";
 
 // ─── Time-slot helpers (mirrors Flutter TimeSelectorComponent) ──────────────
 
-function format12h(hour: number, minute: number): string {
+function format12h(hour: number, minute: number, locale: string): string {
   const d = new Date(2000, 0, 1, hour, minute);
-  return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+  return d.toLocaleTimeString(locale, { hour: "numeric", minute: "2-digit", hour12: true });
 }
 
-function generateSlots(startHour: number, endHour: number): Array<{ label: string; range24: string }> {
+function generateSlots(startHour: number, endHour: number, locale: string): Array<{ label: string; range24: string }> {
   const slots: Array<{ label: string; range24: string }> = [];
   for (let h = startHour; h < endHour; h++) {
     const s0 = `${String(h).padStart(2, "0")}:00`;
@@ -24,12 +26,12 @@ function generateSlots(startHour: number, endHour: number): Array<{ label: strin
     const e00 = `${String(h1 % 24).padStart(2, "0")}:00`;
 
     slots.push({
-      label: `${format12h(h, 0)} - ${format12h(h, 30)}`,
+      label: `${format12h(h, 0, locale)} - ${format12h(h, 30, locale)}`,
       range24: `${s0} - ${e30}`,
     });
     if (h !== endHour - 1) {
       slots.push({
-        label: `${format12h(h, 30)} - ${format12h(h1, 0)}`,
+        label: `${format12h(h, 30, locale)} - ${format12h(h1, 0, locale)}`,
         range24: `${s30} - ${e00}`,
       });
     }
@@ -38,7 +40,7 @@ function generateSlots(startHour: number, endHour: number): Array<{ label: strin
   const lh = endHour - 1;
   const lh1 = endHour % 24;
   slots.push({
-    label: `${format12h(lh, 30)} - ${format12h(lh1, 0)}`,
+    label: `${format12h(lh, 30, locale)} - ${format12h(lh1, 0, locale)}`,
     range24: `${String(lh).padStart(2, "0")}:30 - ${String(lh1).padStart(2, "0")}:00`,
   });
   return slots;
@@ -66,6 +68,8 @@ interface WeekDatePickerProps {
 }
 
 function WeekDatePicker({ selectedDate, onDateSelect, markedDates }: WeekDatePickerProps) {
+  const { locale, t } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const today = useMemo(() => new Date(), []);
   const [weekStart, setWeekStart] = useState(() => {
     const d = new Date(today);
@@ -95,7 +99,10 @@ function WeekDatePicker({ selectedDate, onDateSelect, markedDates }: WeekDatePic
     <div>
       <div className="mb-3 flex items-center justify-between">
         <p className="text-sm font-medium text-gray-900/50">
-          {format(weekStart, "MMMM yyyy")}
+          {new Intl.DateTimeFormat(dateLocale, {
+            month: "long",
+            year: "numeric",
+          }).format(weekStart)}
         </p>
         <div className="flex gap-1">
           <button
@@ -103,7 +110,7 @@ function WeekDatePicker({ selectedDate, onDateSelect, markedDates }: WeekDatePic
             onClick={goPrev}
             disabled={!canGoPrev}
             className="rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 disabled:opacity-30"
-            aria-label="Previous week"
+            aria-label={t("Previous")}
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
               <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -113,7 +120,7 @@ function WeekDatePicker({ selectedDate, onDateSelect, markedDates }: WeekDatePic
             type="button"
             onClick={goNext}
             className="rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100"
-            aria-label="Next week"
+            aria-label={t("Next")}
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
               <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -147,8 +154,10 @@ function WeekDatePicker({ selectedDate, onDateSelect, markedDates }: WeekDatePic
               )}
               style={isSelected ? { backgroundColor: ASTRO_PORTAL_COLORS.brandGreen } : undefined}
             >
-              <span className="text-[10px] font-medium uppercase text-current opacity-60">
-                {format(day, "EEE")}
+              <span className="text-micro font-medium uppercase text-current opacity-60">
+                {new Intl.DateTimeFormat(dateLocale, {
+                  weekday: "short",
+                }).format(day)}
               </span>
               <span className="mt-0.5">{format(day, "d")}</span>
               {hasSlots && !isSelected && (
@@ -188,6 +197,7 @@ function SessionSection({
   onToggle,
   onBookedTap,
 }: SessionSectionProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const [expanded, setExpanded] = useState(true);
 
   const visibleSlots = useMemo(() => {
@@ -223,7 +233,7 @@ function SessionSection({
         <span className="text-base font-bold text-gray-900/60">{title}</span>
         <span className="flex items-center gap-2">
           <span className="text-base font-semibold" style={{ color: ASTRO_PORTAL_COLORS.brandGreen }}>
-            {selectedCount} {ASTRO_PORTAL_UI.avail.slots}
+            {selectedCount} {AP.avail.slots}
           </span>
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" style={{ color: ASTRO_PORTAL_COLORS.brandGreen }}>
             <path
@@ -291,6 +301,9 @@ export function AstrologerAvailability({
   isEdit,
   availability,
 }: AstrologerAvailabilityProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const { locale, t } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const [showBookedError, setShowBookedError] = useState(false);
 
   const {
@@ -305,13 +318,21 @@ export function AstrologerAvailability({
 
   const morningSlots = useMemo(
     () =>
-      generateSlots(SLOT_SESSIONS.morning.start, SLOT_SESSIONS.morning.end),
-    []
+      generateSlots(
+        SLOT_SESSIONS.morning.start,
+        SLOT_SESSIONS.morning.end,
+        dateLocale
+      ),
+    [dateLocale]
   );
   const afternoonSlots = useMemo(
     () =>
-      generateSlots(SLOT_SESSIONS.afternoon.start, SLOT_SESSIONS.afternoon.end),
-    []
+      generateSlots(
+        SLOT_SESSIONS.afternoon.start,
+        SLOT_SESSIONS.afternoon.end,
+        dateLocale
+      ),
+    [dateLocale]
   );
 
   function handleToggle(range24: string) {
@@ -332,12 +353,12 @@ export function AstrologerAvailability({
           <div className="space-y-1 text-center text-sm font-semibold text-gray-900">
             <p>
               {isEdit
-                ? ASTRO_PORTAL_UI.avail.editingPrompt
-                : ASTRO_PORTAL_UI.avail.viewingPrompt}
+                ? AP.avail.editingPrompt
+                : AP.avail.viewingPrompt}
             </p>
             {isEdit ? (
               <p className="text-xs font-medium text-gray-900/55">
-                {ASTRO_PORTAL_UI.avail.multiDateHint}
+                {AP.avail.multiDateHint}
               </p>
             ) : null}
           </div>
@@ -359,8 +380,8 @@ export function AstrologerAvailability({
           <div
             className="mb-4 flex items-center gap-2 rounded-xl border border-red-200 bg-[#FFE5E5] px-4 py-3 text-sm text-red-700"
           >
-            <span className="flex-1">{ASTRO_PORTAL_UI.avail.bookedNotice}</span>
-            <button type="button" onClick={() => setShowBookedError(false)} aria-label="Dismiss">
+            <span className="flex-1">{AP.avail.bookedNotice}</span>
+            <button type="button" onClick={() => setShowBookedError(false)} aria-label={t("Close")}>
               ✕
             </button>
           </div>
@@ -386,7 +407,7 @@ export function AstrologerAvailability({
         ) : (
           <>
             <SessionSection
-              title={ASTRO_PORTAL_UI.avail.morning}
+              title={AP.avail.morning}
               slots={morningSlots}
               selectedDate={selectedDate}
               selectedRanges={selectedRanges}
@@ -396,7 +417,7 @@ export function AstrologerAvailability({
               onBookedTap={() => setShowBookedError(true)}
             />
             <SessionSection
-              title={ASTRO_PORTAL_UI.avail.afternoon}
+              title={AP.avail.afternoon}
               slots={afternoonSlots}
               selectedDate={selectedDate}
               selectedRanges={selectedRanges}
@@ -409,7 +430,7 @@ export function AstrologerAvailability({
             {/* No slots in view mode */}
             {!isEdit && selectedRanges.size === 0 && bookedRanges.size === 0 && (
               <p className="mt-10 text-center text-sm font-medium text-gray-400">
-                {ASTRO_PORTAL_UI.avail.emptyDayHint}
+                {AP.avail.emptyDayHint}
               </p>
             )}
           </>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN } from "@/lib/constants";
+import { useI18nConstants } from "@/hooks/useT";
 import { dasaEntryKey } from "@/lib/format-dasa-date";
 import { DasaExpandableRows } from "@/components/horoscope/full/DasaExpandableRows";
 import type { DasaEntry } from "@/types";
@@ -15,12 +16,13 @@ interface Props {
 }
 
 const TH =
-  "bg-[var(--color-brand-panchang)] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wide text-white sm:text-xs";
+  "bg-[var(--color-brand-panchang)] px-3 py-2 text-center text-micro font-bold uppercase tracking-wide text-white sm:text-xs";
 const TABLE =
   "w-full border-collapse overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white shadow-sm";
 
 /** Inline expandable Dasa table — sub-tables open below the clicked row. */
 export function DasaExpandableTable({ entries, initialDasaKey, initialBuktiKey, className }: Props) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
   const [expandedDasaKey, setExpandedDasaKey] = useState<string | null>(initialDasaKey ?? null);
   const [expandedBuktiKey, setExpandedBuktiKey] = useState<string | null>(initialBuktiKey ?? null);
 
@@ -41,7 +43,7 @@ export function DasaExpandableTable({ entries, initialDasaKey, initialBuktiKey, 
   }
 
   if (!entries.length) {
-    return <p className="py-10 text-center text-sm text-black/40">{HOROSCOPE_SCREEN.dasaEmptyDasa}</p>;
+    return <p className="py-10 text-center text-sm text-black/40">{H.dasaEmptyDasa}</p>;
   }
 
   return (
@@ -50,10 +52,10 @@ export function DasaExpandableTable({ entries, initialDasaKey, initialBuktiKey, 
         <thead>
           <tr>
             <th className={cn(TH, "w-8")} aria-hidden />
-            <th className={TH}>{HOROSCOPE_SCREEN.dasaColPlanet}</th>
-            <th className={TH}>{HOROSCOPE_SCREEN.dasaColStart}</th>
-            <th className={TH}>{HOROSCOPE_SCREEN.dasaColEnd}</th>
-            <th className={TH}>{HOROSCOPE_SCREEN.dasaColStatus}</th>
+            <th className={TH}>{H.dasaColPlanet}</th>
+            <th className={TH}>{H.dasaColStart}</th>
+            <th className={TH}>{H.dasaColEnd}</th>
+            <th className={TH}>{H.dasaColStatus}</th>
           </tr>
         </thead>
         <tbody>

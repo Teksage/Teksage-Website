@@ -1,11 +1,13 @@
 "use client";
 
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_SLOTS_LAYOUT,
   CONSULTATION_SLOTS_SCREEN,
 } from "@/lib/constants/consultation-slots";
 import { formatSlotTime12, isSlotInPast } from "@/lib/consultation-calendar";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { ConsultationSlotsTimePickerProps } from "@/types/ui/consultation";
 import type { ConsultationSlot } from "@/types/consultation";
 
@@ -35,7 +37,9 @@ function SlotGroup({
   selected: ConsultationSlot | null;
   onSelect: (slot: ConsultationSlot) => void;
 }) {
-  const CS = CONSULTATION_SLOTS_SCREEN;
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
+  const { locale } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   if (!slots.length) return null;
   return (
     <div className={CONSULTATION_SLOTS_LAYOUT.timeGroup}>
@@ -59,7 +63,7 @@ function SlotGroup({
               )}
             >
               <span className="block lowercase">
-                {formatSlotTime12(slot.start_datetime)}
+                {formatSlotTime12(slot.start_datetime, dateLocale)}
               </span>
               <span
                 className={cn(
@@ -84,10 +88,12 @@ export function ConsultationSlotsTimePicker({
   selectedDate,
   onSelect,
 }: ConsultationSlotsTimePickerProps) {
-  const CS = CONSULTATION_SLOTS_SCREEN;
+  const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
+  const { locale } = useT();
+  const dateLocale = bcp47FromAppLocale(locale);
   const { morning, afternoon, evening } = groupSlots(slots);
   const totalOpen = morning.length + afternoon.length + evening.length;
-  const dayLabel = selectedDate.toLocaleDateString(undefined, {
+  const dayLabel = selectedDate.toLocaleDateString(dateLocale, {
     weekday: "short",
     day: "numeric",
     month: "short",

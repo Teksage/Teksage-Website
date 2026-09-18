@@ -5,6 +5,7 @@ import {
   CONSULTATION_DETAIL_SCREEN,
   CONSULTATION_REVIEW_AVATAR_BG,
 } from "@/lib/constants/consultation-detail";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { formatConsultationCategoryLabel } from "@/lib/consultation-display";
 import { cn } from "@/lib/utils";
 import type { ConsultationDetailReviewsProps } from "@/types/ui/consultation";
@@ -48,7 +49,8 @@ export function ConsultationDetailReviews({
   seeAllUrl,
   fallbackCategories = [],
 }: ConsultationDetailReviewsProps) {
-  const CD = CONSULTATION_DETAIL_SCREEN;
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
+  const { t } = useT();
   const previewCount = events.length;
   const displayCount = totalReviewCount > 0 ? totalReviewCount : previewCount;
   const avgFromEvents =
@@ -122,7 +124,8 @@ export function ConsultationDetailReviews({
             <div className={CONSULTATION_DETAIL_LAYOUT.reviewList}>
               {events.slice(0, 2).map((ev, i) => {
                 const name =
-                  [ev.first_name, ev.last_name].filter(Boolean).join(" ") || "User";
+                  [ev.first_name, ev.last_name].filter(Boolean).join(" ") ||
+                  t("Client");
                 const initials = reviewerInitials(name);
                 const avatarBg =
                   CONSULTATION_REVIEW_AVATAR_BG[
@@ -164,7 +167,8 @@ export function ConsultationDetailReviews({
                       {CD.defaultReviewText}
                     </p>
                     <p className={CONSULTATION_DETAIL_LAYOUT.reviewTopic}>
-                      {CD.consultedOn} {formatConsultationCategoryLabel(topic)}
+                      {CD.consultedOn}{" "}
+                      {formatConsultationCategoryLabel(topic)}
                     </p>
                   </article>
                 );

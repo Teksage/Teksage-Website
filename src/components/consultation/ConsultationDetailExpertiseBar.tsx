@@ -6,6 +6,7 @@ import {
   CONSULTATION_EXPERTISE_DESCRIPTIONS,
   CONSULTATION_EXPERTISE_TITLES,
 } from "@/lib/constants/consultation-detail";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { formatConsultationCategoryLabel } from "@/lib/consultation-display";
 
 type Props = {
@@ -32,13 +33,15 @@ function expertiseDesc(key: string): string {
 }
 
 export function ConsultationDetailExpertiseBar({ expertise }: Props) {
+  const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
+  const { t } = useT();
   const items = expertise.filter((item) => item.trim()).slice(0, 4);
   if (!items.length) return null;
 
   return (
     <section className={CONSULTATION_DETAIL_LAYOUT.section}>
       <h2 className={CONSULTATION_DETAIL_LAYOUT.sectionTitle}>
-        {CONSULTATION_DETAIL_SCREEN.consultsOnTitle}
+        {CD.consultsOnTitle}
       </h2>
       <div className={CONSULTATION_DETAIL_LAYOUT.expertiseGrid}>
         {items.map((item) => (
@@ -53,7 +56,7 @@ export function ConsultationDetailExpertiseBar({ expertise }: Props) {
                   {expertiseTitle(item.trim())}
                 </p>
                 <p className={CONSULTATION_DETAIL_LAYOUT.expertiseCardSub}>
-                  {expertiseDesc(item)}
+                  {t(expertiseDesc(item))}
                 </p>
               </div>
             </div>

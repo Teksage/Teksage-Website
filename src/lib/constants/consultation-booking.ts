@@ -2,11 +2,11 @@ const flutterSvg = (file: string) => `/flutter-assets/svg/${file}` as const;
 
 export const CONSULTATION_BOOKING_SCREEN = {
   title: "Booking Details",
-  consultationSection: "Consultation details",
+  consultationSection: "Consultation Details",
   personalSection: "Personal details",
   date: "Date",
   time: "Time",
-  consultingOn: "Consulting on",
+  consultingOn: "Consulting On",
   language: "Language",
   consultationFee: "Consultation fee",
   referralDiscount: "Referral discount",

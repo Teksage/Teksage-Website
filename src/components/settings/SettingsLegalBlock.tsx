@@ -1,9 +1,12 @@
+"use client";
+
 import {
   SETTINGS_LEGAL_COPY,
   SETTINGS_LEGAL_UI as L,
 } from "@/lib/constants/settings-legal-ui";
 import type { SettingsLegalBlockProps } from "@/types";
 
+/** All in-page legal copy stays English (headings, body, contact labels). */
 export function SettingsLegalBlock({ block }: SettingsLegalBlockProps) {
   switch (block.type) {
     case "heading":

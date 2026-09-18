@@ -17,7 +17,6 @@ import {
 } from "@/lib/constants/settings-subscription-payment";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
-import { SubscriptionAutoPayToggle } from "@/components/settings/SubscriptionAutoPayToggle";
 import {
   clearSubscriptionActivating,
   clearSubscriptionCheckout,
@@ -351,13 +350,6 @@ export function SubscriptionPaymentSummaryView({ onBack }: Props) {
           </p>
           <p className={SUBSCRIPTION_PAYMENT_LAYOUT.membershipPill}>{membershipLine}</p>
           <div className={SUBSCRIPTION_PAYMENT_LAYOUT.dashed} />
-          {autoPayEligible ? (
-            <SubscriptionAutoPayToggle
-              enabled={autoPayEnabled}
-              onChange={setAutoPayEnabled}
-              disabled={busy}
-            />
-          ) : null}
           <SubscriptionPaymentFees
             totals={totals}
             symbol={symbol}

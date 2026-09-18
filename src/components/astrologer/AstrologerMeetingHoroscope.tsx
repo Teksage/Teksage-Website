@@ -1,6 +1,7 @@
 "use client";
 
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
+import { useI18nConstants } from "@/hooks/useT";
 import { MEETING_HOROSCOPE_UI } from "@/lib/constants/meeting-horoscope-ui";
 import {
   horoscopeTextFields,
@@ -17,13 +18,14 @@ function isDasaBuktiKey(key: string): boolean {
 export function AstrologerMeetingHoroscope({
   horoscope,
 }: AstrologerMeetingHoroscopeProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const fields = horoscopeTextFields(horoscope);
   if (fields.length === 0) return null;
 
   const facts = fields.filter((f) => f.kind === "fact");
   const narratives = fields.filter((f) => f.kind === "narrative");
   const U = MEETING_HOROSCOPE_UI;
-  const copy = ASTRO_PORTAL_UI.detail;
+  const copy = AP.detail;
 
   return (
     <section className={U.root}>

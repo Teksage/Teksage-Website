@@ -18,21 +18,23 @@ export function ChatEnergyScoreRow({ scores }: ChatEnergyScoreRowProps) {
   return (
     <section className={CHAT_LANDING_LAYOUT.energySection}>
       <div className={CHAT_LANDING_LAYOUT.energyBar}>
-        <span className={CHAT_LANDING_LAYOUT.energyTitle}>
-          {copy.energyScoreTitle}
-          {copy.metaSeparator}
-        </span>
-        {SCORE_KEYS.map((key, index) => (
-          <span key={key} className={CHAT_LANDING_LAYOUT.energyItem}>
-            {index > 0 ? (
-              <span className={CHAT_LANDING_LAYOUT.energySeparator}>,</span>
-            ) : null}
-            <span className={CHAT_LANDING_LAYOUT.energyCategory}>
-              {labels[key]}
-            </span>
-            <ChatStarRating value={scores[key]} />
+        <div className={CHAT_LANDING_LAYOUT.energyContent}>
+          <span className={CHAT_LANDING_LAYOUT.energyTitle}>
+            {copy.energyScoreTitle}
+            {copy.metaSeparator}
           </span>
-        ))}
+          {SCORE_KEYS.map((key, index) => (
+            <span key={key} className={CHAT_LANDING_LAYOUT.energyItem}>
+              {index > 0 ? (
+                <span className={CHAT_LANDING_LAYOUT.energySeparator}>,</span>
+              ) : null}
+              <span className={CHAT_LANDING_LAYOUT.energyCategory}>
+                {labels[key]}
+              </span>
+              <ChatStarRating value={scores[key]} />
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );

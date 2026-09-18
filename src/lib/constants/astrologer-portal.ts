@@ -80,6 +80,8 @@ export const ASTRO_PORTAL_UI = {
     markComplete: "Mark as Completed",
     markCompleting: "Saving…",
     markCompleteFail: "Failed to update status. Please try again.",
+    unknownCustomer: "Unknown",
+    noEvent: "No event found.",
   },
 
   /** Customer Q&A on meeting detail — mirrors Flutter `answerDialog.dart`. */
@@ -114,6 +116,7 @@ export const ASTRO_PORTAL_UI = {
     bookedNotice: "This slot is already booked by a user and cannot be removed.",
     saveSuccess: "Slot Updated Successfully.",
     saveFail: "Please try again.",
+    loadFail: "Failed to load slots.",
     multiDateHint:
       "Pick slots on any date, then tap Save once to update all changed days.",
     emptyDayHint: "No slots set for this date. Tap Edit to add availability.",
