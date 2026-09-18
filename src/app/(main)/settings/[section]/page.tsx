@@ -69,10 +69,18 @@ export default function SettingsSectionPage() {
       case "subscriptions":
         return <SettingsSubscriptionsView onBack={() => router.back()} />;
       case "terms":
-        return <SettingsLegalView title={title} blocks={TERMS_LEGAL_BLOCKS} />;
+        return (
+          <SettingsLegalView
+            title={SETTINGS_SECTION_TITLE.terms}
+            blocks={TERMS_LEGAL_BLOCKS}
+          />
+        );
       case "privacy":
         return (
-          <SettingsLegalView title={title} blocks={PRIVACY_LEGAL_BLOCKS} />
+          <SettingsLegalView
+            title={SETTINGS_SECTION_TITLE.privacy}
+            blocks={PRIVACY_LEGAL_BLOCKS}
+          />
         );
       case "delete-account":
         return <SettingsDeleteAccountView />;

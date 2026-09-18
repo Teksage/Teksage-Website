@@ -1,11 +1,11 @@
 "use client";
 
-import { use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
 import { Loader } from "@/components/common/Loader";
 import { AstrologerMeetingDetail } from "@/components/astrologer/AstrologerMeetingDetail";
 import { useAstrologerEventDetail } from "@/hooks/useAstrologerEvents";
+import { useI18nConstants } from "@/hooks/useT";
 import {
   ASTRO_PORTAL_COLORS,
   ASTRO_PORTAL_UI,
@@ -21,6 +21,7 @@ interface AstrologerMeetingDetailPageProps {
 export function AstrologerMeetingDetailPage({
   eventId,
 }: AstrologerMeetingDetailPageProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { event, loading, error, reload } = useAstrologerEventDetail(eventId);
@@ -32,7 +33,7 @@ export function AstrologerMeetingDetailPage({
   const resolved = event
     ? nameFromDetailEvent(event, nameParam)
     : {
-        fullName: nameParam?.trim() || "Unknown",
+        fullName: nameParam?.trim() || AP.detail.unknownCustomer,
         initials: initialsParam?.trim() || "--",
       };
   const fullName = resolved.fullName;
@@ -46,7 +47,7 @@ export function AstrologerMeetingDetailPage({
       style={{ backgroundColor: ASTRO_PORTAL_COLORS.brandGreen }}
     >
       <AppHeader
-        title={ASTRO_PORTAL_UI.meetingDetailTitle}
+        title={AP.meetingDetailTitle}
         showBack
         onBackClick={() => router.push(ROUTES.astrologerMeetings)}
         className="border-none"
@@ -68,7 +69,9 @@ export function AstrologerMeetingDetailPage({
 
       {!loading && !error && !event && (
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-sm font-semibold text-white">No event found.</p>
+          <p className="text-sm font-semibold text-white">
+            {AP.detail.noEvent}
+          </p>
         </div>
       )}
 

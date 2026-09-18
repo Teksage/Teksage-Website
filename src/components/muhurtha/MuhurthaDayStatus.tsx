@@ -80,7 +80,7 @@ export function MuhurthaSegmentDetails({
         <MuhurthaReasonInfo
           reasons={reasons}
           ariaLabel={ariaLabel}
-          triggerLabel={formatMuhurthaMoreReasons(extraReasonCount)}
+          triggerLabel={formatMuhurthaMoreReasons(extraReasonCount, t("more"))}
           triggerClassName={L.reasonMoreBtn}
         />
       ) : null}

@@ -22,6 +22,7 @@ export function AstrologerAskRequestDetailPage({
 }) {
   const router = useRouter();
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const {
     request,
     loading: requestLoading,
@@ -75,7 +76,7 @@ export function AstrologerAskRequestDetailPage({
               onClick={() => router.push(ROUTES.astrologerAskRequests)}
               className="mt-4 rounded-full border border-black/15 bg-white px-5 py-2 text-xs font-semibold text-gray-700"
             >
-              {ASTRO_PORTAL_UI.detail.backToMeetings}
+              {AP.detail.backToMeetings}
             </button>
           </div>
         )}
@@ -94,7 +95,7 @@ export function AstrologerAskRequestDetailPage({
             {/* 3. Full Horoscope Workspace */}
             <section className="w-full rounded-2xl border border-[var(--color-chat-bot-border)] bg-white p-5 shadow-[0_1px_6px_rgb(0_0_0_/_0.06)] sm:p-6 lg:p-8">
               <h3 className="mb-4 text-base font-bold text-[var(--color-brand-black)] sm:text-lg">
-                {ASTRO_PORTAL_UI.fullHoroscopeTitle}
+                {AP.fullHoroscopeTitle}
               </h3>
 
               <FullHoroscopePanels

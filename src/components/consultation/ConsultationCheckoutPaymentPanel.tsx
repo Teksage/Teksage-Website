@@ -1,9 +1,11 @@
 "use client";
 
+import { useI18nConstants } from "@/hooks/useT";
 import {
   CONSULTATION_CHECKOUT_LAYOUT,
   CONSULTATION_CHECKOUT_SCREEN,
 } from "@/lib/constants/consultation-checkout";
+import { CONSULTATION_SCREEN } from "@/lib/constants";
 import type { ConsultationCheckoutPaymentPanelProps } from "@/types/ui/consultation";
 
 function formatNameCopy(template: string, name: string): string {
@@ -22,7 +24,6 @@ export function ConsultationCheckoutPaymentPanel({
   busy,
   error,
   promoAppliedLabel,
-  promoInvalidLabel,
   referralDiscountLabel,
   onCouponChange,
   onApplyCoupon,
@@ -30,7 +31,8 @@ export function ConsultationCheckoutPaymentPanel({
   onPay,
   formatFee,
 }: ConsultationCheckoutPaymentPanelProps) {
-  const CC = CONSULTATION_CHECKOUT_SCREEN;
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
+  const C = useI18nConstants(CONSULTATION_SCREEN);
   const L = CONSULTATION_CHECKOUT_LAYOUT;
   const hasDiscount = totals.discount > 0;
   const baseFee = totals.plan_price > 0 ? totals.plan_price : totals.discounted_price;
@@ -67,14 +69,14 @@ export function ConsultationCheckoutPaymentPanel({
         </div>
         {hasDiscount ? (
           <div className={L.feeDiscountRow}>
-            <span>{referralLocked ? referralDiscountLabel : "Discount"}</span>
+            <span>{referralLocked ? referralDiscountLabel : C.discount}</span>
             <span>-{formatFee(totals.discount, currency)}</span>
           </div>
         ) : null}
         {totals.cgst > 0 ? (
           <div className={L.feeRow}>
             <span>
-              CGST {totals.cgst_percentage}%
+              {C.cgst} {totals.cgst_percentage}%
             </span>
             <span>{formatFee(totals.cgst, currency)}</span>
           </div>
@@ -82,7 +84,7 @@ export function ConsultationCheckoutPaymentPanel({
         {totals.sgst > 0 ? (
           <div className={L.feeRow}>
             <span>
-              SGST {totals.sgst_percentage}%
+              {C.sgst} {totals.sgst_percentage}%
             </span>
             <span>{formatFee(totals.sgst, currency)}</span>
           </div>

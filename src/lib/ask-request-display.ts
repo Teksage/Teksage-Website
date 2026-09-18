@@ -9,7 +9,9 @@ export function askRequestInitials(name: string | null | undefined): string {
   return name.slice(0, 2).toUpperCase();
 }
 
-export function formatAskRequestLanguages(languages: string[] | null | undefined): string {
+export function formatAskRequestLanguages(
+  languages: string[] | null | undefined
+): string {
   if (!languages?.length) return "—";
   return languages
     .map((lang) => lang.charAt(0).toUpperCase() + lang.slice(1))

@@ -18,7 +18,7 @@ export function AskRequestQuestionSection({ req }: { req: AskAstrologerRequest }
         {/* Section Header */}
         <div className="flex items-center justify-between border-b border-black/5 pb-3">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--color-brand-panchang)]">
+            <p className="text-nav font-bold uppercase tracking-[0.08em] text-[var(--color-brand-panchang)]">
               {AA.checkoutQuestionSection}
             </p>
             <p className="mt-0.5 text-xs text-black/50">

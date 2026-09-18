@@ -147,7 +147,7 @@ export const HOROSCOPE_LAYOUT = {
   pillTabList:
     "flex w-full gap-1 rounded-xl border border-[color-mix(in_srgb,var(--color-brand-primary)_25%,transparent)] bg-white p-1 shadow-sm",
   pillTab:
-    "min-w-0 flex-1 rounded-lg px-1.5 py-1.5 text-center text-[10px] font-semibold leading-tight transition-colors sm:px-2.5 sm:text-xs md:text-sm",
+    "min-w-0 flex-1 rounded-lg px-1.5 py-1.5 text-center text-micro font-semibold leading-tight transition-colors sm:px-2.5 sm:text-xs md:text-sm",
   pillTabActive: "bg-[var(--color-brand-primary)] text-white",
   pillTabIdle:
     "text-[var(--color-brand-panchang)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)]",
@@ -168,7 +168,7 @@ export const HOROSCOPE_LAYOUT = {
   northWatermarkBlock:
     "pointer-events-none flex flex-col items-center pt-8 text-center",
   northWatermark:
-    "text-[clamp(2.75rem,18vw,4.6875rem)] font-extrabold leading-[0.75] text-[color-mix(in_srgb,var(--color-horoscope-north-watermark)_50%,transparent)]",
+    "text-horoscope-watermark font-extrabold leading-[0.75] text-[color-mix(in_srgb,var(--color-horoscope-north-watermark)_50%,transparent)]",
   comingSoonMarqueeShell:
     "absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 px-0",
   comingSoonMarqueeBar:

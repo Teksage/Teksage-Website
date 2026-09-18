@@ -19,7 +19,11 @@ function StarIcon({
         : "none";
 
   return (
-    <svg viewBox="0 0 12 12" className="size-3.5 shrink-0" aria-hidden>
+    <svg
+      viewBox="0 0 12 12"
+      className="size-[var(--size-energy-star)] shrink-0"
+      aria-hidden
+    >
       {kind === "half" ? (
         <defs>
           <linearGradient id={halfId} x1="0" x2="1" y1="0" y2="0">

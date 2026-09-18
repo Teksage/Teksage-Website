@@ -1,6 +1,6 @@
 "use client";
 
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
 import { MainTabViewportBackdrop } from "@/components/common/MainTabViewportBackdrop";
@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 
 export function MuhurthaResultsPage() {
   const M = useI18nConstants(MUHURTHA_SCREEN);
+  const { t } = useT();
   const L = MUHURTHA_LAYOUT;
   const router = useRouter();
   const { isAuthenticated, isPremium, hasProfile, isHydratingProfile } =
@@ -33,7 +34,7 @@ export function MuhurthaResultsPage() {
       ? `${r.start_date} to ${r.end_date}`
       : r.start_date ?? "";
     writeAskAstrologerFlow({
-      user_question: `Event Planner: ${r.event} — ${dateRange} — ${r.location}`,
+      user_question: `${M.headerTitle}: ${t(r.event)} — ${dateRange} — ${r.location}`,
       ai_response: "",
       muhurtha_result: r,
     });

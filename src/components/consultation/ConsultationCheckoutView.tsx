@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationCheckoutDetailsPanel } from "@/components/consultation/ConsultationCheckoutDetailsPanel";
 import { ConsultationCheckoutPaymentPanel } from "@/components/consultation/ConsultationCheckoutPaymentPanel";
@@ -25,8 +25,9 @@ type Props = { astrologerId: number };
 
 export function ConsultationCheckoutView({ astrologerId }: Props) {
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
-  const CC = CONSULTATION_CHECKOUT_SCREEN;
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
   const PROMO = useI18nConstants(COUPON_PROMO_COPY);
+  const { t } = useT();
   const router = useRouter();
   const checkout = useConsultationCheckout(astrologerId);
 
@@ -47,7 +48,7 @@ export function ConsultationCheckoutView({ astrologerId }: Props) {
               type="button"
               onClick={() => router.back()}
               className={CONSULTATION_CHECKOUT_LAYOUT.backBtn}
-              aria-label="Back"
+              aria-label={t("Go back")}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path

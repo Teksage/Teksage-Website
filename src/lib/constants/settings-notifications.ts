@@ -27,6 +27,7 @@ export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
 };
 
 export const SETTINGS_NOTIFICATIONS_COPY = {
+  loading: "Loading…",
   loadFailed: "Could not load notification preferences.",
   updateFailed: "Failed to update preferences. Try again.",
   premiumRequired: "Subscribe to manage prediction notifications.",

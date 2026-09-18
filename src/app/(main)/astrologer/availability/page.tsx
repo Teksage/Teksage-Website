@@ -4,11 +4,13 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
 import { AstrologerAvailability } from "@/components/astrologer/AstrologerAvailability";
+import { useI18nConstants } from "@/hooks/useT";
 import { useAstrologerAvailability } from "@/hooks/useAstrologerAvailability";
 import { ROUTES } from "@/lib/constants/routes";
 import { ASTRO_PORTAL_UI, ASTRO_PORTAL_COLORS } from "@/lib/constants/astrologer-portal";
 
 export default function AstrologerAvailabilityPage() {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [isEdit, setIsEdit] = useState(false);
@@ -28,15 +30,15 @@ export default function AstrologerAvailabilityPage() {
   }, [availability, isEdit]);
 
   const editSaveLabel = availability.saving
-    ? ASTRO_PORTAL_UI.avail.savingLabel
+    ? AP.avail.savingLabel
     : isEdit
-      ? ASTRO_PORTAL_UI.avail.saveLabel
-      : ASTRO_PORTAL_UI.avail.editLabel;
+      ? AP.avail.saveLabel
+      : AP.avail.editLabel;
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <AppHeader
-        title={ASTRO_PORTAL_UI.availabilityTitle}
+        title={AP.availabilityTitle}
         showBack
         onBackClick={() => router.push(ROUTES.astrologer)}
         action={

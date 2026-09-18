@@ -21,6 +21,7 @@ import type { NotificationPrefs } from "@/types/settings";
 
 export function SettingsPushNotificationsView() {
   const SN = useI18nConstants(SETTINGS_NOTIFICATIONS_COPY);
+  const labels = useI18nConstants(NOTIFICATION_PREF_LABELS);
   const [prefs, setPrefs] = useState<NotificationPrefs>(DEFAULT_NOTIFICATION_PREFS);
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -63,7 +64,7 @@ export function SettingsPushNotificationsView() {
     return (
       <div className={SETTINGS_LAYOUT.contentCard}>
         <p className={`${SETTINGS_LAYOUT.contentCardPad} text-sm text-black/45`}>
-          Loading…
+          {SN.loading}
         </p>
       </div>
     );
@@ -87,7 +88,7 @@ export function SettingsPushNotificationsView() {
           {NOTIFICATION_PREF_KEYS.map((key) => (
             <div key={key} className={SETTINGS_UI.pushRow}>
               <SettingsToggle
-                label={NOTIFICATION_PREF_LABELS[key]}
+                label={labels[key]}
                 checked={prefs[key]}
                 disabled={!isPremium}
                 onCheckedChange={(value) => void onToggle(key, value)}

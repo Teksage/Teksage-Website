@@ -7,7 +7,9 @@ import { AstrologerMeetingHoroscope } from "@/components/astrologer/AstrologerMe
 import { FullHoroscopePanels } from "@/components/horoscope/full/FullHoroscopePanels";
 import { useAstrologerAskRequestHoroscope } from "@/hooks/useAstrologerAskRequestHoroscope";
 import { useAskRequestFullHoroscope } from "@/hooks/useAskRequestFullHoroscope";
+import { useI18nConstants } from "@/hooks/useT";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
+import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
 import { hasAstrologerMeetingHoroscope } from "@/lib/astrologer-horoscope-display";
 import { ROUTES } from "@/lib/constants/routes";
 import type { AstrologerAskRequestHoroscopePageProps } from "@/types/ui/astrologer-portal";
@@ -15,18 +17,20 @@ import type { AstrologerAskRequestHoroscopePageProps } from "@/types/ui/astrolog
 export function AstrologerAskRequestHoroscopePage({
   requestId,
 }: AstrologerAskRequestHoroscopePageProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const router = useRouter();
   const { data, loading, error } = useAstrologerAskRequestHoroscope(requestId);
   const fullState = useAskRequestFullHoroscope(requestId);
 
   const backHref = ROUTES.astrologerAskRequests;
   const hasBasic = hasAstrologerMeetingHoroscope(data?.user_horoscope ?? null);
-  const fullName = data?.customer_name?.trim() || "Client";
+  const fullName = data?.customer_name?.trim() || AA.astrologerClientFallback;
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <AppHeader
-        title={ASTRO_PORTAL_UI.horoscopeDetailTitle}
+        title={AP.horoscopeDetailTitle}
         showBack
         onBackClick={() => router.push(backHref)}
         className="border-b border-black/10"
@@ -50,7 +54,7 @@ export function AstrologerAskRequestHoroscopePage({
             {data.user_question ? (
               <div className="mt-2 rounded-xl border border-black/10 bg-neutral-50 p-3.5">
                 <p className="text-xs font-semibold uppercase tracking-wide text-black/50">
-                  {ASTRO_PORTAL_UI.detail.questions}
+                  {AP.detail.questions}
                 </p>
                 <p className="mt-1 text-sm text-gray-800">{data.user_question}</p>
               </div>
@@ -61,7 +65,7 @@ export function AstrologerAskRequestHoroscopePage({
 
           <div className="mt-8 border-t border-black/10 pt-6">
             <p className="mb-3 text-sm font-semibold text-gray-900">
-              {ASTRO_PORTAL_UI.fullHoroscopeTitle}
+              {AP.fullHoroscopeTitle}
             </p>
             <FullHoroscopePanels state={fullState} askRequestId={requestId} />
           </div>
@@ -70,7 +74,7 @@ export function AstrologerAskRequestHoroscopePage({
 
       {!loading && !error && data && !hasBasic && (
         <p className="px-6 py-12 text-center text-sm text-gray-500">
-          {ASTRO_PORTAL_UI.detail.horoscopeUnavailable}
+          {AP.detail.horoscopeUnavailable}
         </p>
       )}
     </div>

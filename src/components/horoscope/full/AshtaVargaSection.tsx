@@ -5,6 +5,7 @@ import { AshtaVargaBinduChart } from "@/components/horoscope/full/AshtaVargaBind
 import { ASHTA_PLANET_TAB_ORDER, sumBindus } from "@/lib/ashta-varga-chart";
 import { cn } from "@/lib/utils";
 import { HOROSCOPE_SCREEN, HOROSCOPE_LAYOUT } from "@/lib/constants";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import type { AshtaVargaPayload, FullHoroscopeSection } from "@/types";
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
 
 /** Ashtavarga workspace — planet chips + bindu charts (distinct from Dasa tabs). */
 export function AshtaVargaSection({ section, className }: Props) {
+  const H = useI18nConstants(HOROSCOPE_SCREEN);
+  const { t } = useT();
   const data = section.data;
   const tabs = data
     ? ASHTA_PLANET_TAB_ORDER.filter((p) => Boolean(data[p]))
@@ -30,14 +33,14 @@ export function AshtaVargaSection({ section, className }: Props) {
   if (section.error || !data || !tabs.length) {
     return (
       <p className="py-10 text-center text-sm text-red-500">
-        {section.error ?? HOROSCOPE_SCREEN.errorLoadLabel}
+        {H.errorLoadLabel}
       </p>
     );
   }
   if (!planetData) {
     return (
       <p className="py-10 text-center text-sm text-red-500">
-        {HOROSCOPE_SCREEN.errorLoadLabel}
+        {H.errorLoadLabel}
       </p>
     );
   }
@@ -47,7 +50,7 @@ export function AshtaVargaSection({ section, className }: Props) {
   const grahaGuna = planetData.grahaGuna ?? 0;
   const suthdha = rasiGuna + grahaGuna;
   const tabLabel = (p: string) =>
-    p === "SarvaAshtavarga" ? HOROSCOPE_SCREEN.ashtaTabSarva : p;
+    p === "SarvaAshtavarga" ? H.ashtaTabSarva : t(p);
 
   return (
     <div className={cn(L.ashtaRoot, className)}>
@@ -55,13 +58,13 @@ export function AshtaVargaSection({ section, className }: Props) {
         <header className={L.ashtaHeader}>
           <div>
             <p className={L.ashtaHeaderEyebrow}>
-              {HOROSCOPE_SCREEN.ashtaSectionEyebrow}
+              {H.ashtaSectionEyebrow}
             </p>
-            <h2 className={L.ashtaHeaderTitle}>{HOROSCOPE_SCREEN.tabAshtavarga}</h2>
+            <h2 className={L.ashtaHeaderTitle}>{H.tabAshtavarga}</h2>
           </div>
           <div className="space-y-1.5">
             <p className={L.ashtaPlanetLabel}>
-              {HOROSCOPE_SCREEN.ashtaPlanetPickerLabel}
+              {H.ashtaPlanetPickerLabel}
             </p>
             <div role="tablist" className={L.ashtaPlanetRail}>
               {tabs.map((p) => {
@@ -93,11 +96,11 @@ export function AshtaVargaSection({ section, className }: Props) {
             planetPos={isSarva ? null : planetData.planetPos}
           />
           <AshtaVargaBinduChart
-            title={HOROSCOPE_SCREEN.ashtaChartTrikona}
+            title={H.ashtaChartTrikona}
             bindus={planetData.trikonaReduced}
           />
           <AshtaVargaBinduChart
-            title={HOROSCOPE_SCREEN.ashtaChartEkathipathya}
+            title={H.ashtaChartEkathipathya}
             bindus={planetData.ekathipathiyaReduced}
           />
         </div>
@@ -106,19 +109,19 @@ export function AshtaVargaSection({ section, className }: Props) {
           <div className={L.ashtaGunahara}>
             <div className={L.ashtaGunaharaItem}>
               <span className={L.ashtaGunaharaLabel}>
-                {HOROSCOPE_SCREEN.ashtaRasiGunahara}
+                {H.ashtaRasiGunahara}
               </span>
               <span className={L.ashtaGunaharaValue}>{rasiGuna}</span>
             </div>
             <div className={L.ashtaGunaharaItem}>
               <span className={L.ashtaGunaharaLabel}>
-                {HOROSCOPE_SCREEN.ashtaGrahaGunahara}
+                {H.ashtaGrahaGunahara}
               </span>
               <span className={L.ashtaGunaharaValue}>{grahaGuna}</span>
             </div>
             <div className={L.ashtaGunaharaItem}>
               <span className={L.ashtaGunaharaLabel}>
-                {HOROSCOPE_SCREEN.ashtaSuthdhaBindus}
+                {H.ashtaSuthdhaBindus}
               </span>
               <span className={L.ashtaGunaharaValue}>{suthdha}</span>
             </div>

@@ -3,18 +3,20 @@
 import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/common/AppHeader";
 import { AstrologerMeetingsList } from "@/components/astrologer/AstrologerMeetingsList";
+import { useI18nConstants } from "@/hooks/useT";
 import { useAstrologerEvents } from "@/hooks/useAstrologerEvents";
 import { ROUTES } from "@/lib/constants/routes";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
 
 export default function AstrologerMeetingsPage() {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const router = useRouter();
   const { upcomingEvents, completedEvents, loading } = useAstrologerEvents();
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <AppHeader
-        title={ASTRO_PORTAL_UI.meetingsTitle}
+        title={AP.meetingsTitle}
         showBack
         onBackClick={() => router.push(ROUTES.astrologer)}
       />

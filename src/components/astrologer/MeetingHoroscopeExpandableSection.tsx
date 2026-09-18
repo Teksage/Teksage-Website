@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useI18nConstants } from "@/hooks/useT";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
 import {
   MEETING_HOROSCOPE_PREVIEW,
@@ -23,9 +24,10 @@ export function MeetingHoroscopeExpandableSection({
   value,
   periods,
 }: MeetingHoroscopeExpandableSectionProps) {
+  const AP = useI18nConstants(ASTRO_PORTAL_UI);
   const [expanded, setExpanded] = useState(false);
   const U = MEETING_HOROSCOPE_UI;
-  const copy = ASTRO_PORTAL_UI.detail;
+  const copy = AP.detail;
   const previewCount = MEETING_HOROSCOPE_PREVIEW.periodCount;
 
   const canExpandPeriods = Boolean(periods && periods.length > previewCount);

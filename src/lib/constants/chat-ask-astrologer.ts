@@ -96,6 +96,8 @@ export const ASK_ASTROLOGER_SCREEN = {
   // Astrologer portal — ask request cards
   astrologerPageTitle: "Ask Requests",
   astrologerLoadFailed: "Failed to load requests",
+  astrologerRequestLabel: "Request",
+  astrologerClientFallback: "Client",
   astrologerAnswerBtn: "Answer",
   astrologerCancelBtn: "Cancel",
   astrologerSubmitAnswer: "Submit Answer",

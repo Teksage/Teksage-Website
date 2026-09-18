@@ -1,6 +1,5 @@
 import { toBlob } from "html-to-image";
 import { DOWNLOAD_FILENAMES } from "@/lib/constants/downloads";
-import { MUHURTHA_SCREEN } from "@/lib/constants/muhurtha-screen";
 import { ROUTES } from "@/lib/constants/routes";
 
 export type MuhurthaImageShareOutcome =
@@ -33,8 +32,11 @@ export function toPublicMuhurthaShareUrl(pageUrl: string): string {
   }
 }
 
-export function buildMuhurthaShareCaption(pageUrl: string): string {
-  return `${MUHURTHA_SCREEN.share.shareCredit}\n${toPublicMuhurthaShareUrl(pageUrl)}`;
+export function buildMuhurthaShareCaption(
+  pageUrl: string,
+  credit: string
+): string {
+  return `${credit}\n${toPublicMuhurthaShareUrl(pageUrl)}`;
 }
 
 export async function captureMuhurthaResultImage(
@@ -121,12 +123,14 @@ async function sharePngWithCaption(args: {
 export async function shareMuhurthaResultImage(args: {
   element: HTMLElement;
   pageUrl: string;
+  title: string;
+  credit: string;
 }): Promise<MuhurthaImageShareOutcome> {
   const blob = await captureMuhurthaResultImage(args.element);
   return sharePngWithCaption({
     blob,
     filename: DOWNLOAD_FILENAMES.eventPlannerResultPng,
-    title: MUHURTHA_SCREEN.share.shareTitle,
-    caption: buildMuhurthaShareCaption(args.pageUrl),
+    title: args.title,
+    caption: buildMuhurthaShareCaption(args.pageUrl, args.credit),
   });
 }

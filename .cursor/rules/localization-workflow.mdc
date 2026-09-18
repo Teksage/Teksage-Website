@@ -1,0 +1,40 @@
+---
+description: Required workflow for adding or translating Teksage user-facing copy
+alwaysApply: true
+---
+
+# Localization Workflow
+
+Follow `docs/TRANSLATION_WORKFLOW.md` for the complete technical procedure.
+
+Localization is mandatory for every new feature with user-visible copy. Apply
+this workflow automatically even when the user does not mention languages, and
+do not mark the feature complete until its locale keys and dry-run are done.
+
+- Never leave translatable copy only in a component.
+- Include localization in the initial implementation; do not defer it as a separate task.
+- Website English source keys belong in `src/lib/i18n/messages/en_US.json`.
+- This project uses the English text itself as the JSON key.
+- Add every new key to `ta.json`, `hi.json`, `te_IN.json`, `kn_IN.json`, `ml_IN.json`, and `mr_IN.json` with the same English value as a temporary stub.
+- Preserve placeholders exactly: `{name}`, `{count}`, `@name`, `%s`, `%d`, arrows, and escaped newlines.
+- Reuse existing keys before creating near-duplicates.
+- Do not add runtime Google Translation calls.
+- Never request that an API key be pasted into chat or committed.
+
+After adding keys, always run:
+
+```powershell
+node translate-locales.mjs --dry-run --website-only --show-keys
+```
+
+Tell the user the character count and suggest translating one physical file at a time:
+
+```powershell
+node translate-locales.mjs --website-only --lang=ta
+```
+
+Use `hi`, `te_IN`, `kn_IN`, `ml_IN`, or `mr_IN` for other files. The script scans the full catalog but sends only new English stubs, so a feature manifest is unnecessary.
+
+After translation, validate JSON parsing, key parity with `en_US.json`, placeholder parity, Unicode replacement characters, and `git diff --check`.
+
+The final agent response must state keys added, dry-run character count, exact next command, validation result, and pages requiring manual language QA.

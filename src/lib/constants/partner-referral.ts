@@ -59,17 +59,17 @@ export const PARTNER_REFERRAL_LAYOUT = {
   sidebarLabel: "text-xs font-semibold text-[var(--color-brand-black)]",
   sidebarChips: "flex flex-wrap gap-1",
   chipPct:
-    "inline-flex rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-bold leading-none text-white",
+    "inline-flex rounded-full bg-[var(--color-brand-primary)] px-2 py-0.5 text-micro font-bold leading-none text-white",
   chipStatusUsed:
-    "inline-flex rounded-full bg-[#2e7d32]/12 px-2 py-0.5 text-[10px] font-bold leading-none text-[#1b5e20]",
+    "inline-flex rounded-full bg-[#2e7d32]/12 px-2 py-0.5 text-micro font-bold leading-none text-[#1b5e20]",
   chipStatusExpired:
-    "inline-flex rounded-full bg-[#ed6c02]/12 px-2 py-0.5 text-[10px] font-bold leading-none text-[#e65100]",
+    "inline-flex rounded-full bg-[#ed6c02]/12 px-2 py-0.5 text-micro font-bold leading-none text-[#e65100]",
   chipStatusInactive:
-    "inline-flex rounded-full bg-neutral-500/14 px-2 py-0.5 text-[10px] font-bold leading-none text-neutral-600",
+    "inline-flex rounded-full bg-neutral-500/14 px-2 py-0.5 text-micro font-bold leading-none text-neutral-600",
   chipDays:
-    "inline-flex items-center font-mono text-[11px] font-semibold tabular-nums leading-none text-[var(--color-brand-primary)]",
+    "inline-flex items-center font-mono text-nav font-semibold tabular-nums leading-none text-[var(--color-brand-primary)]",
   chipTimerExpired:
-    "inline-flex items-center text-[11px] font-semibold leading-none text-neutral-500",
+    "inline-flex items-center text-nav font-semibold leading-none text-neutral-500",
   topBarPill:
     "inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[var(--color-brand-primary)]/45 bg-white px-3 py-1.5",
   topBarTitle: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-[var(--color-brand-primary)]`,

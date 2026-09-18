@@ -22,7 +22,7 @@ export const SETTINGS_SCREEN = {
   rateThanks: "Thanks for your support!",
   rateUsLabel: "Rate us",
   rateDialogLead:
-    "Your stars guide you, and your feedback guides us ⭐\nRate Teksage today!",
+    "Your stars guide you, and your feedback guides us ⭐ \nRate Teksage today!",
   rateNowLabel: "Rate Now",
   playStoreUrl:
     "https://play.google.com/store/apps/details?id=com.venzo.astroPrompt",

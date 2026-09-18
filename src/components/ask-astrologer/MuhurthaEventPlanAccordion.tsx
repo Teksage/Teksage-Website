@@ -1,23 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { MuhurthaDayRow } from "@/components/muhurtha/MuhurthaDayRow";
 import { MUHURTHA_LAYOUT, MUHURTHA_SCREEN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
+import { formatMuhurthaDateRange } from "@/lib/muhurtha-format";
 import type { MuhurthaResult } from "@/types/muhurtha";
-
-function formatRange(start: string, end: string) {
-  const s = new Date(`${start}T12:00:00`);
-  const e = new Date(`${end}T12:00:00`);
-  const fmt = (d: Date) =>
-    d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
-  return `${fmt(s)} – ${fmt(e)}`;
-}
 
 export function MuhurthaEventPlanAccordion({ result }: { result: MuhurthaResult }) {
   const [open, setOpen] = useState(false);
   const M = useI18nConstants(MUHURTHA_SCREEN);
+  const { t, locale } = useT();
   const L = MUHURTHA_LAYOUT;
   const rows = result.days?.length ? result.days : result.dates ?? [];
 
@@ -34,10 +29,14 @@ export function MuhurthaEventPlanAccordion({ result }: { result: MuhurthaResult 
             {M.eventPlanAccordionLabel}
           </p>
           <p className="mt-0.5 text-sm font-semibold text-[var(--color-brand-black)]">
-            {result.event}
+            {t(result.event)}
             {result.start_date && result.end_date ? (
               <span className="ml-2 font-normal text-black/50">
-                {formatRange(result.start_date, result.end_date)}
+                {formatMuhurthaDateRange(
+                  result.start_date,
+                  result.end_date,
+                  bcp47FromAppLocale(locale)
+                )}
               </span>
             ) : null}
           </p>
