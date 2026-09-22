@@ -1157,5 +1157,14 @@
   "Could not load notification preferences.": "Could not load notification preferences.",
   "Failed to update preferences. Try again.": "Failed to update preferences. Try again.",
   "Subscribe to manage prediction notifications.": "Subscribe to manage prediction notifications.",
-  "View subscriptions": "View subscriptions"
+  "View subscriptions": "View subscriptions",
+  "Previous consultations": "Previous consultations",
+  "Tap to review past Q&A": "Tap to review past Q&A",
+  "Previous · {count}": "Previous · {count}",
+  "Returning": "Returning",
+  "Answered by {name}": "Answered by {name}",
+  "Answered by You": "Answered by You",
+  "Chat": "Chat",
+  "Event planner": "Event planner",
+  "Question": "Question"
 }

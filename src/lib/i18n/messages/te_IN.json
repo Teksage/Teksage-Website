@@ -1157,5 +1157,14 @@
   "Could not load notification preferences.": "నోటిఫికేషన్ ప్రాధాన్యతలను లోడ్ చేయలేకపోయింది.",
   "Failed to update preferences. Try again.": "ప్రాధాన్యతలను నవీకరించడంలో విఫలమైంది. మళ్ళీ ప్రయత్నించండి.",
   "Subscribe to manage prediction notifications.": "అంచనా నోటిఫికేషన్‌లను నిర్వహించడానికి సబ్‌స్క్రయిబ్ చేసుకోండి.",
-  "View subscriptions": "చందాలను వీక్షించండి"
+  "View subscriptions": "చందాలను వీక్షించండి",
+  "Previous consultations": "గత సంప్రదింపులు",
+  "Tap to review past Q&A": "గత ప్రశ్నలు & సమాధానాలను సమీక్షించడానికి నొక్కండి",
+  "Previous · {count}": "గతవి · {count}",
+  "Returning": "తిరిగి వచ్చినవి",
+  "Answered by {name}": "{name} ద్వారా సమాధానం ఇవ్వబడింది",
+  "Answered by You": "మీరు సమాధానం ఇచ్చారు",
+  "Chat": "చాట్",
+  "Event planner": "ఈవెంట్ ప్లానర్",
+  "Question": "ప్రశ్న"
 }

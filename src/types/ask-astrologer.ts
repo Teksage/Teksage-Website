@@ -9,9 +9,26 @@ export type AskAstrologerStatus =
   | "answered"
   | "cancelled";
 
+export type AskAstrologerRequestKind = "chat" | "event_planner";
+
+/** Prior answered ask for the same customer (astrologer/admin detail). */
+export interface AskAstrologerPreviousQa {
+  id: number;
+  answered_at: string | null;
+  request_kind: AskAstrologerRequestKind | string;
+  user_question: string;
+  answer_text: string | null;
+  answer_voice_url: string | null;
+  answer_voice_duration_sec: number | null;
+  astrologer_name: string | null;
+  astrologer_id: number | null;
+  muhurtha_result?: MuhurthaResult | null;
+}
+
 export interface AskAstrologerRequest {
   id: number;
   status: AskAstrologerStatus;
+  request_kind?: AskAstrologerRequestKind | string | null;
   user_question: string;
   ai_response: string;
   preferred_languages: string[];
@@ -33,6 +50,8 @@ export interface AskAstrologerRequest {
   answered_by_astrologer_name?: string | null;
   answered_by_astrologer_profile_path?: string | null;
   answer_ready_acknowledged?: boolean;
+  previous_qa_count?: number;
+  previous_qa?: AskAstrologerPreviousQa[];
 }
 
 export interface AskAstrologerPricing {

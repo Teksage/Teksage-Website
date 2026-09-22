@@ -1157,5 +1157,14 @@
   "Could not load notification preferences.": "அறிவிப்பு விருப்பத்தேர்வுகளை ஏற்ற முடியவில்லை.",
   "Failed to update preferences. Try again.": "விருப்பத்தேர்வுகளைப் புதுப்பிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
   "Subscribe to manage prediction notifications.": "கணிப்பு அறிவிப்புகளை நிர்வகிக்கச் சந்தா சேருங்கள்.",
-  "View subscriptions": "சந்தாக்களைக் காண்க"
+  "View subscriptions": "சந்தாக்களைக் காண்க",
+  "Previous consultations": "முந்தைய கலந்தாய்வுகள்",
+  "Tap to review past Q&A": "கடந்த கால கேள்வி-பதில்களைப் பார்க்கத் தட்டவும்",
+  "Previous · {count}": "முந்தையவை · {count}",
+  "Returning": "மீண்டும் வருபவர்",
+  "Answered by {name}": "{name} அவர்கள் பதிலளித்தனர்",
+  "Answered by You": "நீங்கள் பதிலளித்தீர்கள்",
+  "Chat": "அரட்டை",
+  "Event planner": "நிகழ்ச்சித் திட்டமிடுபவர்",
+  "Question": "கேள்வி"
 }

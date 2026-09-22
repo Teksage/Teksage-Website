@@ -1157,5 +1157,14 @@
   "Could not load notification preferences.": "सूचना प्राधान्ये (notification preferences) लोड करता आली नाहीत.",
   "Failed to update preferences. Try again.": "प्राधान्ये अद्ययावत करण्यात अपयश आले. पुन्हा प्रयत्न करा.",
   "Subscribe to manage prediction notifications.": "भविष्यवाणीच्या सूचना व्यवस्थापित करण्यासाठी सबस्क्राईब करा.",
-  "View subscriptions": "सबस्क्रिप्शन्स पहा"
+  "View subscriptions": "सबस्क्रिप्शन्स पहा",
+  "Previous consultations": "मागील चर्चा",
+  "Tap to review past Q&A": "मागील प्रश्न-उत्तरे पाहण्यासाठी टॅप करा",
+  "Previous · {count}": "मागील · {count}",
+  "Returning": "पुन्हा आलेले",
+  "Answered by {name}": "{name} यांनी दिलेले उत्तर",
+  "Answered by You": "तुम्ही दिलेले उत्तर",
+  "Chat": "चॅट",
+  "Event planner": "कार्यक्रम नियोजक",
+  "Question": "प्रश्न"
 }

@@ -1157,5 +1157,14 @@
   "Could not load notification preferences.": "ಅಧಿಸೂಚನೆ ಆದ್ಯತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
   "Failed to update preferences. Try again.": "ಆದ್ಯತೆಗಳನ್ನು ನವೀಕರಿಸಲು ವಿಫಲವಾಗಿದೆ. ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
   "Subscribe to manage prediction notifications.": "ಭವಿಷ್ಯವಾಣಿ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿರ್ವಹಿಸಲು ಚಂದಾದಾರರಾಗಿ.",
-  "View subscriptions": "ಚಂದಾದಾರಿಕೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
+  "View subscriptions": "ಚಂದಾದಾರಿಕೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+  "Previous consultations": "ಹಿಂದಿನ ಸಮಾಲೋಚನೆಗಳು",
+  "Tap to review past Q&A": "ಹಿಂದಿನ ಪ್ರಶ್ನೋತ್ತರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+  "Previous · {count}": "ಹಿಂದಿನದು · {count}",
+  "Returning": "ಮತ್ತೆ ಬಂದವರು",
+  "Answered by {name}": "{name} ಅವರಿಂದ ಉತ್ತರಿಸಲಾಗಿದೆ",
+  "Answered by You": "ನಿಮ್ಮಿಂದ ಉತ್ತರಿಸಲಾಗಿದೆ",
+  "Chat": "ಚಾಟ್",
+  "Event planner": "ಕಾರ್ಯಕ್ರಮ ಸಂಯೋಜಕ",
+  "Question": "ಪ್ರಶ್ನೆ"
 }

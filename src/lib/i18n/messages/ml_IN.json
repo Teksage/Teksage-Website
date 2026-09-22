@@ -1157,5 +1157,14 @@
   "Could not load notification preferences.": "അറിയിപ്പ് മുൻഗണനകൾ (notification preferences) ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല.",
   "Failed to update preferences. Try again.": "മുൻഗണനകൾ അപ്‌ഡേറ്റ് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.",
   "Subscribe to manage prediction notifications.": "പ്രവചന അറിയിപ്പുകൾ നിയന്ത്രിക്കുന്നതിന് സബ്‌സ്‌ക്രൈബ് ചെയ്യുക.",
-  "View subscriptions": "സബ്‌സ്‌ക്രിപ്‌ഷനുകൾ കാണുക"
+  "View subscriptions": "സബ്‌സ്‌ക്രിപ്‌ഷനുകൾ കാണുക",
+  "Previous consultations": "മുൻകാല കൂടിയാലോചനകൾ",
+  "Tap to review past Q&A": "മുൻപത്തെ ചോദ്യോത്തരങ്ങൾ പരിശോധിക്കാൻ ടാപ്പ് ചെയ്യുക",
+  "Previous · {count}": "മുൻപുള്ളവ · {count}",
+  "Returning": "വീണ്ടും വന്നത്",
+  "Answered by {name}": "{name} നൽകിയ മറുപടി",
+  "Answered by You": "നിങ്ങൾ നൽകിയ മറുപടി",
+  "Chat": "ചാറ്റ്",
+  "Event planner": "ഇവന്റ് പ്ലാനർ",
+  "Question": "ചോദ്യം"
 }
