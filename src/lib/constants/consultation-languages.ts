@@ -37,3 +37,43 @@ export function consultationLanguageLabel(languageId: string): string {
     languageId
   );
 }
+
+/**
+ * Normalize API / picker language values to a canonical id.
+ * API list responses translate languages to native script (e.g. `தமிழ்`),
+ * while the filter dropdown uses ids (`tamil`).
+ */
+export function normalizeConsultationLanguageId(value: string): string {
+  const raw = value.trim();
+  if (!raw) return "";
+  const lower = raw.toLowerCase();
+
+  const byId = CONSULTATION_LANGUAGES.find((lang) => lang.id === lower);
+  if (byId) return byId.id;
+
+  const byLabel = CONSULTATION_LANGUAGES.find(
+    (lang) => lang.label === raw || lang.label.toLowerCase() === lower
+  );
+  if (byLabel) return byLabel.id;
+
+  const byEnglishName = CONSULTATION_LANGUAGES.find(
+    (lang) => lang.id.charAt(0).toUpperCase() + lang.id.slice(1) === raw
+  );
+  if (byEnglishName) return byEnglishName.id;
+
+  return lower;
+}
+
+/** Unique languages present on the roster (canonical ids), for filter dropdowns. */
+export function consultationLanguagesInUse(
+  rows: readonly { languages?: string[] | null }[]
+): ConsultationLanguageOption[] {
+  const ids = new Set<string>();
+  for (const row of rows) {
+    for (const lang of row.languages ?? []) {
+      const id = normalizeConsultationLanguageId(lang);
+      if (id) ids.add(id);
+    }
+  }
+  return CONSULTATION_LANGUAGES.filter((lang) => ids.has(lang.id));
+}

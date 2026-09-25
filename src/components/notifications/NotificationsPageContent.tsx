@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
 import { AppHeader } from "@/components/common/AppHeader";
 import { PageLoadingCenter } from "@/components/common/Loader";
-import { AskAstrologerAnswerDialog } from "@/components/notifications/AskAstrologerAnswerDialog";
 import { NotificationConsultationList } from "@/components/notifications/NotificationConsultationList";
 import { NotificationDetailDialog } from "@/components/notifications/NotificationDetailDialog";
 import { NotificationGeneralList } from "@/components/notifications/NotificationGeneralList";
@@ -15,7 +14,11 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { notificationDisplayCopy, notificationPredictionRoute } from "@/lib/notification-display";
 import {
   NOTIFICATIONS_SCREEN,
+  NOTIFICATIONS_TAB_GENERAL,
+  NOTIFICATIONS_TAB_SINGLE_QUERY,
+  NOTIFICATIONS_TAB_THIRTY_MINS,
   NOTIFICATIONS_UI,
+  parseNotificationTab,
 } from "@/lib/constants/notifications-screen";
 import { ROUTES } from "@/lib/constants/routes";
 import { PAGE_SHELL } from "@/lib/constants/page-shell";
@@ -26,14 +29,14 @@ interface NotificationsPageContentProps {
 }
 
 export function NotificationsPageContent({
-  initialTab = "general",
+  initialTab = NOTIFICATIONS_TAB_GENERAL,
 }: NotificationsPageContentProps) {
   const NS = useI18nConstants(NOTIFICATIONS_SCREEN);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tabParam = searchParams.get("tab");
-  const initialTabFromUrl: NotificationTab =
-    tabParam === "consultation" ? "consultation" : initialTab;
+  const initialTabFromUrl = parseNotificationTab(
+    searchParams.get("tab") ?? initialTab
+  );
 
   const {
     tab,
@@ -49,7 +52,7 @@ export function NotificationsPageContent({
     clearAll,
   } = useNotifications(initialTabFromUrl);
 
-  const askAnswer = useAskAnswerFromQuery(askRequests, loading);
+  useAskAnswerFromQuery();
 
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
@@ -78,8 +81,11 @@ export function NotificationsPageContent({
     [markRead, router]
   );
 
+  const activeTab =
+    tab === "consultation" ? NOTIFICATIONS_TAB_SINGLE_QUERY : tab;
+
   const clearAllAction =
-    tab === "general" && general.length > 0 ? (
+    activeTab === NOTIFICATIONS_TAB_GENERAL && general.length > 0 ? (
       <button
         type="button"
         disabled={actionLoading}
@@ -109,13 +115,20 @@ export function NotificationsPageContent({
           <p className="px-5 py-12 text-center text-sm text-black/60">
             {NS.loadFailed}
           </p>
-        ) : tab === "general" ? (
+        ) : activeTab === NOTIFICATIONS_TAB_GENERAL ? (
           <NotificationGeneralList items={general} onOpen={handleOpenGeneral} />
-        ) : (
+        ) : activeTab === NOTIFICATIONS_TAB_THIRTY_MINS ? (
           <NotificationConsultationList
             items={consultation}
             isAstrologer={isAstrologer}
+            variant="appointments"
+          />
+        ) : (
+          <NotificationConsultationList
+            items={[]}
+            isAstrologer={isAstrologer}
             askItems={askRequests}
+            variant="ask"
           />
         )}
       </div>
@@ -125,20 +138,6 @@ export function NotificationsPageContent({
         title={dialog?.title ?? ""}
         message={dialog?.message ?? ""}
         onClose={() => setDialog(null)}
-      />
-
-      <AskAstrologerAnswerDialog
-        open={askAnswer.isOpen}
-        userQuestion={askAnswer.userQuestion}
-        answerText={askAnswer.answerText}
-        answerVoiceUrl={askAnswer.answerVoiceUrl}
-        answerVoiceDurationSec={askAnswer.answerVoiceDurationSec}
-        answeredAt={askAnswer.answeredAt}
-        answeredByAstrologerName={askAnswer.answeredByAstrologerName}
-        answeredByAstrologerProfilePath={askAnswer.answeredByAstrologerProfilePath}
-        loading={askAnswer.loading}
-        error={askAnswer.error}
-        onClose={askAnswer.closeAskAnswer}
       />
     </div>
   );

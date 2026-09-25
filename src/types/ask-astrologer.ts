@@ -50,6 +50,9 @@ export interface AskAstrologerRequest {
   answered_by_astrologer_name?: string | null;
   answered_by_astrologer_profile_path?: string | null;
   answer_ready_acknowledged?: boolean;
+  rating?: number | null;
+  feedback?: string | null;
+  review_status?: "pending" | "approved" | "rejected" | null;
   previous_qa_count?: number;
   previous_qa?: AskAstrologerPreviousQa[];
 }

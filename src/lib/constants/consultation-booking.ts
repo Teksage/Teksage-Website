@@ -64,7 +64,11 @@ export const CONSULTATION_BOOKING_LAYOUT = {
   meetingBtn:
     "rounded-md border border-[#87AE0E] px-3.5 py-2 text-base font-semibold text-[#87AE0E]",
   queryCard:
-    "rounded-lg border border-black/5 bg-[#f8f8f8] px-4 py-3 text-base font-semibold text-[var(--color-brand-black)]",
+    "space-y-2 rounded-lg border border-black/5 bg-[#f8f8f8] px-4 py-3",
+  queryQuestion:
+    "text-base font-semibold text-[var(--color-brand-black)]",
+  queryAnswer:
+    "text-sm font-medium leading-snug text-[var(--color-brand-black)]/50",
   addQueryBtn:
     "w-full rounded-lg bg-[var(--color-consult-user-bg)] py-3.5 text-center text-base font-semibold text-white",
   payBtn:

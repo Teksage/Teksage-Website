@@ -98,6 +98,12 @@ export const API_ENDPOINTS = {
   astrologerBook: "/api/astrologer/book",
   astrologerQuestions: "/api/astrologer/questions",
   astroEvents: "/api/astrologer/events",
+  /** `GET` — one-time answers-ready popup payload for the logged-in customer. */
+  consultationPendingAnswersPopup: "/api/astrologer/events/pending-answers-popup",
+  /**
+   * `POST` — ack answers-ready popup. Append `/{eventId}/acknowledge-answers-ready`.
+   */
+  consultationAcknowledgeAnswersReady: "/api/astrologer/events",
   /**
    * Consultation Full Horoscope for assigned astrologer.
    * Append `/{eventId}/horoscope/{charts|dasa|…}`.
@@ -164,6 +170,8 @@ export const API_ENDPOINTS = {
   askAstrologerPendingAnswerPopup: "/api/ask-astrologer/pending-answer-popup",
   /** Append `/{request_id}/acknowledge-answer-ready` — mark popup as seen. */
   askAstrologerAcknowledgeAnswerReady: "/api/ask-astrologer",
+  /** Append `/{request_id}/review` — submit/edit/clear Ask review. */
+  askAstrologerReview: "/api/ask-astrologer",
   /** Append `/{request_id}` — single request detail for the logged-in customer. */
   askAstrologerRequest: "/api/ask-astrologer",
 

@@ -6,7 +6,8 @@ import {
   acknowledgeAnswerReady,
   fetchPendingAnswerPopup,
 } from "@/lib/services/ask-astrologer";
-import { NOTIFICATIONS_TAB_CONSULTATION } from "@/lib/constants/notifications-screen";
+import { isSingleQueryNotificationTab } from "@/lib/constants/notifications-screen";
+import { ASK_SUMMARY_QUERY_ID } from "@/lib/constants/ask-astrologer-summary";
 import { ROUTES, isAskAstrologerFlowPath } from "@/lib/constants/routes";
 import { useAuthStore } from "@/store/auth.store";
 import { isAstrologerHomeSession } from "@/lib/utils";
@@ -16,11 +17,16 @@ function shouldSkipPopup(
   pathname: string,
   tabParam: string | null,
   askParam: string | null,
+  summaryIdParam: string | null,
   requestId: number
 ): boolean {
+  if (pathname === ROUTES.askAstrologerSummary) {
+    const id = summaryIdParam ? Number(summaryIdParam) : null;
+    return id != null && Number.isFinite(id) && id === requestId;
+  }
   if (isAskAstrologerFlowPath(pathname)) return true;
   if (pathname !== ROUTES.notifications) return false;
-  if (tabParam !== NOTIFICATIONS_TAB_CONSULTATION) return false;
+  if (!isSingleQueryNotificationTab(tabParam)) return false;
   const askId = askParam ? Number(askParam) : null;
   return askId != null && Number.isFinite(askId) && askId === requestId;
 }
@@ -31,6 +37,7 @@ export function useAskAnswerReadyPopup() {
   const router = useRouter();
   const askParam = searchParams.get("ask");
   const tabParam = searchParams.get("tab");
+  const summaryIdParam = searchParams.get(ASK_SUMMARY_QUERY_ID);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const user = useAuthStore((s) => s.user);
   const isAstrologer = isAstrologerHomeSession(user ?? undefined);
@@ -41,12 +48,16 @@ export function useAskAnswerReadyPopup() {
 
   const tryOpen = useCallback(
     (req: AskAstrologerRequest) => {
-      if (shouldSkipPopup(pathname, tabParam, askParam, req.id)) return;
+      if (
+        shouldSkipPopup(pathname, tabParam, askParam, summaryIdParam, req.id)
+      ) {
+        return;
+      }
       if (promptedIdRef.current === req.id) return;
       promptedIdRef.current = req.id;
       setOpen(true);
     },
-    [askParam, pathname, tabParam]
+    [askParam, pathname, summaryIdParam, tabParam]
   );
 
   const loadPending = useCallback(async () => {
@@ -82,10 +93,12 @@ export function useAskAnswerReadyPopup() {
 
   useEffect(() => {
     if (!pending || !open) return;
-    if (shouldSkipPopup(pathname, tabParam, askParam, pending.id)) {
+    if (
+      shouldSkipPopup(pathname, tabParam, askParam, summaryIdParam, pending.id)
+    ) {
       setOpen(false);
     }
-  }, [askParam, open, pathname, pending, tabParam]);
+  }, [askParam, open, pathname, pending, summaryIdParam, tabParam]);
 
   const dismissAndAcknowledge = useCallback(async (requestId: number) => {
     setOpen(false);
@@ -107,7 +120,7 @@ export function useAskAnswerReadyPopup() {
     const id = pending.id;
     void dismissAndAcknowledge(id).then(() => {
       router.push(
-        `${ROUTES.notifications}?tab=${NOTIFICATIONS_TAB_CONSULTATION}&ask=${id}`
+        `${ROUTES.askAstrologerSummary}?${ASK_SUMMARY_QUERY_ID}=${id}`
       );
     });
   }, [dismissAndAcknowledge, pending, router]);
