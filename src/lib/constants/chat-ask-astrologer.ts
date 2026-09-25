@@ -21,7 +21,7 @@ export const ASK_ASTROLOGER_SCREEN = {
   languageNotes: [
     "Your answer will be delivered within 4 hours.",
     "An expert astrologer will review your question and horoscope, then reply with a personalized voice message.",
-    "You can view your answer anytime under Notifications → Consultation.",
+    "You can view your answer anytime under Notifications → Single-Query Consultation.",
   ] as const,
   languageFieldError: "Please select a language",
   languageContinue: "Continue to Payment",
@@ -64,7 +64,7 @@ export const ASK_ASTROLOGER_SCREEN = {
     "Your question is with our team. An expert astrologer will answer within 4 hours.",
   confirmationStatusLabel: "Status",
   confirmationStatusValue: "Received",
-  confirmationNotificationsLink: "Track in Notifications → Consultation",
+  confirmationNotificationsLink: "Track in Notifications → Single-Query Consultation",
   confirmationDone: "Back to Chat",
   confirmationDoneEventPlanner: "Back to Event Planner",
 

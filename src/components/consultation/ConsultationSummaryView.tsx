@@ -1,185 +1,170 @@
 "use client";
 
-import { useI18nConstants } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { ConsultationBookingDetailRow } from "@/components/consultation/ConsultationBookingDetailRow";
-import { ConsultationBookingProfileHeader } from "@/components/consultation/ConsultationBookingProfileHeader";
-import { ConsultationBookingSectionDivider } from "@/components/consultation/ConsultationBookingSectionDivider";
-import { ConsultationCheckoutShell } from "@/components/consultation/ConsultationCheckoutShell";
 import { ConsultationQueryDialog } from "@/components/consultation/ConsultationQueryDialog";
+import { ConsultationSummaryDetailsCard } from "@/components/consultation/ConsultationSummaryDetailsCard";
+import { ConsultationSummaryQueriesCard } from "@/components/consultation/ConsultationSummaryQueriesCard";
+import { ConsultationSummaryReviewCard } from "@/components/consultation/ConsultationSummaryReviewCard";
+import { ConsultationSummarySessionCard } from "@/components/consultation/ConsultationSummarySessionCard";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import {
-  CONSULTATION_BOOKING_LAYOUT,
   CONSULTATION_BOOKING_SCREEN,
   CONSULTATION_QUERY_LIMIT,
 } from "@/lib/constants/consultation-booking";
+import {
+  CONSULTATION_SUMMARY_LAYOUT as L,
+  CONSULTATION_SUMMARY_SCREEN,
+} from "@/lib/constants/consultation-summary";
 import { ROUTES } from "@/lib/constants";
 import {
   formatConsultationBookingDate,
   formatConsultationBookingTimeRange,
   formatFeeSlash,
 } from "@/lib/consultation-booking-format";
-import { formatConsultationCategoryLabel, formatConsultationLanguageList } from "@/lib/consultation-display";
-import { readConsultationSummary, writeConsultationSummary } from "@/lib/consultation-session";
-import { fetchConsultationEvent, fetchConsultationQuestions } from "@/lib/services/consultation";
-import type { ConsultationCompletedBooking, ConsultationQuestion } from "@/types/consultation";
+import {
+  formatConsultationCategoryLabel,
+  formatConsultationLanguageList,
+} from "@/lib/consultation-display";
+import { useConsultationSummary } from "@/hooks/useConsultationSummary";
 
 export function ConsultationSummaryView() {
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
+  const CS = useI18nConstants(CONSULTATION_SUMMARY_SCREEN);
+  const { t } = useT();
   const router = useRouter();
-  const [summary, setSummary] = useState<ConsultationCompletedBooking | null>(null);
-  const [questions, setQuestions] = useState<ConsultationQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showQuery, setShowQuery] = useState(false);
-  const [queryStartIndex, setQueryStartIndex] = useState(0);
-
-  const loadQuestions = useCallback(async (eventId: number) => {
-    const list = await fetchConsultationQuestions(eventId);
-    const sorted = [...list].sort((a, b) => (a.index ?? a.id) - (b.index ?? b.id));
-    setQuestions(sorted);
-    return sorted;
-  }, []);
-
-  useEffect(() => {
-    const data = readConsultationSummary();
-    if (!data) {
-      router.replace(ROUTES.consultation);
-      return;
-    }
-    setSummary(data);
-    (async () => {
-      const refreshed = await fetchConsultationEvent(data.eventId);
-      if (refreshed) {
-        const next = {
-          ...data,
-          eventLink: refreshed.event_link ?? data.eventLink,
-          consultationFee: Number(
-            refreshed.consultation_fee ?? data.consultationFee
-          ),
-          startDatetime: refreshed.start_datetime ?? data.startDatetime,
-          endDatetime: refreshed.end_datetime ?? data.endDatetime,
-          categories: refreshed.category ?? data.categories,
-          languages: refreshed.languages ?? data.languages,
-          currency: refreshed.currency ?? data.currency,
-          status: refreshed.status ?? data.status,
-        };
-        setSummary(next);
-        writeConsultationSummary(next);
-      }
-      const list = await loadQuestions(data.eventId);
-      setLoading(false);
-      const isCompleted =
-        (refreshed?.status ?? data.status) === "completed";
-      if (!isCompleted && list.length < CONSULTATION_QUERY_LIMIT) {
-        setQueryStartIndex(list.length);
-        setShowQuery(true);
-      }
-    })();
-  }, [loadQuestions, router]);
+  const {
+    summary,
+    questions,
+    loading,
+    showQuery,
+    queryStartIndex,
+    setShowQuery,
+    loadQuestions,
+    openAddQuery,
+    submitReview,
+    deleteReview,
+    applyReviewLocal,
+  } = useConsultationSummary();
 
   if (!summary) {
     return (
-      <>
-        <ConsultationCheckoutShell title={CB.title} onBack={() => router.push(ROUTES.consultation)}>
-          {null}
-        </ConsultationCheckoutShell>
+      <div className={L.page}>
         <LoadingOverlay open />
-      </>
+      </div>
     );
   }
 
-  const categoriesLabel = summary.categories.map(formatConsultationCategoryLabel).join(", ");
-  const languagesLabel = formatConsultationLanguageList(summary.languages);
   const isCompleted = summary.status === "completed";
   const canAddQuery = !isCompleted && questions.length < CONSULTATION_QUERY_LIMIT;
-  const showQueriesSection = !isCompleted || questions.length > 0;
+  const hasAnswers = questions.some((q) => Boolean(q.answer?.trim()));
 
   return (
     <>
-      <ConsultationCheckoutShell
-        title={CB.title}
-        onBack={() => router.push(ROUTES.consultation)}
-      >
-        <ConsultationBookingProfileHeader
-          name={summary.astrologerName}
-          picture={summary.astrologerPicture}
-        />
-        {summary.eventLink ? (
-          <a
-            href={summary.eventLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${CONSULTATION_BOOKING_LAYOUT.meetingBtn} mx-auto mt-2 block w-fit`}
-          >
-            {CB.meetingLink}
-          </a>
-        ) : (
-          <p className="mx-auto mt-2 w-fit text-sm text-[var(--color-brand-black)]/50">
-            {CB.meetingLinkPending}
-          </p>
-        )}
-        <ConsultationBookingSectionDivider title={CB.consultationSection} />
-        <div className={CONSULTATION_BOOKING_LAYOUT.detailRows}>
-          <ConsultationBookingDetailRow
-            label={CB.date}
-            value={formatConsultationBookingDate(summary.startDatetime)}
-          />
-          <ConsultationBookingDetailRow
-            label={CB.time}
-            value={formatConsultationBookingTimeRange(
-              summary.startDatetime,
-              summary.endDatetime
-            )}
-          />
-          <ConsultationBookingDetailRow
-            label={CB.consultingOn}
-            value={categoriesLabel}
-          />
-          <ConsultationBookingDetailRow
-            label={CB.language}
-            value={languagesLabel}
-          />
-          <ConsultationBookingDetailRow
-            label={CB.consultationFee}
-            value={formatFeeSlash(summary.consultationFee, summary.currency)}
-          />
-        </div>
-        {showQueriesSection ? (
-          <>
-            <ConsultationBookingSectionDivider title={CB.queriesTitle} />
-            {!loading ? (
-              <>
-                {canAddQuery ? (
-                  <button
-                    type="button"
-                    className={CONSULTATION_BOOKING_LAYOUT.addQueryBtn}
-                    onClick={() => {
-                      setQueryStartIndex(questions.length);
-                      setShowQuery(true);
-                    }}
-                  >
-                    {CB.addQueryCta}
-                  </button>
-                ) : null}
-                <ul className="mt-4 space-y-4">
-                  {questions.map((q) => (
-                    <li key={q.id} className={CONSULTATION_BOOKING_LAYOUT.queryCard}>
-                      {q.question}
-                    </li>
-                  ))}
-                  {questions.length === 0 ? (
-                    <p className="text-center text-sm text-[var(--color-brand-black)]/50">
-                      {CB.noQueries}
-                    </p>
-                  ) : null}
-                </ul>
-              </>
+      <div className={L.page}>
+        <header className={L.pageHeader}>
+          <div className={L.pageHeaderInner}>
+            <button
+              type="button"
+              onClick={() => router.push(ROUTES.consultation)}
+              className={L.backBtn}
+              aria-label={t("Go back")}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <div className={L.headerMain}>
+              <h1 className={L.headerTitle}>{CB.title}</h1>
+              <p className={L.headerSub}>
+                {isCompleted ? CS.subtitleCompleted : CS.subtitle}
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <div className={L.scroll}>
+          <div className={L.stack}>
+            <ConsultationSummarySessionCard
+              name={summary.astrologerName}
+              picture={summary.astrologerPicture}
+              isCompleted={isCompleted}
+              eventLink={summary.eventLink}
+              statusCompletedLabel={CS.statusCompleted}
+              statusUpcomingLabel={CS.statusUpcoming}
+              meetingLinkLabel={CB.meetingLink}
+              meetingLinkPendingLabel={CB.meetingLinkPending}
+            />
+            <ConsultationSummaryDetailsCard
+              title={CB.consultationSection}
+              items={[
+                {
+                  label: CB.date,
+                  value: formatConsultationBookingDate(summary.startDatetime),
+                },
+                {
+                  label: CB.time,
+                  value: formatConsultationBookingTimeRange(
+                    summary.startDatetime,
+                    summary.endDatetime
+                  ),
+                },
+                {
+                  label: CB.consultingOn,
+                  value: summary.categories
+                    .map(formatConsultationCategoryLabel)
+                    .join(", "),
+                },
+                {
+                  label: CB.language,
+                  value: formatConsultationLanguageList(summary.languages),
+                },
+                {
+                  label: CB.consultationFee,
+                  value: formatFeeSlash(
+                    summary.consultationFee,
+                    summary.currency
+                  ),
+                },
+              ]}
+            />
+            <ConsultationSummaryQueriesCard
+              title={CB.queriesTitle}
+              loading={loading}
+              questions={questions}
+              showAnswersBanner={
+                isCompleted &&
+                (Boolean(summary.queriesAnswered) || hasAnswers)
+              }
+              canAddQuery={canAddQuery}
+              addQueryLabel={CB.addQueryCta}
+              emptyLabel={CB.noQueries}
+              loadingLabel={CS.queriesLoading}
+              answerLabel={CS.answerLabel}
+              onAddQuery={openAddQuery}
+            />
+            {isCompleted ? (
+              <ConsultationSummaryReviewCard
+                eventId={summary.eventId}
+                rating={summary.rating}
+                feedback={summary.feedback}
+                reviewStatus={summary.reviewStatus}
+                onSubmit={submitReview}
+                onDelete={deleteReview}
+                onSubmitted={applyReviewLocal}
+              />
             ) : null}
-          </>
-        ) : null}
-      </ConsultationCheckoutShell>
-      <LoadingOverlay open={loading} />
+          </div>
+        </div>
+      </div>
+
+      <LoadingOverlay open={loading && questions.length === 0} />
       {showQuery ? (
         <ConsultationQueryDialog
           eventId={summary.eventId}

@@ -26,6 +26,8 @@ requested.
 5. Run the translation dry-run and report the pending character count.
 6. Give the user the exact command needed for the next file.
 
+
+
 ## Adding website keys
 
 Website catalogs are stored in `src/lib/i18n/messages/`.
@@ -117,7 +119,7 @@ Use a restricted key that can call only Cloud Translation API:
 $secureKey = Read-Host "Enter API key" -AsSecureString
 ```
 
-It ask to enter API key : you can enter it which we get from google cloud console
+It ask to enter API key : you can enter it which we get from google cloud console (**Cloud Translation API) Right click the copied API key**
 
 ```powershell
 $env:GOOGLE_TRANSLATE_API_KEY = [Net.NetworkCredential]::new("", $secureKey).Password
@@ -128,6 +130,8 @@ Confirm that a value is loaded without printing it
 ```powershell
 [bool]$env:GOOGLE_TRANSLATE_API_KEY
 ```
+
+
 
 ## Translate one physical file at a time
 

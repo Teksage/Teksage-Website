@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/common/AppHeader";
 import { Loader } from "@/components/common/Loader";
 import { AskRequestProfileCard } from "@/components/astrologer/AskRequestProfileCard";
 import { AskRequestQuestionSection } from "@/components/astrologer/AskRequestQuestionSection";
+import { AskRequestPreviousQaSection } from "@/components/astrologer/AskRequestPreviousQaSection";
 import { AskRequestAnswerSection } from "@/components/astrologer/AskRequestAnswerSection";
 import { FullHoroscopePanels } from "@/components/horoscope/full/FullHoroscopePanels";
 import { useAstrologerAskRequestDetail } from "@/hooks/useAstrologerAskRequestDetail";
@@ -14,6 +15,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { ASK_ASTROLOGER_SCREEN } from "@/lib/constants/chat-ask-astrologer";
 import { ASTRO_PORTAL_UI } from "@/lib/constants/astrologer-portal";
 import { ROUTES } from "@/lib/constants/routes";
+import { useAuthStore } from "@/store/auth.store";
 
 export function AstrologerAskRequestDetailPage({
   requestId,
@@ -23,6 +25,10 @@ export function AstrologerAskRequestDetailPage({
   const router = useRouter();
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
   const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const authUser = useAuthStore((s) => s.user);
+  const currentAstrologerName =
+    [authUser?.firstName, authUser?.lastName].filter(Boolean).join(" ").trim() ||
+    (authUser?.name ?? "").trim();
   const {
     request,
     loading: requestLoading,
@@ -91,6 +97,13 @@ export function AstrologerAskRequestDetailPage({
               />
               <AskRequestQuestionSection req={request} />
             </div>
+
+            <AskRequestPreviousQaSection
+              items={request.previous_qa ?? []}
+              count={request.previous_qa_count ?? 0}
+              currentAstrologerName={currentAstrologerName || null}
+              customerName={request.customer_name}
+            />
 
             {/* 3. Full Horoscope Workspace */}
             <section className="w-full rounded-2xl border border-[var(--color-chat-bot-border)] bg-white p-5 shadow-[0_1px_6px_rgb(0_0_0_/_0.06)] sm:p-6 lg:p-8">

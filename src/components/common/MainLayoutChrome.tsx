@@ -7,6 +7,7 @@ import { DesktopMainNav } from "@/components/common/DesktopMainNav";
 import { HomeDesktopTopHeader } from "@/components/home/HomeDesktopTopHeader";
 import { ProtectedRoutePrompt } from "@/components/common/ProtectedRoutePrompt";
 import { AskAnswerReadyPrompt } from "@/components/common/AskAnswerReadyPrompt";
+import { ConsultationAnswersReadyPrompt } from "@/components/common/ConsultationAnswersReadyPrompt";
 import { FeatureDiscoveryPrompt } from "@/components/common/FeatureDiscoveryPrompt";
 import { HOME_LAYOUT, ROUTES, isPredictionsPath } from "@/lib/constants";
 import {
@@ -62,6 +63,7 @@ function MainLayoutChromeInner({ children }: { children: React.ReactNode }) {
       <Suspense fallback={null}>
         <ProtectedRoutePrompt />
         <AskAnswerReadyPrompt />
+        <ConsultationAnswersReadyPrompt />
         <FeatureDiscoveryPrompt />
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">

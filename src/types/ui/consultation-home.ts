@@ -1,4 +1,5 @@
 import type { ConsultationHubTab } from "@/lib/constants/consultation-routes";
+import type { ConsultationLanguageOption } from "@/lib/constants/consultation-languages";
 import type {
   ConsultationAstrologer,
   ConsultationUserEvent,
@@ -15,6 +16,13 @@ export interface ConsultationHubAstroCardProps {
   astrologer: ConsultationAstrologer;
   currency: "INR" | "USD";
   href: string;
+}
+
+export interface ConsultationLanguageFilterProps {
+  value: string;
+  onChange: (languageId: string) => void;
+  /** Only languages present on the loaded roster. */
+  options: readonly ConsultationLanguageOption[];
 }
 
 export interface ConsultationMeetingsTabsProps {

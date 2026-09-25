@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { format } from "date-fns";
+import { ConsultationAnswersReadyCallout } from "@/components/consultation/ConsultationAnswersReadyCallout";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_HOME_ASSETS,
@@ -18,7 +19,10 @@ function formatMeetingDate(iso: string): string {
 }
 
 function astrologerName(event: ConsultationMeetingCardProps["event"]): string {
-  return [event.astrologerFirstName, event.astrologerLastName].filter(Boolean).join(" ").trim();
+  return [event.astrologerFirstName, event.astrologerLastName]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
 }
 
 export function ConsultationMeetingCard({
@@ -30,6 +34,7 @@ export function ConsultationMeetingCard({
   queriesAnsweredLabel,
   onViewDetails,
 }: ConsultationMeetingCardProps) {
+  void queriesAnsweredLabel;
   const name = astrologerName(event);
   const meetingLabel = meetingWithLabel.replace("{name}", name || "—");
 
@@ -40,42 +45,38 @@ export function ConsultationMeetingCard({
         !isUpcoming && CONSULTATION_HOME_LAYOUT.meetingCardCompleted
       )}
     >
-      <div className={CONSULTATION_HOME_LAYOUT.meetingRow}>
-        <div className={CONSULTATION_HOME_LAYOUT.meetingAvatar}>
-          {event.astrologerPicture ? (
-            <Image
-              src={event.astrologerPicture}
-              alt=""
-              width={41}
-              height={41}
-              unoptimized
-              className="size-full object-cover"
-            />
-          ) : (
-            <Image
-              src={CONSULTATION_HOME_ASSETS.dummyAvatar}
-              alt=""
-              width={25}
-              height={25}
-              unoptimized
-              className="m-auto object-contain"
-            />
-          )}
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className={CONSULTATION_HOME_LAYOUT.meetingRow}>
+          <div className={CONSULTATION_HOME_LAYOUT.meetingAvatar}>
+            {event.astrologerPicture ? (
+              <Image
+                src={event.astrologerPicture}
+                alt=""
+                width={44}
+                height={44}
+                unoptimized
+                className="size-full object-cover"
+              />
+            ) : (
+              <Image
+                src={CONSULTATION_HOME_ASSETS.dummyAvatar}
+                alt=""
+                width={28}
+                height={28}
+                unoptimized
+                className="m-auto object-contain opacity-70"
+              />
+            )}
+          </div>
+          <div className={CONSULTATION_HOME_LAYOUT.meetingMeta}>
+            <p className={CONSULTATION_HOME_LAYOUT.meetingName}>{meetingLabel}</p>
+            <p className={CONSULTATION_HOME_LAYOUT.meetingDate}>
+              {formatMeetingDate(event.startDatetime)}
+            </p>
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className={CONSULTATION_HOME_LAYOUT.meetingName}>{meetingLabel}</p>
-          <p className={CONSULTATION_HOME_LAYOUT.meetingDate}>
-            {formatMeetingDate(event.startDatetime)}
-          </p>
-        </div>
-      </div>
 
-      {!isUpcoming && event.queriesAnswered ? (
-        <p className={CONSULTATION_HOME_LAYOUT.answersBanner}>{queriesAnsweredLabel}</p>
-      ) : null}
-
-      {isUpcoming ? (
-        <div className={CONSULTATION_HOME_LAYOUT.actionRow}>
+        <div className={CONSULTATION_HOME_LAYOUT.meetingActions}>
           <button
             type="button"
             className={CONSULTATION_HOME_LAYOUT.actionBtn}
@@ -88,23 +89,17 @@ export function ConsultationMeetingCard({
               href={event.eventLink}
               target="_blank"
               rel="noopener noreferrer"
-              className={CONSULTATION_HOME_LAYOUT.actionBtn}
+              className={CONSULTATION_HOME_LAYOUT.actionBtnPrimary}
             >
               {meetingLinkLabel}
             </a>
           ) : null}
         </div>
-      ) : (
-        <div className={CONSULTATION_HOME_LAYOUT.actionRow}>
-          <button
-            type="button"
-            className={CONSULTATION_HOME_LAYOUT.actionBtn}
-            onClick={() => onViewDetails(event)}
-          >
-            {viewDetailsLabel}
-          </button>
-        </div>
-      )}
+      </div>
+
+      {!isUpcoming && event.queriesAnswered ? (
+        <ConsultationAnswersReadyCallout />
+      ) : null}
     </article>
   );
 }

@@ -48,6 +48,7 @@ export const ROUTES = {
   askAstrologerCheckout: "/ask-astrologer/checkout",
   askAstrologerWhatsappConsent: "/ask-astrologer/whatsapp-consent",
   askAstrologerConfirmation: "/ask-astrologer/confirmation",
+  askAstrologerSummary: "/ask-astrologer/summary",
 
   // Astrologer portal — Ask requests
   astrologerAskRequests: "/astrologer/ask-requests",
@@ -60,6 +61,7 @@ const ASK_ASTROLOGER_FLOW_PATHS = [
   ROUTES.askAstrologerCheckout,
   ROUTES.askAstrologerWhatsappConsent,
   ROUTES.askAstrologerConfirmation,
+  ROUTES.askAstrologerSummary,
 ] as const;
 
 /** True while the customer is in the Ask Astrologer purchase / consent flow. */

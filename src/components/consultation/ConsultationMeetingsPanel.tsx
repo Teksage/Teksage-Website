@@ -31,7 +31,9 @@ function toSummary(event: ConsultationUserEvent) {
     currency: event.currency,
     astrologerName,
     astrologerPicture: event.astrologerPicture,
+    astrologerId: event.astrologerId,
     status: event.status,
+    queriesAnswered: event.queriesAnswered,
   };
 }
 
@@ -66,9 +68,9 @@ export function ConsultationMeetingsPanel() {
             {isUpcoming ? CH.emptyUpcoming : CH.emptyCompleted}
           </p>
         ) : (
-          <ul>
+          <ul className={CONSULTATION_HOME_LAYOUT.meetingList}>
             {meetings.map((event) => (
-              <li key={event.id}>
+              <li key={event.id} className="w-full">
                 <ConsultationMeetingCard
                   event={event}
                   isUpcoming={isUpcoming}

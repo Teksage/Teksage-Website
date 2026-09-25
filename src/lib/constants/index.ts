@@ -20,6 +20,8 @@ export * from "./consultation-detail";
 export * from "./consultation-slots";
 export * from "./consultation-checkout";
 export * from "./consultation-booking";
+export * from "./consultation-summary";
+export * from "./consultation-answers-ready";
 export * from "./consultation-currency";
 export * from "./consultation-routes";
 export * from "./getting-started";
