@@ -2,12 +2,11 @@
 
 import { useRef, KeyboardEvent, ClipboardEvent } from "react";
 import { cn } from "@/lib/utils";
-import { OTP_LENGTH } from "@/lib/constants";
+import { AUTH_SCREEN, OTP_LENGTH } from "@/lib/constants";
 import type { OtpInputProps } from "@/types";
 
 export function OtpInput({ value, onChange, hasError, className }: OtpInputProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
   const cells = Array.from({ length: OTP_LENGTH }, (_, i) => value[i] ?? "");
 
   function handleChange(index: number, raw: string) {
@@ -47,7 +46,7 @@ export function OtpInput({ value, onChange, hasError, className }: OtpInputProps
   }
 
   return (
-    <div className={cn("flex justify-center gap-3", className)}>
+    <div className={cn(AUTH_SCREEN.otpRowClassName, className)}>
       {Array.from({ length: OTP_LENGTH }).map((_, index) => (
         <input
           key={index}
@@ -63,13 +62,12 @@ export function OtpInput({ value, onChange, hasError, className }: OtpInputProps
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
           className={cn(
-            "h-14 w-12 rounded-xl border-2 text-center text-xl font-bold outline-none transition-colors",
-            "focus:border-[var(--color-brand-primary)]",
+            AUTH_SCREEN.otpCellClassName,
             hasError
-              ? "border-[var(--color-brand-error)] text-[var(--color-brand-error)]"
+              ? AUTH_SCREEN.otpCellErrorClassName
               : cells[index]
-                ? "border-[var(--color-brand-primary)] text-gray-900"
-                : "border-black/20 text-gray-900"
+                ? AUTH_SCREEN.otpCellFilledClassName
+                : AUTH_SCREEN.otpCellIdleClassName
           )}
           aria-label={`OTP digit ${index + 1}`}
         />

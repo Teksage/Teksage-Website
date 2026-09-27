@@ -198,6 +198,13 @@
   --brand-login-max-display: 280px;
   --login-email-cta-disabled-bg: #e4f0e2;
   --login-email-cta-disabled-text: #4a9c45;
+  --auth-panel-bg: #ffffff;
+  --auth-panel-border: rgb(0 0 0 / 0.06);
+  --auth-panel-shadow: 0 12px 40px -10px rgb(16 80 20 / 0.1);
+  --auth-shadow-modal: 0 16px 48px -12px rgb(16 80 20 / 0.12);
+  --auth-otp-focus-ring: rgb(16 177 0 / 0.18);
+  --auth-otp-error-ring: rgb(230 0 0 / 0.16);
+  --auth-otp-filled-bg: rgb(16 177 0 / 0.06);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -559,6 +566,111 @@ html:lang(mr) .locale-heading-card {
       );
   }
 
+  /** Auth login / OTP — same soft mint glow as chat conversation (no grid, no dark). */
+  .auth-page-mesh {
+    background-color: var(--color-chat-landing-bg);
+    background-image:
+      radial-gradient(
+        ellipse 85% 70% at 32% 28%,
+        var(--color-chat-conversation-glow) 0%,
+        var(--color-chat-conversation-surface) 42%,
+        var(--color-chat-landing-bg) 78%
+      ),
+      radial-gradient(
+        ellipse 55% 45% at 78% 72%,
+        color-mix(in srgb, var(--color-brand-primary) 8%, white) 0%,
+        transparent 70%
+      );
+  }
+
+  .auth-glass-panel {
+    background-color: var(--auth-panel-bg);
+    border-color: var(--auth-panel-border);
+    box-shadow:
+      var(--auth-shadow-modal),
+      var(--auth-panel-shadow),
+      0 1px 0 rgb(255 255 255 / 1);
+  }
+
+  .auth-hero {
+    background-color: var(--color-home-screen-mint);
+    background-image:
+      radial-gradient(
+        ellipse 95% 75% at 18% 12%,
+        color-mix(in srgb, var(--color-home-screen-mint) 35%, white) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse 80% 60% at 88% 85%,
+        color-mix(in srgb, var(--color-brand-primary) 18%, white) 0%,
+        transparent 58%
+      ),
+      linear-gradient(
+        165deg,
+        var(--color-home-screen-mint) 0%,
+        color-mix(in srgb, var(--color-home-screen-mint) 70%, white) 45%,
+        var(--color-chat-conversation-surface) 100%
+      );
+  }
+
+  .auth-hero-chip {
+    animation: auth-fade-up 0.55s ease-out both;
+  }
+
+  .auth-hero-chip:nth-child(1) {
+    animation-delay: 120ms;
+  }
+
+  .auth-hero-chip:nth-child(2) {
+    animation-delay: 200ms;
+  }
+
+  .auth-hero-chip:nth-child(3) {
+    animation-delay: 280ms;
+  }
+
+  .auth-hero-enter {
+    animation: auth-fade-up 0.65s ease-out both;
+  }
+
+  .auth-form-enter {
+    animation: auth-fade-up 0.55s ease-out 0.1s both;
+  }
+
+  .auth-form-column-surface {
+    background-color: var(--color-chat-landing-bg);
+    background-image:
+      radial-gradient(
+        ellipse 70% 50% at 50% 0%,
+        color-mix(in srgb, var(--color-home-screen-mint) 22%, white) 0%,
+        transparent 65%
+      );
+  }
+
+  .auth-tab-pill {
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateX(0);
+  }
+
+  .auth-tab-pill-email {
+    transform: translateX(calc(100% + 0.25rem));
+  }
+
+  .auth-tab-panel {
+    animation: auth-tab-panel-in 0.22s ease-out both;
+  }
+
+  @keyframes auth-tab-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /** Consultation hub cards — opacity-only entrance so hover transform stays smooth. */
   @keyframes consult-hub-card-in {
     from {
@@ -603,6 +715,27 @@ html:lang(mr) .locale-heading-card {
 
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes auth-orb-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(18px, -22px) scale(1.06);
+  }
+}
+
+@keyframes auth-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
