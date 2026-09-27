@@ -8,7 +8,12 @@ import { Loader } from "@/components/common/Loader";
 import { TurnstileField } from "@/components/auth/TurnstileField";
 import { cn } from "@/lib/utils";
 import { API_ENDPOINTS } from "@/lib/constants/api";
-import { LOGIN_EMAIL_FORM, LOGIN_EMAIL_REGEX, TURNSTILE } from "@/lib/constants";
+import {
+  AUTH_SCREEN,
+  LOGIN_EMAIL_FORM,
+  LOGIN_EMAIL_REGEX,
+  TURNSTILE,
+} from "@/lib/constants";
 import { isTurnstileConfigured } from "@/lib/env";
 import { http } from "@/lib/services/http";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
@@ -80,8 +85,7 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
           autoComplete="email"
           maxLength={LOGIN_EMAIL_FORM.maxLength}
           className={cn(
-            "h-14 rounded-[14px] border-0 bg-white px-4 text-base font-semibold shadow-sm",
-            "ring-1 ring-inset ring-neutral-300 focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]",
+            AUTH_SCREEN.inputClassName,
             error &&
               "ring-[var(--color-brand-error)] focus-visible:ring-[var(--color-brand-error)]"
           )}
@@ -102,15 +106,16 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
         type="submit"
         disabled={!canSubmit}
         className={cn(
-          "h-14 w-full rounded-full text-lg font-medium",
-          canSubmit && "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
-          !canSubmit && "cursor-not-allowed bg-[var(--login-email-cta-disabled-bg)] text-[var(--login-email-cta-disabled-text)]"
+          AUTH_SCREEN.ctaClassName,
+          canSubmit
+            ? AUTH_SCREEN.ctaReadyClassName
+            : AUTH_SCREEN.ctaDisabledClassName
         )}
       >
         {isLoading ? (
           <Loader variant="inline" size="sm" />
         ) : (
-          LOGIN_EMAIL_FORM.submitCta
+          LOG.submitCta
         )}
       </Button>
     </form>

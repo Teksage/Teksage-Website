@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { OtpContactType } from "../login-flow";
 
 export interface EmailLoginFormProps {
@@ -50,4 +51,16 @@ export interface OtpVerifyViewProps {
 export interface LoginBackButtonProps {
   /** When set (e.g. OTP step), runs instead of `router.back()`. */
   onNavigateBack?: () => void;
+}
+
+export interface AuthScreenShellProps {
+  children: ReactNode;
+  /** OTP step — shows back control on the left hero (and mobile form column). */
+  onBack?: () => void;
+  /** Rendered under the glass panel, e.g. the login legal footnote. */
+  footer?: ReactNode;
+}
+
+export interface AuthHeroProps {
+  onBack?: () => void;
 }

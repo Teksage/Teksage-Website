@@ -145,6 +145,8 @@ export type {
   OtpInputProps,
   OtpVerifyViewProps,
   LoginBackButtonProps,
+  AuthScreenShellProps,
+  AuthHeroProps,
 } from "./ui/auth";
 
 export type { CountryDialInfo, CountryDialPickerProps } from "./country";
