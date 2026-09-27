@@ -9,6 +9,7 @@ import type { AuthScreenShellProps } from "@/types";
 export function AuthScreenShell({
   children,
   onBack,
+  footer,
 }: AuthScreenShellProps) {
   const H = useI18nConstants(AUTH_HERO);
 
@@ -48,6 +49,7 @@ export function AuthScreenShell({
             <div className={AUTH_SCREEN.accentBarClassName} />
             <div className={AUTH_SCREEN.panelBodyClassName}>{children}</div>
           </div>
+          {footer}
         </div>
       </div>
     </div>

@@ -57,6 +57,8 @@ export interface AuthScreenShellProps {
   children: ReactNode;
   /** OTP step — shows back control on the left hero (and mobile form column). */
   onBack?: () => void;
+  /** Rendered under the glass panel, e.g. the login legal footnote. */
+  footer?: ReactNode;
 }
 
 export interface AuthHeroProps {
