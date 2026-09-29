@@ -1,15 +1,19 @@
 /** DOB / TOB display — mirrors Flutter `horoscopePage.dart` (`DateFormat` MMM dd, yyyy + 12h time). */
 
+import { format } from "date-fns";
+import { parseProfileDobIsoToDate } from "@/lib/profile-birth-date-format";
+
+const HOROSCOPE_DOB_PATTERN = "MMM dd, yyyy";
+
+/** Local calendar day. `new Date("1998-01-15")` is UTC midnight and shifts a day west of UTC. */
 export function formatHoroscopeDob(raw?: string): string {
   const s = raw?.trim();
   if (!s) return "";
-  const d = new Date(s);
-  if (!Number.isNaN(d.getTime())) {
-    return d.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    });
+  const calendar = parseProfileDobIsoToDate(s);
+  if (calendar) return format(calendar, HOROSCOPE_DOB_PATTERN);
+  const fallback = new Date(s);
+  if (!Number.isNaN(fallback.getTime()) && !/^\d{4}-\d{2}-\d{2}/.test(s)) {
+    return format(fallback, HOROSCOPE_DOB_PATTERN);
   }
   return s;
 }

@@ -10,15 +10,15 @@ export const AUTH_HERO = {
   highlights: [
     {
       title: "Consult",
-      detail: "Talk with trusted astrologers for clarity",
+      detail: "Talk with professional astrologers for clarity",
     },
     {
       title: "Predict",
-      detail: "Daily and life predictions tailored to you",
+      detail: "Daily, weekly and life predictions tailored to you",
     },
     {
       title: "Ask",
-      detail: "Get answers to your questions anytime",
+      detail: "Get answers to your questions with 24x7 AI voice chat",
     },
   ] as const,
   logoWidthPx: 176,

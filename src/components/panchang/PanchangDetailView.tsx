@@ -2,6 +2,7 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { PanchangPersonalizedSections } from "@/components/panchang/PanchangPersonalizedSections";
@@ -12,6 +13,7 @@ import {
   PANCHANG_ASSETS,
   PANCHANG_LAYOUT,
   PANCHANG_SCREEN,
+  ROUTES,
 } from "@/lib/constants";
 import type { PanchangDetailViewProps } from "@/types";
 
@@ -47,6 +49,7 @@ export function PanchangDetailView({
   onSelectDate,
   onDownloadPdf,
   pdfBusy = false,
+  location,
 }: PanchangDetailViewProps) {
   const P = useI18nConstants(PANCHANG_SCREEN);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -72,8 +75,9 @@ export function PanchangDetailView({
       </div>
 
       <header className={L.heroHeader}>
+        <div className={L.heroTitleRow}>
         <h1 className={L.heroTitle}>{P.personalizedTitle}</h1>
-        <div className="flex items-center gap-1">
+        <div className={L.heroActions}>
           {onDownloadPdf ? (
             <Button
               type="button"
@@ -97,6 +101,22 @@ export function PanchangDetailView({
           <PanchangInfoIcon />
         </Button>
         </div>
+        </div>
+        <Link href={ROUTES.profile} className={L.locationLine}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            />
+            <circle cx="12" cy="10" r="2.2" stroke="currentColor" strokeWidth="1.8" />
+          </svg>
+          <span>
+            {location?.trim()
+              ? P.locationFor.replace("{place}", location.trim())
+              : P.locationMissing}
+          </span>
+        </Link>
       </header>
 
       <dialog ref={dialogRef} className={L.infoDialog}>

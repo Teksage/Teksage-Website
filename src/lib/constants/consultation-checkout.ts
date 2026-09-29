@@ -10,6 +10,8 @@ export const CONSULTATION_CHECKOUT_FOCUS_CATEGORIES = [
   "Property",
 ] as const;
 
+export const CONSULTATION_FOCUS_MAX = 3;
+
 export const CONSULTATION_CHECKOUT_SCREEN = {
   title: "Review & pay",
   subtitle: "Check your birth details — the astrologer reads your chart from these.",
@@ -23,6 +25,7 @@ export const CONSULTATION_CHECKOUT_SCREEN = {
   editProfile: "Edit",
   focusTitle: "What should {name} focus on?",
   focusHint: "Pick up to 3 — helps them prepare before the call.",
+  focusLimitWarning: "You can pick up to 3 topics.",
   questionPlaceholder: "Optional: one question you most want answered",
   paymentSummaryTitle: "Payment summary",
   promoPlaceholder: "Promo code",

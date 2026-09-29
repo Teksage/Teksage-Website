@@ -3,6 +3,7 @@ export type LoaderVariant =
   | "inline"
   | "halfTriangle"
   | "spinner"
+  | "onBrand"
   | "dots";
 export type LoaderSize = "sm" | "md" | "lg";
 

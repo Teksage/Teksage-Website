@@ -17,6 +17,8 @@ export interface PanchangDetailViewProps {
   onSelectDate: (date: Date) => void;
   onDownloadPdf?: () => void;
   pdfBusy?: boolean;
+  /** Saved current location. Panchang sunrise and timings use this place. */
+  location?: string;
 }
 
 export interface PanchangPremiumGateProps {

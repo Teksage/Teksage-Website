@@ -20,6 +20,17 @@ export function formatMuhurthaDateRange(
   return `${formatDate(start)} – ${formatDate(end)}`;
 }
 
+/** Unambiguous start date — "September 26, 2026" in English, month name in the app language. */
+export function formatMuhurthaStartDate(isoDate: string, locale: string): string {
+  const date = new Date(`${isoDate}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return isoDate;
+  return new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+}
+
 export function formatMuhurthaDisplayDate(
   isoDate: string,
   fallback: string,

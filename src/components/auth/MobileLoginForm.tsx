@@ -151,7 +151,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
             : AUTH_SCREEN.ctaDisabledClassName
         )}
       >
-        {isLoading ? <Loader variant="inline" size="sm" /> : LOG.submitCta}
+        {isLoading ? <Loader variant="onBrand" size="sm" /> : LOG.submitCta}
       </Button>
     </form>
   );

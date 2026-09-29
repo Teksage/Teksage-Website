@@ -1,5 +1,7 @@
 /** Booking date/time labels — mirrors Flutter `userBookingDetailspage.dart`. */
 
+import { parseProfileDobIsoToDate } from "@/lib/profile-birth-date-format";
+
 export function formatConsultationBookingDate(
   iso: string,
   locale = "en-IN"
@@ -27,8 +29,8 @@ export function formatProfileDateOfBirth(
   locale = "en-IN"
 ): string {
   if (!iso?.trim()) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
+  const d = parseProfileDobIsoToDate(iso);
+  if (!d) return iso;
   return d.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
 }
 

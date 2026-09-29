@@ -267,20 +267,22 @@ export function ConsultationDetailView({ astrologerId }: Props) {
                   </div>
                 ) : null}
 
-                <Link
-                  href={consultationSlotsPath(astrologerId)}
-                  className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
-                  onClick={() => {
-                    if (!selectedSlot) return;
-                    writeConsultationDraft({
-                      astrologerId,
-                      slotStart: selectedSlot.start_datetime,
-                      slotEnd: selectedSlot.end_datetime,
-                    });
-                  }}
-                >
-                  {CD.seeAllSlots}
-                </Link>
+                {selectedSlot ? (
+                  <button
+                    type="button"
+                    className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
+                    onClick={() => void onBookWithSlot()}
+                  >
+                    {CD.bookCta}
+                  </button>
+                ) : (
+                  <Link
+                    href={consultationSlotsPath(astrologerId)}
+                    className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
+                  >
+                    {CD.seeAllSlots}
+                  </Link>
+                )}
               </div>
             </aside>
           ) : null}
