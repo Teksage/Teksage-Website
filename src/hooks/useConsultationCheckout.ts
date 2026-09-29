@@ -12,9 +12,14 @@ import { applyConsultationCoupon } from "@/lib/services/consultation";
 import { useConsultationCurrency } from "@/hooks/useConsultationCurrency";
 import { initialConsultationPricing } from "@/lib/consultation-pricing";
 import {
+  focusTopicsFromCategories,
   loadConsultationCheckoutData,
   PARTNER_CHECKOUT_CODE,
 } from "@/lib/consultation-checkout-load";
+import {
+  CONSULTATION_CHECKOUT_SCREEN,
+  CONSULTATION_FOCUS_MAX,
+} from "@/lib/constants/consultation-checkout";
 import { runConsultationCheckoutPayment } from "@/lib/consultation-checkout-payment";
 import { useAuthStore } from "@/store/auth.store";
 import {
@@ -28,6 +33,7 @@ export { formatConsultationCheckoutFee } from "@/lib/consultation-checkout-forma
 
 export function useConsultationCheckout(astrologerId: number) {
   const C = useI18nConstants(CONSULTATION_SCREEN);
+  const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
   const PROMO = useI18nConstants(COUPON_PROMO_COPY);
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
@@ -138,7 +144,10 @@ export function useConsultationCheckout(astrologerId: number) {
   async function onPay() {
     if (!draft || !pricing) return;
     await runConsultationCheckoutPayment({
-      draft,
+      draft: {
+        ...draft,
+        categories: focusTopics.length > 0 ? focusTopics : draft.categories,
+      },
       pricing,
       astrologerId,
       currency,
@@ -155,13 +164,16 @@ export function useConsultationCheckout(astrologerId: number) {
   }
 
   function toggleFocus(cat: string) {
-    setFocusTopics((prev) =>
-      prev.includes(cat)
-        ? prev.filter((c) => c !== cat)
-        : prev.length < 3
-          ? [...prev, cat]
-          : prev
-    );
+    const current = focusTopicsFromCategories(focusTopics);
+    if (current.includes(cat)) {
+      setFocusTopics(current.filter((item) => item !== cat));
+      return;
+    }
+    if (current.length >= CONSULTATION_FOCUS_MAX) {
+      showErrorAppSnackBar(CC.focusLimitWarning, { position: "top" });
+      return;
+    }
+    setFocusTopics([...current, cat]);
   }
 
   return {

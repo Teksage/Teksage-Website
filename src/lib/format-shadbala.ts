@@ -141,12 +141,13 @@ export function sortShadbalaRows(
   const dir = ascending ? 1 : -1;
   return [...rows].sort((a, b) => {
     if (sortKey === "rank") {
+      // Rank I is highest. High → Low lists I before VII.
       if (a.rank == null && b.rank == null) {
         return orderIndex(a.planet) - orderIndex(b.planet);
       }
-      if (a.rank == null) return ascending ? -1 : 1;
-      if (b.rank == null) return ascending ? 1 : -1;
-      if (a.rank !== b.rank) return (a.rank - b.rank) * dir;
+      if (a.rank == null) return 1;
+      if (b.rank == null) return -1;
+      if (a.rank !== b.rank) return (b.rank - a.rank) * dir;
       return orderIndex(a.planet) - orderIndex(b.planet);
     }
     const score = (r: ShadbalaRow): number => {

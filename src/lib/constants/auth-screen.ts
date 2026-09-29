@@ -21,6 +21,8 @@ export const AUTH_SCREEN = {
   contactEmphasisClassName: `${TYPO.weightExtrabold} text-[var(--color-brand-black)]`,
   legalClassName: `mt-6 text-center ${TYPO.sizeXs} ${TYPO.weightMedium} leading-relaxed text-black/45`,
   ctaClassName: `h-12 w-full rounded-full ${TYPO.sizeBodySm} ${TYPO.weightExtrabold} transition-opacity`,
+  otpCtaWrapClassName: "flex justify-center",
+  otpCtaClassName: `h-11 min-w-36 w-fit rounded-full px-6 ${TYPO.sizeBodySm} ${TYPO.weightExtrabold} transition-opacity`,
   ctaReadyClassName:
     "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
   ctaDisabledClassName:
@@ -29,13 +31,13 @@ export const AUTH_SCREEN = {
     "h-12 rounded-2xl border-0 bg-white px-4 text-base font-semibold text-[var(--color-brand-black)] shadow-[0_1px_6px_rgb(0_0_0_/_0.04)] ring-1 ring-inset ring-black/[0.08] focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]",
   dialPickerClassName:
     "flex h-12 min-w-[88px] shrink-0 items-center justify-center rounded-2xl border border-black/[0.08] bg-white px-2 text-base font-bold text-[var(--color-brand-black)] shadow-[0_1px_6px_rgb(0_0_0_/_0.04)]",
-  otpRowClassName: "flex justify-center gap-2.5 sm:gap-3",
+  otpRowClassName: "flex justify-center gap-3",
   otpCellClassName:
-    "h-12 w-11 rounded-2xl bg-white text-center text-xl font-bold text-[var(--color-brand-black)] outline-none transition-[box-shadow,border-color,background-color] sm:h-14 sm:w-12",
+    `h-14 w-12 rounded-lg border-2 bg-[var(--auth-otp-cell-bg)] text-center ${TYPO.sizeXl} ${TYPO.weightBold} text-[var(--color-brand-black)] outline-none transition-[box-shadow,border-color,background-color] sm:h-16 sm:w-14`,
   otpCellIdleClassName:
-    "border border-black/[0.08] shadow-[0_1px_6px_rgb(0_0_0_/_0.04)] focus:border-[var(--color-brand-primary)] focus:shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]",
+    "border-[var(--auth-otp-cell-border)] focus:border-[var(--color-brand-primary)] focus:bg-white focus:shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]",
   otpCellFilledClassName:
-    "border border-[var(--color-brand-primary)] bg-[var(--auth-otp-filled-bg)]",
+    "border-[var(--color-brand-primary)] bg-[var(--auth-otp-filled-bg)]",
   otpCellErrorClassName:
     "border border-[var(--color-brand-error)] text-[var(--color-brand-error)] focus:shadow-[0_0_0_3px_var(--auth-otp-error-ring)]",
   tabsTrackClassName: "relative mb-5 flex rounded-xl bg-black/[0.04] p-1",

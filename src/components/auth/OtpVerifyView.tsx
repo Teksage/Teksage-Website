@@ -60,16 +60,18 @@ export function OtpVerifyView({
 
       {flow.error ? <p className={AUTH_SCREEN.errorClassName}>{flow.error}</p> : null}
 
-      <Button
-        onClick={() => void flow.handleVerify(isComplete)}
-        disabled={!isComplete || flow.isLoading}
-        className={cn(
-          AUTH_SCREEN.ctaClassName,
-          isComplete ? AUTH_SCREEN.ctaReadyClassName : AUTH_SCREEN.ctaDisabledClassName
-        )}
-      >
-        {flow.isLoading ? <Loader variant="inline" size="sm" /> : OV.verifyCta}
-      </Button>
+      <div className={AUTH_SCREEN.otpCtaWrapClassName}>
+        <Button
+          onClick={() => void flow.handleVerify(isComplete)}
+          disabled={!isComplete || flow.isLoading}
+          className={cn(
+            AUTH_SCREEN.otpCtaClassName,
+            isComplete ? AUTH_SCREEN.ctaReadyClassName : AUTH_SCREEN.ctaDisabledClassName
+          )}
+        >
+          {flow.isLoading ? <Loader variant="onBrand" size="sm" /> : OV.verifyCta}
+        </Button>
+      </div>
 
       <OtpResendBlock
         canResend={flow.canResend}
