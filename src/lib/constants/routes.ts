@@ -32,6 +32,7 @@ export const ROUTES = {
   astrologerMeetings: "/astrologer/meetings",
   astrologerAvailability: "/astrologer/availability",
   astrologerChatPrompts: "/astrologer/chat-prompts",
+  astrologerMarathon: "/astrologer/marathon",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",
@@ -40,6 +41,7 @@ export const ROUTES = {
   matchmaking: "/matchmaking",
   matchmakingDetails: "/matchmaking/details",
   eventPlanner: "/event-planner",
+  marathon: "/marathon",
   eventPlannerResults: "/event-planner/results",
   muhurtha: "/muhurtha",
 
@@ -69,6 +71,22 @@ export function isAskAstrologerFlowPath(pathname: string): boolean {
   return ASK_ASTROLOGER_FLOW_PATHS.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
+}
+
+export function astrologerMarathonEventPath(marathonId: number): string {
+  return `${ROUTES.astrologerMarathon}/${marathonId}`;
+}
+
+export function marathonBookingPath(id: number): string {
+  return `${ROUTES.marathon}/booking/${id}`;
+}
+
+export function marathonEventPath(marathonId: number): string {
+  return `${ROUTES.marathon}/${marathonId}`;
+}
+
+export function marathonCheckoutPath(marathonId: number, slotId: number): string {
+  return `${marathonEventPath(marathonId)}/checkout?slot=${slotId}`;
 }
 
 export function isPredictionsPath(pathname: string): boolean {

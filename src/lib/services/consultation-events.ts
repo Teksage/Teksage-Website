@@ -17,6 +17,7 @@ interface EventsListApiBody {
     category?: string[] | null;
     languages?: string[] | null;
     consultation_fee?: number | null;
+    consultation_duration?: number | null;
     currency?: string | null;
     rating?: number | null;
   }>;
@@ -57,7 +58,11 @@ export async function fetchUserConsultationEvents(
   });
 
   return (body?.data ?? [])
-    .filter((e) => e.status === "confirmed" || e.status === "completed")
+    .filter(
+      (e) =>
+        (e.status === "confirmed" || e.status === "completed") &&
+        e.consultation_duration !== 10
+    )
     .map(mapEvent)
     .sort((a, b) => b.startDatetime.localeCompare(a.startDatetime));
 }

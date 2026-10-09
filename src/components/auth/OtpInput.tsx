@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { AUTH_SCREEN, OTP_LENGTH } from "@/lib/constants";
 import type { OtpInputProps } from "@/types";
 
-export function OtpInput({ value, onChange, hasError, className }: OtpInputProps) {
+export function OtpInput({ value, onChange, hasError, className, cellClassName }: OtpInputProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const cells = Array.from({ length: OTP_LENGTH }, (_, i) => value[i] ?? "");
 
@@ -63,6 +63,7 @@ export function OtpInput({ value, onChange, hasError, className }: OtpInputProps
           onPaste={handlePaste}
           className={cn(
             AUTH_SCREEN.otpCellClassName,
+            cellClassName,
             hasError
               ? AUTH_SCREEN.otpCellErrorClassName
               : cells[index]

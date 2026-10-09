@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAuthNavigation } from "@/hooks/useAuthNavigation";
 import { useAuthStore } from "@/store/auth.store";
 import { DesktopNavAiChatCard } from "@/components/common/DesktopNavAiChatCard";
+import { MarathonNavTimer } from "@/components/marathon/MarathonNavTimer";
 import { DesktopNavItem } from "@/components/common/DesktopNavItem";
 import { DesktopNavOtherPredictionsMenu } from "@/components/common/DesktopNavOtherPredictionsMenu";
 import { DesktopNavUnlockPremium } from "@/components/common/DesktopNavUnlockPremium";
@@ -16,6 +17,7 @@ import {
   DESKTOP_SIDEBAR_LOVE_COMPATIBILITY_LINK,
   DESKTOP_SIDEBAR_PANCHANG_LINK,
   DESKTOP_SIDEBAR_EVENT_PLANNER_LINK,
+  DESKTOP_SIDEBAR_MARATHON_LINK,
   DESKTOP_SIDEBAR_SUBSCRIPTION_LINK,
   DESKTOP_SIDEBAR_WEEKLY_PREDICTION_LINK,
 } from "@/lib/constants/desktop-sidebar-nav";
@@ -96,6 +98,13 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
           label={HDS.eventPlanner}
           active={pathname.startsWith(DESKTOP_SIDEBAR_EVENT_PLANNER_LINK.href)}
           onClick={() => go(DESKTOP_SIDEBAR_EVENT_PLANNER_LINK.href)}
+        />
+
+        <DesktopNavItem
+          iconSrc={DESKTOP_SIDEBAR_MARATHON_LINK.icon}
+          label={HDS.consultationMarathon}
+          active={pathname.startsWith(DESKTOP_SIDEBAR_MARATHON_LINK.href)}
+          onClick={() => go(DESKTOP_SIDEBAR_MARATHON_LINK.href)}
         />
 
         <DesktopNavItem

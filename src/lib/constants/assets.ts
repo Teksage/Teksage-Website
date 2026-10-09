@@ -17,6 +17,11 @@ export const ASTROLOGER_ASSETS = {
   dashedLine: flutterSvg("astroDashedLine.svg"),
 } as const;
 
+export const MARATHON_ASSETS = {
+  heroArt: "/marathon/hero-wheel.jpg",
+  whatsapp: flutterSvg("whatsapp-brand.svg"),
+} as const;
+
 export const PUBLIC_ASSETS = {
   /** Flutter `dashLogin.svg` — login prompt dialog illustration */
   dashLogin: flutterSvg("dashLogin.svg"),
@@ -75,8 +80,10 @@ export const DASHBOARD_ASSETS = {
   sidebarProfile: flutterSvg("sidebar-profile.svg"),
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
-  /** Muhurtha — outline rings + star (matches desktop sidebar icon set). */
+  /** Muhurtha — outline rings (matches desktop sidebar icon set). */
   sidebarMuhurtha: flutterSvg("sidebar-muhurtha.svg"),
+  /** Consultation marathon — stopwatch, distinct from the Muhurtha rings. */
+  sidebarMarathon: flutterSvg("sidebar-marathon.svg"),
   muhurthaHero: flutterSvg("sidebar-muhurtha.svg"),
 } as const;
 
