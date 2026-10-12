@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MarathonCheckoutContact } from "@/components/marathon/MarathonCheckoutContact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { useI18nConstants, useT } from "@/hooks/useT";
-import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
+import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
-import { updateProfile } from "@/lib/services/profile";
+import { fetchProfile, updateProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
 import type { MarathonCheckoutProfileProps } from "@/types/marathon";
 
@@ -21,6 +21,7 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
   const { t } = useT();
   const ui = MARATHON_PAGE;
   const form = MARATHON_CHECKOUT;
+  const note = useI18nConstants(MARATHON_CHECKOUT_COPY);
   const emailLogin = Boolean(useAuthStore((s) => s.user?.email?.trim()));
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
@@ -33,15 +34,26 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    void fetchProfile().then((profile) => {
+      setFirst(profile.firstName ?? "");
+      setLast(profile.lastName ?? "");
+      setDob((profile.dateOfBirth ?? "").slice(0, 10));
+      setTob((profile.timeOfBirth ?? "").slice(0, 5));
+      setBirth(profile.placeOfBirth ?? "");
+      setBirthFull(profile.placeOfBirth ?? "");
+      setCurrent(profile.preferredLocation ?? "");
+      setCurrentFull(profile.preferredLocation ?? "");
+    }).catch(() => undefined);
+  }, []);
+
   async function save() {
     if (!first.trim() || !last.trim() || !dob || !tob || !birthFull.trim() || !currentFull.trim()) {
       setError(rules.fillAllRequired);
       return;
     }
-    if (!verified) {
-      setError(t(emailLogin
-        ? "For security reasons, kindly verify your existing phone number"
-        : "Please verify your Email"));
+    if (!emailLogin && !verified) {
+      setError(t("Please verify your Email"));
       return;
     }
     await updateProfile({
@@ -103,6 +115,7 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
             setCurrentFull(full);
           }}
         />
+        <p className={form.hint}>{emailLogin ? note.phoneOptional : note.emailRequired}</p>
         <MarathonCheckoutContact mode={emailLogin ? "mobile" : "email"} onVerified={() => setVerified(true)} />
       </div>
       <Button type="button" className={form.action} onClick={() => void save()}>{copy.continue}</Button>

@@ -17,10 +17,10 @@ import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constant
 import { marathonBookingPath, marathonEventPath } from "@/lib/constants/routes";
 import { marathonDateParts, marathonPaidLabel, marathonProfileReady } from "@/lib/marathon-display";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
-import { checkoutMarathonSlot, fetchPublicMarathon, marathonErrorMessage, verifyMarathonPayment } from "@/lib/services/marathon";
+import { checkoutMarathonSlot, fetchMyMarathonBookings, fetchPublicMarathon, marathonErrorMessage, verifyMarathonPayment } from "@/lib/services/marathon";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
-import type { MarathonCheckoutStep, MarathonCheckoutViewProps, MarathonEvent } from "@/types/marathon";
+import type { MarathonBooking, MarathonCheckoutStep, MarathonCheckoutViewProps, MarathonEvent } from "@/types/marathon";
 
 export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutViewProps) {
   const copy = useI18nConstants(MARATHON_COPY);
@@ -35,6 +35,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   const [step, setStep] = useState<MarathonCheckoutStep | null>(null);
   const [error, setError] = useState("");
   const [payLabel, setPayLabel] = useState("");
+  const [mine, setMine] = useState<MarathonBooking[]>([]);
   const back = () => router.push(marathonEventPath(marathonId));
 
   useEffect(() => {
@@ -58,6 +59,11 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
       .then((profile) => setStep(marathonProfileReady(profile) ? 3 : 2))
       .catch((err: unknown) => setError(marathonErrorMessage(err)));
   }, [hydrated, event, isAuthenticated, step]);
+
+  useEffect(() => {
+    if (!hydrated || !isAuthenticated) return;
+    void fetchMyMarathonBookings().then(setMine).catch(() => setMine([]));
+  }, [hydrated, isAuthenticated]);
 
   useEffect(() => {
     if (step !== 3 || !event) return;
@@ -108,6 +114,9 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
     { title: steps.step3, caption: copy.pay },
   ];
   const slot = event?.slots.find((item) => item.id === slotId);
+  const clash = slot
+    ? mine.find((row) => new Date(row.starts_at) < new Date(slot.ends_at) && new Date(row.ends_at) > new Date(slot.starts_at))
+    : undefined;
   const slotWhen = slot && event ? marathonDateParts(slot.starts_at, event.timezone, localeTag) : null;
   const slotEnd = slot && event ? marathonDateParts(slot.ends_at, event.timezone, localeTag) : null;
 
@@ -157,10 +166,22 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                     <p className={ui.stepTitle}>{copy.pay}</p>
                     <p className={ui.hint}>{event?.name}</p>
                     {payLabel ? <p className={ui.stepTitle}>{payLabel}</p> : null}
-                    <p className={ui.hint}>{copy.summary}</p>
-                    <p className={ui.hint}>{copy.whatsappInquiry}</p>
+                    {clash ? (
+                      <p className={ui.hint}>{t("You already have a consultation at this time.")}</p>
+                    ) : (
+                      <>
+                        <p className={ui.hint}>{copy.summary}</p>
+                        <p className={ui.hint}>{copy.whatsappInquiry}</p>
+                      </>
+                    )}
                     {error ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
-                    <Button type="button" className={ui.action} onClick={() => void pay()}>{copy.payBar}</Button>
+                    {clash ? (
+                      <Button type="button" className={ui.action} onClick={() => router.push(marathonBookingPath(clash.id))}>
+                        {copy.viewBooking}
+                      </Button>
+                    ) : (
+                      <Button type="button" className={ui.action} onClick={() => void pay()}>{copy.payBar}</Button>
+                    )}
                   </>
                 ) : null}
               </div>

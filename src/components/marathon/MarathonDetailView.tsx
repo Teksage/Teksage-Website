@@ -9,6 +9,7 @@ import { MarathonListHero } from "@/components/marathon/MarathonListHero";
 import { MarathonSlotStrip } from "@/components/marathon/MarathonSlotStrip";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
+import { MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { ROUTES } from "@/lib/constants/routes";
 import { MARATHON_PARTICIPANT_COPY, eventShowsParticipants, participantLabel } from "@/lib/marathon-participants";
@@ -18,6 +19,7 @@ import type { MarathonEvent } from "@/types/marathon";
 
 export function MarathonDetailView({ marathonId }: { marathonId: number }) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const checkoutCopy = useI18nConstants(MARATHON_CHECKOUT_COPY);
   const people = useI18nConstants(MARATHON_PARTICIPANT_COPY);
   const { t } = useT();
   const router = useRouter();
@@ -97,6 +99,9 @@ export function MarathonDetailView({ marathonId }: { marathonId: number }) {
                   ) : null}
                 </>
               )}
+              <button type="button" className={ui.showCta} onClick={() => router.push(ROUTES.marathon)}>
+                {checkoutCopy.viewAllEvents}
+              </button>
             </>
           )}
         </div>

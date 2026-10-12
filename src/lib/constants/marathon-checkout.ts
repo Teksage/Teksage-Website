@@ -6,6 +6,9 @@ export const MARATHON_CHECKOUT_COPY = {
   step3: "Step 3",
   otpSentTo: "We have sent OTP to",
   otpValid: "OTP is valid for 5 Minutes.",
+  phoneOptional: "Phone is optional. Your meeting link is sent to your email.",
+  emailRequired: "Verify your email. Your meeting link is sent there.",
+  viewAllEvents: "View all events",
 } as const;
 
 export const MARATHON_CHECKOUT = {

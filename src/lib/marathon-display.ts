@@ -12,8 +12,15 @@ export function marathonProfileReady(profile: {
   dateOfBirth?: string | null;
   timeOfBirth?: string | null;
   placeOfBirth?: string | null;
+  email?: string | null;
 }) {
-  return Boolean(profile.firstName && profile.dateOfBirth && profile.timeOfBirth && profile.placeOfBirth);
+  return Boolean(
+    profile.firstName
+    && profile.dateOfBirth
+    && profile.timeOfBirth
+    && profile.placeOfBirth
+    && profile.email?.trim()
+  );
 }
 
 export function marathonPaidLabel(fee: string, currency: string) {
