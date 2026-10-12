@@ -56,6 +56,7 @@ export interface ProfileLocationFieldProps {
   onFocusAttempt?: () => boolean;
   /** Override input surface styles (e.g. white bg on Event Planner form). */
   inputClassName?: string;
+  labelClassName?: string;
 }
 
 export interface ProfileDetailsFormProps {

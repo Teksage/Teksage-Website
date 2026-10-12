@@ -38,6 +38,7 @@ export interface OtpInputProps {
   onChange: (value: string[]) => void;
   hasError?: boolean;
   className?: string;
+  cellClassName?: string;
 }
 
 export interface OtpVerifyViewProps {

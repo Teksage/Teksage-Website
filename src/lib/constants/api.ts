@@ -175,6 +175,15 @@ export const API_ENDPOINTS = {
   /** Append `/{request_id}` — single request detail for the logged-in customer. */
   askAstrologerRequest: "/api/ask-astrologer",
 
+  marathonPublic: "/api/marathon/public",
+  marathonCheckout: "/api/marathon/slots",
+  marathonMine: "/api/marathon/mine",
+  marathonAccept: "/api/marathon/bookings",
+  marathonAstrologerSeats: "/api/marathon/astrologer/seats",
+  marathonAstrologerDrafts: "/api/marathon/astrologer/drafts",
+  marathonConfirm: "/api/marathon",
+  paymentVerify: "/api/payment/verify-payment/",
+
   // --- Astrologer portal: Ask requests ---
   astrologerAskRequests: "/api/astrologer/ask-requests",
 } as const;
