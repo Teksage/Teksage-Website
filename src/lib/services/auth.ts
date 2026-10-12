@@ -3,6 +3,7 @@ import { API_ENDPOINTS } from "@/lib/constants/api";
 import { DEFAULT_COUNTRY_CODE_NUMERIC, STORAGE_KEYS } from "@/lib/constants";
 import { clearAuthSession } from "@/lib/auth-session";
 import { setAuthCookie } from "@/lib/auth-cookie";
+import { rememberAccountChatPreferences } from "@/lib/chat-preference-storage";
 import { buildLogoutRequestBody } from "@/lib/logout-request";
 import type { OtpPayload, AuthResponse } from "@/types";
 
@@ -24,6 +25,8 @@ interface LoginVerifyApiResponse {
   profile_updated?: boolean | null;
   chat_languages?: string | null;
   app_language?: string | null;
+  format?: string | null;
+  avatar?: string | null;
 }
 
 function mapLoginVerifyToAuthResponse(data: LoginVerifyApiResponse): AuthResponse {
@@ -114,6 +117,7 @@ export async function verifyOtp(payload: OtpPayload): Promise<AuthResponse> {
   );
   const auth = mapLoginVerifyToAuthResponse(data);
   persistAuthTokens(auth);
+  rememberAccountChatPreferences(data.format, data.avatar);
   return auth;
 }
 

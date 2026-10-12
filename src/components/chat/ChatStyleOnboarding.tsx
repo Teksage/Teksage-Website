@@ -30,6 +30,7 @@ export function ChatStyleOnboarding({
         embedded ? CHAT_LAYOUT.onboardingRootEmbedded : CHAT_LAYOUT.onboardingRootStandalone
       )}
     >
+      <div className={CHAT_LAYOUT.onboardingGlow} aria-hidden />
       <ChatOnboardingHeader onBack={() => router.back()} />
 
       <div className={CHAT_LAYOUT.onboardingContent}>
@@ -43,6 +44,7 @@ export function ChatStyleOnboarding({
                 key={option.format}
                 label={option.label}
                 hint={option.hint}
+                icon={option.icon}
                 selected={selected === option.format}
                 onSelect={() => setSelected(option.format)}
               />
@@ -54,10 +56,7 @@ export function ChatStyleOnboarding({
           type="button"
           disabled={!selected}
           onClick={() => selected && onContinue(selected)}
-          className={cn(
-            "h-auto w-full rounded-full py-3.5 text-lg font-semibold lg:max-w-sm lg:self-center",
-            !selected && "bg-black/20 text-white hover:bg-black/20"
-          )}
+          className={cn(CHAT_LAYOUT.onboardingCta, !selected && CHAT_LAYOUT.onboardingCtaOff)}
         >
           {CP.continueCta}
         </Button>

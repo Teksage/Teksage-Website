@@ -48,12 +48,49 @@ export const CHAT_LAYOUT = {
   pageRoot:
     "relative flex min-h-dvh w-full flex-col bg-[var(--color-chat-shell)] lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-hidden",
   onboardingRootEmbedded:
-    "relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-white",
-  onboardingRootStandalone: "fixed inset-0 z-50 flex flex-col bg-white",
+    "chat-conversation-surface relative flex h-full min-h-0 w-full flex-col overflow-hidden",
+  onboardingRootStandalone: "chat-conversation-surface fixed inset-0 z-50 flex flex-col",
+  onboardingGlow:
+    "pointer-events-none absolute left-1/2 top-16 h-64 w-64 -translate-x-1/2 rounded-full bg-[var(--color-chat-conversation-glow)] opacity-80 blur-3xl",
+  onboardingHeader: "relative z-10 flex items-center px-4 py-3",
+  onboardingBack:
+    "flex size-10 items-center justify-center rounded-full text-black/50 transition-colors hover:bg-black/5 hover:text-[var(--color-brand-black)]",
+  onboardingBackIcon: "size-5",
+  onboardingHeaderTitle: `${TYPO.h3Bold} pointer-events-none absolute inset-x-14 text-center text-[var(--color-brand-black)]`,
   onboardingContent:
-    "mx-auto flex w-full max-w-md flex-1 flex-col justify-between px-5 pb-8 pt-4 lg:max-w-lg lg:px-8 lg:pb-10 lg:pt-6",
-  onboardingTitle: `text-center ${TYPO.h1Semibold} lg:text-3xl`,
-  onboardingOptionsStack: "mt-8 space-y-4 lg:mt-10 lg:space-y-5",
+    "relative z-10 mx-auto flex w-full max-w-lg flex-1 flex-col justify-between px-5 pb-8 pt-2",
+  onboardingTitle: `${TYPO.h2} text-center text-[var(--color-brand-black)]`,
+  onboardingOptionsStack: "mt-6 flex flex-col gap-3",
+  onboardingCta: `h-12 w-full cursor-pointer rounded-full bg-[var(--color-brand-primary)] text-white shadow-[0_6px_16px_rgb(16_177_0_/_0.28)] hover:brightness-105 ${TYPO.bodySemibold}`,
+  onboardingCtaOff:
+    "cursor-not-allowed bg-black/10 text-black/35 shadow-none hover:bg-black/10 hover:brightness-100",
+  styleCard:
+    "flex w-full items-start gap-3 rounded-2xl border border-[var(--color-chat-bot-border)] bg-white px-4 py-4 text-left shadow-[0_1px_6px_rgb(0_0_0_/_0.06)] transition",
+  styleCardOn:
+    "border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-home-screen-mint)_55%,white)]",
+  styleIcon:
+    "flex size-11 shrink-0 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--color-brand-primary)_14%,white)]",
+  styleIconImg: "size-6",
+  styleCopy: "min-w-0 flex-1",
+  styleTitle: `${TYPO.chatCardText} text-[var(--color-brand-black)]`,
+  styleTitleOn: "text-[var(--color-brand-primary)]",
+  styleHint: `${TYPO.chatCardTextBot} mt-1 text-black/55`,
+  styleCheck:
+    "flex size-5 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)] text-white",
+  avatarWrap: "relative mx-auto w-full max-w-md pt-12",
+  avatarHero:
+    "rounded-3xl border border-[var(--color-chat-bot-border)] bg-white px-6 pb-6 pt-16 text-center shadow-[0_8px_24px_rgb(16_24_16_/_0.06)]",
+  avatarImage:
+    "absolute left-1/2 top-0 z-10 size-24 -translate-x-1/2 rounded-full border-4 border-white bg-white shadow-[0_6px_16px_rgb(16_177_0_/_0.22)]",
+  avatarTitle: `${TYPO.h3Bold} text-[var(--color-brand-black)]`,
+  avatarHint: `${TYPO.chatCardTextBot} mt-2 text-black/55`,
+  avatarChoose: `${TYPO.caption} mt-6 text-center uppercase tracking-wide text-black/40`,
+  avatarRow: "mt-3 flex justify-center gap-3",
+  avatarThumb:
+    "flex size-14 items-center justify-center rounded-2xl border-2 border-black/10 bg-white p-0.5 transition",
+  avatarThumbOn:
+    "border-[var(--color-brand-primary)] shadow-[0_4px_12px_rgb(16_177_0_/_0.22)]",
+  avatarThumbImg: "size-full rounded-[0.8rem] object-cover",
   messageGutter: "relative min-h-full flex-1 px-5",
   messageList:
     "chat-conversation-surface relative z-10 flex min-h-full flex-col gap-4 py-4",
