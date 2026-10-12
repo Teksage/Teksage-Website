@@ -26,6 +26,8 @@ export const API_ENDPOINTS = {
   // --- Profile — `api/endpoints/profile.py`, same `/auth` prefix ---
   profile: "/api/auth/profile",
   updateProfile: "/api/auth/update-profile",
+  /** `PUT` — `UserPreferencesUpdate`: format, avatar, chat_languages */
+  updateChatFormat: "/api/auth/update-chat-format",
   /** `GET` — user horoscope payload (D1 + D9 + birth details) */
   horoscope: "/api/auth/horoscope",
   /** `GET` — all D1–D60 divisional charts as HTML */

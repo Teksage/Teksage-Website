@@ -6,6 +6,10 @@ import {
   findAvatarIndexByStorage,
 } from "@/lib/chat-preference-helpers";
 import {
+  applyAccountChatPreferences,
+  syncAccountChatPreferences,
+} from "@/lib/chat-preference-account";
+import {
   getStoredChatAvatar,
   getStoredChatStyle,
   saveChatAvatar,
@@ -32,18 +36,29 @@ export function useChatPreferences() {
   const [avatarSheetOpen, setAvatarSheetOpen] = useState(false);
 
   useEffect(() => {
-    const style = getStoredChatStyle();
-    const avatar = getStoredChatAvatar();
-    if (style) setStyleFormat(style);
-    if (avatar) setAvatarIndex(findAvatarIndexByStorage(avatar));
-    setOnboardingStep(resolveOnboardingStep(style, avatar));
-    setHydrated(true);
+    let cancelled = false;
+    void (async () => {
+      if (!getStoredChatStyle() || !getStoredChatAvatar()) {
+        await applyAccountChatPreferences();
+      }
+      if (cancelled) return;
+      const style = getStoredChatStyle();
+      const avatar = getStoredChatAvatar();
+      if (style) setStyleFormat(style);
+      if (avatar) setAvatarIndex(findAvatarIndexByStorage(avatar));
+      setOnboardingStep(resolveOnboardingStep(style, avatar));
+      setHydrated(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const chatUnlocked = hydrated && onboardingStep === null;
 
   const completeStyleOnboarding = useCallback((format: ChatStyleFormat) => {
     saveChatStyle(format);
+    syncAccountChatPreferences();
     setStyleFormat(format);
     const avatar = getStoredChatAvatar();
     setOnboardingStep(avatar ? null : "avatar");
@@ -52,18 +67,21 @@ export function useChatPreferences() {
   const completeAvatarOnboarding = useCallback((index: number) => {
     const storage = avatarIndexToStorage(index);
     saveChatAvatar(storage);
+    syncAccountChatPreferences();
     setAvatarIndex(index);
     setOnboardingStep(null);
   }, []);
 
   const selectStyle = useCallback((format: ChatStyleFormat) => {
     saveChatStyle(format);
+    syncAccountChatPreferences();
     setStyleFormat(format);
     setStyleMenuOpen(false);
   }, []);
 
   const selectAvatar = useCallback((index: number) => {
     saveChatAvatar(avatarIndexToStorage(index));
+    syncAccountChatPreferences();
     setAvatarIndex(index);
     setAvatarSheetOpen(false);
   }, []);
