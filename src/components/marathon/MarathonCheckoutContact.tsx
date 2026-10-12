@@ -31,7 +31,7 @@ export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutCo
   const form = MARATHON_CHECKOUT;
   const ui = MARATHON_PAGE;
   const [value, setValue] = useState("");
-  const [dial, setDial] = useState(DEFAULT_COUNTRY_CODE_NUMERIC);
+  const [dial, setDial] = useState<string>(DEFAULT_COUNTRY_CODE_NUMERIC);
   const [otpCells, setOtpCells] = useState<string[]>(() => Array.from({ length: OTP_LENGTH }, () => ""));
   const [showOtp, setShowOtp] = useState(false);
   const [verified, setVerified] = useState(false);

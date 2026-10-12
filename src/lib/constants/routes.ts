@@ -77,6 +77,20 @@ export function astrologerMarathonEventPath(marathonId: number): string {
   return `${ROUTES.astrologerMarathon}/${marathonId}`;
 }
 
+export const MARATHON_HOROSCOPE_RETURN = "return" as const;
+
+export function astrologerMeetingHoroscopePath(eventId: number, returnTo: string): string {
+  const params = new URLSearchParams({ [MARATHON_HOROSCOPE_RETURN]: returnTo });
+  return `${ROUTES.astrologerMeetings}/${eventId}/horoscope?${params.toString()}`;
+}
+
+export function marathonHoroscopeReturnPath(value: string | null): string | null {
+  if (!value || !value.startsWith(`${ROUTES.astrologerMarathon}/`) || value.startsWith("//")) {
+    return null;
+  }
+  return value;
+}
+
 export function marathonBookingPath(id: number): string {
   return `${ROUTES.marathon}/booking/${id}`;
 }

@@ -14,7 +14,7 @@ import {
 } from "@/lib/constants/astrologer-portal";
 import { hasAstrologerMeetingHoroscope } from "@/lib/astrologer-horoscope-display";
 import { nameFromDetailEvent } from "@/lib/astrologer-meeting-display";
-import { ROUTES } from "@/lib/constants/routes";
+import { MARATHON_HOROSCOPE_RETURN, marathonHoroscopeReturnPath, ROUTES } from "@/lib/constants/routes";
 
 interface AstrologerMeetingHoroscopePageProps {
   eventId: string;
@@ -35,7 +35,9 @@ export function AstrologerMeetingHoroscopePage({
     ? nameFromDetailEvent(event, nameParam).fullName
     : (nameParam?.trim() ?? "");
 
-  const backHref = `${ROUTES.astrologerMeetings}/${eventId}?${searchParams.toString()}`;
+  const backHref =
+    marathonHoroscopeReturnPath(searchParams.get(MARATHON_HOROSCOPE_RETURN)) ??
+    `${ROUTES.astrologerMeetings}/${eventId}?${searchParams.toString()}`;
   const hasBasic = hasAstrologerMeetingHoroscope(event?.userHoroscope ?? null);
   const canFull = Boolean(event?.share_horoscope);
 

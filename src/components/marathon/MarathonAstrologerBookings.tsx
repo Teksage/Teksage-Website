@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { EmptyState } from "@/components/common/EmptyState";
 import { PageLoadingCenter } from "@/components/common/Loader";
 import { MarathonEventsHero } from "@/components/marathon/MarathonEventsHero";
@@ -9,6 +10,7 @@ import { useI18nConstants, useT } from "@/hooks/useT";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { MARATHON_ASTROLOGER_COPY } from "@/lib/constants/marathon-astrologer";
 import { MARATHON_COPY, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
+import { astrologerMarathonEventPath, astrologerMeetingHoroscopePath } from "@/lib/constants/routes";
 import {
   bookingsForEvent,
   eventIsCompleted,
@@ -104,6 +106,14 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
               lines={[formatMarathonWhen(row.starts_at, localeTag)]}
               status={done ? label : row.admin_ended ? `${label} · ${copy.adminEnded}` : label}
             >
+              {row.event_id ? (
+                <Link
+                  className={ui.link}
+                  href={astrologerMeetingHoroscopePath(row.event_id, astrologerMarathonEventPath(marathonId))}
+                >
+                  {t("Full Horoscope")}
+                </Link>
+              ) : null}
               {row.meeting_link ? (
                 <a className={ui.link} href={row.meeting_link} target="_blank" rel="noreferrer">
                   {copy.joinMeeting}

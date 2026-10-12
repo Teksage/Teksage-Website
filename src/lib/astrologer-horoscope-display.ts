@@ -1,3 +1,4 @@
+import { formatHoroscopeTimeOfBirth } from "@/lib/horoscope-display-format";
 import type { AstroHoroscope } from "@/types/astrologer-portal";
 
 const SKIP_KEYS = new Set([
@@ -49,10 +50,14 @@ function titleCaseLabel(key: string): string {
     .join(" ");
 }
 
-function formatHoroscopeValue(raw: unknown): string | null {
+function formatHoroscopeValue(raw: unknown, key?: string): string | null {
   if (raw === null || raw === undefined) return null;
   const text = String(raw).trim();
-  return text.length > 0 ? text : null;
+  if (!text) return null;
+  if (key === "time_of_birth" && !/[ap]m/i.test(text)) {
+    return formatHoroscopeTimeOfBirth(text);
+  }
+  return text;
 }
 
 function isNarrativeKey(key: string, value: string): boolean {
@@ -78,7 +83,7 @@ export function horoscopeTextFields(
   const rows: MeetingHoroscopeField[] = [];
 
   for (const { key, label } of FACT_ORDER) {
-    const value = formatHoroscopeValue(horoscope[key]);
+    const value = formatHoroscopeValue(horoscope[key], key);
     if (!value) continue;
     rows.push({
       key,
@@ -92,7 +97,7 @@ export function horoscopeTextFields(
   for (const [key, raw] of Object.entries(horoscope)) {
     if (seen.has(key) || SKIP_KEYS.has(key)) continue;
     if (typeof raw === "object" && raw !== null) continue;
-    const value = formatHoroscopeValue(raw);
+    const value = formatHoroscopeValue(raw, key);
     if (!value || value.startsWith("<")) continue;
     rows.push({
       key,

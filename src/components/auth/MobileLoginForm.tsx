@@ -31,7 +31,7 @@ import {
 } from "@/lib/app-snackbar";
 import type { MobileLoginFormProps } from "@/types";
 
-export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
+export function MobileLoginForm({ onOtpSent, locked = false }: MobileLoginFormProps) {
   const LOG = useI18nConstants(LOGIN_MOBILE_FORM);
   const [countryCode, setCountryCode] = useState<string>(
     DEFAULT_COUNTRY_CALLING_CODE
@@ -104,6 +104,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
           <div className={AUTH_SCREEN.dialPickerClassName}>
             <CountryDialPicker
               valueDial={countryCode}
+              disabled={locked}
               ariaLabel={LOGIN_MOBILE_FORM.countryCodeAria}
               onSelect={(country) => {
                 setCountryCode(country.dial_code);
@@ -120,6 +121,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
             onChange={(e) => handleMobileChange(e.target.value)}
             maxLength={maxDigits}
             inputMode="numeric"
+            disabled={locked}
             className={cn(
               AUTH_SCREEN.inputClassName,
               "flex-1",
@@ -136,12 +138,14 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
         ) : null}
       </div>
 
+      {locked ? null : (
       <TurnstileField
         remountKey={turnstileKey}
         onTokenChange={setTurnstileToken}
       />
+      )}
 
-      <Button
+      {locked ? null : <Button
         type="submit"
         disabled={!canSubmit}
         className={cn(
@@ -152,7 +156,7 @@ export function MobileLoginForm({ onOtpSent }: MobileLoginFormProps) {
         )}
       >
         {isLoading ? <Loader variant="onBrand" size="sm" /> : LOG.submitCta}
-      </Button>
+      </Button>}
     </form>
   );
 }
