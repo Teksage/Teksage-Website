@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonBookPanel } from "@/components/marathon/MarathonBookPanel";
 import { MarathonMineSection } from "@/components/marathon/MarathonMineSection";
 import { MarathonEventBanner } from "@/components/marathon/MarathonEventBanner";
@@ -29,11 +30,14 @@ export function MarathonDetailView({ marathonId }: { marathonId: number }) {
   const [slotId, setSlotId] = useState<number | null>(null);
   const [booked, setBooked] = useState<boolean | null>(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   function load() {
+    setLoading(true);
     fetchPublicMarathon(marathonId)
       .then(setEvent)
-      .catch((err: unknown) => setError(marathonErrorMessage(err)));
+      .catch((err: unknown) => setError(marathonErrorMessage(err)))
+      .finally(() => setLoading(false));
   }
 
   useEffect(() => {
@@ -68,7 +72,7 @@ export function MarathonDetailView({ marathonId }: { marathonId: number }) {
         </button>
         <div className={ui.column}>
           {!event ? (
-            <p className={ui.heroSub}>{error || copy.empty}</p>
+            loading ? null : <p className={ui.heroSub}>{error || copy.empty}</p>
           ) : (
             <>
               <MarathonListHero />
@@ -108,6 +112,7 @@ export function MarathonDetailView({ marathonId }: { marathonId: number }) {
           )}
         </div>
       </div>
+      <LoadingOverlay open={loading || (isAuthenticated && booked === null)} />
     </div>
   );
 }

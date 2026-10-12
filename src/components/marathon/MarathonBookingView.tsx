@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { useRouter } from "next/navigation";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
@@ -120,11 +121,12 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
                   </a>
               </div>
             </div>
-          ) : (
-            <p className={page.heroSub}>{loaded ? copy.empty : ""}</p>
-          )}
+          ) : loaded ? (
+            <p className={page.heroSub}>{copy.empty}</p>
+          ) : null}
         </div>
       </div>
+      <LoadingOverlay open={!loaded} />
     </div>
   );
 }

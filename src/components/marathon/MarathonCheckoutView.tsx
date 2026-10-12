@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { Button } from "@/components/ui/button";
 import { MarathonCheckoutProfile } from "@/components/marathon/MarathonCheckoutProfile";
 import { MarathonCheckoutSignIn } from "@/components/marathon/MarathonCheckoutSignIn";
@@ -117,6 +118,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   const clash = slot
     ? mine.find((row) => new Date(row.starts_at) < new Date(slot.ends_at) && new Date(row.ends_at) > new Date(slot.starts_at))
     : undefined;
+  const loading = !hydrated || (!event && !error) || (event != null && step == null && !error);
   const slotWhen = slot && event ? marathonDateParts(slot.starts_at, event.timezone, localeTag) : null;
   const slotEnd = slot && event ? marathonDateParts(slot.ends_at, event.timezone, localeTag) : null;
 
@@ -191,6 +193,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
           </div>
         </div>
       </div>
+      <LoadingOverlay open={loading} />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonEventBanner } from "@/components/marathon/MarathonEventBanner";
 import { MarathonListHero } from "@/components/marathon/MarathonListHero";
 import { useI18nConstants, useT } from "@/hooks/useT";
@@ -20,8 +21,10 @@ export function MarathonListView() {
   const [events, setEvents] = useState<MarathonEvent[]>([]);
   const [bookings, setBookings] = useState<MarathonBooking[]>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetchPublicMarathons()
       .then((rows) => {
         const next = [...rows].sort(
@@ -29,7 +32,8 @@ export function MarathonListView() {
         );
         setEvents(next);
       })
-      .catch(() => setError(copy.empty));
+      .catch(() => setError(copy.empty))
+      .finally(() => setLoading(false));
   }, [copy.empty]);
 
   useEffect(() => {
@@ -55,7 +59,9 @@ export function MarathonListView() {
         <div className={MARATHON_PAGE.column}>
           <MarathonListHero />
           {error ? <p className={MARATHON_PORTAL_UI.error}>{error}</p> : null}
-          {events.length === 0 && !error ? <p className={MARATHON_PAGE.heroSub}>{copy.empty}</p> : null}
+          {!loading && events.length === 0 && !error ? (
+            <p className={MARATHON_PAGE.heroSub}>{copy.empty}</p>
+          ) : null}
           {events.map((event) => {
             const mine = bookings.filter((row) => row.marathon_id === event.id);
             return (
@@ -69,6 +75,7 @@ export function MarathonListView() {
           })}
         </div>
       </div>
+      <LoadingOverlay open={loading} />
     </div>
   );
 }
