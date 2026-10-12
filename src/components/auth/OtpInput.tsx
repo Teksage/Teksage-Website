@@ -63,12 +63,12 @@ export function OtpInput({ value, onChange, hasError, className, cellClassName }
           onPaste={handlePaste}
           className={cn(
             AUTH_SCREEN.otpCellClassName,
-            cellClassName,
             hasError
               ? AUTH_SCREEN.otpCellErrorClassName
               : cells[index]
                 ? AUTH_SCREEN.otpCellFilledClassName
-                : AUTH_SCREEN.otpCellIdleClassName
+                : AUTH_SCREEN.otpCellIdleClassName,
+            cellClassName
           )}
           aria-label={`OTP digit ${index + 1}`}
         />

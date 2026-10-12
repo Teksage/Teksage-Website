@@ -182,7 +182,6 @@ export const API_ENDPOINTS = {
   marathonAstrologerSeats: "/api/marathon/astrologer/seats",
   marathonAstrologerDrafts: "/api/marathon/astrologer/drafts",
   marathonConfirm: "/api/marathon",
-  paymentVerify: "/api/payment/verify-payment/",
 
   // --- Astrologer portal: Ask requests ---
   astrologerAskRequests: "/api/astrologer/ask-requests",

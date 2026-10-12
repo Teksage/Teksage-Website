@@ -3,10 +3,12 @@ import type { OtpContactType } from "../login-flow";
 
 export interface EmailLoginFormProps {
   onOtpSent: (email: string) => void;
+  locked?: boolean;
 }
 
 export interface MobileLoginFormProps {
   onOtpSent: (mobile: string, countryCode: string) => void;
+  locked?: boolean;
 }
 
 export interface TurnstileFieldProps {

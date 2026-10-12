@@ -105,6 +105,7 @@ export type MarathonBooking = {
   ends_at: string;
   astrologer_name: string | null;
   meeting_link: string | null;
+  event_id: number | null;
   user_name: string;
   summary: string | null;
 };
@@ -133,6 +134,14 @@ export type MarathonCheckoutStepperProps = {
 
 export type MarathonCheckoutSignInProps = {
   onComplete: (step: MarathonCheckoutStep) => void;
+};
+
+export type MarathonCheckoutLoginOtpProps = {
+  contact: string;
+  tab: "email" | "mobile";
+  countryCode: string;
+  error: string;
+  onConfirm: (code: string) => void;
 };
 
 export type MarathonCheckoutProfileProps = {

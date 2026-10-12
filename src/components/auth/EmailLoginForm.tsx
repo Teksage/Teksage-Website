@@ -23,7 +23,7 @@ import {
 } from "@/lib/app-snackbar";
 import type { EmailLoginFormProps } from "@/types";
 
-export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
+export function EmailLoginForm({ onOtpSent, locked = false }: EmailLoginFormProps) {
   const LOG = useI18nConstants(LOGIN_EMAIL_FORM);
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -83,6 +83,7 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
           value={email}
           onChange={(e) => handleChange(e.target.value)}
           autoComplete="email"
+          disabled={locked}
           maxLength={LOGIN_EMAIL_FORM.maxLength}
           className={cn(
             AUTH_SCREEN.inputClassName,
@@ -97,12 +98,14 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
         )}
       </div>
 
+      {locked ? null : (
       <TurnstileField
         remountKey={turnstileKey}
         onTokenChange={setTurnstileToken}
       />
+      )}
 
-      <Button
+      {locked ? null : <Button
         type="submit"
         disabled={!canSubmit}
         className={cn(
@@ -117,7 +120,7 @@ export function EmailLoginForm({ onOtpSent }: EmailLoginFormProps) {
         ) : (
           LOG.submitCta
         )}
-      </Button>
+      </Button>}
     </form>
   );
 }
