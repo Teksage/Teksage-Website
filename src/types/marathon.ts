@@ -153,6 +153,13 @@ export type MarathonCheckoutContactProps = {
   onVerified: () => void;
 };
 
+export type MarathonFeeSummaryProps = {
+  fee: string;
+  currency: string;
+  /** Receipt of money already collected. Checkout leaves this off and adds GST on the fee. */
+  paid?: boolean;
+};
+
 export type MarathonCheckoutOrder = {
   key: string;
   id: string;

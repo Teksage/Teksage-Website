@@ -20,7 +20,6 @@ export function MarathonListHero() {
           {copy.nextSession}
         </p>
         <h1 className={ui.heroTitle}>{copy.title}</h1>
-        <p className={ui.heroSub}>{copy.subtitle}</p>
         <p className={ui.heroTags}>
           <span className="inline-flex items-center gap-1.5">
             <svg viewBox="0 0 24 24" className="size-4" fill="none" aria-hidden>

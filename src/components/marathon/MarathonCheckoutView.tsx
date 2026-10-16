@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { Button } from "@/components/ui/button";
 import { MarathonCheckoutProfile } from "@/components/marathon/MarathonCheckoutProfile";
+import { MarathonFeeSummary } from "@/components/marathon/MarathonFeeSummary";
 import { MarathonCheckoutSignIn } from "@/components/marathon/MarathonCheckoutSignIn";
 import { MarathonCheckoutStepper } from "@/components/marathon/MarathonCheckoutStepper";
 import { MarathonEventBanner } from "@/components/marathon/MarathonEventBanner";
@@ -16,7 +17,7 @@ import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marat
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { marathonBookingPath, marathonEventPath } from "@/lib/constants/routes";
-import { marathonDateParts, marathonPaidLabel, marathonProfileReady } from "@/lib/marathon-display";
+import { marathonDateParts, marathonProfileReady } from "@/lib/marathon-display";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
 import { checkoutMarathonSlot, fetchMyMarathonBookings, fetchPublicMarathon, marathonErrorMessage, verifyMarathonPayment } from "@/lib/services/marathon";
 import { fetchProfile } from "@/lib/services/profile";
@@ -35,7 +36,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   const [event, setEvent] = useState<MarathonEvent | null>(null);
   const [step, setStep] = useState<MarathonCheckoutStep | null>(null);
   const [error, setError] = useState("");
-  const [payLabel, setPayLabel] = useState("");
+  const [payFee, setPayFee] = useState(""); const [payCurrency, setPayCurrency] = useState("INR");
   const [mine, setMine] = useState<MarathonBooking[]>([]);
   const back = () => router.push(marathonEventPath(marathonId));
 
@@ -74,7 +75,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
         timezone: profile.timezone,
       });
       const amount = currency === "USD" && event.usd_fee ? event.usd_fee : event.fee;
-      setPayLabel(marathonPaidLabel(amount, currency));
+      setPayCurrency(currency); setPayFee(String(amount));
     });
   }, [step, event]);
 
@@ -167,7 +168,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                   <>
                     <p className={ui.stepTitle}>{copy.pay}</p>
                     <p className={ui.hint}>{event?.name}</p>
-                    {payLabel ? <p className={ui.stepTitle}>{payLabel}</p> : null}
+                    {payFee ? <MarathonFeeSummary fee={payFee} currency={payCurrency} /> : null}
                     {clash ? (
                       <p className={ui.hint}>{t("You already have a consultation at this time.")}</p>
                     ) : (

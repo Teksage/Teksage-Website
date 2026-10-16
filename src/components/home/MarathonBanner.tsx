@@ -14,7 +14,13 @@ export function MarathonBanner() {
   const copy = useI18nConstants(MARATHON_COPY);
   const { locale } = useT();
   const event = useSoonestMarathon();
-  const when = event ? marathonDateParts(event.starts_at, event.timezone, bcp47FromAppLocale(locale)) : null;
+  const when = event
+    ? marathonDateParts(event.starts_at, event.timezone, bcp47FromAppLocale(locale))
+    : null;
+  const eventLine =
+    event && when
+      ? `${event.name} · ${when.month} ${when.day}, ${when.time}`
+      : null;
 
   return (
     <Link href={ROUTES.marathon} className={MARATHON_HOME.card}>
@@ -23,13 +29,14 @@ export function MarathonBanner() {
         <div className={MARATHON_HOME.head}>
           <p className={MARATHON_HOME.title}>{copy.title}</p>
           {event?.booking_closes_at ? (
-            <MarathonRegisterTimer closesAt={event.booking_closes_at} compact className={MARATHON_HOME.timer} />
+            <MarathonRegisterTimer
+              closesAt={event.booking_closes_at}
+              compact
+              className={MARATHON_HOME.timer}
+            />
           ) : null}
         </div>
-        <p className={MARATHON_HOME.sub}>{copy.subtitle}</p>
-        {event && when ? (
-          <p className={MARATHON_HOME.event}>{`${event.name} · ${when.month} ${when.day}, ${when.time}`}</p>
-        ) : null}
+        {eventLine ? <p className={MARATHON_HOME.event}>{eventLine}</p> : null}
         <span className={MARATHON_HOME.cta}>{copy.bannerCta}</span>
       </div>
     </Link>

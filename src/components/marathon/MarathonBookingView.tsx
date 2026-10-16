@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import { MarathonFeeSummary } from "@/components/marathon/MarathonFeeSummary";
 import { useRouter } from "next/navigation";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
@@ -13,7 +14,7 @@ import { MARATHON_SUCCESS } from "@/lib/constants/marathon-success";
 import { ROUTES } from "@/lib/constants/routes";
 import { buildSupportWhatsAppUrl } from "@/lib/constants/settings-support";
 import { markSupportWhatsAppIntent } from "@/lib/services/settings-support";
-import { marathonDateParts, marathonPaidLabel } from "@/lib/marathon-display";
+import { marathonDateParts } from "@/lib/marathon-display";
 import { fetchMyMarathonBookings } from "@/lib/services/marathon";
 import type { MarathonBooking } from "@/types/marathon";
 
@@ -85,10 +86,7 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
                   <span className={ui.label}>{t("Duration")}</span>
                   <span className={ui.value}>{copy.minutes}</span>
                 </div>
-                <div className={ui.row}>
-                  <span className={ui.label}>{t("Consultation Fee")}</span>
-                  <span className={ui.value}>{marathonPaidLabel(booking.fee, booking.currency)}</span>
-                </div>
+                <MarathonFeeSummary fee={booking.fee} currency={booking.currency} paid />
                 {booking.astrologer_name ? (
                   <div className={ui.row}>
                     <span className={ui.label}>{t("Astrologer")}</span>
