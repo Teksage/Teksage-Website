@@ -20,6 +20,7 @@ export const MARATHON_CHECKOUT = {
   stepper: "bg-[color-mix(in_srgb,var(--color-home-screen-mint)_70%,white)] px-3 py-4 sm:px-6",
   track: "flex w-full min-w-0 items-start",
   step: "flex min-w-0 flex-1 flex-col items-center gap-1 text-center",
+  stepClickable: "cursor-pointer rounded-lg transition hover:opacity-90",
   bubbleRow: "flex w-full items-center",
   bubble:
     "flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-[var(--color-brand-primary)] sm:size-9",
@@ -36,6 +37,9 @@ export const MARATHON_CHECKOUT = {
   body: "flex flex-col gap-4 px-4 py-5 sm:px-8 sm:py-6",
   stepTitle: `${TYPO.h3} text-[var(--color-brand-black)]`,
   hint: `${TYPO.chatCardTextBot} text-black/60`,
+  /** Full-width note inside the 2-col profile grid. */
+  hintRow: `${TYPO.chatCardTextBot} col-span-2 text-black/60`,
+  textarea: `min-h-24 w-full resize-y rounded-xl border border-black/10 bg-white px-3 py-2.5 text-[var(--color-brand-black)] shadow-none outline-none focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
   summary: "flex w-full flex-col items-stretch gap-2 text-left",
   summaryTitle: `${TYPO.labelSemibold} text-left text-[var(--color-brand-black)]`,
   summaryRow: "flex w-full items-center justify-between gap-3 text-left",
@@ -43,6 +47,9 @@ export const MARATHON_CHECKOUT = {
   summaryValue: `${TYPO.labelSemibold} text-right text-[var(--color-brand-black)]`,
   summaryTotal: `${TYPO.h3} text-[var(--color-brand-black)]`,
   summaryRule: "my-1 h-px w-full bg-black/10",
+  queryBlock: "flex w-full flex-col gap-1 rounded-xl border border-black/8 bg-[color-mix(in_srgb,var(--color-home-screen-mint)_35%,white)] px-3 py-2.5 text-left",
+  queryLabel: `${TYPO.caption} font-semibold text-black/55`,
+  queryText: `${TYPO.chatCardTextBot} whitespace-pre-wrap text-[var(--color-brand-black)]`,
   pair: "grid grid-cols-2 gap-3",
   span: "col-span-2 flex flex-col gap-2",
   fieldStack: "flex min-w-0 flex-col gap-1.5",

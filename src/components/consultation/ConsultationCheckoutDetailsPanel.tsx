@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_CHECKOUT_FOCUS_CATEGORIES,
@@ -38,6 +39,7 @@ export function ConsultationCheckoutDetailsPanel({
 }: ConsultationCheckoutDetailsPanelProps) {
   const CC = useI18nConstants(CONSULTATION_CHECKOUT_SCREEN);
   const { locale, t } = useT();
+  const viewerZone = useViewerTimezone();
   const dateLocale = bcp47FromAppLocale(locale);
   const L = CONSULTATION_CHECKOUT_LAYOUT;
   const astroSubtitle = [
@@ -104,13 +106,15 @@ export function ConsultationCheckoutDetailsPanel({
               <p className={L.whenValue}>
                 {formatConsultationBookingDate(
                   booking.slotStart,
-                  dateLocale
+                  dateLocale,
+                  viewerZone
                 )}{" "}
                 ·{" "}
                 {formatConsultationBookingTimeRange(
                   booking.slotStart,
                   booking.slotEnd,
-                  dateLocale
+                  dateLocale,
+                  viewerZone
                 )}
               </p>
             </div>

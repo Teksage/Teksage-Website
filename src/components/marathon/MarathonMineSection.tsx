@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { cn } from "@/lib/utils";
 import { MARATHON_BANNER_UI } from "@/lib/constants/marathon-banner";
@@ -17,6 +18,7 @@ export function MarathonMineSection({ marathonId, rows: preset }: MarathonMineSe
   const copy = useI18nConstants(MARATHON_COPY);
   const { locale } = useT();
   const localeTag = bcp47FromAppLocale(locale);
+  const viewerZone = useViewerTimezone();
   const ui = MARATHON_PAGE;
   const history = MARATHON_BANNER_UI;
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -62,7 +64,7 @@ export function MarathonMineSection({ marathonId, rows: preset }: MarathonMineSe
       {open ? (
         <div className={history.history}>
           {rows.map((booking) => {
-            const when = marathonDateParts(booking.starts_at, booking.timezone, localeTag);
+            const when = marathonDateParts(booking.starts_at, viewerZone, localeTag);
             return (
               <Link key={booking.id} href={marathonBookingPath(booking.id)} className={history.historyRow}>
                 {when.time}

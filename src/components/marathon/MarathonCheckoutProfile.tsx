@@ -14,7 +14,7 @@ import { fetchProfile, updateProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
 import type { MarathonCheckoutProfileProps } from "@/types/marathon";
 
-export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileProps) {
+export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: MarathonCheckoutProfileProps) {
   const copy = useI18nConstants(MARATHON_COPY);
   const details = useI18nConstants(PROFILE_DETAILS);
   const rules = useI18nConstants(PROFILE_FORM_VALIDATION);
@@ -22,7 +22,8 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
   const ui = MARATHON_PAGE;
   const form = MARATHON_CHECKOUT;
   const note = useI18nConstants(MARATHON_CHECKOUT_COPY);
-  const emailLogin = Boolean(useAuthStore((s) => s.user?.email?.trim()));
+  const authUser = useAuthStore((s) => s.user);
+  const emailLogin = Boolean(authUser?.email?.trim());
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [dob, setDob] = useState("");
@@ -31,23 +32,29 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
   const [birthFull, setBirthFull] = useState("");
   const [current, setCurrent] = useState("");
   const [currentFull, setCurrentFull] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState("");
+  const [queryError, setQueryError] = useState("");
 
   useEffect(() => {
-    void fetchProfile().then((profile) => {
-      setFirst(profile.firstName ?? "");
-      setLast(profile.lastName ?? "");
-      setDob((profile.dateOfBirth ?? "").slice(0, 10));
-      setTob((profile.timeOfBirth ?? "").slice(0, 5));
-      setBirth(profile.placeOfBirth ?? "");
-      setBirthFull(profile.placeOfBirth ?? "");
-      setCurrent(profile.preferredLocation ?? "");
-      setCurrentFull(profile.preferredLocation ?? "");
-    }).catch(() => undefined);
+    void fetchProfile()
+      .then((profile) => {
+        setFirst(profile.firstName ?? "");
+        setLast(profile.lastName ?? "");
+        setDob((profile.dateOfBirth ?? "").slice(0, 10));
+        setTob((profile.timeOfBirth ?? "").slice(0, 5));
+        setBirth(profile.placeOfBirth ?? "");
+        setBirthFull(profile.placeOfBirth ?? "");
+        setCurrent(profile.preferredLocation ?? "");
+        setCurrentFull(profile.preferredLocation ?? "");
+      })
+      .catch(() => undefined);
   }, []);
 
   async function save() {
+    setError("");
+    setQueryError("");
     if (!first.trim() || !last.trim() || !dob || !tob || !birthFull.trim() || !currentFull.trim()) {
       setError(rules.fillAllRequired);
       return;
@@ -56,7 +63,12 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
       setError(t("Please verify your Email"));
       return;
     }
-    await updateProfile({
+    const customerQuery = query.trim();
+    if (!customerQuery) {
+      setQueryError(copy.queryRequired);
+      return;
+    }
+    const { profile } = await updateProfile({
       firstName: first.trim(),
       lastName: last.trim(),
       dateOfBirth: dob,
@@ -64,7 +76,8 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
       placeOfBirth: birthFull.trim(),
       preferredLocation: currentFull.trim(),
     });
-    onComplete();
+    useAuthStore.getState().updateUser(profile);
+    onComplete(customerQuery);
   }
 
   return (
@@ -115,10 +128,26 @@ export function MarathonCheckoutProfile({ onComplete }: MarathonCheckoutProfileP
             setCurrentFull(full);
           }}
         />
-        <p className={form.hint}>{emailLogin ? note.phoneOptional : note.emailRequired}</p>
+        <p className={form.hintRow}>{emailLogin ? note.phoneOptional : note.emailRequired}</p>
         <MarathonCheckoutContact mode={emailLogin ? "mobile" : "email"} onVerified={() => setVerified(true)} />
+        <label className={form.span}>
+          <span className={form.label}>{copy.queryTitle}</span>
+          {queryError ? <p className={ui.bookError}>{queryError}</p> : null}
+          <textarea
+            className={form.textarea}
+            rows={3}
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (queryError) setQueryError("");
+            }}
+            placeholder={copy.queryHint}
+          />
+        </label>
       </div>
-      <Button type="button" className={form.action} onClick={() => void save()}>{copy.continue}</Button>
+      <Button type="button" className={form.action} onClick={() => void save()}>
+        {copy.continue}
+      </Button>
     </>
   );
 }

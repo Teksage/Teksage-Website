@@ -13,7 +13,7 @@ export function MarathonBookPanel({ event, slotId }: MarathonBookPanelProps) {
     <button
       type="button"
       className={MARATHON_PAGE.payBar}
-      onClick={() => router.push(marathonCheckoutPath(event.id, slotId))}
+      onClick={() => router.push(marathonCheckoutPath(event.public_slug || event.id, slotId))}
     >
       <svg viewBox="0 0 24 24" className="size-4" fill="none" aria-hidden>
         <rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.8" />

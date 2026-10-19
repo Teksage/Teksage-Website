@@ -19,18 +19,29 @@ export async function fetchPublicMarathons(): Promise<MarathonEvent[]> {
   return (res.data as { data: MarathonEvent[] }).data ?? [];
 }
 
-export async function fetchPublicMarathon(id: number): Promise<MarathonEvent> {
-  const res = await http.get(`${API_ENDPOINTS.marathonPublic}/${id}`);
+/** DDMMYY or DDMMYY-2 public slugs look numeric but are not DB ids. */
+function isExpertHoursSlug(key: string): boolean {
+  return /^\d{6}(-\d+)?$/.test(key) || !/^\d+$/.test(key);
+}
+
+export async function fetchPublicMarathon(idOrSlug: number | string): Promise<MarathonEvent> {
+  const key = String(idOrSlug).trim();
+  const path = isExpertHoursSlug(key)
+    ? `${API_ENDPOINTS.marathonPublic}/by-slug/${encodeURIComponent(key)}`
+    : `${API_ENDPOINTS.marathonPublic}/${key}`;
+  const res = await http.get(path);
   return res.data as MarathonEvent;
 }
 
 export async function checkoutMarathonSlot(
   slotId: number,
-  currency: "INR" | "USD" = "INR"
+  currency: "INR" | "USD" = "INR",
+  customerQuery: string
 ): Promise<MarathonCheckoutOrder> {
-  const res = await http.post(
-    `${API_ENDPOINTS.marathonCheckout}/${slotId}/checkout?currency=${currency}`
-  );
+  const res = await http.post(`${API_ENDPOINTS.marathonCheckout}/${slotId}/checkout`, {
+    currency,
+    customer_query: customerQuery,
+  });
   return res.data as MarathonCheckoutOrder;
 }
 

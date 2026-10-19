@@ -3,27 +3,30 @@
 import Link from "next/link";
 import { MarathonRegisterTimer } from "@/components/marathon/MarathonRegisterTimer";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { useSoonestMarathon } from "@/hooks/useSoonestMarathon";
 import { MARATHON_COPY } from "@/lib/constants/marathon";
 import { MARATHON_HOME } from "@/lib/constants/marathon-home";
 import { ROUTES } from "@/lib/constants/routes";
-import { marathonDateParts } from "@/lib/marathon-display";
+import { marathonDateParts, marathonDisplayName } from "@/lib/marathon-display";
 
 export function MarathonBanner() {
   const copy = useI18nConstants(MARATHON_COPY);
   const { locale } = useT();
+  const localeTag = bcp47FromAppLocale(locale);
+  const viewerZone = useViewerTimezone();
   const event = useSoonestMarathon();
   const when = event
-    ? marathonDateParts(event.starts_at, event.timezone, bcp47FromAppLocale(locale))
+    ? marathonDateParts(event.starts_at, viewerZone, localeTag)
     : null;
   const eventLine =
     event && when
-      ? `${event.name} · ${when.month} ${when.day}, ${when.time}`
+      ? `${marathonDisplayName(event.name)} · ${when.month} ${when.day}, ${when.time}`
       : null;
 
   return (
-    <Link href={ROUTES.marathon} className={MARATHON_HOME.card}>
+    <Link href={ROUTES.expertHours} className={MARATHON_HOME.card}>
       <span className={MARATHON_HOME.stripe} aria-hidden />
       <div className={MARATHON_HOME.body}>
         <div className={MARATHON_HOME.head}>

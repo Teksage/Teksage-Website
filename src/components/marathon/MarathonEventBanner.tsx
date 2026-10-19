@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils";
 import { MarathonRegisterTimer } from "@/components/marathon/MarathonRegisterTimer";
 import { MARATHON_BANNER_UI } from "@/lib/constants/marathon-banner";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
-import { marathonDateParts } from "@/lib/marathon-display";
-import { marathonBookingPath, ROUTES } from "@/lib/constants/routes";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
+import { marathonDateParts, marathonDisplayName, marathonTimeRange } from "@/lib/marathon-display";
+import { marathonBookingPath, marathonEventPath } from "@/lib/constants/routes";
 import type { MarathonBookingHistoryProps, MarathonEventBannerProps } from "@/types/marathon";
 
 function CalendarMark() {
@@ -25,11 +26,12 @@ function HistoryList({ rows }: MarathonBookingHistoryProps) {
   const ui = MARATHON_BANNER_UI;
   const { locale } = useT();
   const localeTag = bcp47FromAppLocale(locale);
+  const viewerZone = useViewerTimezone();
 
   return (
     <div className={ui.history}>
       {rows.map((booking) => {
-        const when = marathonDateParts(booking.starts_at, booking.timezone, localeTag);
+        const when = marathonDateParts(booking.starts_at, viewerZone, localeTag);
         return (
           <Link key={booking.id} href={marathonBookingPath(booking.id)} className={ui.historyRow}>
             {when.time}
@@ -57,8 +59,9 @@ export function MarathonEventBanner({ event, linked = true, canOpen = true, book
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [open]);
-  const when = marathonDateParts(event.starts_at, event.timezone, localeTag);
-  const end = marathonDateParts(event.ends_at, event.timezone, localeTag);
+  const viewerZone = useViewerTimezone();
+  const when = marathonDateParts(event.starts_at, viewerZone, localeTag);
+  const end = marathonDateParts(event.ends_at, viewerZone, localeTag);
   const category = event.categories[0];
   const showDetails = linked && canOpen;
   const single = bookings.length === 1 ? bookings[0] : null;
@@ -73,7 +76,7 @@ export function MarathonEventBanner({ event, linked = true, canOpen = true, book
         </div>
         <div className={date.copy}>
           <div className={date.titleRow}>
-            <p className={ui.showTitle}>{event.name}</p>
+            <p className={ui.showTitle}>{marathonDisplayName(event.name)}</p>
             {category ? <span className={ui.showChip}>{t(category)}</span> : null}
           </div>
           {event.description ? <p className={ui.showText}>{t(event.description)}</p> : null}
@@ -83,7 +86,7 @@ export function MarathonEventBanner({ event, linked = true, canOpen = true, book
                 <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.8" />
                 <path d="M12 8v4.5l3 2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
-              {`${when.time} – ${end.time}`}
+              {marathonTimeRange(when.time, end.time)}
             </p>
             {event.admin_ended ? (
               <p className={ui.showTimer}>{copy.adminEnded}</p>
@@ -96,7 +99,7 @@ export function MarathonEventBanner({ event, linked = true, canOpen = true, book
       {showDetails || bookings.length > 0 ? (
         <div className={date.foot}>
           {showDetails ? (
-            <Link href={`${ROUTES.marathon}/${event.id}`} className={ui.showCta}>
+            <Link href={marathonEventPath(event.public_slug || event.id)} className={ui.showCta}>
               {copy.bannerCta}
               <span aria-hidden>→</span>
             </Link>

@@ -1,3 +1,5 @@
+import { resolveViewerTimezone } from "@/lib/viewer-timezone";
+
 export function marathonFeeLabel(fee: string, usd?: string | null) {
   const inr = Number(fee);
   const inrText = Number.isFinite(inr) ? `₹${inr.toFixed(2)}` : `₹${fee}`;
@@ -69,20 +71,33 @@ export function marathonPaidLabel(fee: string, currency: string) {
   return currency === "USD" ? `$${text}` : `₹${text}`;
 }
 
-export function marathonDateParts(iso: string, zone: string, locale = "en-US") {
+/**
+ * Format Expert Hours times for the viewer.
+ * Same rules as 30-min consultation: profile timezone from Current Location,
+ * else browser local.
+ */
+export function marathonDateParts(iso: string, zone?: string | null, locale = "en-US") {
   const date = new Date(iso);
-  const month = new Intl.DateTimeFormat(locale, {
-    month: "short",
-    timeZone: zone,
-  }).format(date);
-  const day = new Intl.DateTimeFormat(locale, {
-    day: "numeric",
-    timeZone: zone,
-  }).format(date);
+  const tz = resolveViewerTimezone(zone);
+  const withZone = tz ? ({ timeZone: tz } as const) : undefined;
+  const month = new Intl.DateTimeFormat(locale, { month: "short", ...withZone }).format(date);
+  const day = new Intl.DateTimeFormat(locale, { day: "numeric", ...withZone }).format(date);
   const time = new Intl.DateTimeFormat(locale, {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: zone,
+    ...withZone,
   }).format(date);
   return { month, day, time };
+}
+
+/** Strip legacy "(IST)" from stored titles. */
+export function marathonDisplayName(name: string | null | undefined): string {
+  const cleaned = (name || "").trim();
+  if (!cleaned) return "";
+  return cleaned.replace(/\s*\(IST\)\s*$/i, "").trim();
+}
+
+/** Same style as consultation: local clock times, no zone suffix. */
+export function marathonTimeRange(startTime: string, endTime: string): string {
+  return `${startTime} – ${endTime}`;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { useRouter } from "next/navigation";
 import { ConsultationQueryDialog } from "@/components/consultation/ConsultationQueryDialog";
 import { ConsultationSummaryDetailsCard } from "@/components/consultation/ConsultationSummaryDetailsCard";
@@ -32,6 +33,7 @@ export function ConsultationSummaryView() {
   const CB = useI18nConstants(CONSULTATION_BOOKING_SCREEN);
   const CS = useI18nConstants(CONSULTATION_SUMMARY_SCREEN);
   const { t } = useT();
+  const viewerZone = useViewerTimezone();
   const router = useRouter();
   const {
     summary,
@@ -106,13 +108,15 @@ export function ConsultationSummaryView() {
               items={[
                 {
                   label: CB.date,
-                  value: formatConsultationBookingDate(summary.startDatetime),
+                  value: formatConsultationBookingDate(summary.startDatetime, undefined, viewerZone),
                 },
                 {
                   label: CB.time,
                   value: formatConsultationBookingTimeRange(
                     summary.startDatetime,
-                    summary.endDatetime
+                    summary.endDatetime,
+                    undefined,
+                    viewerZone
                   ),
                 },
                 {

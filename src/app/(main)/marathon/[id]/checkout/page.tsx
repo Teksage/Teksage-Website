@@ -1,23 +1,35 @@
 "use client";
 
-import { Suspense } from "react";
-import { useParams, useSearchParams } from "next/navigation";
-import { MarathonCheckoutView } from "@/components/marathon/MarathonCheckoutView";
+import { Suspense, useEffect } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
+import { marathonCheckoutPath } from "@/lib/constants/routes";
+import { fetchPublicMarathon } from "@/lib/services/marathon";
 
-function MarathonCheckoutPage() {
+function MarathonCheckoutRedirect() {
   const params = useParams<{ id: string }>();
   const search = useSearchParams();
-  const marathonId = Number(params.id);
+  const router = useRouter();
   const slotId = Number(search.get(MARATHON_CHECKOUT.slotQuery));
-  if (!Number.isFinite(marathonId) || !Number.isFinite(slotId)) return null;
-  return <MarathonCheckoutView marathonId={marathonId} slotId={slotId} />;
+
+  useEffect(() => {
+    const id = Number(params.id);
+    if (!Number.isFinite(id) || !Number.isFinite(slotId)) return;
+    void fetchPublicMarathon(id)
+      .then((event) =>
+        router.replace(marathonCheckoutPath(event.public_slug || event.id, slotId))
+      )
+      .catch(() => router.replace(marathonCheckoutPath(id, slotId)));
+  }, [params.id, router, slotId]);
+
+  return <LoadingOverlay open />;
 }
 
 export default function Page() {
   return (
     <Suspense>
-      <MarathonCheckoutPage />
+      <MarathonCheckoutRedirect />
     </Suspense>
   );
 }

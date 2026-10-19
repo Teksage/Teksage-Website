@@ -42,7 +42,7 @@ export const DESKTOP_SIDEBAR_EVENT_PLANNER_LINK = {
 } as const;
 
 export const DESKTOP_SIDEBAR_MARATHON_LINK = {
-  href: ROUTES.marathon,
+  href: ROUTES.expertHours,
   labelKey: "consultationMarathon" as const,
   icon: HOME_DASHBOARD_SIDEBAR_ASSETS.consultationMarathon,
 } as const;

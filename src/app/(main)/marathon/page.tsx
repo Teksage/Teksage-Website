@@ -1,7 +1,6 @@
-"use client";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/lib/constants/routes";
 
-import { MarathonListView } from "@/components/marathon/MarathonListView";
-
-export default function MarathonPage() {
-  return <MarathonListView />;
+export default function MarathonRedirectPage() {
+  redirect(ROUTES.expertHours);
 }

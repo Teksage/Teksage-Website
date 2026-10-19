@@ -1,4 +1,5 @@
 import { MARATHON_ASTROLOGER_COPY } from "@/lib/constants/marathon-astrologer";
+import { resolveViewerTimezone } from "@/lib/viewer-timezone";
 import type { MarathonBooking } from "@/types/marathon";
 
 export function seatSummary(rows: MarathonBooking[], copy: typeof MARATHON_ASTROLOGER_COPY) {
@@ -14,15 +15,17 @@ export function seatSummary(rows: MarathonBooking[], copy: typeof MARATHON_ASTRO
   return parts.join(" · ");
 }
 
-export function formatMarathonWhen(iso: string, locale: string) {
+export function formatMarathonWhen(iso: string, locale: string, timeZone?: string | null) {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "";
+  const tz = resolveViewerTimezone(timeZone);
   return date.toLocaleString(locale, {
     day: "2-digit",
     month: "short",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    ...(tz ? { timeZone: tz } : {}),
   });
 }
 

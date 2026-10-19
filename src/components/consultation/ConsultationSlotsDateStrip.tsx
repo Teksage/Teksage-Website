@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezoneHint } from "@/hooks/useViewerTimezone";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_SLOTS_DAY_COUNT,
@@ -56,6 +57,7 @@ export function ConsultationSlotsDateStrip({
   const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
   const { locale } = useT();
   const dateLocale = bcp47FromAppLocale(locale);
+  const timeHint = useViewerTimezoneHint(CS.timesInIST, CS.timesInYourZone);
   const days = buildUpcomingDays(today, CONSULTATION_SLOTS_DAY_COUNT, windowOffset);
   const monthHint = selectedDate.toLocaleDateString(dateLocale, {
     month: "long",
@@ -68,7 +70,7 @@ export function ConsultationSlotsDateStrip({
         <div className={CONSULTATION_SLOTS_LAYOUT.dateStripHeadMain}>
           <h2 className={CONSULTATION_SLOTS_LAYOUT.dateStripTitle}>{CS.pickDate}</h2>
           <p className={CONSULTATION_SLOTS_LAYOUT.dateStripHint}>
-            {monthHint} · {CS.timesInIST}
+            {monthHint} · {timeHint}
           </p>
         </div>
         <div className={CONSULTATION_SLOTS_LAYOUT.dateStripNavRow}>
