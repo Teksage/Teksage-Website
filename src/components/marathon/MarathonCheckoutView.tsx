@@ -11,13 +11,14 @@ import { MarathonCheckoutStepper } from "@/components/marathon/MarathonCheckoutS
 import { MarathonEventBanner } from "@/components/marathon/MarathonEventBanner";
 import { MarathonListHero } from "@/components/marathon/MarathonListHero";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone, useViewerTimezoneHint } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { consultationCurrencyForLocation } from "@/lib/consultation-currency";
 import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { marathonBookingPath, marathonEventPath } from "@/lib/constants/routes";
-import { marathonDateParts, marathonProfileReady } from "@/lib/marathon-display";
+import { marathonDateParts, marathonTimeRange } from "@/lib/marathon-display";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
 import { checkoutMarathonSlot, fetchMyMarathonBookings, fetchPublicMarathon, marathonErrorMessage, verifyMarathonPayment } from "@/lib/services/marathon";
 import { fetchProfile } from "@/lib/services/profile";
@@ -38,7 +39,9 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   const [error, setError] = useState("");
   const [payFee, setPayFee] = useState(""); const [payCurrency, setPayCurrency] = useState("INR");
   const [mine, setMine] = useState<MarathonBooking[]>([]);
-  const back = () => router.push(marathonEventPath(marathonId));
+  const [customerQuery, setCustomerQuery] = useState("");
+  const back = () =>
+    router.push(marathonEventPath(event?.public_slug || marathonId));
 
   useEffect(() => {
     setHydrated(useAuthStore.persist.hasHydrated());
@@ -57,8 +60,12 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
       setStep(1);
       return;
     }
+    // Always collect birth details + required customer query on step 2 before pay.
     void fetchProfile()
-      .then((profile) => setStep(marathonProfileReady(profile) ? 3 : 2))
+      .then((profile) => {
+        useAuthStore.getState().updateUser(profile);
+        setStep(2);
+      })
       .catch((err: unknown) => setError(marathonErrorMessage(err)));
   }, [hydrated, event, isAuthenticated, step]);
 
@@ -70,6 +77,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   useEffect(() => {
     if (step !== 3 || !event) return;
     void fetchProfile().then((profile) => {
+      useAuthStore.getState().updateUser(profile);
       const currency = consultationCurrencyForLocation(profile.preferredLocation || profile.placeOfBirth, {
         countryCode: profile.countryCode,
         timezone: profile.timezone,
@@ -87,7 +95,12 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
         countryCode: profile.countryCode,
         timezone: profile.timezone,
       });
-      const order = await checkoutMarathonSlot(slotId, currency);
+      if (!customerQuery.trim()) {
+        setError(copy.queryRequired);
+        setStep(2);
+        return;
+      }
+      const order = await checkoutMarathonSlot(slotId, currency, customerQuery.trim());
       await openRazorpayCheckout({
         key: order.key,
         currency: order.currency,
@@ -120,8 +133,10 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
     ? mine.find((row) => new Date(row.starts_at) < new Date(slot.ends_at) && new Date(row.ends_at) > new Date(slot.starts_at))
     : undefined;
   const loading = !hydrated || (!event && !error) || (event != null && step == null && !error);
-  const slotWhen = slot && event ? marathonDateParts(slot.starts_at, event.timezone, localeTag) : null;
-  const slotEnd = slot && event ? marathonDateParts(slot.ends_at, event.timezone, localeTag) : null;
+  const viewerZone = useViewerTimezone();
+  const timeHint = useViewerTimezoneHint(copy.timesInIST, copy.timesInYourZone);
+  const slotWhen = slot && event ? marathonDateParts(slot.starts_at, viewerZone, localeTag) : null;
+  const slotEnd = slot && event ? marathonDateParts(slot.ends_at, viewerZone, localeTag) : null;
 
   return (
     <div className={MARATHON_PAGE.page}>
@@ -145,11 +160,19 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                   <div className={MARATHON_PAGE.showBody}>
                     <div className={MARATHON_PAGE.showCopy}>
                       <p className={MARATHON_PAGE.showTitle}>{copy.selectSlot}</p>
-                      <p className={MARATHON_PAGE.showText}>{copy.minutes}</p>
+                      <p className={MARATHON_PAGE.showText}>
+                        {copy.minutes} · {timeHint}
+                      </p>
                     </div>
-                    <p className={MARATHON_PAGE.showWhen}>{slotWhen.time} – {slotEnd.time}</p>
+                    <p className={MARATHON_PAGE.showWhen}>{marathonTimeRange(slotWhen.time, slotEnd.time)}</p>
                   </div>
                 </article>
+              ) : null}
+              {step === 3 && customerQuery.trim() ? (
+                <div className={ui.queryBlock}>
+                  <p className={ui.queryLabel}>{copy.queryTitle}</p>
+                  <p className={ui.queryText}>{customerQuery.trim()}</p>
+                </div>
               ) : null}
               {error && !event ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
             </div>
@@ -160,10 +183,24 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                 </div>
               ) : (
               <>
-              <MarathonCheckoutStepper step={step ?? 1} labels={labels} />
+              <MarathonCheckoutStepper
+                step={step ?? 1}
+                labels={labels}
+                onSelectStep={(next) => {
+                  if (step === 3 && next === 2) setStep(2);
+                }}
+              />
               <div className={ui.body}>
                 {step === 1 ? <MarathonCheckoutSignIn onComplete={setStep} /> : null}
-                {step === 2 ? <MarathonCheckoutProfile onComplete={() => setStep(3)} /> : null}
+                {step === 2 ? (
+                  <MarathonCheckoutProfile
+                    initialQuery={customerQuery}
+                    onComplete={(query) => {
+                      setCustomerQuery(query);
+                      setStep(3);
+                    }}
+                  />
+                ) : null}
                 {step === 3 ? (
                   <>
                     <p className={ui.stepTitle}>{copy.pay}</p>

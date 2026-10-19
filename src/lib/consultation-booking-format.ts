@@ -1,24 +1,38 @@
 /** Booking date/time labels — mirrors Flutter `userBookingDetailspage.dart`. */
 
 import { parseProfileDobIsoToDate } from "@/lib/profile-birth-date-format";
+import { resolveViewerTimezone } from "@/lib/viewer-timezone";
+
+function zoneOpts(timeZone?: string | null) {
+  const tz = resolveViewerTimezone(timeZone);
+  return tz ? ({ timeZone: tz } as const) : undefined;
+}
 
 export function formatConsultationBookingDate(
   iso: string,
-  locale = "en-IN"
+  locale = "en-IN",
+  timeZone?: string | null
 ): string {
   return new Date(iso).toLocaleDateString(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",
+    ...zoneOpts(timeZone),
   });
 }
 
 export function formatConsultationBookingTimeRange(
   start: string,
   end: string,
-  locale = "en-IN"
+  locale = "en-IN",
+  timeZone?: string | null
 ): string {
-  const opts = { hour: "numeric", minute: "2-digit", hour12: true } as const;
+  const opts = {
+    hour: "numeric" as const,
+    minute: "2-digit" as const,
+    hour12: true as const,
+    ...zoneOpts(timeZone),
+  };
   const a = new Date(start).toLocaleTimeString(locale, opts);
   const b = new Date(end).toLocaleTimeString(locale, opts);
   return `${a} - ${b}`;

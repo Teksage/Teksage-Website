@@ -7,6 +7,7 @@ import { PageLoadingCenter } from "@/components/common/Loader";
 import { MarathonEventsHero } from "@/components/marathon/MarathonEventsHero";
 import { MarathonPortalCard } from "@/components/marathon/MarathonPortalCard";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { MARATHON_ASTROLOGER_COPY } from "@/lib/constants/marathon-astrologer";
 import { MARATHON_COPY, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
@@ -16,9 +17,9 @@ import {
   eventIsCompleted,
   formatMarathonWhen,
 } from "@/lib/marathon-astrologer";
+import { marathonDisplayName } from "@/lib/marathon-display";
 import { MARATHON_PARTICIPANT_COPY, eventShowsParticipants, participantLabel } from "@/lib/marathon-participants";
 import {
-  acceptMarathonSeat,
   completeMarathonSeat,
   fetchAstrologerDrafts,
   fetchAstrologerMarathonSeats,
@@ -33,6 +34,10 @@ function bookingStatus(status: string, waiting: string, accepted: string, assign
   return waiting;
 }
 
+function slotEnded(endsAt: string): boolean {
+  return Date.now() >= new Date(endsAt).getTime();
+}
+
 export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBookingsProps) {
   const copy = useI18nConstants(MARATHON_COPY);
   const extra = useI18nConstants(MARATHON_ASTROLOGER_COPY);
@@ -40,6 +45,7 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
   const ui = MARATHON_PORTAL_UI;
   const { locale, t } = useT();
   const localeTag = bcp47FromAppLocale(locale);
+  const viewerZone = useViewerTimezone();
   const [event, setEvent] = useState<MarathonDraft | null>(null);
   const [rows, setRows] = useState<MarathonBooking[]>([]);
   const [error, setError] = useState("");
@@ -80,7 +86,8 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
 
   if (loading) return <PageLoadingCenter />;
 
-  const title = event?.name || rows[0]?.event_name || copy.title;
+  const title =
+    marathonDisplayName(event?.name || rows[0]?.event_name || "") || copy.title;
   const completed = eventIsCompleted(rows);
   const finished = eventShowsParticipants(event) || completed;
   const statusHint = completed ? t("Completed") : event?.admin_ended ? copy.adminEnded : "";
@@ -97,13 +104,19 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
         {rows.map((row) => {
           const label = bookingStatus(row.status, copy.waiting, extra.accepted, t("Assigned"), t("Completed"));
           const done = row.status === "completed";
+          const assigned = row.status === "accepted" || row.status === "assigned";
+          const canComplete = assigned && slotEnded(row.ends_at);
           return (
             <MarathonPortalCard
               key={row.id}
               startsAt={row.starts_at}
               locale={localeTag}
+              timeZone={viewerZone}
               title={row.user_name}
-              lines={[formatMarathonWhen(row.starts_at, localeTag)]}
+              lines={[
+                formatMarathonWhen(row.starts_at, localeTag, viewerZone),
+                ...(row.customer_query ? [`${copy.customerQuery}: ${row.customer_query}`] : []),
+              ]}
               status={done ? label : row.admin_ended ? `${label} · ${copy.adminEnded}` : label}
             >
               {row.event_id ? (
@@ -122,22 +135,20 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
               {done ? (
                 <p className={ui.confirmed}>{label}</p>
               ) : row.status === "paid" ? (
-                <button
-                  type="button"
-                  className={ui.action}
-                  disabled={pendingId === row.id}
-                  onClick={() => void run(row.id, async () => (await acceptMarathonSeat(row.id)).warning)}
-                >
-                  {pendingId === row.id ? copy.waiting : copy.accept}
-                </button>
+                <p className={ui.confirmed}>{copy.waiting}</p>
               ) : (
                 <button
                   type="button"
                   className={ui.action}
-                  disabled={pendingId === row.id}
+                  disabled={pendingId === row.id || !canComplete}
+                  title={!canComplete ? copy.completeTooEarly : undefined}
                   onClick={() => void run(row.id, () => completeMarathonSeat(row.id))}
                 >
-                  {pendingId === row.id ? copy.waiting : copy.markComplete}
+                  {pendingId === row.id
+                    ? copy.waiting
+                    : canComplete
+                      ? copy.markComplete
+                      : copy.completeTooEarly}
                 </button>
               )}
             </MarathonPortalCard>

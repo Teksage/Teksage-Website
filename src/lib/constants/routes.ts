@@ -42,6 +42,8 @@ export const ROUTES = {
   matchmakingDetails: "/matchmaking/details",
   eventPlanner: "/event-planner",
   marathon: "/marathon",
+  /** Public Expert Hours list/detail (event-date slug URLs). */
+  expertHours: "/experthours",
   eventPlannerResults: "/event-planner/results",
   muhurtha: "/muhurtha",
 
@@ -92,15 +94,19 @@ export function marathonHoroscopeReturnPath(value: string | null): string | null
 }
 
 export function marathonBookingPath(id: number): string {
-  return `${ROUTES.marathon}/booking/${id}`;
+  return `${ROUTES.expertHours}/booking/${id}`;
 }
 
-export function marathonEventPath(marathonId: number): string {
-  return `${ROUTES.marathon}/${marathonId}`;
+/** Prefer event public_slug (DDMMYY); fall back to numeric id. */
+export function marathonEventPath(marathonIdOrSlug: number | string): string {
+  return `${ROUTES.expertHours}/${marathonIdOrSlug}`;
 }
 
-export function marathonCheckoutPath(marathonId: number, slotId: number): string {
-  return `${marathonEventPath(marathonId)}/checkout?slot=${slotId}`;
+export function marathonCheckoutPath(
+  marathonIdOrSlug: number | string,
+  slotId: number
+): string {
+  return `${marathonEventPath(marathonIdOrSlug)}/checkout?slot=${slotId}`;
 }
 
 export function isPredictionsPath(pathname: string): boolean {

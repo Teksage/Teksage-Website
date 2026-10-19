@@ -10,6 +10,8 @@ export type MarathonSlot = {
 };
 
 export type MarathonSlotStripProps = {
+  /** Slot ids the signed-in user already booked for this event. */
+  bookedSlotIds?: number[];
   event: MarathonEvent;
   slotId: number | null;
   onSelect: (id: number) => void;
@@ -34,6 +36,7 @@ export type MarathonMineSectionProps = {
 export type MarathonEvent = {
   id: number;
   name: string;
+  public_slug?: string | null;
   description?: string | null;
   starts_at: string;
   ends_at: string;
@@ -64,6 +67,8 @@ export type MarathonEventsHeroProps = {
 export type MarathonPortalCardProps = {
   startsAt: string;
   locale: string;
+  /** Profile timezone from Current Location; omit for browser local. */
+  timeZone?: string | null;
   title: string;
   lines: string[];
   categories?: string[];
@@ -94,6 +99,8 @@ export type MarathonDraft = {
 export type MarathonBooking = {
   id: number;
   marathon_id: number;
+  slot_id: number;
+  public_slug?: string | null;
   status: string;
   fee: string;
   currency: string;
@@ -108,6 +115,7 @@ export type MarathonBooking = {
   event_id: number | null;
   user_name: string;
   summary: string | null;
+  customer_query?: string | null;
 };
 
 export type MarathonBookPanelProps = {
@@ -116,8 +124,10 @@ export type MarathonBookPanelProps = {
 };
 
 export type MarathonCheckoutViewProps = {
-  marathonId: number;
+  marathonId: number | string;
   slotId: number;
+  /** Prefer slug for Expert Hours URLs; numeric id still works. */
+  eventKey?: string | number;
 };
 
 export type MarathonCheckoutStep = 1 | 2 | 3;
@@ -130,6 +140,8 @@ export type MarathonCheckoutStepLabel = {
 export type MarathonCheckoutStepperProps = {
   step: MarathonCheckoutStep;
   labels: MarathonCheckoutStepLabel[];
+  /** Only completed Step 2 is selectable from Step 3 (never Step 1 after login). */
+  onSelectStep?: (step: MarathonCheckoutStep) => void;
 };
 
 export type MarathonCheckoutSignInProps = {
@@ -145,7 +157,9 @@ export type MarathonCheckoutLoginOtpProps = {
 };
 
 export type MarathonCheckoutProfileProps = {
-  onComplete: () => void;
+  onComplete: (customerQuery: string) => void;
+  /** Prefill when returning from Pay → Birth details. */
+  initialQuery?: string;
 };
 
 export type MarathonCheckoutContactProps = {

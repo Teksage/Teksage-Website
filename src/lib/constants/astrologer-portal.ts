@@ -32,7 +32,7 @@ export const ASTRO_PORTAL_UI = {
     },
     events: {
       title: "Events",
-      subtitle: "Confirm participation and accept paid seats.",
+      subtitle: "Confirm participation. Admin assigns paid seats.",
     },
   },
 

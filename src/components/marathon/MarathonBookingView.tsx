@@ -6,6 +6,7 @@ import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonFeeSummary } from "@/components/marathon/MarathonFeeSummary";
 import { useRouter } from "next/navigation";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { MARATHON_ASSETS } from "@/lib/constants/assets";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
@@ -14,7 +15,7 @@ import { MARATHON_SUCCESS } from "@/lib/constants/marathon-success";
 import { ROUTES } from "@/lib/constants/routes";
 import { buildSupportWhatsAppUrl } from "@/lib/constants/settings-support";
 import { markSupportWhatsAppIntent } from "@/lib/services/settings-support";
-import { marathonDateParts } from "@/lib/marathon-display";
+import { marathonDateParts, marathonDisplayName, marathonTimeRange } from "@/lib/marathon-display";
 import { fetchMyMarathonBookings } from "@/lib/services/marathon";
 import type { MarathonBooking } from "@/types/marathon";
 
@@ -22,6 +23,7 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
   const copy = useI18nConstants(MARATHON_COPY);
   const { locale, t } = useT();
   const localeTag = bcp47FromAppLocale(locale);
+  const viewerZone = useViewerTimezone();
   const router = useRouter();
   const page = MARATHON_PAGE;
   const ui = MARATHON_SUCCESS;
@@ -35,15 +37,15 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
       .finally(() => setLoaded(true));
   }, [bookingId]);
 
-  const when = booking ? marathonDateParts(booking.starts_at, booking.timezone, localeTag) : null;
-  const until = booking ? marathonDateParts(booking.ends_at, booking.timezone, localeTag) : null;
+  const when = booking ? marathonDateParts(booking.starts_at, viewerZone, localeTag) : null;
+  const until = booking ? marathonDateParts(booking.ends_at, viewerZone, localeTag) : null;
   const link = booking?.meeting_link?.trim() ?? "";
 
   return (
     <div className={page.page}>
       <div className={CHAT_LAYOUT.messageListGlow} aria-hidden />
       <div className={page.pageInner}>
-        <button type="button" className={MARATHON_PORTAL_UI.back} onClick={() => router.push(ROUTES.marathon)}>
+        <button type="button" className={MARATHON_PORTAL_UI.back} onClick={() => router.push(ROUTES.expertHours)}>
           <svg viewBox="0 0 24 24" className={MARATHON_PORTAL_UI.backIcon} fill="none" aria-hidden>
             <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -60,7 +62,7 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
                   </svg>
                 </div>
                 <h1 className={ui.title}>{copy.paymentDone}</h1>
-                <p className={ui.event}>{booking.event_name}</p>
+                <p className={ui.event}>{marathonDisplayName(booking.event_name)}</p>
                 {booking.categories[0] ? (
                   <div className={ui.chips}>
                     <span className={page.showChip}>{t(booking.categories[0])}</span>
@@ -80,13 +82,19 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
                 </div>
                 <div className={ui.row}>
                   <span className={ui.label}>{t("Time")}</span>
-                  <span className={ui.value}>{`${when.time} – ${until.time}`}</span>
+                  <span className={ui.value}>{marathonTimeRange(when.time, until.time)}</span>
                 </div>
                 <div className={ui.row}>
                   <span className={ui.label}>{t("Duration")}</span>
                   <span className={ui.value}>{copy.minutes}</span>
                 </div>
                 <MarathonFeeSummary fee={booking.fee} currency={booking.currency} paid />
+                {booking.customer_query ? (
+                  <div className={ui.row}>
+                    <span className={ui.label}>{copy.queryTitle}</span>
+                    <span className={ui.value}>{booking.customer_query}</span>
+                  </div>
+                ) : null}
                 {booking.astrologer_name ? (
                   <div className={ui.row}>
                     <span className={ui.label}>{t("Astrologer")}</span>

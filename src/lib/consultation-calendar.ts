@@ -1,5 +1,7 @@
 /** Calendar helpers — mirrors Flutter `userBookingPage.dart` date grid. */
 
+import { resolveViewerTimezone } from "@/lib/viewer-timezone";
+
 export function toIsoDate(d: Date): string {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -46,11 +48,13 @@ export function firstWeekdayOffset(year: number, month: number): number {
   return new Date(year, month, 1).getDay();
 }
 
-export function formatSlotTime12(iso: string, locale?: string): string {
+export function formatSlotTime12(iso: string, locale?: string, timeZone?: string | null): string {
+  const tz = resolveViewerTimezone(timeZone);
   return new Date(iso).toLocaleTimeString(locale, {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    ...(tz ? { timeZone: tz } : {}),
   });
 }
 

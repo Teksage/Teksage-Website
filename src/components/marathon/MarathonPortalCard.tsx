@@ -6,12 +6,15 @@ import { MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { cn } from "@/lib/utils";
 import type { MarathonPortalCardProps } from "@/types/marathon";
 
-function dateParts(iso: string, locale: string) {
+function dateParts(iso: string, locale: string, timeZone?: string | null) {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return { day: "", month: "" };
+  const tz = timeZone?.trim();
+  const withZone =
+    tz && tz.toUpperCase() !== "UTC" ? ({ timeZone: tz } as const) : undefined;
   return {
-    day: date.toLocaleString(locale, { day: "2-digit" }),
-    month: date.toLocaleString(locale, { month: "short" }).toUpperCase(),
+    day: date.toLocaleString(locale, { day: "2-digit", ...withZone }),
+    month: date.toLocaleString(locale, { month: "short", ...withZone }).toUpperCase(),
   };
 }
 
@@ -36,6 +39,7 @@ function ClockMark() {
 export function MarathonPortalCard({
   startsAt,
   locale,
+  timeZone,
   title,
   lines,
   categories = [],
@@ -46,7 +50,7 @@ export function MarathonPortalCard({
 }: MarathonPortalCardProps) {
   const ui = MARATHON_PORTAL_UI;
   const { t } = useT();
-  const parts = dateParts(startsAt, locale);
+  const parts = dateParts(startsAt, locale, timeZone);
 
   return (
     <article className={cn(ui.card, onOpen && "cursor-pointer")} onClick={onOpen}>
