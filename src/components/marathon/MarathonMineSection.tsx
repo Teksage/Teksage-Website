@@ -38,7 +38,9 @@ export function MarathonMineSection({ marathonId, rows: preset }: MarathonMineSe
   useEffect(() => {
     if (preset || !isAuthenticated) return;
     fetchMyMarathonBookings()
-      .then((all) => setFetched(all.filter((row) => row.marathon_id === marathonId)))
+      .then((all) =>
+        setFetched(all.filter((row) => Number(row.marathon_id) === Number(marathonId)))
+      )
       .catch(() => setFetched([]));
   }, [isAuthenticated, marathonId, preset]);
 

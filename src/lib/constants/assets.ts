@@ -12,6 +12,10 @@ export const ASTROLOGER_ASSETS = {
   dashLine: flutterSvg("astroHomeDashLine.svg"),
   meetingIcon: flutterSvg("astroMeeting.svg"),
   calendarIcon: flutterSvg("astroCalender.svg"),
+  /** Expert Hours / Events — Flutter `astroMarathon.svg` (distinct from availability calendar). */
+  eventsIcon: flutterSvg("astroMarathon.svg"),
+  /** Ask Requests — Flutter `questions.svg` (distinct from meetings icon). */
+  askRequestsIcon: flutterSvg("questions.svg"),
   calendarArrow: flutterSvg("astroCalenderArrow.svg"),
   calendarLine: flutterSvg("astroCalenderLine.svg"),
   dashedLine: flutterSvg("astroDashedLine.svg"),

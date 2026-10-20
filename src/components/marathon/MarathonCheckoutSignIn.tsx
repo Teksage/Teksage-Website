@@ -10,7 +10,6 @@ import { AUTH_SCREEN, LOGIN_SCREEN, OTP_LENGTH } from "@/lib/constants";
 import { DEFAULT_COUNTRY_CALLING_CODE } from "@/lib/constants/default-region";
 import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
-import { marathonProfileReady } from "@/lib/marathon-display";
 import { verifyOtp } from "@/lib/services/auth";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
@@ -48,7 +47,9 @@ export function MarathonCheckoutSignIn({ onComplete }: MarathonCheckoutSignInPro
         : await verifyOtp({ mobile: contact.trim(), countryCode, otp: code });
       setAuth(auth.user, auth.token);
       const profile = await fetchProfile();
-      onComplete(marathonProfileReady(profile) ? 3 : 2);
+      useAuthStore.getState().updateUser(profile);
+      // Always collect birth details / query / language on step 2 before pay.
+      onComplete(2);
     } catch {
       setError(copy.otpInvalid);
     }

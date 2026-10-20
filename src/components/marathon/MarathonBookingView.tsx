@@ -10,6 +10,7 @@ import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { MARATHON_ASSETS } from "@/lib/constants/assets";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
+import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PLAY_STORE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { MARATHON_SUCCESS } from "@/lib/constants/marathon-success";
 import { ROUTES } from "@/lib/constants/routes";
@@ -89,6 +90,14 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
                   <span className={ui.value}>{copy.minutes}</span>
                 </div>
                 <MarathonFeeSummary fee={booking.fee} currency={booking.currency} paid />
+                {booking.preferred_language ? (
+                  <div className={ui.row}>
+                    <span className={ui.label}>{copy.languageTitle}</span>
+                    <span className={ui.value}>
+                      {consultationLanguageLabel(booking.preferred_language)}
+                    </span>
+                  </div>
+                ) : null}
                 {booking.customer_query ? (
                   <div className={ui.row}>
                     <span className={ui.label}>{copy.queryTitle}</span>

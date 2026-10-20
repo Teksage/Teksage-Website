@@ -85,7 +85,7 @@ export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutCo
   }
 
   return (
-    <div className={form.span}>
+    <div className={form.contactCell}>
       <div className={form.fieldStack}>
         <span className={form.label}>{mode === "email" ? details.email : details.phone}</span>
         <div className={form.contactRow}>

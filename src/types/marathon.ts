@@ -116,6 +116,7 @@ export type MarathonBooking = {
   user_name: string;
   summary: string | null;
   customer_query?: string | null;
+  preferred_language?: string | null;
 };
 
 export type MarathonBookPanelProps = {
@@ -156,10 +157,16 @@ export type MarathonCheckoutLoginOtpProps = {
   onConfirm: (code: string) => void;
 };
 
+export type MarathonCheckoutProfileResult = {
+  customerQuery: string;
+  preferredLanguage: string;
+};
+
 export type MarathonCheckoutProfileProps = {
-  onComplete: (customerQuery: string) => void;
+  onComplete: (result: MarathonCheckoutProfileResult) => void;
   /** Prefill when returning from Pay → Birth details. */
   initialQuery?: string;
+  initialLanguage?: string;
 };
 
 export type MarathonCheckoutContactProps = {

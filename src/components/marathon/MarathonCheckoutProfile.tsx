@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ConsultationLanguageField } from "@/components/consultation/ConsultationLanguageField";
 import { MarathonCheckoutContact } from "@/components/marathon/MarathonCheckoutContact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { CONSULTATION_LANGUAGES } from "@/lib/constants/consultation-languages";
 import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
@@ -14,7 +16,11 @@ import { fetchProfile, updateProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
 import type { MarathonCheckoutProfileProps } from "@/types/marathon";
 
-export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: MarathonCheckoutProfileProps) {
+export function MarathonCheckoutProfile({
+  onComplete,
+  initialQuery = "",
+  initialLanguage = "",
+}: MarathonCheckoutProfileProps) {
   const copy = useI18nConstants(MARATHON_COPY);
   const details = useI18nConstants(PROFILE_DETAILS);
   const rules = useI18nConstants(PROFILE_FORM_VALIDATION);
@@ -33,9 +39,11 @@ export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: Marat
   const [current, setCurrent] = useState("");
   const [currentFull, setCurrentFull] = useState("");
   const [query, setQuery] = useState(initialQuery);
+  const [language, setLanguage] = useState(initialLanguage);
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState("");
   const [queryError, setQueryError] = useState("");
+  const [languageError, setLanguageError] = useState("");
 
   useEffect(() => {
     void fetchProfile()
@@ -55,12 +63,17 @@ export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: Marat
   async function save() {
     setError("");
     setQueryError("");
+    setLanguageError("");
     if (!first.trim() || !last.trim() || !dob || !tob || !birthFull.trim() || !currentFull.trim()) {
       setError(rules.fillAllRequired);
       return;
     }
     if (!emailLogin && !verified) {
       setError(t("Please verify your Email"));
+      return;
+    }
+    if (!language.trim()) {
+      setLanguageError(copy.languageRequired);
       return;
     }
     const customerQuery = query.trim();
@@ -77,7 +90,7 @@ export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: Marat
       preferredLocation: currentFull.trim(),
     });
     useAuthStore.getState().updateUser(profile);
-    onComplete(customerQuery);
+    onComplete({ customerQuery, preferredLanguage: language.trim() });
   }
 
   return (
@@ -129,7 +142,22 @@ export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: Marat
           }}
         />
         <p className={form.hintRow}>{emailLogin ? note.phoneOptional : note.emailRequired}</p>
-        <MarathonCheckoutContact mode={emailLogin ? "mobile" : "email"} onVerified={() => setVerified(true)} />
+        <div className={form.contactLangRow}>
+          <MarathonCheckoutContact mode={emailLogin ? "mobile" : "email"} onVerified={() => setVerified(true)} />
+          <ConsultationLanguageField
+            title={copy.languageTitle}
+            value={language}
+            options={CONSULTATION_LANGUAGES}
+            enabled
+            compact
+            neutral
+            error={languageError}
+            onChange={(id) => {
+              setLanguage(id);
+              if (languageError) setLanguageError("");
+            }}
+          />
+        </div>
         <label className={form.span}>
           <span className={form.label}>{copy.queryTitle}</span>
           {queryError ? <p className={ui.bookError}>{queryError}</p> : null}
@@ -145,9 +173,11 @@ export function MarathonCheckoutProfile({ onComplete, initialQuery = "" }: Marat
           />
         </label>
       </div>
-      <Button type="button" className={form.action} onClick={() => void save()}>
-        {copy.continue}
-      </Button>
+      <div className={form.actionCenterWrap}>
+        <Button type="button" className={form.actionCenter} onClick={() => void save()}>
+          {copy.continue}
+        </Button>
+      </div>
     </>
   );
 }

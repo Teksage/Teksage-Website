@@ -9,11 +9,11 @@ import { MarathonFeeSummary } from "@/components/marathon/MarathonFeeSummary";
 import { MarathonCheckoutSignIn } from "@/components/marathon/MarathonCheckoutSignIn";
 import { MarathonCheckoutStepper } from "@/components/marathon/MarathonCheckoutStepper";
 import { MarathonEventBanner } from "@/components/marathon/MarathonEventBanner";
-import { MarathonListHero } from "@/components/marathon/MarathonListHero";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { useViewerTimezone, useViewerTimezoneHint } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { consultationCurrencyForLocation } from "@/lib/consultation-currency";
+import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
 import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
@@ -23,6 +23,7 @@ import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
 import { checkoutMarathonSlot, fetchMyMarathonBookings, fetchPublicMarathon, marathonErrorMessage, verifyMarathonPayment } from "@/lib/services/marathon";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
+import { cn } from "@/lib/utils";
 import type { MarathonBooking, MarathonCheckoutStep, MarathonCheckoutViewProps, MarathonEvent } from "@/types/marathon";
 
 export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutViewProps) {
@@ -40,6 +41,7 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   const [payFee, setPayFee] = useState(""); const [payCurrency, setPayCurrency] = useState("INR");
   const [mine, setMine] = useState<MarathonBooking[]>([]);
   const [customerQuery, setCustomerQuery] = useState("");
+  const [preferredLanguage, setPreferredLanguage] = useState("");
   const back = () =>
     router.push(marathonEventPath(event?.public_slug || marathonId));
 
@@ -100,7 +102,17 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
         setStep(2);
         return;
       }
-      const order = await checkoutMarathonSlot(slotId, currency, customerQuery.trim());
+      if (!preferredLanguage.trim()) {
+        setError(copy.languageRequired);
+        setStep(2);
+        return;
+      }
+      const order = await checkoutMarathonSlot(
+        slotId,
+        currency,
+        customerQuery.trim(),
+        preferredLanguage.trim()
+      );
       await openRazorpayCheckout({
         key: order.key,
         currency: order.currency,
@@ -149,15 +161,16 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
           <span>{t("Go back")}</span>
         </button>
         <div className={MARATHON_PAGE.column}>
-          <div className={ui.hero}>
-            <MarathonListHero />
-          </div>
           <div className={ui.split}>
             <div className={ui.aside}>
-              {event ? <MarathonEventBanner event={event} linked={false} /> : null}
+              {event ? (
+                <div className={ui.asideItem}>
+                  <MarathonEventBanner event={event} linked={false} />
+                </div>
+              ) : null}
               {slotWhen && slotEnd ? (
-                <article className={MARATHON_PAGE.showCard}>
-                  <div className={MARATHON_PAGE.showBody}>
+                <article className={cn(ui.asideItem, ui.asideCard)}>
+                  <div className={ui.asideCardBody}>
                     <div className={MARATHON_PAGE.showCopy}>
                       <p className={MARATHON_PAGE.showTitle}>{copy.selectSlot}</p>
                       <p className={MARATHON_PAGE.showText}>
@@ -168,10 +181,22 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                   </div>
                 </article>
               ) : null}
-              {step === 3 && customerQuery.trim() ? (
-                <div className={ui.queryBlock}>
-                  <p className={ui.queryLabel}>{copy.queryTitle}</p>
-                  <p className={ui.queryText}>{customerQuery.trim()}</p>
+              {step === 3 && (customerQuery.trim() || preferredLanguage.trim()) ? (
+                <div className={cn(ui.asideItem, ui.asideCard)}>
+                  <div className={cn(ui.asideCardBody, ui.queryBlock)}>
+                    {preferredLanguage.trim() ? (
+                      <>
+                        <p className={ui.queryLabel}>{copy.languageTitle}</p>
+                        <p className={ui.queryText}>{consultationLanguageLabel(preferredLanguage.trim())}</p>
+                      </>
+                    ) : null}
+                    {customerQuery.trim() ? (
+                      <>
+                        <p className={ui.queryLabel}>{copy.queryTitle}</p>
+                        <p className={ui.queryText}>{customerQuery.trim()}</p>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               ) : null}
               {error && !event ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
@@ -195,8 +220,10 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                 {step === 2 ? (
                   <MarathonCheckoutProfile
                     initialQuery={customerQuery}
-                    onComplete={(query) => {
-                      setCustomerQuery(query);
+                    initialLanguage={preferredLanguage}
+                    onComplete={(result) => {
+                      setCustomerQuery(result.customerQuery);
+                      setPreferredLanguage(result.preferredLanguage);
                       setStep(3);
                     }}
                   />
@@ -216,11 +243,17 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                     )}
                     {error ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
                     {clash ? (
-                      <Button type="button" className={ui.action} onClick={() => router.push(marathonBookingPath(clash.id))}>
-                        {copy.viewBooking}
-                      </Button>
+                      <div className={ui.actionCenterWrap}>
+                        <Button type="button" className={ui.actionCenter} onClick={() => router.push(marathonBookingPath(clash.id))}>
+                          {copy.viewBooking}
+                        </Button>
+                      </div>
                     ) : (
-                      <Button type="button" className={ui.action} onClick={() => void pay()}>{copy.payBar}</Button>
+                      <div className={ui.actionCenterWrap}>
+                        <Button type="button" className={ui.actionCenter} onClick={() => void pay()}>
+                          {copy.payBar}
+                        </Button>
+                      </div>
                     )}
                   </>
                 ) : null}

@@ -1329,5 +1329,7 @@
   "Waiting for admin assignment": "प्रशासकीय नियुक्तीची प्रतीक्षा करत आहे",
   "Confirm participation. Admin assigns paid seats.": "सहभागाची पुष्टी करा. प्रशासक सशुल्क जागांचे वाटप करतात.",
   "IST": "आयएसटी",
-  "times shown in your timezone": "तुमच्या टाइमझोनमध्ये दाखवलेल्या वेळा"
+  "times shown in your timezone": "तुमच्या टाइमझोनमध्ये दाखवलेल्या वेळा",
+  "Preferred consultation language": "सल्लामसलतीसाठी पसंतीची भाषा",
+  "Select your preferred consultation language.": "तुमच्या पसंतीची सल्लामसलतीची भाषा निवडा."
 }

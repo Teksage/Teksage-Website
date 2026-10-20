@@ -13,10 +13,16 @@ export const MARATHON_CHECKOUT_COPY = {
 
 export const MARATHON_CHECKOUT = {
   slotQuery: "slot",
-  hero: "hidden xl:block",
-  split: "grid items-start gap-5 xl:grid-cols-2",
-  aside: "order-2 flex min-w-0 flex-col gap-5 xl:order-1",
-  card: "order-1 overflow-visible rounded-3xl border border-[var(--color-chat-bot-border)] bg-white shadow-[0_12px_32px_rgb(16_24_16_/_0.08)] xl:order-2",
+  /** Checkout uses a single full-width column — no empty left pane on desktop. */
+  hero: "hidden",
+  split: "flex w-full flex-col gap-5",
+  aside: "flex w-full min-w-0 flex-col gap-4 md:flex-row md:items-stretch",
+  asideItem: "min-w-0 flex-1",
+  /** Shared chrome for event / slot / query summary cards on checkout. */
+  asideCard:
+    "flex h-full min-h-[7.5rem] min-w-0 flex-col overflow-hidden rounded-3xl border border-[var(--color-chat-bot-border)] border-l-4 border-l-[var(--color-brand-primary)] bg-white shadow-[0_8px_24px_rgb(16_24_16_/_0.06)]",
+  asideCardBody: "flex h-full flex-col justify-center gap-2 p-4 sm:p-5",
+  card: "w-full overflow-visible rounded-3xl border border-[var(--color-chat-bot-border)] bg-white shadow-[0_12px_32px_rgb(16_24_16_/_0.08)]",
   stepper: "bg-[color-mix(in_srgb,var(--color-home-screen-mint)_70%,white)] px-3 py-4 sm:px-6",
   track: "flex w-full min-w-0 items-start",
   step: "flex min-w-0 flex-1 flex-col items-center gap-1 text-center",
@@ -37,8 +43,8 @@ export const MARATHON_CHECKOUT = {
   body: "flex flex-col gap-4 px-4 py-5 sm:px-8 sm:py-6",
   stepTitle: `${TYPO.h3} text-[var(--color-brand-black)]`,
   hint: `${TYPO.chatCardTextBot} text-black/60`,
-  /** Full-width note inside the 2-col profile grid. */
-  hintRow: `${TYPO.chatCardTextBot} col-span-2 text-black/60`,
+  /** Full-width note inside the profile grid (2-col mobile / 3-col desktop). */
+  hintRow: `${TYPO.chatCardTextBot} col-span-2 text-black/60 md:col-span-3`,
   textarea: `min-h-24 w-full resize-y rounded-xl border border-black/10 bg-white px-3 py-2.5 text-[var(--color-brand-black)] shadow-none outline-none focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
   summary: "flex w-full flex-col items-stretch gap-2 text-left",
   summaryTitle: `${TYPO.labelSemibold} text-left text-[var(--color-brand-black)]`,
@@ -47,12 +53,16 @@ export const MARATHON_CHECKOUT = {
   summaryValue: `${TYPO.labelSemibold} text-right text-[var(--color-brand-black)]`,
   summaryTotal: `${TYPO.h3} text-[var(--color-brand-black)]`,
   summaryRule: "my-1 h-px w-full bg-black/10",
-  queryBlock: "flex w-full flex-col gap-1 rounded-xl border border-black/8 bg-[color-mix(in_srgb,var(--color-home-screen-mint)_35%,white)] px-3 py-2.5 text-left",
+  queryBlock: "flex w-full flex-col gap-2 text-left",
   queryLabel: `${TYPO.caption} font-semibold text-black/55`,
   queryText: `${TYPO.chatCardTextBot} whitespace-pre-wrap text-[var(--color-brand-black)]`,
-  pair: "grid grid-cols-2 gap-3",
-  span: "col-span-2 flex flex-col gap-2",
+  /** Birth fields: 2 per row on small screens, 3 per row when form is full width. */
+  pair: "grid grid-cols-2 gap-3 md:grid-cols-3",
+  span: "col-span-2 flex flex-col gap-2 md:col-span-3",
+  /** Phone + preferred language share one row on md+. */
+  contactLangRow: "col-span-2 grid grid-cols-1 gap-3 md:col-span-3 md:grid-cols-2",
   fieldStack: "flex min-w-0 flex-col gap-1.5",
+  contactCell: "flex min-w-0 flex-col gap-2",
   contactRow: "flex items-center gap-2",
   dial: "flex h-11 w-[4.25rem] shrink-0 items-center justify-center rounded-xl border border-black/10 bg-white",
   verify: `h-11 shrink-0 rounded-xl px-3.5 ${TYPO.sizeBodySm} ${TYPO.weightExtrabold} transition-opacity`,
@@ -61,11 +71,14 @@ export const MARATHON_CHECKOUT = {
   otpContact: `${TYPO.chatCardTextBot} font-semibold text-[var(--color-brand-black)]`,
   otpRow: "flex items-center gap-2",
   otpBoxes: "justify-center gap-3",
-  otpCell: `h-10 w-9 shrink-0 rounded-md border-2 border-black/10 bg-white text-center sm:h-10 sm:w-9 ${TYPO.sizeBodySm} ${TYPO.weightBold} text-[var(--color-brand-black)] outline-none`,
-  otpCellLogin: `h-12 w-11 shrink-0 rounded-xl border-2 border-black/10 bg-white text-center shadow-[0_1px_4px_rgb(0_0_0_/_0.05)] sm:h-14 sm:w-12 ${TYPO.sizeLg} ${TYPO.weightBold} text-[var(--color-brand-black)] outline-none`,
+  otpCell: `h-10 w-9 shrink-0 rounded-md border-2 border-black/10 bg-white text-center sm:h-10 sm:w-9 ${TYPO.sizeBodySm} ${TYPO.weightBold} text-[var(--color-brand-black)] outline-none focus:border-[var(--color-brand-primary)] focus:bg-white focus:shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]`,
+  otpCellLogin: `h-12 w-11 shrink-0 rounded-xl border-2 border-black/10 bg-white text-center shadow-[0_1px_4px_rgb(0_0_0_/_0.05)] sm:h-14 sm:w-12 ${TYPO.sizeLg} ${TYPO.weightBold} text-[var(--color-brand-black)] outline-none focus:border-[var(--color-brand-primary)] focus:bg-white focus:shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]`,
   label: `${TYPO.caption} font-semibold text-black/55`,
   field: `h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-[var(--color-brand-black)] shadow-none outline-none focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
   locationField: `h-11 w-full rounded-xl border border-black/10 !bg-white px-3 text-[var(--color-brand-black)] shadow-none outline-none focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 disabled:!bg-white ${TYPO.chatCardTextBot}`,
   action: `h-11 w-full cursor-pointer rounded-full bg-[var(--color-brand-primary)] text-white shadow-[0_6px_16px_rgb(16_177_0_/_0.28)] hover:brightness-105 ${TYPO.bodySemibold}`,
+  /** Content-width CTA, centered (Continue on birth-details step). */
+  actionCenterWrap: "mt-1 flex w-full justify-center",
+  actionCenter: `h-11 w-auto cursor-pointer rounded-full bg-[var(--color-brand-primary)] px-10 text-white shadow-[0_6px_16px_rgb(16_177_0_/_0.28)] hover:brightness-105 ${TYPO.bodySemibold}`,
   viewAll: `${TYPO.chatBubble} cursor-pointer border-0 bg-transparent p-0 text-[var(--color-brand-primary)] underline underline-offset-2 hover:opacity-80`,
 } as const;

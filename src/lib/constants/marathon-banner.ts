@@ -1,7 +1,7 @@
 import { TYPO } from "@/lib/constants/typography";
 
 export const MARATHON_BANNER_UI = {
-  card: "overflow-visible rounded-3xl border border-[var(--color-chat-bot-border)] bg-white shadow-[0_10px_28px_rgb(16_24_16_/_0.07)]",
+  card: "h-full overflow-visible rounded-3xl border border-[var(--color-chat-bot-border)] border-l-4 border-l-[var(--color-brand-primary)] bg-white shadow-[0_8px_24px_rgb(16_24_16_/_0.06)]",
   top: "flex items-start gap-4 p-4 sm:p-5",
   copy: "flex min-w-0 flex-1 flex-col gap-2",
   titleRow: "flex flex-wrap items-start justify-between gap-2",

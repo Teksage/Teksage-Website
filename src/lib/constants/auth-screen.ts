@@ -38,6 +38,8 @@ export const AUTH_SCREEN = {
     "border-[var(--auth-otp-cell-border)] focus:border-[var(--color-brand-primary)] focus:bg-white focus:shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]",
   otpCellFilledClassName:
     "border-[var(--color-brand-primary)] bg-[var(--auth-otp-filled-bg)]",
+  otpCellFocusedClassName:
+    "border-[var(--color-brand-primary)] bg-white shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]",
   otpCellErrorClassName:
     "border border-[var(--color-brand-error)] text-[var(--color-brand-error)] focus:shadow-[0_0_0_3px_var(--auth-otp-error-ring)]",
   tabsTrackClassName: "relative mb-5 flex rounded-xl bg-black/[0.04] p-1",
