@@ -71,6 +71,7 @@ export function MarathonCheckoutLoginOtp({
         value={cells}
         onChange={setCells}
         hasError={Boolean(error)}
+        autoFocus
         className={form.otpBoxes}
         cellClassName={form.otpCellLogin}
       />

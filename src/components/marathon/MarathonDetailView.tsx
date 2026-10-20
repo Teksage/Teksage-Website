@@ -56,7 +56,10 @@ export function MarathonDetailView({
       return;
     }
     fetchMyMarathonBookings()
-      .then((rows) => setMine(rows.filter((row) => row.marathon_id === event.id)))
+      .then((rows) => {
+        const filtered = rows.filter((row) => Number(row.marathon_id) === Number(event.id));
+        setMine(filtered);
+      })
       .catch(() => setMine([]));
   }, [isAuthenticated, event]);
 
@@ -64,15 +67,18 @@ export function MarathonDetailView({
     if (!mine?.length) return [] as number[];
     const ids = new Set<number>();
     for (const row of mine) {
-      if (Number.isFinite(row.slot_id)) {
-        ids.add(row.slot_id);
+      const slotId = Number(row.slot_id);
+      if (Number.isFinite(slotId) && slotId > 0) {
+        ids.add(slotId);
         continue;
       }
       // Fallback when older APIs omit slot_id: match by start time.
+      const bookingStart = new Date(row.starts_at).getTime();
+      if (!Number.isFinite(bookingStart)) continue;
       const match = event?.slots.find(
-        (slot) => new Date(slot.starts_at).getTime() === new Date(row.starts_at).getTime()
+        (slot) => new Date(slot.starts_at).getTime() === bookingStart
       );
-      if (match) ids.add(match.id);
+      if (match) ids.add(Number(match.id));
     }
     return [...ids];
   }, [mine, event]);
@@ -80,18 +86,18 @@ export function MarathonDetailView({
 
   useEffect(() => {
     if (!event) return;
-    if (slotId != null && bookedSlotIds.includes(slotId)) {
+    if (slotId != null && bookedSlotIds.includes(Number(slotId))) {
       setSlotId(null);
       return;
     }
     if (slotId != null) return;
     const first = event.slots.find(
       (slot) =>
-        slot.seats_left > 0 &&
+        Number(slot.seats_left) > 0 &&
         event.booking_open &&
-        !bookedSlotIds.includes(slot.id)
+        !bookedSlotIds.includes(Number(slot.id))
     );
-    if (first) setSlotId(first.id);
+    if (first) setSlotId(Number(first.id));
   }, [event, slotId, bookedSlotIds]);
 
   return (
@@ -139,7 +145,7 @@ export function MarathonDetailView({
                     onSelect={setSlotId}
                     bookedSlotIds={bookedSlotIds}
                   />
-                  {slotId && event.booking_open && !bookedSlotIds.includes(slotId) ? (
+                  {slotId && event.booking_open && !bookedSlotIds.includes(Number(slotId)) ? (
                     <MarathonBookPanel event={event} slotId={slotId} />
                   ) : null}
                 </>

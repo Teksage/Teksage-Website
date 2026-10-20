@@ -1329,5 +1329,7 @@
   "Waiting for admin assignment": "నిర్వాహక కేటాయింపు కోసం వేచి ఉంది",
   "Confirm participation. Admin assigns paid seats.": "పాల్గొనడాన్ని నిర్ధారించండి. నిర్వాహకుడు చెల్లించిన సీట్లను కేటాయిస్తారు.",
   "IST": "IST",
-  "times shown in your timezone": "మీ టైమ్‌జోన్‌లో చూపబడిన సమయాలు"
+  "times shown in your timezone": "మీ టైమ్‌జోన్‌లో చూపబడిన సమయాలు",
+  "Preferred consultation language": "ఇష్టపడే సంప్రదింపు భాష",
+  "Select your preferred consultation language.": "మీకు నచ్చిన సంప్రదింపు భాషను ఎంచుకోండి."
 }

@@ -20,6 +20,8 @@ export const MARATHON_COPY = {
   queryTitle: "Your question",
   queryHint: "Tell us what you want to ask. Your assigned astrologer will see this.",
   queryRequired: "Enter your question before payment.",
+  languageTitle: "Preferred consultation language",
+  languageRequired: "Select your preferred consultation language.",
   firstName: "First name",
   lastName: "Last name",
   dateOfBirth: "Date of birth",
@@ -168,7 +170,8 @@ export const MARATHON_PAGE = {
   bookError: `${TYPO.error} text-[var(--color-brand-error)]`,
   payRow: "flex justify-end",
   payBtn: `inline-flex w-fit cursor-pointer items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-4 py-1.5 text-white shadow-[0_4px_12px_rgb(16_177_0_/_0.22)] transition hover:-translate-y-px active:scale-[0.98] ${TYPO.label}`,
-  payBar: `inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[linear-gradient(90deg,var(--color-brand-primary),color-mix(in_srgb,var(--color-brand-primary)_72%,black))] px-5 py-3 text-white shadow-[0_8px_20px_rgb(16_177_0_/_0.28)] transition hover:brightness-105 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 ${TYPO.bodySemibold}`,
+  payBarWrap: "flex w-full justify-center",
+  payBar: `inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-full bg-[linear-gradient(90deg,var(--color-brand-primary),color-mix(in_srgb,var(--color-brand-primary)_72%,black))] px-8 py-3 text-white shadow-[0_8px_20px_rgb(16_177_0_/_0.28)] transition hover:brightness-105 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 ${TYPO.bodySemibold}`,
 } as const;
 
 export const MARATHON_PORTAL_UI = {

@@ -1,13 +1,23 @@
 "use client";
 
-import { useRef, KeyboardEvent, ClipboardEvent } from "react";
+import { useEffect, useRef, useState, KeyboardEvent, ClipboardEvent } from "react";
 import { cn } from "@/lib/utils";
 import { AUTH_SCREEN, OTP_LENGTH } from "@/lib/constants";
 import type { OtpInputProps } from "@/types";
 
-export function OtpInput({ value, onChange, hasError, className, cellClassName }: OtpInputProps) {
+export function OtpInput({ value, onChange, hasError, className, cellClassName, autoFocus }: OtpInputProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const cells = Array.from({ length: OTP_LENGTH }, (_, i) => value[i] ?? "");
+
+  useEffect(() => {
+    if (!autoFocus) return;
+    const firstEmpty = cells.findIndex((digit) => !digit);
+    const index = firstEmpty >= 0 ? firstEmpty : 0;
+    inputRefs.current[index]?.focus();
+    // One-shot focus when the OTP step appears.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoFocus]);
 
   function handleChange(index: number, raw: string) {
     const digit = raw.replace(/\D/g, "").slice(-1);
@@ -61,6 +71,8 @@ export function OtpInput({ value, onChange, hasError, className, cellClassName }
           onChange={(e) => handleChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
+          onFocus={() => setFocusedIndex(index)}
+          onBlur={() => setFocusedIndex((current) => (current === index ? null : current))}
           className={cn(
             AUTH_SCREEN.otpCellClassName,
             hasError
@@ -68,7 +80,8 @@ export function OtpInput({ value, onChange, hasError, className, cellClassName }
               : cells[index]
                 ? AUTH_SCREEN.otpCellFilledClassName
                 : AUTH_SCREEN.otpCellIdleClassName,
-            cellClassName
+            cellClassName,
+            !hasError && focusedIndex === index ? AUTH_SCREEN.otpCellFocusedClassName : null
           )}
           aria-label={`OTP digit ${index + 1}`}
         />

@@ -9,6 +9,7 @@ import { MarathonPortalCard } from "@/components/marathon/MarathonPortalCard";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
+import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
 import { MARATHON_ASTROLOGER_COPY } from "@/lib/constants/marathon-astrologer";
 import { MARATHON_COPY, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { astrologerMarathonEventPath, astrologerMeetingHoroscopePath } from "@/lib/constants/routes";
@@ -115,6 +116,9 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
               title={row.user_name}
               lines={[
                 formatMarathonWhen(row.starts_at, localeTag, viewerZone),
+                ...(row.preferred_language
+                  ? [`${copy.languageTitle}: ${consultationLanguageLabel(row.preferred_language)}`]
+                  : []),
                 ...(row.customer_query ? [`${copy.customerQuery}: ${row.customer_query}`] : []),
               ]}
               status={done ? label : row.admin_ended ? `${label} · ${copy.adminEnded}` : label}

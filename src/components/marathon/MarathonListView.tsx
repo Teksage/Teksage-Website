@@ -116,7 +116,7 @@ export function MarathonListView() {
             <p className={MARATHON_PAGE.heroSub}>{copy.empty}</p>
           ) : null}
           {visible.map((event) => {
-            const mine = bookings.filter((row) => row.marathon_id === event.id);
+            const mine = bookings.filter((row) => Number(row.marathon_id) === Number(event.id));
             return (
               <MarathonEventBanner
                 key={event.id}

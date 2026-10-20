@@ -36,11 +36,13 @@ export async function fetchPublicMarathon(idOrSlug: number | string): Promise<Ma
 export async function checkoutMarathonSlot(
   slotId: number,
   currency: "INR" | "USD" = "INR",
-  customerQuery: string
+  customerQuery: string,
+  preferredLanguage: string
 ): Promise<MarathonCheckoutOrder> {
   const res = await http.post(`${API_ENDPOINTS.marathonCheckout}/${slotId}/checkout`, {
     currency,
     customer_query: customerQuery,
+    preferred_language: preferredLanguage,
   });
   return res.data as MarathonCheckoutOrder;
 }

@@ -21,17 +21,20 @@ export function MarathonSlotStrip({
   const viewerZone = useViewerTimezone();
   const ui = MARATHON_PAGE;
   const tone = MARATHON_BANNER_UI;
-  const mine = new Set(bookedSlotIds);
+  const mine = new Set(
+    bookedSlotIds.map((id) => Number(id)).filter((id) => Number.isFinite(id) && id > 0)
+  );
 
   return (
     <div className={ui.slotRow}>
       {event.slots.map((slot) => {
         const start = marathonDateParts(slot.starts_at, viewerZone, localeTag);
-        const mineBooked = mine.has(slot.id);
-        const full = slot.seats_left === 0;
+        const id = Number(slot.id);
+        const mineBooked = mine.has(id);
+        const full = Number(slot.seats_left) === 0;
         const shut = !event.booking_open || Boolean(event.admin_ended);
         const open = !mineBooked && !full && !shut;
-        const selected = slotId === slot.id && open;
+        const selected = Number(slotId) === id && open;
         const label = mineBooked
           ? copy.booked
           : full
@@ -47,7 +50,7 @@ export function MarathonSlotStrip({
             type="button"
             disabled={!open}
             className={cn(ui.slotBox, boxClass, selected && ui.slotSelected)}
-            onClick={() => onSelect(slot.id)}
+            onClick={() => onSelect(id)}
           >
             {selected ? (
               <span className={ui.slotCheck} aria-hidden>

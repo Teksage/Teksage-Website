@@ -1329,5 +1329,7 @@
   "Waiting for admin assignment": "நிர்வாகப் பணிக்காகக் காத்திருக்கிறது",
   "Confirm participation. Admin assigns paid seats.": "பங்கேற்பை உறுதிசெய்யவும். நிர்வாகி கட்டண இடங்களை ஒதுக்குவார்.",
   "IST": "ஐஎஸ்டி",
-  "times shown in your timezone": "உங்கள் நேர மண்டலத்தில் காட்டப்படும் நேரங்கள்"
+  "times shown in your timezone": "உங்கள் நேர மண்டலத்தில் காட்டப்படும் நேரங்கள்",
+  "Preferred consultation language": "விருப்பமான கலந்தாய்வு மொழி",
+  "Select your preferred consultation language.": "உங்களுக்கு விருப்பமான கலந்தாய்வு மொழியைத் தேர்ந்தெடுக்கவும்."
 }

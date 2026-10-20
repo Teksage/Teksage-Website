@@ -41,6 +41,8 @@ export interface OtpInputProps {
   hasError?: boolean;
   className?: string;
   cellClassName?: string;
+  /** Focus the first empty cell when the OTP step mounts. */
+  autoFocus?: boolean;
 }
 
 export interface OtpVerifyViewProps {
