@@ -117,6 +117,10 @@ export type MarathonBooking = {
   summary: string | null;
   customer_query?: string | null;
   preferred_language?: string | null;
+  related_profile_id?: number | null;
+  consult_for?: "self" | "other" | null;
+  member_display_name?: string | null;
+  relationship?: string | null;
 };
 
 export type MarathonBookPanelProps = {
@@ -157,9 +161,45 @@ export type MarathonCheckoutLoginOtpProps = {
   onConfirm: (code: string) => void;
 };
 
+export type MarathonBirthDraft = {
+  first: string;
+  last: string;
+  dob: string;
+  tob: string;
+  birth: string;
+  birthFull: string;
+  current: string;
+  currentFull: string;
+};
+
+export type RelatedProfile = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  display_name: string;
+  relationship: string;
+  preferred_location: string;
+  date_of_birth: string | null;
+  time_of_birth: string | null;
+  place_of_birth: string | null;
+};
+
+export type RelatedProfileInput = {
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  time_of_birth: string;
+  place_of_birth: string;
+  preferred_location: string;
+  relationship: string;
+};
+
 export type MarathonCheckoutProfileResult = {
   customerQuery: string;
   preferredLanguage: string;
+  relatedProfileId: number | null;
+  memberDisplayName: string | null;
+  relationship: string | null;
 };
 
 export type MarathonCheckoutProfileProps = {
@@ -167,10 +207,24 @@ export type MarathonCheckoutProfileProps = {
   /** Prefill when returning from Pay → Birth details. */
   initialQuery?: string;
   initialLanguage?: string;
+  initialRelatedProfileId?: number | null;
+  className?: string;
+};
+
+export type MarathonCheckoutBirthFieldsProps = {
+  draft: MarathonBirthDraft;
+  onChange: (next: MarathonBirthDraft) => void;
+  className?: string;
 };
 
 export type MarathonCheckoutContactProps = {
   mode: "email" | "mobile";
+  /** Others bookings need the registered-user wording. A new account uses Email / Phone Number. */
+  clarifyOwner?: boolean;
+  /** Already-verified account email or mobile. Shown locked so checkout does not ask again. */
+  initialValue?: string;
+  initialDial?: string;
+  alreadyVerified?: boolean;
   onVerified: () => void;
 };
 

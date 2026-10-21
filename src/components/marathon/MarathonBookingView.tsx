@@ -11,6 +11,7 @@ import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { MARATHON_ASSETS } from "@/lib/constants/assets";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
+import { RELATED_RELATIONSHIP_COPY, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PLAY_STORE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { MARATHON_SUCCESS } from "@/lib/constants/marathon-success";
 import { ROUTES } from "@/lib/constants/routes";
@@ -22,6 +23,7 @@ import type { MarathonBooking } from "@/types/marathon";
 
 export function MarathonBookingView({ bookingId }: { bookingId: number }) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
   const { locale, t } = useT();
   const localeTag = bcp47FromAppLocale(locale);
   const viewerZone = useViewerTimezone();
@@ -77,39 +79,49 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
               </section>
               <section className={ui.card}>
                 <h2 className={ui.cardHead}>{copy.meetingDetails}</h2>
-                <div className={ui.row}>
-                  <span className={ui.label}>{t("Date")}</span>
-                  <span className={ui.value}>{`${when.month} ${when.day}`}</span>
-                </div>
-                <div className={ui.row}>
-                  <span className={ui.label}>{t("Time")}</span>
-                  <span className={ui.value}>{marathonTimeRange(when.time, until.time)}</span>
-                </div>
-                <div className={ui.row}>
-                  <span className={ui.label}>{t("Duration")}</span>
-                  <span className={ui.value}>{copy.minutes}</span>
-                </div>
-                <MarathonFeeSummary fee={booking.fee} currency={booking.currency} paid />
-                {booking.preferred_language ? (
+                <div className={ui.details}>
                   <div className={ui.row}>
-                    <span className={ui.label}>{copy.languageTitle}</span>
-                    <span className={ui.value}>
-                      {consultationLanguageLabel(booking.preferred_language)}
-                    </span>
+                    <span className={ui.label}>{t("Date")}</span>
+                    <span className={ui.value}>{`${when.month} ${when.day}`}</span>
                   </div>
-                ) : null}
-                {booking.customer_query ? (
                   <div className={ui.row}>
-                    <span className={ui.label}>{copy.queryTitle}</span>
-                    <span className={ui.value}>{booking.customer_query}</span>
+                    <span className={ui.label}>{t("Time")}</span>
+                    <span className={ui.value}>{marathonTimeRange(when.time, until.time)}</span>
                   </div>
-                ) : null}
-                {booking.astrologer_name ? (
                   <div className={ui.row}>
-                    <span className={ui.label}>{t("Astrologer")}</span>
-                    <span className={ui.value}>{booking.astrologer_name}</span>
+                    <span className={ui.label}>{t("Duration")}</span>
+                    <span className={ui.value}>{copy.minutes}</span>
                   </div>
-                ) : null}
+                  <MarathonFeeSummary fee={booking.fee} currency={booking.currency} paid />
+                  {booking.member_display_name ? (
+                    <div className={ui.row}>
+                      <span className={ui.label}>{copy.relationship}</span>
+                      <span className={ui.value}>
+                        {`${booking.member_display_name} (${relatedRelationshipLabel(relations, booking.relationship ?? "")})`}
+                      </span>
+                    </div>
+                  ) : null}
+                  {booking.preferred_language ? (
+                    <div className={ui.row}>
+                      <span className={ui.label}>{copy.languageTitle}</span>
+                      <span className={ui.value}>
+                        {consultationLanguageLabel(booking.preferred_language)}
+                      </span>
+                    </div>
+                  ) : null}
+                  {booking.astrologer_name ? (
+                    <div className={ui.row}>
+                      <span className={ui.label}>{t("Astrologer")}</span>
+                      <span className={ui.value}>{booking.astrologer_name}</span>
+                    </div>
+                  ) : null}
+                  {booking.customer_query ? (
+                    <div className={ui.cellWide}>
+                      <span className={ui.label}>{copy.queryTitle}</span>
+                      <span className={ui.value}>{booking.customer_query}</span>
+                    </div>
+                  ) : null}
+                </div>
               </section>
               <div className={ui.storeBar}>
                   <a className={ui.storePrimary} href={ROUTES.home}>

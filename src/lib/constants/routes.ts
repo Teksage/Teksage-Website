@@ -3,6 +3,8 @@
  * Nav labels/icons stay in `main-nav.ts`; hrefs must match these values.
  */
 
+import { MEETING_DETAIL_QUERY } from "@/lib/constants/astrologer-portal";
+
 export const ROUTES = {
   root: "/",
   home: "/home",
@@ -32,7 +34,7 @@ export const ROUTES = {
   astrologerMeetings: "/astrologer/meetings",
   astrologerAvailability: "/astrologer/availability",
   astrologerChatPrompts: "/astrologer/chat-prompts",
-  astrologerMarathon: "/astrologer/marathon",
+  astrologerMarathon: "/astrologer/experthours",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",
@@ -81,8 +83,14 @@ export function astrologerMarathonEventPath(marathonId: number): string {
 
 export const MARATHON_HOROSCOPE_RETURN = "return" as const;
 
-export function astrologerMeetingHoroscopePath(eventId: number, returnTo: string): string {
+export function astrologerMeetingHoroscopePath(
+  eventId: number,
+  returnTo: string,
+  customerName?: string
+): string {
   const params = new URLSearchParams({ [MARATHON_HOROSCOPE_RETURN]: returnTo });
+  const name = customerName?.trim();
+  if (name) params.set(MEETING_DETAIL_QUERY.name, name);
   return `${ROUTES.astrologerMeetings}/${eventId}/horoscope?${params.toString()}`;
 }
 
