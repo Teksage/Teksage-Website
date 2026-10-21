@@ -1,183 +1,174 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ConsultationLanguageField } from "@/components/consultation/ConsultationLanguageField";
+import { MarathonCheckoutBirthFields } from "@/components/marathon/MarathonCheckoutBirthFields";
 import { MarathonCheckoutContact } from "@/components/marathon/MarathonCheckoutContact";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
-import { useI18nConstants, useT } from "@/hooks/useT";
+import { useI18nConstants } from "@/hooks/useT";
+import { useMarathonCheckoutProfile } from "@/hooks/useMarathonCheckoutProfile";
 import { CONSULTATION_LANGUAGES } from "@/lib/constants/consultation-languages";
-import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
+import { CONSULTATION_SCREEN } from "@/lib/constants/consultation-screen";
+import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
-import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
-import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
-import { fetchProfile, updateProfile } from "@/lib/services/profile";
-import { useAuthStore } from "@/store/auth.store";
+import {
+  RELATED_RELATIONSHIP_COPY,
+  RELATED_RELATIONSHIP_IDS,
+  relatedRelationshipLabel,
+} from "@/lib/constants/related-profiles";
+import { cn } from "@/lib/utils";
 import type { MarathonCheckoutProfileProps } from "@/types/marathon";
 
 export function MarathonCheckoutProfile({
   onComplete,
   initialQuery = "",
   initialLanguage = "",
+  initialRelatedProfileId = null,
+  className,
 }: MarathonCheckoutProfileProps) {
   const copy = useI18nConstants(MARATHON_COPY);
-  const details = useI18nConstants(PROFILE_DETAILS);
-  const rules = useI18nConstants(PROFILE_FORM_VALIDATION);
-  const { t } = useT();
-  const ui = MARATHON_PAGE;
+  const consult = useI18nConstants(CONSULTATION_SCREEN);
+  const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
   const form = MARATHON_CHECKOUT;
-  const note = useI18nConstants(MARATHON_CHECKOUT_COPY);
-  const authUser = useAuthStore((s) => s.user);
-  const emailLogin = Boolean(authUser?.email?.trim());
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
-  const [dob, setDob] = useState("");
-  const [tob, setTob] = useState("");
-  const [birth, setBirth] = useState("");
-  const [birthFull, setBirthFull] = useState("");
-  const [current, setCurrent] = useState("");
-  const [currentFull, setCurrentFull] = useState("");
-  const [query, setQuery] = useState(initialQuery);
-  const [language, setLanguage] = useState(initialLanguage);
-  const [verified, setVerified] = useState(false);
-  const [error, setError] = useState("");
-  const [queryError, setQueryError] = useState("");
-  const [languageError, setLanguageError] = useState("");
-
-  useEffect(() => {
-    void fetchProfile()
-      .then((profile) => {
-        setFirst(profile.firstName ?? "");
-        setLast(profile.lastName ?? "");
-        setDob((profile.dateOfBirth ?? "").slice(0, 10));
-        setTob((profile.timeOfBirth ?? "").slice(0, 5));
-        setBirth(profile.placeOfBirth ?? "");
-        setBirthFull(profile.placeOfBirth ?? "");
-        setCurrent(profile.preferredLocation ?? "");
-        setCurrentFull(profile.preferredLocation ?? "");
-      })
-      .catch(() => undefined);
-  }, []);
-
-  async function save() {
-    setError("");
-    setQueryError("");
-    setLanguageError("");
-    if (!first.trim() || !last.trim() || !dob || !tob || !birthFull.trim() || !currentFull.trim()) {
-      setError(rules.fillAllRequired);
-      return;
-    }
-    if (!emailLogin && !verified) {
-      setError(t("Please verify your Email"));
-      return;
-    }
-    if (!language.trim()) {
-      setLanguageError(copy.languageRequired);
-      return;
-    }
-    const customerQuery = query.trim();
-    if (!customerQuery) {
-      setQueryError(copy.queryRequired);
-      return;
-    }
-    const { profile } = await updateProfile({
-      firstName: first.trim(),
-      lastName: last.trim(),
-      dateOfBirth: dob,
-      timeOfBirth: tob,
-      placeOfBirth: birthFull.trim(),
-      preferredLocation: currentFull.trim(),
-    });
-    useAuthStore.getState().updateUser(profile);
-    onComplete({ customerQuery, preferredLanguage: language.trim() });
-  }
+  const ui = MARATHON_PAGE;
+  const step = useMarathonCheckoutProfile(initialQuery, initialLanguage, initialRelatedProfileId, onComplete);
+  const owner = step.owner;
+  const emailReady = Boolean(owner?.isEmailVerified && owner.email?.trim());
+  const phoneReady = Boolean(owner?.isMobileVerified && owner.mobile?.trim());
+  /** Phone is the extra field only after email is already verified. */
+  const askPhone = emailReady && !phoneReady;
+  const contactVerified = !askPhone && emailReady;
+  const contactValue = askPhone ? owner?.mobile?.trim() ?? "" : contactVerified ? owner?.email?.trim() ?? "" : "";
+  const contactDial = (owner?.countryCode ?? "").replace(/\D/g, "");
 
   return (
-    <>
+    <div className={className}>
       <p className={form.stepTitle}>{copy.profileTitle}</p>
-      <p className={form.hint}>{copy.profileHint}</p>
-      {error ? <p className={ui.bookError}>{error}</p> : null}
+      <p className={form.hint}>{step.mode === "other" ? copy.othersHint : copy.profileHint}</p>
+      {step.error ? <p className={ui.bookError}>{step.error}</p> : null}
       <div className={form.pair}>
-        <label className={form.fieldStack}>
-          <span className={form.label}>{copy.firstName}</span>
-          <Input className={form.field} value={first} onChange={(e) => setFirst(e.target.value)} />
-        </label>
-        <label className={form.fieldStack}>
-          <span className={form.label}>{copy.lastName}</span>
-          <Input className={form.field} value={last} onChange={(e) => setLast(e.target.value)} />
-        </label>
-        <label className={form.fieldStack}>
-          <span className={form.label}>{copy.dateOfBirth}</span>
-          <Input className={form.field} type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
-        </label>
-        <label className={form.fieldStack}>
-          <span className={form.label}>{copy.timeOfBirth}</span>
-          <Input className={form.field} type="time" value={tob} onChange={(e) => setTob(e.target.value)} />
-        </label>
-        <ProfileLocationField
-          label={copy.placeOfBirth}
-          value={birth}
-          fullLocation={birthFull}
-          isEditable
-          placeholder=""
-          labelClassName={form.label}
-          inputClassName={form.locationField}
-          onChange={(city, full) => {
-            setBirth(city);
-            setBirthFull(full);
-          }}
-        />
-        <ProfileLocationField
-          label={details.currentLocation}
-          value={current}
-          fullLocation={currentFull}
-          isEditable
-          placeholder=""
-          labelClassName={form.label}
-          inputClassName={form.locationField}
-          onChange={(city, full) => {
-            setCurrent(city);
-            setCurrentFull(full);
-          }}
-        />
-        <p className={form.hintRow}>{emailLogin ? note.phoneOptional : note.emailRequired}</p>
+        {step.canChooseSubject ? (
+          <div className={form.span}>
+            <span className={form.label}>{copy.consultFor}</span>
+            <div className={form.subjectRow}>
+              <button type="button" className={step.mode === "self" ? form.subjectOn : form.subjectOff} onClick={step.showSelf}>
+                {copy.self}
+              </button>
+              <button type="button" className={step.mode === "other" ? form.subjectOn : form.subjectOff} onClick={step.showOthers}>
+                {copy.others}
+              </button>
+            </div>
+          </div>
+        ) : null}
+        {step.mode === "other" && step.people.length > 0 ? (
+          <div className={form.span}>
+            <span className={form.label}>{copy.savedPeople}</span>
+            <div className={form.savedRow}>
+              <select
+                className={cn(form.field, form.savedSelect)}
+                value={step.adding || step.selectedId == null ? "" : String(step.selectedId)}
+                onChange={(e) => {
+                  const person = step.people.find((row) => String(row.id) === e.target.value);
+                  if (person) step.pickPerson(person);
+                  else step.startAdd();
+                }}
+              >
+                <option value="">{copy.selectPerson}</option>
+                {step.people.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {person.display_name} ({relatedRelationshipLabel(relations, person.relationship)})
+                  </option>
+                ))}
+              </select>
+              <button type="button" className={step.adding ? form.addNewOn : form.addNew} onClick={step.startAdd}>
+                {copy.addPerson}
+              </button>
+            </div>
+          </div>
+        ) : null}
+        {step.showBirth ? (
+          <MarathonCheckoutBirthFields className="contents" draft={step.draft} onChange={step.setDraft} />
+        ) : null}
         <div className={form.contactLangRow}>
-          <MarathonCheckoutContact mode={emailLogin ? "mobile" : "email"} onVerified={() => setVerified(true)} />
-          <ConsultationLanguageField
-            title={copy.languageTitle}
-            value={language}
-            options={CONSULTATION_LANGUAGES}
-            enabled
-            compact
-            neutral
-            error={languageError}
-            onChange={(id) => {
-              setLanguage(id);
-              if (languageError) setLanguageError("");
-            }}
-          />
+          {step.mode === "other" && step.showBirth ? (
+            <label className={form.fieldStack}>
+              <span className={form.label}>{copy.relationship}</span>
+              <select
+                className={form.field}
+                value={step.relationship}
+                onChange={(e) => {
+                  step.setRelationship(e.target.value);
+                  if (step.relationshipError) step.setRelationshipError("");
+                }}
+              >
+                <option value="">{copy.relationship}</option>
+                {RELATED_RELATIONSHIP_IDS.map((id) => (
+                  <option key={id} value={id}>{relations[id]}</option>
+                ))}
+              </select>
+              {step.relationshipError ? <p className={ui.bookError}>{step.relationshipError}</p> : null}
+            </label>
+          ) : null}
+          <label className={form.fieldStack}>
+            <span className={form.label}>{copy.languageTitle}</span>
+            <select
+              className={form.field}
+              value={step.language}
+              onChange={(e) => {
+                step.setLanguage(e.target.value);
+                if (step.languageError) step.setLanguageError("");
+              }}
+            >
+              <option value="">{consult.languagePlaceholder}</option>
+              {CONSULTATION_LANGUAGES.map((lang) => (
+                <option key={lang.id} value={lang.id}>{lang.label}</option>
+              ))}
+            </select>
+            {step.languageError ? <p className={ui.bookError}>{step.languageError}</p> : null}
+          </label>
+          {step.mode === "other" && step.showBirth ? null : (
+            <MarathonCheckoutContact
+              key={askPhone ? "mobile" : "email"}
+              mode={askPhone ? "mobile" : "email"}
+              clarifyOwner={step.canChooseSubject && step.mode === "other"}
+              initialValue={contactValue}
+              initialDial={contactDial}
+              alreadyVerified={contactVerified}
+              onVerified={() => step.setVerified(true)}
+            />
+          )}
         </div>
+        {step.mode === "other" && step.showBirth ? (
+          <div className={form.span}>
+            <MarathonCheckoutContact
+              key={askPhone ? "mobile" : "email"}
+              mode={askPhone ? "mobile" : "email"}
+              clarifyOwner
+              initialValue={contactValue}
+              initialDial={contactDial}
+              alreadyVerified={contactVerified}
+              onVerified={() => step.setVerified(true)}
+            />
+          </div>
+        ) : null}
         <label className={form.span}>
           <span className={form.label}>{copy.queryTitle}</span>
-          {queryError ? <p className={ui.bookError}>{queryError}</p> : null}
+          {step.queryError ? <p className={ui.bookError}>{step.queryError}</p> : null}
           <textarea
             className={form.textarea}
             rows={3}
-            value={query}
+            value={step.query}
             onChange={(e) => {
-              setQuery(e.target.value);
-              if (queryError) setQueryError("");
+              step.setQuery(e.target.value);
+              if (step.queryError) step.setQueryError("");
             }}
             placeholder={copy.queryHint}
           />
         </label>
       </div>
       <div className={form.actionCenterWrap}>
-        <Button type="button" className={form.actionCenter} onClick={() => void save()}>
+        <Button type="button" className={form.actionCenter} onClick={() => void step.save()}>
           {copy.continue}
         </Button>
       </div>
-    </>
+    </div>
   );
 }

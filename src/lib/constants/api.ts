@@ -179,6 +179,7 @@ export const API_ENDPOINTS = {
 
   marathonPublic: "/api/marathon/public",
   marathonCheckout: "/api/marathon/slots",
+  marathonRelatedProfiles: "/api/marathon/related-profiles",
   marathonMine: "/api/marathon/mine",
   marathonAccept: "/api/marathon/bookings",
   marathonAstrologerSeats: "/api/marathon/astrologer/seats",

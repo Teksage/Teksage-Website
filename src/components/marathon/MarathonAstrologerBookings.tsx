@@ -10,6 +10,7 @@ import { useI18nConstants, useT } from "@/hooks/useT";
 import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
+import { RELATED_RELATIONSHIP_COPY, formatRelatedPerson, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
 import { MARATHON_ASTROLOGER_COPY } from "@/lib/constants/marathon-astrologer";
 import { MARATHON_COPY, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
 import { astrologerMarathonEventPath, astrologerMeetingHoroscopePath } from "@/lib/constants/routes";
@@ -41,6 +42,7 @@ function slotEnded(endsAt: string): boolean {
 
 export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBookingsProps) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
   const extra = useI18nConstants(MARATHON_ASTROLOGER_COPY);
   const people = useI18nConstants(MARATHON_PARTICIPANT_COPY);
   const ui = MARATHON_PORTAL_UI;
@@ -116,6 +118,9 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
               title={row.user_name}
               lines={[
                 formatMarathonWhen(row.starts_at, localeTag, viewerZone),
+                ...(row.member_display_name
+                  ? [formatRelatedPerson(copy.consultingFor, row.member_display_name, relatedRelationshipLabel(relations, row.relationship ?? ""))]
+                  : []),
                 ...(row.preferred_language
                   ? [`${copy.languageTitle}: ${consultationLanguageLabel(row.preferred_language)}`]
                   : []),
@@ -126,7 +131,13 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
               {row.event_id ? (
                 <Link
                   className={ui.link}
-                  href={astrologerMeetingHoroscopePath(row.event_id, astrologerMarathonEventPath(marathonId))}
+                  href={astrologerMeetingHoroscopePath(
+                    row.event_id,
+                    astrologerMarathonEventPath(marathonId),
+                    row.member_display_name
+                      ? `${row.member_display_name} (${relatedRelationshipLabel(relations, row.relationship ?? "")})`
+                      : row.user_name
+                  )}
                 >
                   {t("Full Horoscope")}
                 </Link>

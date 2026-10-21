@@ -14,6 +14,7 @@ import { useViewerTimezone, useViewerTimezoneHint } from "@/hooks/useViewerTimez
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import { consultationCurrencyForLocation } from "@/lib/consultation-currency";
 import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
+import { RELATED_RELATIONSHIP_COPY, formatRelatedPerson, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
 import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
 import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
@@ -28,6 +29,7 @@ import type { MarathonBooking, MarathonCheckoutStep, MarathonCheckoutViewProps, 
 
 export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutViewProps) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
   const steps = useI18nConstants(MARATHON_CHECKOUT_COPY);
   const { locale, t } = useT();
   const localeTag = bcp47FromAppLocale(locale);
@@ -42,6 +44,9 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   const [mine, setMine] = useState<MarathonBooking[]>([]);
   const [customerQuery, setCustomerQuery] = useState("");
   const [preferredLanguage, setPreferredLanguage] = useState("");
+  const [relatedProfileId, setRelatedProfileId] = useState<number | null>(null);
+  const [memberName, setMemberName] = useState("");
+  const [memberRelationship, setMemberRelationship] = useState("");
   const back = () =>
     router.push(marathonEventPath(event?.public_slug || marathonId));
 
@@ -111,7 +116,8 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
         slotId,
         currency,
         customerQuery.trim(),
-        preferredLanguage.trim()
+        preferredLanguage.trim(),
+        relatedProfileId
       );
       await openRazorpayCheckout({
         key: order.key,
@@ -181,9 +187,14 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                   </div>
                 </article>
               ) : null}
-              {step === 3 && (customerQuery.trim() || preferredLanguage.trim()) ? (
+              {step === 3 && (customerQuery.trim() || preferredLanguage.trim() || memberName) ? (
                 <div className={cn(ui.asideItem, ui.asideCard)}>
                   <div className={cn(ui.asideCardBody, ui.queryBlock)}>
+                    {memberName ? (
+                      <p className={ui.queryText}>
+                        {formatRelatedPerson(copy.consultingFor, memberName, relatedRelationshipLabel(relations, memberRelationship))}
+                      </p>
+                    ) : null}
                     {preferredLanguage.trim() ? (
                       <>
                         <p className={ui.queryLabel}>{copy.languageTitle}</p>
@@ -216,14 +227,22 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                 }}
               />
               <div className={ui.body}>
-                {step === 1 ? <MarathonCheckoutSignIn onComplete={setStep} /> : null}
+                {step === 1 ? (
+                  <div className={ui.loginPane}>
+                    <MarathonCheckoutSignIn onComplete={setStep} />
+                  </div>
+                ) : null}
                 {step === 2 ? (
                   <MarathonCheckoutProfile
                     initialQuery={customerQuery}
                     initialLanguage={preferredLanguage}
+                    initialRelatedProfileId={relatedProfileId}
                     onComplete={(result) => {
                       setCustomerQuery(result.customerQuery);
                       setPreferredLanguage(result.preferredLanguage);
+                      setRelatedProfileId(result.relatedProfileId);
+                      setMemberName(result.memberDisplayName ?? "");
+                      setMemberRelationship(result.relationship ?? "");
                       setStep(3);
                     }}
                   />

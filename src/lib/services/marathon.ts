@@ -5,6 +5,8 @@ import type {
   MarathonCheckoutOrder,
   MarathonDraft,
   MarathonEvent,
+  RelatedProfile,
+  RelatedProfileInput,
 } from "@/types/marathon";
 
 function detailOf(error: unknown): string {
@@ -33,16 +35,33 @@ export async function fetchPublicMarathon(idOrSlug: number | string): Promise<Ma
   return res.data as MarathonEvent;
 }
 
+export async function fetchRelatedProfiles(): Promise<RelatedProfile[]> {
+  const res = await http.get(API_ENDPOINTS.marathonRelatedProfiles);
+  return (res.data as { data: RelatedProfile[] }).data ?? [];
+}
+
+export async function createRelatedProfile(body: RelatedProfileInput): Promise<RelatedProfile> {
+  const res = await http.post(API_ENDPOINTS.marathonRelatedProfiles, body);
+  return res.data as RelatedProfile;
+}
+
+export async function updateRelatedProfile(id: number, body: RelatedProfileInput): Promise<RelatedProfile> {
+  const res = await http.patch(`${API_ENDPOINTS.marathonRelatedProfiles}/${id}`, body);
+  return res.data as RelatedProfile;
+}
+
 export async function checkoutMarathonSlot(
   slotId: number,
   currency: "INR" | "USD" = "INR",
   customerQuery: string,
-  preferredLanguage: string
+  preferredLanguage: string,
+  relatedProfileId?: number | null
 ): Promise<MarathonCheckoutOrder> {
   const res = await http.post(`${API_ENDPOINTS.marathonCheckout}/${slotId}/checkout`, {
     currency,
     customer_query: customerQuery,
     preferred_language: preferredLanguage,
+    related_profile_id: relatedProfileId ?? null,
   });
   return res.data as MarathonCheckoutOrder;
 }

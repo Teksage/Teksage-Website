@@ -24,6 +24,8 @@ export const ASTROLOGER_ASSETS = {
 export const MARATHON_ASSETS = {
   heroArt: "/marathon/hero-wheel.jpg",
   whatsapp: flutterSvg("whatsapp-brand.svg"),
+  /** Same green mark as the profile email and phone fields. */
+  verified: flutterSvg("verified.svg"),
 } as const;
 
 export const PUBLIC_ASSETS = {

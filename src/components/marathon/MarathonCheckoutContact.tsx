@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { OtpInput } from "@/components/auth/OtpInput";
 import { CountryDialPicker } from "@/components/common/CountryDialPicker";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants/default-region";
 import { LOGIN_EMAIL_FORM } from "@/lib/constants/login-email-form";
 import { LOGIN_MOBILE_FORM } from "@/lib/constants/login-mobile-form";
 import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
+import { MARATHON_ASSETS } from "@/lib/constants/assets";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
@@ -18,10 +20,17 @@ import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import { LOGIN_EMAIL_REGEX } from "@/lib/constants/validation-patterns";
 import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import { cn } from "@/lib/utils";
-import { sendAuthenticatedOtp, verifyAuthenticatedOtp } from "@/lib/services/profile-verify";
+import { maskNationalMobile } from "@/lib/otp-verify-helpers";
 import type { MarathonCheckoutContactProps } from "@/types/marathon";
 
-export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutContactProps) {
+export function MarathonCheckoutContact({
+  mode,
+  clarifyOwner = false,
+  initialValue = "",
+  initialDial = "",
+  alreadyVerified = false,
+  onVerified,
+}: MarathonCheckoutContactProps) {
   const details = useI18nConstants(PROFILE_DETAILS);
   const rules = useI18nConstants(PROFILE_FORM_VALIDATION);
   const log = useI18nConstants(LOGIN_EMAIL_FORM);
@@ -30,12 +39,22 @@ export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutCo
   const note = useI18nConstants(MARATHON_CHECKOUT_COPY);
   const form = MARATHON_CHECKOUT;
   const ui = MARATHON_PAGE;
-  const [value, setValue] = useState("");
-  const [dial, setDial] = useState<string>(DEFAULT_COUNTRY_CODE_NUMERIC);
+  const [value, setValue] = useState(initialValue);
+  const [dial, setDial] = useState<string>(initialDial || DEFAULT_COUNTRY_CODE_NUMERIC);
   const [otpCells, setOtpCells] = useState<string[]>(() => Array.from({ length: OTP_LENGTH }, () => ""));
   const [showOtp, setShowOtp] = useState(false);
-  const [verified, setVerified] = useState(false);
+  const [verified, setVerified] = useState(alreadyVerified);
   const [error, setError] = useState("");
+  const appliedVerified = useRef(alreadyVerified);
+
+  useEffect(() => {
+    if (appliedVerified.current || !alreadyVerified || !initialValue.trim()) return;
+    appliedVerified.current = true;
+    setValue(initialValue.trim());
+    if (initialDial) setDial(initialDial);
+    setVerified(true);
+    onVerified();
+  }, [alreadyVerified, initialDial, initialValue, onVerified]);
 
   async function send() {
     setError("");
@@ -87,7 +106,11 @@ export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutCo
   return (
     <div className={form.contactCell}>
       <div className={form.fieldStack}>
-        <span className={form.label}>{mode === "email" ? details.email : details.phone}</span>
+        <span className={form.label}>
+          {mode === "email"
+            ? clarifyOwner ? note.yourEmail : details.email
+            : clarifyOwner ? note.yourPhone : details.phone}
+        </span>
         <div className={form.contactRow}>
           {mode === "mobile" ? (
             <div className={form.dial}>
@@ -99,13 +122,16 @@ export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutCo
               />
             </div>
           ) : null}
-          <Input className={form.field} value={value} disabled={verified} onChange={(e) => setValue(e.target.value)} />
-          {verified ? null : (
+          <Input className={cn(form.field, form.contactInput)} value={value} disabled={verified} onChange={(e) => setValue(e.target.value)} />
+          {verified ? (
+            <Image src={MARATHON_ASSETS.verified} alt="" width={28} height={28} unoptimized className={form.verifiedMark} />
+          ) : (
             <Button type="button" className={cn(form.verify, AUTH_SCREEN.ctaReadyClassName)} onClick={() => void send()}>
               {details.verify}
             </Button>
           )}
         </div>
+        <p className={form.label}>{mode === "email" ? note.emailRequired : note.phoneOptional}</p>
       </div>
       {error ? <p className={ui.bookError}>{error}</p> : null}
       {showOtp && !verified ? (
@@ -113,7 +139,9 @@ export function MarathonCheckoutContact({ mode, onVerified }: MarathonCheckoutCo
           <p className={form.otpNote}>
             {note.otpSentTo}{" "}
             <span className={form.otpContact}>
-              {mode === "email" ? value.trim() : `+${dial} ${value.replace(/\D/g, "")}`}
+              {mode === "email"
+                ? value.trim().replace(/^(.{2}).*(@.*)$/, "$1****$2")
+                : `+${dial} ${maskNationalMobile(value)}`}
             </span>
           </p>
           <p className={form.otpNote}>{note.otpValid}</p>
