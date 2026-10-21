@@ -132,7 +132,7 @@ export function MarathonCheckoutContact({
             </Button>
           )}
         </div>
-        <p className={form.label}>{mode === "email" ? note.emailRequired : note.phoneOptional}</p>
+        <p className={form.note}>{mode === "email" ? note.emailRequired : note.phoneOptional}</p>
       </div>
       {error ? <p className={ui.bookError}>{error}</p> : null}
       {showOtp && !verified ? (

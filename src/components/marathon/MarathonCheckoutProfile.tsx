@@ -61,10 +61,9 @@ export function MarathonCheckoutProfile({
         {step.mode === "other" && step.people.length > 0 ? (
           <div className={form.span}>
             <span className={form.label}>{copy.savedPeople}</span>
-            <p className={form.label}>{copy.selectPerson}</p>
             <div className={form.savedRow}>
               <select
-                className={cn(form.field, form.savedSelect, "w-full")}
+                className={cn(form.select, form.savedSelect)}
                 value={step.adding || step.selectedId == null ? "" : String(step.selectedId)}
                 onChange={(e) => {
                   const person = step.people.find((row) => String(row.id) === e.target.value);
@@ -93,7 +92,7 @@ export function MarathonCheckoutProfile({
             <label className={form.fieldStack}>
               <span className={form.label}>{copy.relationship}</span>
               <select
-                className={form.field}
+                className={form.select}
                 value={step.relationship}
                 onChange={(e) => {
                   step.setRelationship(e.target.value);
@@ -111,7 +110,7 @@ export function MarathonCheckoutProfile({
           <label className={form.fieldStack}>
             <span className={form.label}>{copy.languageTitle}</span>
             <select
-              className={form.field}
+              className={form.select}
               value={step.language}
               onChange={(e) => {
                 step.setLanguage(e.target.value);
