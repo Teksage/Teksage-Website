@@ -4,6 +4,11 @@ export function emptyOtpCells(): string[] {
   return Array.from({ length: OTP_LENGTH }, () => "");
 }
 
+/** Same mask as the main login OTP screen: first two letters, then the domain. */
+export function maskEmailForOtp(email: string): string {
+  return email.trim().replace(/^(.{2}).*(@.*)$/, "$1****$2");
+}
+
 /** Mask national mobile for OTP screen — works for variable lengths. */
 export function maskNationalMobile(contact: string): string {
   const digits = contact.replace(/\D/g, "");

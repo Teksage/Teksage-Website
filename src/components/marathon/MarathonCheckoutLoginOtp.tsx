@@ -10,6 +10,7 @@ import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marat
 import { MARATHON_COPY } from "@/lib/constants/marathon";
 import { cn } from "@/lib/utils";
 import { isTurnstileConfigured } from "@/lib/env";
+import { maskEmailForOtp, maskNationalMobile } from "@/lib/otp-verify-helpers";
 import { resendOtp } from "@/lib/services/auth";
 import type { MarathonCheckoutLoginOtpProps } from "@/types/marathon";
 
@@ -29,7 +30,7 @@ export function MarathonCheckoutLoginOtp({
   const [busy, setBusy] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [tokenKey, setTokenKey] = useState(0);
-  const shown = tab === "email" ? contact : `${countryCode} ${contact}`;
+  const shown = tab === "email" ? maskEmailForOtp(contact) : `${countryCode} ${maskNationalMobile(contact)}`;
   const ready = cells.join("").length === OTP_LENGTH;
   const canResend = seconds <= 0 && !busy && (!isTurnstileConfigured() || Boolean(token));
 
