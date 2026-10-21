@@ -19,6 +19,7 @@ import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import { LOGIN_EMAIL_REGEX } from "@/lib/constants/validation-patterns";
 import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
+import { sendAuthenticatedOtp, verifyAuthenticatedOtp } from "@/lib/services/profile-verify";
 import { cn } from "@/lib/utils";
 import { maskNationalMobile } from "@/lib/otp-verify-helpers";
 import type { MarathonCheckoutContactProps } from "@/types/marathon";

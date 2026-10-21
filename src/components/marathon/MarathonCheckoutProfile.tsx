@@ -61,9 +61,10 @@ export function MarathonCheckoutProfile({
         {step.mode === "other" && step.people.length > 0 ? (
           <div className={form.span}>
             <span className={form.label}>{copy.savedPeople}</span>
+            <p className={form.label}>{copy.selectPerson}</p>
             <div className={form.savedRow}>
               <select
-                className={cn(form.field, form.savedSelect)}
+                className={cn(form.field, form.savedSelect, "w-full")}
                 value={step.adding || step.selectedId == null ? "" : String(step.selectedId)}
                 onChange={(e) => {
                   const person = step.people.find((row) => String(row.id) === e.target.value);
@@ -71,7 +72,7 @@ export function MarathonCheckoutProfile({
                   else step.startAdd();
                 }}
               >
-                <option value="">{copy.selectPerson}</option>
+                <option value="">{copy.choosePerson}</option>
                 {step.people.map((person) => (
                   <option key={person.id} value={person.id}>
                     {person.display_name} ({relatedRelationshipLabel(relations, person.relationship)})

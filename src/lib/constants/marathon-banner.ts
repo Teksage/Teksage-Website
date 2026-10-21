@@ -19,8 +19,8 @@ export const MARATHON_BANNER_UI = {
   menuOpen: "z-20",
   history: "absolute top-full right-0 z-30 mt-2 flex w-max max-w-full flex-col overflow-hidden rounded-2xl border border-[var(--color-chat-bot-border)] bg-white py-1 shadow-[0_8px_24px_rgb(16_24_16_/_0.08)]",
   historyRow: `whitespace-nowrap px-4 py-2 text-center text-[var(--color-brand-black)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] ${TYPO.chatBubble}`,
-  slotClosed: `${TYPO.caption} text-[var(--color-muhurtha-rating-good)]`,
-  slotBooked: `${TYPO.caption} text-[var(--color-brand-error)]`,
+  slotClosed: `block w-full text-center leading-tight ${TYPO.caption} text-[var(--color-muhurtha-rating-good)]`,
+  slotBooked: `block w-full text-center leading-tight ${TYPO.caption} text-[var(--color-brand-error)]`,
   slotBoxClosed:
     "cursor-default border-[var(--color-muhurtha-status-good-ring)] border-l-[var(--color-muhurtha-rating-good)] hover:translate-y-0",
   slotBoxBooked:

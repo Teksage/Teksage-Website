@@ -64,10 +64,10 @@ export const MARATHON_CHECKOUT = {
   subjectRow: "col-span-2 grid grid-cols-2 gap-2 md:col-span-3",
   subjectOn: `h-11 cursor-pointer rounded-lg border border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] text-[var(--color-brand-primary)] ${TYPO.labelSemibold}`,
   subjectOff: `h-11 cursor-pointer rounded-lg border border-black/10 bg-white text-black/70 ${TYPO.labelSemibold}`,
-  savedRow: "flex w-full max-w-md flex-nowrap items-center gap-2",
+  savedRow: "flex w-full flex-col items-stretch gap-2",
   savedSelect: "min-w-0 flex-1",
-  addNew: `h-11 shrink-0 cursor-pointer rounded-lg border border-black/10 bg-white px-4 text-black/70 ${TYPO.labelSemibold}`,
-  addNewOn: `h-11 shrink-0 cursor-pointer rounded-lg border border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] px-4 text-[var(--color-brand-primary)] ${TYPO.labelSemibold}`,
+  addNew: `h-11 shrink-0 cursor-pointer self-end rounded-lg border border-black/10 bg-white px-4 text-black/70 ${TYPO.labelSemibold}`,
+  addNewOn: `h-11 shrink-0 cursor-pointer self-end rounded-lg border border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] px-4 text-[var(--color-brand-primary)] ${TYPO.labelSemibold}`,
   pair: "grid grid-cols-2 gap-3 md:grid-cols-3",
   span: "col-span-2 flex flex-col gap-2 md:col-span-3",
   /** Two fields share one row: language and phone for Self, relationship and language for Others. */
