@@ -144,7 +144,7 @@ export const MARATHON_PAGE = {
   bookingMenu: "flex w-full flex-col overflow-hidden rounded-2xl border border-[var(--color-chat-bot-border)] bg-white py-1 shadow-[0_8px_24px_rgb(16_24_16_/_0.08)]",
   bookingMenuItem: `px-3 py-2 text-[var(--color-brand-black)] hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_8%,white)] ${TYPO.chatBubble}`,
   viewBooking: `inline-flex w-fit cursor-pointer items-center justify-center gap-1 rounded-full bg-[var(--color-brand-primary)] px-3 py-1 text-white shadow-[0_4px_12px_rgb(16_177_0_/_0.22)] transition hover:-translate-y-px active:scale-[0.98] ${TYPO.chatBubble}`,
-  page: "chat-conversation-surface relative flex min-h-dvh w-full flex-col overflow-x-hidden",
+  page: "chat-conversation-surface relative flex min-h-dvh w-full flex-col overflow-x-hidden font-sans text-body-sm",
   pageInner: "relative z-10 flex w-full min-w-0 flex-col px-4 py-4 sm:px-5",
   column: "mx-auto mt-4 flex w-full min-w-0 max-w-5xl flex-col gap-5",
   hero: "relative min-h-52 overflow-hidden rounded-3xl bg-[color-mix(in_srgb,var(--color-home-screen-mint)_55%,white)]",

@@ -24,7 +24,7 @@ export const AUTH_SCREEN = {
   otpCtaWrapClassName: "flex justify-center",
   otpCtaClassName: `h-11 min-w-36 w-fit rounded-full px-6 ${TYPO.sizeBodySm} ${TYPO.weightExtrabold} transition-opacity`,
   ctaReadyClassName:
-    "bg-[var(--color-brand-primary)] text-white hover:opacity-90",
+    "!bg-[var(--color-brand-primary)] !text-white hover:opacity-90",
   ctaDisabledClassName:
     "cursor-not-allowed bg-[var(--login-email-cta-disabled-bg)] text-[var(--login-email-cta-disabled-text)]",
   inputClassName:

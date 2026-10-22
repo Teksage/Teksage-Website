@@ -87,7 +87,69 @@ export function marathonDateParts(iso: string, zone?: string | null, locale = "e
     minute: "2-digit",
     ...withZone,
   }).format(date);
-  return { month, day, time };
+  const weekday = new Intl.DateTimeFormat(locale, { weekday: "long", ...withZone }).format(date);
+  return { month, day, time, weekday };
+}
+
+/** "Sun, 23 Aug" for the time-slot heading. */
+export function marathonShortDay(iso: string, zone?: string | null, locale = "en-US") {
+  const date = new Date(iso);
+  const tz = resolveViewerTimezone(zone);
+  const withZone = tz ? ({ timeZone: tz } as const) : undefined;
+  return new Intl.DateTimeFormat(locale, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    ...withZone,
+  }).format(date);
+}
+
+export function marathonBookedSlotIds(
+  event: { id: number; slots: { id: number; starts_at: string }[] } | null,
+  rows: { marathon_id: number; slot_id: number; starts_at: string }[],
+) {
+  return rows.flatMap((row) => {
+    if (event && Number(row.marathon_id) !== Number(event.id)) return [];
+    const id = Number(row.slot_id);
+    if (Number.isFinite(id) && id > 0) return [id];
+    const start = new Date(row.starts_at).getTime();
+    const match = event?.slots.find((item) => new Date(item.starts_at).getTime() === start);
+    return match ? [Number(match.id)] : [];
+  });
+}
+
+export function marathonOpenSlotCount(event: {
+  booking_open: boolean;
+  admin_ended?: boolean;
+  slots: { seats_left: number }[];
+}) {
+  if (!event.booking_open || event.admin_ended) return 0;
+  return event.slots.filter((slot) => Number(slot.seats_left) > 0).length;
+}
+
+export function marathonSlotMinutes(start: string, end: string) {
+  const ms = new Date(end).getTime() - new Date(start).getTime();
+  if (!Number.isFinite(ms) || ms <= 0) return 0;
+  return Math.round(ms / 60000);
+}
+
+/** Display line for the payment review, from the birth draft already collected. */
+export function marathonBornLine(dob: string, tob: string, place: string, locale: string) {
+  const day = (dob || "").slice(0, 10);
+  const parsed = new Date(`${day}T12:00:00`);
+  const dateText = !day || Number.isNaN(parsed.getTime())
+    ? ""
+    : new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(parsed);
+  const match = /^(\d{1,2}):(\d{2})/.exec(tob || "");
+  let timeText = "";
+  if (match) {
+    const hour = Number(match[1]);
+    const suffix = hour >= 12 ? "PM" : "AM";
+    const h12 = hour % 12 || 12;
+    timeText = `${h12}:${match[2]} ${suffix}`;
+  }
+  const when = [dateText, timeText].filter(Boolean).join(", ");
+  return [when, place].filter(Boolean).join(" · ");
 }
 
 /** Strip legacy "(IST)" from stored titles. */

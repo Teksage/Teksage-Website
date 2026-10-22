@@ -3,52 +3,49 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
-import { Button } from "@/components/ui/button";
+import { MarathonCheckoutAside } from "@/components/marathon/MarathonCheckoutAside";
+import { MarathonCheckoutLogin } from "@/components/marathon/MarathonCheckoutNext";
 import { MarathonCheckoutProfile } from "@/components/marathon/MarathonCheckoutProfile";
-import { MarathonFeeSummary } from "@/components/marathon/MarathonFeeSummary";
-import { MarathonCheckoutSignIn } from "@/components/marathon/MarathonCheckoutSignIn";
-import { MarathonCheckoutStepper } from "@/components/marathon/MarathonCheckoutStepper";
-import { MarathonEventBanner } from "@/components/marathon/MarathonEventBanner";
-import { useI18nConstants, useT } from "@/hooks/useT";
-import { useViewerTimezone, useViewerTimezoneHint } from "@/hooks/useViewerTimezone";
-import { bcp47FromAppLocale } from "@/lib/i18n/locale";
+import { MarathonCheckoutReview } from "@/components/marathon/MarathonCheckoutReview";
+import { MarathonCheckoutTimeCard } from "@/components/marathon/MarathonCheckoutTimeCard";
+import { MarathonFlowHeader } from "@/components/marathon/MarathonFlowHeader";
+import { useI18nConstants } from "@/hooks/useT";
 import { consultationCurrencyForLocation } from "@/lib/consultation-currency";
-import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
-import { RELATED_RELATIONSHIP_COPY, formatRelatedPerson, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
-import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
+import { RELATED_RELATIONSHIP_COPY, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
-import { MARATHON_COPY, MARATHON_PAGE, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
-import { marathonBookingPath, marathonEventPath } from "@/lib/constants/routes";
-import { marathonDateParts, marathonTimeRange } from "@/lib/marathon-display";
-import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
-import { checkoutMarathonSlot, fetchMyMarathonBookings, fetchPublicMarathon, marathonErrorMessage, verifyMarathonPayment } from "@/lib/services/marathon";
+import { MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
+import { MARATHON_FLOW_UI } from "@/lib/constants/marathon-flow-ui";
+import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
+import { ROUTES, marathonBookingPath, marathonCheckoutPath } from "@/lib/constants/routes";
+import { marathonBookedSlotIds, marathonDisplayName } from "@/lib/marathon-display";
+import { payMarathonCheckout } from "@/lib/marathon-pay";
+import { fetchMyMarathonBookings, fetchPublicMarathon, marathonErrorMessage } from "@/lib/services/marathon";
 import { fetchProfile } from "@/lib/services/profile";
 import { useAuthStore } from "@/store/auth.store";
-import { cn } from "@/lib/utils";
 import type { MarathonBooking, MarathonCheckoutStep, MarathonCheckoutViewProps, MarathonEvent } from "@/types/marathon";
 
-export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutViewProps) {
+export function MarathonCheckoutView({ marathonId, slotId, eventKey }: MarathonCheckoutViewProps) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const flow = useI18nConstants(MARATHON_FLOW_COPY);
   const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
-  const steps = useI18nConstants(MARATHON_CHECKOUT_COPY);
-  const { locale, t } = useT();
-  const localeTag = bcp47FromAppLocale(locale);
   const router = useRouter();
-  const ui = MARATHON_CHECKOUT;
+  const ui = MARATHON_FLOW_UI;
+  const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [hydrated, setHydrated] = useState(false);
   const [event, setEvent] = useState<MarathonEvent | null>(null);
   const [step, setStep] = useState<MarathonCheckoutStep | null>(null);
   const [error, setError] = useState("");
-  const [payFee, setPayFee] = useState(""); const [payCurrency, setPayCurrency] = useState("INR");
+  const [payFee, setPayFee] = useState("");
+  const [payCurrency, setPayCurrency] = useState("INR");
   const [mine, setMine] = useState<MarathonBooking[]>([]);
   const [customerQuery, setCustomerQuery] = useState("");
   const [preferredLanguage, setPreferredLanguage] = useState("");
   const [relatedProfileId, setRelatedProfileId] = useState<number | null>(null);
   const [memberName, setMemberName] = useState("");
   const [memberRelationship, setMemberRelationship] = useState("");
-  const back = () =>
-    router.push(marathonEventPath(event?.public_slug || marathonId));
+  const [bornLine, setBornLine] = useState("");
+  const back = () => router.push(ROUTES.expertHours);
 
   useEffect(() => {
     setHydrated(useAuthStore.persist.hasHydrated());
@@ -67,7 +64,6 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
       setStep(1);
       return;
     }
-    // Always collect birth details + required customer query on step 2 before pay.
     void fetchProfile()
       .then((profile) => {
         useAuthStore.getState().updateUser(profile);
@@ -82,7 +78,12 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
   }, [hydrated, isAuthenticated]);
 
   useEffect(() => {
-    if (step !== 3 || !event) return;
+    if (!event) return;
+    if (!isAuthenticated) {
+      setPayCurrency("INR");
+      setPayFee(String(event.fee));
+      return;
+    }
     void fetchProfile().then((profile) => {
       useAuthStore.getState().updateUser(profile);
       const currency = consultationCurrencyForLocation(profile.preferredLocation || profile.placeOfBirth, {
@@ -90,149 +91,65 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
         timezone: profile.timezone,
       });
       const amount = currency === "USD" && event.usd_fee ? event.usd_fee : event.fee;
-      setPayCurrency(currency); setPayFee(String(amount));
+      setPayCurrency(currency);
+      setPayFee(String(amount));
     });
-  }, [step, event]);
+  }, [event, isAuthenticated]);
 
-  async function pay() {
-    setError("");
-    try {
-      const profile = await fetchProfile();
-      const currency = consultationCurrencyForLocation(profile.preferredLocation || profile.placeOfBirth, {
-        countryCode: profile.countryCode,
-        timezone: profile.timezone,
-      });
-      if (!customerQuery.trim()) {
-        setError(copy.queryRequired);
-        setStep(2);
-        return;
-      }
-      if (!preferredLanguage.trim()) {
-        setError(copy.languageRequired);
-        setStep(2);
-        return;
-      }
-      const order = await checkoutMarathonSlot(
-        slotId,
-        currency,
-        customerQuery.trim(),
-        preferredLanguage.trim(),
-        relatedProfileId
-      );
-      await openRazorpayCheckout({
-        key: order.key,
-        currency: order.currency,
-        orderId: order.id,
-        amount: order.amount,
-        description: event?.name ?? "",
-        onFailure: () => setError(copy.paymentFailed),
-        onSuccess: (response) => {
-          void verifyMarathonPayment({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          })
-            .then((result) => router.push(marathonBookingPath(result.booking_id)))
-            .catch((err: unknown) => setError(marathonErrorMessage(err)));
-        },
-      });
-    } catch (err: unknown) {
-      setError(marathonErrorMessage(err));
-    }
+  function pay() {
+    void payMarathonCheckout({
+      slotId,
+      eventName: event?.name ?? "",
+      customerQuery,
+      preferredLanguage,
+      relatedProfileId,
+      queryRequired: copy.queryRequired,
+      languageRequired: copy.languageRequired,
+      paymentFailed: copy.paymentFailed,
+      onNeedDetails: () => setStep(2),
+      onError: setError,
+      onBooked: (bookingId) => router.push(marathonBookingPath(bookingId)),
+    });
   }
 
-  const labels = [
-    { title: steps.step1, caption: copy.login },
-    { title: steps.step2, caption: copy.profileTitle },
-    { title: steps.step3, caption: copy.pay },
-  ];
+  const labels = [copy.login, flow.timeBirth, flow.payment].map((title) => ({ title, caption: "" }));
   const slot = event?.slots.find((item) => item.id === slotId);
-  const clash = slot
-    ? mine.find((row) => new Date(row.starts_at) < new Date(slot.ends_at) && new Date(row.ends_at) > new Date(slot.starts_at))
-    : undefined;
   const loading = !hydrated || (!event && !error) || (event != null && step == null && !error);
-  const viewerZone = useViewerTimezone();
-  const timeHint = useViewerTimezoneHint(copy.timesInIST, copy.timesInYourZone);
-  const slotWhen = slot && event ? marathonDateParts(slot.starts_at, viewerZone, localeTag) : null;
-  const slotEnd = slot && event ? marathonDateParts(slot.ends_at, viewerZone, localeTag) : null;
+  const bookedSlotIds = marathonBookedSlotIds(event, mine);
+  const readingFor = memberName
+    ? `${memberName}${memberRelationship ? ` · ${relatedRelationshipLabel(relations, memberRelationship)}` : ""}`
+    : [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.name || "";
+  const displayStep: MarathonCheckoutStep = step ?? 1;
+
+  function pickSlot(id: number) {
+    if (!event || id === slotId) return;
+    router.replace(marathonCheckoutPath(event.public_slug || eventKey || marathonId, id));
+  }
 
   return (
     <div className={MARATHON_PAGE.page}>
       <div className={CHAT_LAYOUT.messageListGlow} aria-hidden />
       <div className={MARATHON_PAGE.pageInner}>
-        <button type="button" className={MARATHON_PORTAL_UI.back} onClick={back}>
-          <svg viewBox="0 0 24 24" className={MARATHON_PORTAL_UI.backIcon} fill="none" aria-hidden>
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span>{t("Go back")}</span>
-        </button>
-        <div className={MARATHON_PAGE.column}>
-          <div className={ui.split}>
-            <div className={ui.aside}>
-              {event ? (
-                <div className={ui.asideItem}>
-                  <MarathonEventBanner event={event} linked={false} />
-                </div>
-              ) : null}
-              {slotWhen && slotEnd ? (
-                <article className={cn(ui.asideItem, ui.asideCard)}>
-                  <div className={ui.asideCardBody}>
-                    <div className={MARATHON_PAGE.showCopy}>
-                      <p className={MARATHON_PAGE.showTitle}>{copy.selectSlot}</p>
-                      <p className={MARATHON_PAGE.showText}>
-                        {copy.minutes} · {timeHint}
-                      </p>
-                    </div>
-                    <p className={MARATHON_PAGE.showWhen}>{marathonTimeRange(slotWhen.time, slotEnd.time)}</p>
-                  </div>
-                </article>
-              ) : null}
-              {step === 3 && (customerQuery.trim() || preferredLanguage.trim() || memberName) ? (
-                <div className={cn(ui.asideItem, ui.asideCard)}>
-                  <div className={cn(ui.asideCardBody, ui.queryBlock)}>
-                    {memberName ? (
-                      <p className={ui.queryText}>
-                        {formatRelatedPerson(copy.consultingFor, memberName, relatedRelationshipLabel(relations, memberRelationship))}
-                      </p>
-                    ) : null}
-                    {preferredLanguage.trim() ? (
-                      <>
-                        <p className={ui.queryLabel}>{copy.languageTitle}</p>
-                        <p className={ui.queryText}>{consultationLanguageLabel(preferredLanguage.trim())}</p>
-                      </>
-                    ) : null}
-                    {customerQuery.trim() ? (
-                      <>
-                        <p className={ui.queryLabel}>{copy.queryTitle}</p>
-                        <p className={ui.queryText}>{customerQuery.trim()}</p>
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-              ) : null}
-              {error && !event ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
-            </div>
-            <div className={ui.card}>
-              {event?.admin_ended ? (
-                <div className={ui.body}>
-                  <p className={ui.hint}>{copy.adminEnded}</p>
-                </div>
-              ) : (
+        <MarathonFlowHeader
+          title={event ? marathonDisplayName(event.name) : copy.title}
+          step={displayStep}
+          labels={labels}
+          onBack={back}
+          onSelectStep={(next) => {
+            if (step === 3 && next === 2) setStep(2);
+          }}
+        />
+        <div className={step === 1 ? ui.gridLogin : ui.grid}>
+          <div className={ui.stack}>
+            {error && !event ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
+            {event?.admin_ended ? (
+              <div className={ui.card}><p className={ui.sectionHint}>{copy.adminEnded}</p></div>
+            ) : null}
+            {event && !event.admin_ended && step === 1 ? <MarathonCheckoutLogin onComplete={setStep} /> : null}
+            {event && !event.admin_ended && step === 2 ? (
               <>
-              <MarathonCheckoutStepper
-                step={step ?? 1}
-                labels={labels}
-                onSelectStep={(next) => {
-                  if (step === 3 && next === 2) setStep(2);
-                }}
-              />
-              <div className={ui.body}>
-                {step === 1 ? (
-                  <div className={ui.loginPane}>
-                    <MarathonCheckoutSignIn onComplete={setStep} />
-                  </div>
-                ) : null}
-                {step === 2 ? (
+                <MarathonCheckoutTimeCard event={event} slotId={slotId} bookedSlotIds={bookedSlotIds} onSelect={pickSlot} />
+                <div className={ui.card}>
                   <MarathonCheckoutProfile
                     initialQuery={customerQuery}
                     initialLanguage={preferredLanguage}
@@ -243,44 +160,36 @@ export function MarathonCheckoutView({ marathonId, slotId }: MarathonCheckoutVie
                       setRelatedProfileId(result.relatedProfileId);
                       setMemberName(result.memberDisplayName ?? "");
                       setMemberRelationship(result.relationship ?? "");
+                      setBornLine(result.bornLine ?? "");
                       setStep(3);
                     }}
                   />
-                ) : null}
-                {step === 3 ? (
-                  <>
-                    <p className={ui.stepTitle}>{copy.pay}</p>
-                    <p className={ui.hint}>{event?.name}</p>
-                    {payFee ? <MarathonFeeSummary fee={payFee} currency={payCurrency} /> : null}
-                    {clash ? (
-                      <p className={ui.hint}>{t("You already have a consultation at this time.")}</p>
-                    ) : (
-                      <>
-                        <p className={ui.hint}>{copy.summary}</p>
-                        <p className={ui.hint}>{copy.whatsappInquiry}</p>
-                      </>
-                    )}
-                    {error ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
-                    {clash ? (
-                      <div className={ui.actionCenterWrap}>
-                        <Button type="button" className={ui.actionCenter} onClick={() => router.push(marathonBookingPath(clash.id))}>
-                          {copy.viewBooking}
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className={ui.actionCenterWrap}>
-                        <Button type="button" className={ui.actionCenter} onClick={() => void pay()}>
-                          {copy.payBar}
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                ) : null}
-              </div>
+                </div>
               </>
-              )}
-            </div>
+            ) : null}
+            {event && !event.admin_ended && step === 3 ? (
+              <MarathonCheckoutReview
+                readingFor={readingFor}
+                born={bornLine}
+                language={preferredLanguage}
+                email={user?.email ?? ""}
+                question={customerQuery}
+                onEdit={() => setStep(2)}
+              />
+            ) : null}
           </div>
+          {step === 1 ? null : (
+            <MarathonCheckoutAside
+              event={event}
+              slot={slot}
+              step={step}
+              payFee={payFee}
+              payCurrency={payCurrency}
+              mine={mine}
+              error={error}
+              onPay={() => void pay()}
+            />
+          )}
         </div>
       </div>
       <LoadingOverlay open={loading} />
