@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { EmptyState } from "@/components/common/EmptyState";
 import { PageLoadingCenter } from "@/components/common/Loader";
-import { MarathonEventsHero } from "@/components/marathon/MarathonEventsHero";
-import { MarathonPortalCard } from "@/components/marathon/MarathonPortalCard";
+import { MarathonAstrologerCard } from "@/components/marathon/MarathonAstrologerCard";
+import { MarathonAstrologerShell } from "@/components/marathon/MarathonAstrologerShell";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
@@ -13,12 +13,9 @@ import { consultationLanguageLabel } from "@/lib/constants/consultation-language
 import { RELATED_RELATIONSHIP_COPY, formatRelatedPerson, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
 import { MARATHON_ASTROLOGER_COPY } from "@/lib/constants/marathon-astrologer";
 import { MARATHON_COPY, MARATHON_PORTAL_UI } from "@/lib/constants/marathon";
-import { astrologerMarathonEventPath, astrologerMeetingHoroscopePath } from "@/lib/constants/routes";
-import {
-  bookingsForEvent,
-  eventIsCompleted,
-  formatMarathonWhen,
-} from "@/lib/marathon-astrologer";
+import { MARATHON_FLOW_UI } from "@/lib/constants/marathon-flow-ui";
+import { ROUTES, astrologerMarathonEventPath, astrologerMeetingHoroscopePath } from "@/lib/constants/routes";
+import { bookingsForEvent, eventIsCompleted } from "@/lib/marathon-astrologer";
 import { marathonDisplayName } from "@/lib/marathon-display";
 import { MARATHON_PARTICIPANT_COPY, eventShowsParticipants, participantLabel } from "@/lib/marathon-participants";
 import {
@@ -46,6 +43,7 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
   const extra = useI18nConstants(MARATHON_ASTROLOGER_COPY);
   const people = useI18nConstants(MARATHON_PARTICIPANT_COPY);
   const ui = MARATHON_PORTAL_UI;
+  const flow = MARATHON_FLOW_UI;
   const { locale, t } = useT();
   const localeTag = bcp47FromAppLocale(locale);
   const viewerZone = useViewerTimezone();
@@ -99,25 +97,25 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
     .join(" · ");
 
   return (
-    <div className={ui.stack}>
-      <MarathonEventsHero title={title} subtitle={copy.viewBookings} hint={hint} />
+    <MarathonAstrologerShell title={title} subtitle={[copy.viewBookings, hint].filter(Boolean).join(" · ")} backHref={ROUTES.astrologerMarathon}>
       {error ? <p className={ui.error}>{error}</p> : null}
       {rows.length === 0 ? <EmptyState title={extra.emptyBookings} /> : null}
-      <section className={ui.section}>
+      <div className={flow.listGrid}>
         {rows.map((row) => {
           const label = bookingStatus(row.status, copy.waiting, extra.accepted, t("Assigned"), t("Completed"));
           const done = row.status === "completed";
           const assigned = row.status === "accepted" || row.status === "assigned";
           const canComplete = assigned && slotEnded(row.ends_at);
           return (
-            <MarathonPortalCard
+            <MarathonAstrologerCard
               key={row.id}
               startsAt={row.starts_at}
+              endsAt={row.ends_at}
               locale={localeTag}
               timeZone={viewerZone}
+              active={!done && !row.admin_ended}
               title={row.user_name}
               lines={[
-                formatMarathonWhen(row.starts_at, localeTag, viewerZone),
                 ...(row.member_display_name
                   ? [formatRelatedPerson(copy.consultingFor, row.member_display_name, relatedRelationshipLabel(relations, row.relationship ?? ""))]
                   : []),
@@ -130,7 +128,7 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
             >
               {row.event_id ? (
                 <Link
-                  className={ui.link}
+                  className={flow.actionSoft}
                   href={astrologerMeetingHoroscopePath(
                     row.event_id,
                     astrologerMarathonEventPath(marathonId),
@@ -143,18 +141,14 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
                 </Link>
               ) : null}
               {row.meeting_link ? (
-                <a className={ui.link} href={row.meeting_link} target="_blank" rel="noreferrer">
+                <a className={flow.actionSoft} href={row.meeting_link} target="_blank" rel="noreferrer">
                   {copy.joinMeeting}
                 </a>
               ) : null}
-              {done ? (
-                <p className={ui.confirmed}>{label}</p>
-              ) : row.status === "paid" ? (
-                <p className={ui.confirmed}>{copy.waiting}</p>
-              ) : (
+              {done || row.status === "paid" ? null : (
                 <button
                   type="button"
-                  className={ui.action}
+                  className={flow.actionSolid}
                   disabled={pendingId === row.id || !canComplete}
                   title={!canComplete ? copy.completeTooEarly : undefined}
                   onClick={() => void run(row.id, () => completeMarathonSeat(row.id))}
@@ -166,10 +160,10 @@ export function MarathonAstrologerBookings({ marathonId }: MarathonAstrologerBoo
                       : copy.completeTooEarly}
                 </button>
               )}
-            </MarathonPortalCard>
+            </MarathonAstrologerCard>
           );
         })}
-      </section>
-    </div>
+      </div>
+    </MarathonAstrologerShell>
   );
 }

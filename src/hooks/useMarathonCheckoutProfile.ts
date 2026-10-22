@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { bcp47FromAppLocale } from "@/lib/i18n/locale";
+import { marathonBornLine } from "@/lib/marathon-display";
 import { MARATHON_COPY } from "@/lib/constants/marathon";
 import { PROFILE_FORM_VALIDATION } from "@/lib/constants/profile-form-validation";
 import {
@@ -31,7 +33,7 @@ export function useMarathonCheckoutProfile(
 ) {
   const copy = useI18nConstants(MARATHON_COPY);
   const rules = useI18nConstants(PROFILE_FORM_VALIDATION);
-  const { t } = useT();
+  const { t, locale } = useT();
   const [owner, setOwner] = useState<UserProfile | null>(null);
   const [people, setPeople] = useState<RelatedProfile[]>([]);
   const [mode, setMode] = useState<"self" | "other">("self");
@@ -155,7 +157,7 @@ export function useMarathonCheckoutProfile(
         preferredLocation: draft.currentFull.trim(),
       });
       useAuthStore.getState().updateUser(profile);
-      onComplete({ customerQuery, preferredLanguage: language.trim(), relatedProfileId: null, memberDisplayName: null, relationship: null });
+      onComplete({ customerQuery, preferredLanguage: language.trim(), relatedProfileId: null, memberDisplayName: null, relationship: null, bornLine: marathonBornLine(draft.dob, draft.tob, draft.birth, bcp47FromAppLocale(locale)) });
       return;
     }
     if (selectedId == null && people.length >= RELATED_PROFILE_LIMIT) {
@@ -170,7 +172,7 @@ export function useMarathonCheckoutProfile(
       await updateRelatedProfile(selectedId, body);
     }
     const memberDisplayName = `${draft.first.trim()} ${draft.last.trim()}`.trim();
-    onComplete({ customerQuery, preferredLanguage: language.trim(), relatedProfileId, memberDisplayName, relationship: relationship.trim() });
+    onComplete({ customerQuery, preferredLanguage: language.trim(), relatedProfileId, memberDisplayName, relationship: relationship.trim(), bornLine: marathonBornLine(draft.dob, draft.tob, draft.birth, bcp47FromAppLocale(locale)) });
   }
 
   return {

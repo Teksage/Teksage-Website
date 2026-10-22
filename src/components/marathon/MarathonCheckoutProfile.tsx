@@ -8,6 +8,8 @@ import { useMarathonCheckoutProfile } from "@/hooks/useMarathonCheckoutProfile";
 import { CONSULTATION_LANGUAGES } from "@/lib/constants/consultation-languages";
 import { CONSULTATION_SCREEN } from "@/lib/constants/consultation-screen";
 import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
+import { MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
+import { MARATHON_FLOW_UI } from "@/lib/constants/marathon-flow-ui";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
 import {
   RELATED_RELATIONSHIP_COPY,
@@ -25,6 +27,8 @@ export function MarathonCheckoutProfile({
   className,
 }: MarathonCheckoutProfileProps) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const flow = useI18nConstants(MARATHON_FLOW_COPY);
+  const face = MARATHON_FLOW_UI;
   const consult = useI18nConstants(CONSULTATION_SCREEN);
   const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
   const form = MARATHON_CHECKOUT;
@@ -41,24 +45,30 @@ export function MarathonCheckoutProfile({
 
   return (
     <div className={className}>
-      <p className={form.stepTitle}>{copy.profileTitle}</p>
-      <p className={form.hint}>{step.mode === "other" ? copy.othersHint : copy.profileHint}</p>
+      <p className={form.stepTitle}>{flow.readingFor}</p>
+      <p className={form.hint}>{flow.readingHint}</p>
       {step.error ? <p className={ui.bookError}>{step.error}</p> : null}
       <div className={form.pair}>
         {step.canChooseSubject ? (
           <div className={form.span}>
-            <span className={form.label}>{copy.consultFor}</span>
-            <div className={form.subjectRow}>
-              <button type="button" className={step.mode === "self" ? form.subjectOn : form.subjectOff} onClick={step.showSelf}>
-                {copy.self}
-              </button>
-              <button type="button" className={step.mode === "other" ? form.subjectOn : form.subjectOff} onClick={step.showOthers}>
-                {copy.others}
+            <div className={face.switchRow}>
+              <div className={face.switchCopy}>
+                <p className={face.sectionTitle}>{flow.someoneElse}</p>
+                <p className={form.hint}>{flow.someoneHint}</p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={step.mode === "other"}
+                className={cn(face.switch, step.mode === "other" ? face.switchOn : face.switchOff)}
+                onClick={() => (step.mode === "other" ? step.showSelf() : step.showOthers())}
+              >
+                <span className={cn(face.knob, step.mode === "other" ? face.knobOn : face.knobOff)} />
               </button>
             </div>
           </div>
         ) : null}
-        {step.mode === "other" && step.people.length > 0 ? (
+        {step.mode === "other" ? (
           <div className={form.span}>
             <span className={form.label}>{copy.savedPeople}</span>
             <div className={form.savedRow}>
@@ -108,7 +118,7 @@ export function MarathonCheckoutProfile({
             </label>
           ) : null}
           <label className={form.fieldStack}>
-            <span className={form.label}>{copy.languageTitle}</span>
+            <span className={form.label}>{flow.consultationLanguage}</span>
             <select
               className={form.select}
               value={step.language}
@@ -160,7 +170,7 @@ export function MarathonCheckoutProfile({
               step.setQuery(e.target.value);
               if (step.queryError) step.setQueryError("");
             }}
-            placeholder={copy.queryHint}
+            placeholder={flow.questionExample}
           />
         </label>
       </div>

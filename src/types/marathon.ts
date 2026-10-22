@@ -78,6 +78,28 @@ export type MarathonPortalCardProps = {
   children?: ReactNode;
 };
 
+export type MarathonAstrologerShellProps = {
+  title: string;
+  subtitle: string;
+  backHref: string;
+  children: ReactNode;
+};
+
+export type MarathonAstrologerCardProps = {
+  startsAt: string;
+  endsAt?: string | null;
+  locale: string;
+  timeZone?: string | null;
+  category?: string;
+  status: ReactNode;
+  active: boolean;
+  title: string;
+  lines?: string[];
+  summary?: string;
+  onOpen?: () => void;
+  children?: ReactNode;
+};
+
 export type MarathonAstrologerBookingsProps = {
   marathonId: number;
 };
@@ -200,6 +222,8 @@ export type MarathonCheckoutProfileResult = {
   relatedProfileId: number | null;
   memberDisplayName: string | null;
   relationship: string | null;
+  /** Birth line already entered on this step, shown again on payment review. */
+  bornLine?: string;
 };
 
 export type MarathonCheckoutProfileProps = {

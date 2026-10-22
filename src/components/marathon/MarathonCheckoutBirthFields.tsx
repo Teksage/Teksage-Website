@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { ProfileLocationField } from "@/components/settings/ProfileLocationField";
 import { useI18nConstants } from "@/hooks/useT";
 import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
+import { MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
 import { MARATHON_COPY } from "@/lib/constants/marathon";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ export function MarathonCheckoutBirthFields({
   className,
 }: MarathonCheckoutBirthFieldsProps) {
   const copy = useI18nConstants(MARATHON_COPY);
+  const flow = useI18nConstants(MARATHON_FLOW_COPY);
   const details = useI18nConstants(PROFILE_DETAILS);
   const form = MARATHON_CHECKOUT;
   const set = (patch: Partial<typeof draft>) => onChange({ ...draft, ...patch });
@@ -42,7 +44,7 @@ export function MarathonCheckoutBirthFields({
         value={draft.birth}
         fullLocation={draft.birthFull}
         isEditable
-        placeholder=""
+        placeholder={flow.birthCity}
         labelClassName={form.label}
         inputClassName={form.locationField}
         onChange={(city, full) => set({ birth: city, birthFull: full })}
@@ -52,7 +54,7 @@ export function MarathonCheckoutBirthFields({
         value={draft.current}
         fullLocation={draft.currentFull}
         isEditable
-        placeholder=""
+        placeholder={flow.liveCity}
         labelClassName={form.label}
         inputClassName={form.locationField}
         onChange={(city, full) => set({ current: city, currentFull: full })}

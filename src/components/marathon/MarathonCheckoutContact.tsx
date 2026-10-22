@@ -12,6 +12,7 @@ import { DEFAULT_COUNTRY_CODE_NUMERIC } from "@/lib/constants/default-region";
 import { LOGIN_EMAIL_FORM } from "@/lib/constants/login-email-form";
 import { LOGIN_MOBILE_FORM } from "@/lib/constants/login-mobile-form";
 import { MARATHON_CHECKOUT, MARATHON_CHECKOUT_COPY } from "@/lib/constants/marathon-checkout";
+import { MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
 import { MARATHON_ASSETS } from "@/lib/constants/assets";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
 import { PROFILE_DETAILS } from "@/lib/constants/profile-details";
@@ -38,6 +39,7 @@ export function MarathonCheckoutContact({
   const mobileCopy = useI18nConstants(LOGIN_MOBILE_FORM);
   const copy = useI18nConstants(MARATHON_COPY);
   const note = useI18nConstants(MARATHON_CHECKOUT_COPY);
+  const flow = useI18nConstants(MARATHON_FLOW_COPY);
   const form = MARATHON_CHECKOUT;
   const ui = MARATHON_PAGE;
   const [value, setValue] = useState(initialValue);
@@ -132,7 +134,7 @@ export function MarathonCheckoutContact({
             </Button>
           )}
         </div>
-        <p className={form.note}>{mode === "email" ? note.emailRequired : note.phoneOptional}</p>
+        <p className={form.note}>{mode === "email" ? flow.meetingSent : note.phoneOptional}</p>
       </div>
       {error ? <p className={ui.bookError}>{error}</p> : null}
       {showOtp && !verified ? (
