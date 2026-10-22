@@ -1,5 +1,6 @@
 "use client";
 
+import { MarathonCheckoutNext } from "@/components/marathon/MarathonCheckoutNext";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
 import { MARATHON_COPY } from "@/lib/constants/marathon";
@@ -25,11 +26,6 @@ export function MarathonCheckoutReview({
   const flow = useI18nConstants(MARATHON_FLOW_COPY);
   const { t } = useT();
   const ui = MARATHON_FLOW_UI;
-  const steps = [
-    { title: flow.payConfirmed, hint: flow.payConfirmedHint },
-    { title: flow.astrologerAssigned, hint: flow.astrologerAssignedHint },
-    { title: flow.linkShared, hint: flow.linkSharedHint },
-  ];
 
   return (
     <>
@@ -69,21 +65,7 @@ export function MarathonCheckoutReview({
           <p className={ui.reviewValue}>{question}</p>
         </div>
       </section>
-      <section className={ui.card}>
-        <h2 className={ui.sectionTitle}>{flow.nextTitle}</h2>
-        <div className={ui.nextList}>
-          <span className={ui.nextRail} aria-hidden />
-          {steps.map((item, index) => (
-            <div key={item.title} className={ui.nextItem}>
-              <span className={ui.nextNum}>{index + 1}</span>
-              <div>
-                <p className={ui.nextTitle}>{item.title}</p>
-                <p className={ui.nextHint}>{item.hint}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <MarathonCheckoutNext />
     </>
   );
 }

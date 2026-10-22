@@ -48,7 +48,7 @@ export const MARATHON_CHECKOUT = {
   stepTitle: `${TYPO.chatCardText} text-[var(--color-brand-black)]`,
   hint: `${TYPO.chatBubble} text-black/55`,
   /** Full-width note inside the profile grid. */
-  hintRow: `${TYPO.chatBubble} text-black/60 sm:col-span-2`,
+  hintRow: `${TYPO.chatBubble} text-black/60 col-span-2`,
   textarea: `min-h-24 w-full resize-y rounded-xl border border-black/10 bg-white px-3 py-2.5 shadow-none outline-none placeholder:text-black/35 focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
   summary: "flex w-full flex-col items-stretch gap-2 text-left",
   summaryTitle: `${TYPO.labelSemibold} text-left text-[var(--color-brand-black)]`,
@@ -61,7 +61,7 @@ export const MARATHON_CHECKOUT = {
   queryLabel: `${TYPO.caption} font-semibold text-black/55`,
   queryText: `${TYPO.chatCardTextBot} whitespace-pre-wrap text-[var(--color-brand-black)]`,
   /** Birth fields: 2 per row on small screens, 3 per row when form is full width. */
-  subjectRow: "sm:col-span-2",
+  subjectRow: "col-span-2",
   subjectOn: `h-11 cursor-pointer rounded-lg border border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] text-[var(--color-brand-primary)] ${TYPO.labelSemibold}`,
   subjectOff: `h-11 cursor-pointer rounded-lg border border-black/10 bg-white text-black/70 ${TYPO.labelSemibold}`,
   savedRow: "flex w-fit max-w-full flex-nowrap items-center gap-2",
@@ -69,10 +69,10 @@ export const MARATHON_CHECKOUT = {
   select: `h-11 w-full rounded-xl border border-black/10 bg-white px-3 shadow-none outline-none focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
   addNew: `h-11 shrink-0 cursor-pointer rounded-lg border border-black/10 bg-white px-4 text-black/70 ${TYPO.labelSemibold}`,
   addNewOn: `h-11 shrink-0 cursor-pointer rounded-lg border border-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_12%,white)] px-4 text-[var(--color-brand-primary)] ${TYPO.labelSemibold}`,
-  pair: "mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2",
-  span: "flex flex-col gap-2 sm:col-span-2",
-  /** Two fields share one row: language and phone for Self, relationship and language for Others. */
-  contactLangRow: "grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2",
+  pair: "mt-4 grid grid-cols-2 gap-3 sm:gap-4",
+  span: "col-span-2 flex flex-col gap-2",
+  /** Language and contact stay full width on a phone. They share a row from sm up. */
+  contactLangRow: "col-span-2 grid grid-cols-1 gap-4 sm:grid-cols-2",
   contactInput: "min-w-0 flex-1",
   fieldStack: "flex min-w-0 flex-col gap-1.5",
   contactCell: "flex min-w-0 max-w-md flex-col gap-2",
@@ -89,7 +89,7 @@ export const MARATHON_CHECKOUT = {
   otpCellLogin: `h-12 w-11 shrink-0 rounded-xl border-2 border-black/10 bg-white text-center shadow-[0_1px_4px_rgb(0_0_0_/_0.05)] sm:h-14 sm:w-12 ${TYPO.sizeLg} ${TYPO.weightBold} text-[var(--color-brand-black)] outline-none focus:border-[var(--color-brand-primary)] focus:bg-white focus:shadow-[0_0_0_3px_var(--auth-otp-focus-ring)]`,
   label: `${TYPO.chatCardText} text-[var(--color-brand-black)]`,
   note: `${TYPO.chatBubble} text-black/55`,
-  field: `h-11 w-full rounded-xl border border-black/10 bg-white px-3 shadow-none outline-none placeholder:text-black/35 focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
+  field: `h-11 w-full min-w-0 rounded-xl border border-black/10 bg-white px-3 shadow-none outline-none placeholder:text-black/35 focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 ${TYPO.chatCardTextBot}`,
   locationField: `h-11 w-full rounded-xl border border-black/10 !bg-white px-3 shadow-none outline-none placeholder:text-black/35 focus-visible:border-[var(--color-brand-primary)] focus-visible:ring-0 disabled:!bg-white ${TYPO.chatCardTextBot}`,
   action: `h-11 w-full cursor-pointer rounded-full !bg-[var(--color-brand-primary)] !text-white shadow-[0_6px_16px_rgb(16_177_0_/_0.28)] hover:brightness-105 ${TYPO.chatBubble}`,
   /** Content-width CTA, centered (Continue on birth-details step). */

@@ -119,7 +119,7 @@ export function ProfileLocationField({
       : null;
 
   return (
-    <div className="relative flex flex-col gap-1.5">
+    <div className="relative flex min-w-0 flex-col gap-1.5">
       <Label className={cn(FU.label, labelClassName)}>
         {label}
         {required ? <span className={FU.labelRequired}>*</span> : null}

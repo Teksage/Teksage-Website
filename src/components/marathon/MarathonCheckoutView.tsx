@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonCheckoutAside } from "@/components/marathon/MarathonCheckoutAside";
+import { MarathonCheckoutLogin } from "@/components/marathon/MarathonCheckoutNext";
 import { MarathonCheckoutProfile } from "@/components/marathon/MarathonCheckoutProfile";
 import { MarathonCheckoutReview } from "@/components/marathon/MarathonCheckoutReview";
-import { MarathonCheckoutSignIn } from "@/components/marathon/MarathonCheckoutSignIn";
 import { MarathonCheckoutTimeCard } from "@/components/marathon/MarathonCheckoutTimeCard";
 import { MarathonFlowHeader } from "@/components/marathon/MarathonFlowHeader";
 import { useI18nConstants } from "@/hooks/useT";
@@ -139,15 +139,13 @@ export function MarathonCheckoutView({ marathonId, slotId, eventKey }: MarathonC
             if (step === 3 && next === 2) setStep(2);
           }}
         />
-        <div className={ui.grid}>
+        <div className={step === 1 ? ui.gridLogin : ui.grid}>
           <div className={ui.stack}>
             {error && !event ? <p className={MARATHON_PAGE.bookError}>{error}</p> : null}
             {event?.admin_ended ? (
               <div className={ui.card}><p className={ui.sectionHint}>{copy.adminEnded}</p></div>
             ) : null}
-            {event && !event.admin_ended && step === 1 ? (
-              <div className={ui.card}><MarathonCheckoutSignIn onComplete={setStep} /></div>
-            ) : null}
+            {event && !event.admin_ended && step === 1 ? <MarathonCheckoutLogin onComplete={setStep} /> : null}
             {event && !event.admin_ended && step === 2 ? (
               <>
                 <MarathonCheckoutTimeCard event={event} slotId={slotId} bookedSlotIds={bookedSlotIds} onSelect={pickSlot} />
@@ -180,16 +178,18 @@ export function MarathonCheckoutView({ marathonId, slotId, eventKey }: MarathonC
               />
             ) : null}
           </div>
-          <MarathonCheckoutAside
-            event={event}
-            slot={slot}
-            step={step}
-            payFee={payFee}
-            payCurrency={payCurrency}
-            mine={mine}
-            error={error}
-            onPay={() => void pay()}
-          />
+          {step === 1 ? null : (
+            <MarathonCheckoutAside
+              event={event}
+              slot={slot}
+              step={step}
+              payFee={payFee}
+              payCurrency={payCurrency}
+              mine={mine}
+              error={error}
+              onPay={() => void pay()}
+            />
+          )}
         </div>
       </div>
       <LoadingOverlay open={loading} />
