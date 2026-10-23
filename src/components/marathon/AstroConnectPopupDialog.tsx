@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
@@ -63,7 +63,7 @@ function StoryFooter({ template, category }: { template: string; category: strin
   return <p className={ui.body}>{emphasize(text, phrases, ui.bodyStrong)}</p>;
 }
 
-function emphasize(text: string, phrases: string[], className: string) {
+function emphasize(text: string, phrases: string[], className: string): ReactNode {
   const hit = phrases
     .map((phrase) => ({ phrase, index: text.toLowerCase().indexOf(phrase.toLowerCase()) }))
     .filter((item) => item.index >= 0)
