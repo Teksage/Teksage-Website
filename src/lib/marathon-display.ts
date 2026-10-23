@@ -124,7 +124,7 @@ export function marathonOpenSlotCount(event: {
   slots: { seats_left: number }[];
 }) {
   if (!event.booking_open || event.admin_ended) return 0;
-  return event.slots.filter((slot) => Number(slot.seats_left) > 0).length;
+  return event.slots.reduce((sum, slot) => sum + Math.max(0, Number(slot.seats_left) || 0), 0);
 }
 
 export function marathonSlotMinutes(start: string, end: string) {

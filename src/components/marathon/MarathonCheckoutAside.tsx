@@ -68,8 +68,8 @@ export function MarathonCheckoutAside({
   return (
     <MarathonFlowSummary
       kicker={step === 3 ? t("Payment summary") : flow.bookingSummary}
-      rows={step === 3 ? feeRows : summaryRows}
-      totalLabel={step === 3 ? t("Total") : flow.totalGst}
+      rows={step === 3 ? feeRows : [...summaryRows, ...(parts ? feeRows : [])]}
+      totalLabel={t("Total")}
       total={total}
       lead={step === 3 && slotWhen ? (
         <div className={ui.lead}>

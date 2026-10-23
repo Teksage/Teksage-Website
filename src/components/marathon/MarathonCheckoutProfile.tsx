@@ -5,7 +5,7 @@ import { MarathonCheckoutContact } from "@/components/marathon/MarathonCheckoutC
 import { Button } from "@/components/ui/button";
 import { useI18nConstants } from "@/hooks/useT";
 import { useMarathonCheckoutProfile } from "@/hooks/useMarathonCheckoutProfile";
-import { CONSULTATION_LANGUAGES } from "@/lib/constants/consultation-languages";
+import { CONSULTATION_LANGUAGE_CHOICES } from "@/lib/constants/consultation-languages";
 import { CONSULTATION_SCREEN } from "@/lib/constants/consultation-screen";
 import { MARATHON_CHECKOUT } from "@/lib/constants/marathon-checkout";
 import { MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
@@ -128,7 +128,7 @@ export function MarathonCheckoutProfile({
               }}
             >
               <option value="">{consult.languagePlaceholder}</option>
-              {CONSULTATION_LANGUAGES.map((lang) => (
+              {CONSULTATION_LANGUAGE_CHOICES.map((lang) => (
                 <option key={lang.id} value={lang.id}>{lang.label}</option>
               ))}
             </select>

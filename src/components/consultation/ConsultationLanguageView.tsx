@@ -12,7 +12,7 @@ import {
 } from "@/lib/consultation-session";
 import { consultationHubPath } from "@/lib/constants/consultation-routes";
 import {
-  CONSULTATION_LANGUAGES,
+  CONSULTATION_LANGUAGE_CHOICES,
   CONSULTATION_LAYOUT,
   CONSULTATION_SCREEN,
   ROUTES,
@@ -91,7 +91,7 @@ export function ConsultationLanguageView() {
       <ConsultationLanguageField
         title={C.languageFirst}
         value={primary}
-        options={CONSULTATION_LANGUAGES}
+        options={CONSULTATION_LANGUAGE_CHOICES}
         enabled
         error={firstError}
         onChange={(value) => {
@@ -105,7 +105,7 @@ export function ConsultationLanguageView() {
       <ConsultationLanguageField
         title={C.languageSecond}
         value={secondary}
-        options={CONSULTATION_LANGUAGES.filter((l) => l.id !== primary)}
+        options={CONSULTATION_LANGUAGE_CHOICES.filter((l) => l.id !== primary)}
         enabled={Boolean(primary)}
         error={secondError}
         onChange={(value) => {

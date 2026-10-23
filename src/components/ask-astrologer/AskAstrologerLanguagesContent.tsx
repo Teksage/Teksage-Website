@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { ConsultationLanguageField } from "@/components/consultation/ConsultationLanguageField";
 import { MuhurthaEventPlanAccordion } from "@/components/ask-astrologer/MuhurthaEventPlanAccordion";
 import { CONSULTATION_BOOKING_LAYOUT } from "@/lib/constants/consultation-booking";
-import { CONSULTATION_LANGUAGES } from "@/lib/constants";
+import { CONSULTATION_LANGUAGE_CHOICES } from "@/lib/constants";
 import { ASK_ASTROLOGER_SCREEN, ASK_ASTROLOGER_UI } from "@/lib/constants/chat-ask-astrologer";
 import { cn } from "@/lib/utils";
 import type { AskAstrologerLanguagesContentProps } from "@/types/ui/ask-astrologer";
@@ -44,7 +44,7 @@ export function AskAstrologerLanguagesContent({
         <ConsultationLanguageField
           title={AA.languageFieldLabel}
           value={primary}
-          options={CONSULTATION_LANGUAGES}
+          options={CONSULTATION_LANGUAGE_CHOICES}
           enabled
           compact
           error={firstError}
