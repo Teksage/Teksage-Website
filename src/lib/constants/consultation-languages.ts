@@ -31,6 +31,22 @@ export const CONSULTATION_LANGUAGES: readonly ConsultationLanguageOption[] = [
   { id: "santali", label: "ᱥᱟᱱᱛᱟᱲᱤ" },
 ] as const;
 
+/** Languages a customer can request. Same set as the app language page. */
+const CONSULTATION_LANGUAGE_CHOICE_IDS = [
+  "english",
+  "tamil",
+  "hindi",
+  "telugu",
+  "kannada",
+  "malayalam",
+  "marathi",
+] as const;
+
+export const CONSULTATION_LANGUAGE_CHOICES: readonly ConsultationLanguageOption[] =
+  CONSULTATION_LANGUAGE_CHOICE_IDS.map(
+    (id) => CONSULTATION_LANGUAGES.find((lang) => lang.id === id)!,
+  );
+
 export function consultationLanguageLabel(languageId: string): string {
   return (
     CONSULTATION_LANGUAGES.find((lang) => lang.id === languageId)?.label ??
