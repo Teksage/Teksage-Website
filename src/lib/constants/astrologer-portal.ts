@@ -30,6 +30,10 @@ export const ASTRO_PORTAL_UI = {
       title: "Ask Requests",
       subtitle: "Answer single questions assigned to you.",
     },
+    events: {
+      title: "Events",
+      subtitle: "Confirm participation. Admin assigns paid seats.",
+    },
   },
 
   /** Ask-request answer form — voice record / attach. */

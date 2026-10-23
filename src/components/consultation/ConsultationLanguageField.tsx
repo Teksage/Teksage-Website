@@ -2,7 +2,8 @@
 
 import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   CONSULTATION_ASSETS,
   CONSULTATION_LAYOUT,
@@ -19,17 +20,57 @@ export function ConsultationLanguageField({
   enabled,
   error,
   compact = false,
+  neutral = false,
   onChange,
 }: ConsultationLanguageFieldProps) {
   const C = useI18nConstants(CONSULTATION_SCREEN);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const filled = Boolean(value);
   const displayLabel = filled ? consultationLanguageLabel(value) : "";
+  const bannerFilled = filled && !neutral;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   function pick(languageId: string) {
     onChange(languageId);
     setOpen(false);
   }
+
+  const modal =
+    open && mounted
+      ? createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 px-3"
+            role="dialog"
+            aria-modal
+            onClick={() => setOpen(false)}
+          >
+            <div
+              className={CONSULTATION_LAYOUT.langModal}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className={CONSULTATION_LAYOUT.langModalTitle}>{title}</p>
+              <ul className={CONSULTATION_LAYOUT.langList}>
+                {options.map((lang) => (
+                  <li key={lang.id}>
+                    <button
+                      type="button"
+                      className={CONSULTATION_LAYOUT.langListItem}
+                      onClick={() => pick(lang.id)}
+                    >
+                      {lang.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
 
   return (
     <div className="min-w-0">
@@ -49,27 +90,31 @@ export function ConsultationLanguageField({
         }}
         className={cn(
           compact ? CONSULTATION_LAYOUT.langFieldCompact : CONSULTATION_LAYOUT.langField,
-          filled ? CONSULTATION_LAYOUT.langFieldFilled : CONSULTATION_LAYOUT.langFieldEmpty
+          bannerFilled ? CONSULTATION_LAYOUT.langFieldFilled : CONSULTATION_LAYOUT.langFieldEmpty
         )}
       >
         <span className="flex min-w-0 flex-1 items-center">
-          <Image
-            src={CONSULTATION_ASSETS.categoryLanguage}
-            alt=""
-            width={compact ? 16 : 20}
-            height={compact ? 16 : 20}
-            unoptimized
-            className={
-              compact ? CONSULTATION_LAYOUT.langIconCompact : CONSULTATION_LAYOUT.langIcon
-            }
-            aria-hidden
-          />
+          {neutral ? null : (
+            <Image
+              src={CONSULTATION_ASSETS.categoryLanguage}
+              alt=""
+              width={compact ? 16 : 20}
+              height={compact ? 16 : 20}
+              unoptimized
+              className={
+                compact ? CONSULTATION_LAYOUT.langIconCompact : CONSULTATION_LAYOUT.langIcon
+              }
+              aria-hidden
+            />
+          )}
           <span
             className={cn(
               compact ? CONSULTATION_LAYOUT.langFieldTextCompact : CONSULTATION_LAYOUT.langFieldText,
-              filled
+              bannerFilled
                 ? CONSULTATION_LAYOUT.langFieldValue
-                : CONSULTATION_LAYOUT.langFieldPlaceholder
+                : filled
+                  ? "text-[var(--color-brand-black)]"
+                  : CONSULTATION_LAYOUT.langFieldPlaceholder
             )}
           >
             {filled ? displayLabel : C.languagePlaceholder}
@@ -90,34 +135,7 @@ export function ConsultationLanguageField({
           {error} *
         </p>
       ) : null}
-      {open ? (
-        <div
-          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-3 pt-16"
-          role="dialog"
-          aria-modal
-          onClick={() => setOpen(false)}
-        >
-          <div
-            className={CONSULTATION_LAYOUT.langModal}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className={CONSULTATION_LAYOUT.langModalTitle}>{title}</p>
-            <ul className={CONSULTATION_LAYOUT.langList}>
-              {options.map((lang) => (
-                <li key={lang.id}>
-                  <button
-                    type="button"
-                    className={CONSULTATION_LAYOUT.langListItem}
-                    onClick={() => pick(lang.id)}
-                  >
-                    {lang.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ) : null}
+      {modal}
     </div>
   );
 }

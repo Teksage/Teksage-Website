@@ -1,3 +1,5 @@
+import { TYPO } from "@/lib/constants/typography";
+
 /** User-facing copy for Panchang tab — keep strings out of TSX per project rules. */
 
 export const PANCHANG_SCREEN = {
@@ -16,6 +18,8 @@ export const PANCHANG_SCREEN = {
   tryAgainCta: "Try again",
   todayLabel: "Today",
   changeDateHint: "Tap to change date",
+  locationFor: "Timings for {place}",
+  locationMissing: "Set your current location",
   downloadPdfCta: "Download PDF",
   sharePdfError: "Could not download Panchang PDF. Please try again.",
   detailSeparator: " · ",
@@ -80,9 +84,12 @@ export const PANCHANG_LAYOUT = {
   imageSizes:
     "(max-width: 1023px) 100vw, calc(100vw - var(--desktop-sidebar-width))",
   heroHeader:
-    "relative z-10 flex items-center justify-center px-10 pb-2 pt-[min(7.4vh,52px)] text-white lg:px-12 lg:pb-4 lg:pt-10 lg:text-[var(--color-brand-black)]",
+    "relative z-10 flex flex-col items-center px-10 pb-2 pt-[min(7.4vh,52px)] text-white lg:px-12 lg:pb-4 lg:pt-10 lg:text-[var(--color-brand-black)]",
+  heroTitleRow: "flex items-center justify-center",
+  heroActions: "flex items-center gap-1",
   heroTitle:
     "text-center text-xl font-bold leading-none tracking-tight lg:text-2xl",
+  locationLine: `mt-2 flex max-w-xs items-center justify-center gap-1.5 text-center ${TYPO.sizeXs} ${TYPO.weightSemibold} text-white/90 underline-offset-2 hover:underline lg:text-black/70`,
   infoButton:
     "absolute right-3 top-[min(7.4vh,52px)] rounded-full border border-white/25 text-white hover:bg-white/10 lg:right-8 lg:top-10 lg:border-[color-mix(in_srgb,var(--color-brand-panchang)_40%,transparent)] lg:text-[var(--color-brand-panchang)] lg:hover:bg-black/5",
   content: "relative z-10 pb-4 text-[var(--color-brand-black)] lg:pb-8",

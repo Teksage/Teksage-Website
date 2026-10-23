@@ -29,7 +29,7 @@ export const SETTINGS_CHANGE_CONTACT = {
   success: "Contact updated successfully.",
   invalidEmail: "Enter a valid email address.",
   invalidMobile: "Enter a valid mobile number.",
-  invalidOtp: "Enter a valid 6-digit OTP.",
+  invalidOtp: "Enter a valid 4-digit OTP.",
   missingProfileContact: "No verified contact found on your profile.",
   sendOtpError: "Could not send OTP. Please try again.",
   modeQuery: "mode",

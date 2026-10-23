@@ -11,14 +11,26 @@ export interface AppNotification {
 
 export interface ConsultationNotificationEvent {
   id: number;
+  status?: string;
   startDatetime: string;
+  endDatetime?: string | null;
   eventLink: string | null;
+  categories?: string[];
+  languages?: string[];
+  consultationFee?: number;
+  currency?: string;
+  queriesAnswered?: boolean | null;
+  astrologerId?: number | null;
   astrologerPicture: string | null;
   astrologerFirstName: string | null;
   astrologerLastName: string | null;
 }
 
-export type NotificationTab = "general" | "consultation";
+export type NotificationTab =
+  | "general"
+  | "30-mins"
+  | "single-query"
+  | "consultation";
 
 /** Ask Astrologer request as shown in the Consultation notifications tab. */
 export interface AskAstrologerNotificationItem {

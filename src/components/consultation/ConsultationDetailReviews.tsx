@@ -164,7 +164,7 @@ export function ConsultationDetailReviews({
                       </span>
                     </div>
                     <p className={CONSULTATION_DETAIL_LAYOUT.reviewText}>
-                      {CD.defaultReviewText}
+                      {ev.feedback?.trim() || CD.defaultReviewText}
                     </p>
                     <p className={CONSULTATION_DETAIL_LAYOUT.reviewTopic}>
                       {CD.consultedOn}{" "}

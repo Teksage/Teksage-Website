@@ -145,6 +145,8 @@ export type {
   OtpInputProps,
   OtpVerifyViewProps,
   LoginBackButtonProps,
+  AuthScreenShellProps,
+  AuthHeroProps,
 } from "./ui/auth";
 
 export type { CountryDialInfo, CountryDialPickerProps } from "./country";
@@ -303,6 +305,12 @@ export type {
   ChatPromptCreatePayload,
   ChatPromptStatusPayload,
 } from "./chat-prompts";
+
+export type {
+  AstroConnectPopupDialogProps,
+  AstroConnectPopupEvent,
+  AstroConnectPopupStatus,
+} from "./astroconnect-popup";
 
 export type {
   WhatsAppConsentState,

@@ -6,6 +6,10 @@ import {
   ASK_ASTROLOGER_SCREEN,
   ASK_ASTROLOGER_UI,
 } from "@/lib/constants/chat-ask-astrologer";
+import {
+  ASK_PREVIOUS_QA_COPY,
+  ASK_PREVIOUS_QA_UI,
+} from "@/lib/constants/ask-astrologer-previous-qa";
 import { ROUTES } from "@/lib/constants/routes";
 import {
   askRequestInitials,
@@ -27,6 +31,7 @@ export function AskAstrologerRequestCard({
   onAnswered?: () => void;
 }) {
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+  const Prev = useI18nConstants(ASK_PREVIOUS_QA_COPY);
   const languages = formatAskRequestLanguages(req.preferred_languages);
   const detailUrl = `${ROUTES.astrologerAskRequests}/${req.id}`;
   const isAnswered = req.status === "answered";
@@ -69,6 +74,11 @@ export function AskAstrologerRequestCard({
                   >
                     {getStatusLabel(req.status)}
                   </span>
+                  {(req.previous_qa_count ?? 0) > 0 ? (
+                    <span className={ASK_PREVIOUS_QA_UI.previousReturningBadge}>
+                      {Prev.previousReturningBadge}
+                    </span>
+                  ) : null}
                 </div>
               </div>
             </div>

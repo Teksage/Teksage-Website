@@ -71,11 +71,14 @@ export function Loader({
 }: LoaderProps) {
   const variant = resolveVariant(rawVariant);
 
-  if (variant === "spinner") {
+  if (variant === "spinner" || variant === "onBrand") {
     return (
       <div
         className={cn(
-          "animate-spin rounded-full border-gray-200 border-t-[var(--color-brand-primary)]",
+          "animate-spin rounded-full",
+          variant === "onBrand"
+            ? LOADER_UI.onBrandSpinner
+            : "border-gray-200 border-t-[var(--color-brand-primary)]",
           spinnerSizeClass[size],
           className
         )}

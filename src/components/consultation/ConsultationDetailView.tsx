@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationDetailExpertiseBar } from "@/components/consultation/ConsultationDetailExpertiseBar";
 import { ConsultationDetailProfileCard } from "@/components/consultation/ConsultationDetailProfileCard";
@@ -45,6 +46,7 @@ export function ConsultationDetailView({ astrologerId }: Props) {
   const CD = useI18nConstants(CONSULTATION_DETAIL_SCREEN);
   const C = useI18nConstants(CONSULTATION_SCREEN);
   const { t } = useT();
+  const viewerZone = useViewerTimezone();
   const router = useRouter();
   const [data, setData] = useState<ConsultationAstrologerDetail | null>(null);
   const [slots, setSlots] = useState<ConsultationSlot[]>([]);
@@ -260,27 +262,29 @@ export function ConsultationDetailView({ astrologerId }: Props) {
                               CONSULTATION_DETAIL_LAYOUT.slotChipSelected
                           )}
                         >
-                          {formatSlotTime12(s.start_datetime)}
+                          {formatSlotTime12(s.start_datetime, undefined, viewerZone)}
                         </button>
                       );
                     })}
                   </div>
                 ) : null}
 
-                <Link
-                  href={consultationSlotsPath(astrologerId)}
-                  className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
-                  onClick={() => {
-                    if (!selectedSlot) return;
-                    writeConsultationDraft({
-                      astrologerId,
-                      slotStart: selectedSlot.start_datetime,
-                      slotEnd: selectedSlot.end_datetime,
-                    });
-                  }}
-                >
-                  {CD.seeAllSlots}
-                </Link>
+                {selectedSlot ? (
+                  <button
+                    type="button"
+                    className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
+                    onClick={() => void onBookWithSlot()}
+                  >
+                    {CD.bookCta}
+                  </button>
+                ) : (
+                  <Link
+                    href={consultationSlotsPath(astrologerId)}
+                    className={CONSULTATION_DETAIL_LAYOUT.seeAllBtn}
+                  >
+                    {CD.seeAllSlots}
+                  </Link>
+                )}
               </div>
             </aside>
           ) : null}

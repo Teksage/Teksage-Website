@@ -1,11 +1,14 @@
+import type { ReactNode } from "react";
 import type { OtpContactType } from "../login-flow";
 
 export interface EmailLoginFormProps {
   onOtpSent: (email: string) => void;
+  locked?: boolean;
 }
 
 export interface MobileLoginFormProps {
   onOtpSent: (mobile: string, countryCode: string) => void;
+  locked?: boolean;
 }
 
 export interface TurnstileFieldProps {
@@ -37,6 +40,9 @@ export interface OtpInputProps {
   onChange: (value: string[]) => void;
   hasError?: boolean;
   className?: string;
+  cellClassName?: string;
+  /** Focus the first empty cell when the OTP step mounts. */
+  autoFocus?: boolean;
 }
 
 export interface OtpVerifyViewProps {
@@ -50,4 +56,16 @@ export interface OtpVerifyViewProps {
 export interface LoginBackButtonProps {
   /** When set (e.g. OTP step), runs instead of `router.back()`. */
   onNavigateBack?: () => void;
+}
+
+export interface AuthScreenShellProps {
+  children: ReactNode;
+  /** OTP step — shows back control on the left hero (and mobile form column). */
+  onBack?: () => void;
+  /** Rendered under the glass panel, e.g. the login legal footnote. */
+  footer?: ReactNode;
+}
+
+export interface AuthHeroProps {
+  onBack?: () => void;
 }

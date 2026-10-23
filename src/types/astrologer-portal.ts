@@ -47,6 +47,7 @@ export interface AstroEventDetail {
     last_name: string | null;
     email: string | null;
     mobile_number: string | null;
+    relationship?: string | null;
   } | null;
   userHoroscope: AstroHoroscope | null;
   questions: AstroQuestion[];

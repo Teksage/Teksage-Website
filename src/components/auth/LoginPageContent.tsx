@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, startTransition, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useI18nConstants } from "@/hooks/useT";
 import { useHydratedLoggedIn } from "@/hooks/useHydratedLoggedIn";
@@ -8,10 +8,10 @@ import { EmailLoginForm } from "@/components/auth/EmailLoginForm";
 import { LoginMethodTabs } from "@/components/auth/LoginMethodTabs";
 import { MobileLoginForm } from "@/components/auth/MobileLoginForm";
 import { OtpVerifyView } from "@/components/auth/OtpVerifyView";
-import { BrandLoginLogo } from "@/components/common/BrandLoginLogo";
+import { AuthScreenShell } from "@/components/auth/AuthScreenShell";
 import { PageLoadingCenter } from "@/components/common/Loader";
-import { LoginBackButton, LoginOrSignupHeading } from "@/components/auth/LoginChrome";
-import { DEFAULT_COUNTRY_CALLING_CODE, LOGIN_SCREEN } from "@/lib/constants";
+import { LoginOrSignupHeading } from "@/components/auth/LoginChrome";
+import { AUTH_SCREEN, DEFAULT_COUNTRY_CALLING_CODE, LOGIN_SCREEN } from "@/lib/constants";
 import { LOGIN_REDIRECT_QUERY } from "@/lib/constants/routes";
 import { reconcileAuthSession } from "@/lib/auth-session";
 import { resolvePostLoginRedirectPath } from "@/lib/login-redirect";
@@ -24,9 +24,8 @@ function LoginPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = useState<LoginStep>("form");
-  const showMobileTab = LS.showMobileLoginTab;
   const [activeTab, setActiveTab] = useState<LoginMethodTab>(
-    showMobileTab ? "mobile" : "email"
+    LS.showMobileLoginTab ? "mobile" : "email"
   );
   const [contact, setContact] = useState("");
   const [mobileCountryCode, setMobileCountryCode] = useState<string>(
@@ -60,6 +59,10 @@ function LoginPageInner() {
     setStep("otp");
   }
 
+  function handleTabChange(tab: LoginMethodTab) {
+    startTransition(() => setActiveTab(tab));
+  }
+
   if (!ready || loggedIn) return <PageLoadingCenter className="min-h-dvh" />;
 
   if (step === "otp") {
@@ -76,29 +79,21 @@ function LoginPageInner() {
   }
 
   return (
-    <div className={LS.shellClassName}>
-      <LoginBackButton />
-
-      <div className="relative mx-auto flex w-full max-w-md flex-col px-6 pb-10 pt-16">
-        <div className="mb-10 flex flex-col items-center">
-          <BrandLoginLogo widthPx={LS.brandLogoWidthPx} />
-        </div>
-
-        <LoginOrSignupHeading />
-
-        {showMobileTab ? (
-          <LoginMethodTabs active={activeTab} onChange={setActiveTab} />
-        ) : null}
-
-        {showMobileTab && activeTab === "mobile" ? (
+    <AuthScreenShell
+      footer={<p className={AUTH_SCREEN.legalClassName}>{LS.legalFootnote}</p>}
+    >
+      <LoginOrSignupHeading />
+      {LS.showMobileLoginTab ? (
+        <LoginMethodTabs active={activeTab} onChange={handleTabChange} />
+      ) : null}
+      <div key={activeTab} className={AUTH_SCREEN.tabPanelClassName}>
+        {LS.showMobileLoginTab && activeTab === "mobile" ? (
           <MobileLoginForm onOtpSent={handleMobileOtpSent} />
         ) : (
           <EmailLoginForm onOtpSent={handleEmailOtpSent} />
         )}
-
-        <p className="mt-10 text-center text-xs text-neutral-400">{LS.legalFootnote}</p>
       </div>
-    </div>
+    </AuthScreenShell>
   );
 }
 

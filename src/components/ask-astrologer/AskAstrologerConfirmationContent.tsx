@@ -48,7 +48,9 @@ export function AskAstrologerConfirmationContent() {
         </div>
         <button
           type="button"
-          onClick={() => router.push(`${ROUTES.notifications}?tab=consultation`)}
+          onClick={() =>
+            router.push(`${ROUTES.notifications}?tab=single-query`)
+          }
           className={ASK_ASTROLOGER_UI.confirmationTrackLink}
         >
           {AA.confirmationNotificationsLink}

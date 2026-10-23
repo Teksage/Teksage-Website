@@ -54,3 +54,24 @@ export async function acknowledgeAnswerReady(
   );
   return res.data as { status: string; request_id: number };
 }
+
+export async function submitAskAstrologerReview(
+  requestId: number,
+  body: { rating: number; feedback?: string }
+): Promise<AskAstrologerRequest> {
+  const res = await http.put(
+    `${API_ENDPOINTS.askAstrologerReview}/${requestId}/review`,
+    body
+  );
+  return res.data as AskAstrologerRequest;
+}
+
+export async function deleteAskAstrologerReview(
+  requestId: number
+): Promise<AskAstrologerRequest> {
+  const res = await http.put(
+    `${API_ENDPOINTS.askAstrologerReview}/${requestId}/review`,
+    { clear_review: true }
+  );
+  return res.data as AskAstrologerRequest;
+}

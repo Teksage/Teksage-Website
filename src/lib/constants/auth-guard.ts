@@ -37,6 +37,7 @@ export const AUTH_TOKEN_COOKIE = "teksage_auth_token" as const;
 /** True when middleware / server should require `teksage_auth_token` cookie. */
 export function pathRequiresAuth(pathname: string): boolean {
   if (pathname === ROUTES.profile) return true;
+  if (pathname.startsWith(`${ROUTES.marathon}/booking`)) return true;
   if (settingsSectionRequiresAuth(pathname)) return true;
   return AUTH_PATH_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)

@@ -9,7 +9,7 @@ const flutterImage = (file: string) => `/flutter-assets/images/${file}` as const
 export const CONSULTATION_HOME_SCREEN = {
   appBarTitle: "Astrology Consultation",
   pageTitle: "Book Consultation",
-  pageSubtitle: "All Languages · Spoken replies",
+  pageSubtitle: "Spoken replies",
   headerIconAlt: "Book consultation",
   findConsultTitle: "Find & Consult Astrologers",
   findConsultCount: "100+ Astrologers",
@@ -24,7 +24,10 @@ export const CONSULTATION_HOME_SCREEN = {
   viewDetails: "View Details",
   meetingLink: "Meeting Link",
   queriesAnsweredBanner: "Astrologer submitted answers for your queries",
-  topRatedBadge: "Top rated",
+  languageFilterLabel: "Language",
+  languageFilterAll: "All Languages",
+  languageFilterAria: "Filter astrologers by language",
+  emptyLanguageFilter: "No astrologers match this language.",
   reviewsLabel: "Reviews",
   viewAllReviews: "view all reviews",
   experienceLabel: "Experience",
@@ -32,10 +35,8 @@ export const CONSULTATION_HOME_SCREEN = {
   bookCta: "Book",
   bookCtaArrow: ">",
   ratingFallback: "—",
+  openAstrologerAria: "View {name} profile",
 } as const;
-
-/** Show “Top rated” when `customer_rating` is at least this value. */
-export const CONSULTATION_TOP_RATED_MIN = 4.5;
 
 export const CONSULTATION_HOME_MEETING_DATE_FORMAT = NOTIFICATION_SENT_AT_FORMAT;
 
@@ -101,6 +102,13 @@ export const CONSULTATION_HOME_LAYOUT = {
   meetingTabsWrap: "pb-3 pt-1",
   tabsWrap: "pb-3 pt-1",
   tabsRow: "flex flex-wrap items-center gap-2",
+  languageFilterRow: "mb-4 flex w-full max-w-xs flex-col gap-1.5",
+  languageFilterLabel: `${TYPO.sizeSm} ${TYPO.weightSemibold} text-black/55`,
+  languageFilterSelectWrap: "relative",
+  languageFilterSelect:
+    `h-10 w-full appearance-none rounded-full border border-black/[0.08] bg-white px-4 pr-10 ${TYPO.sizeBodySm} ${TYPO.weightMedium} text-[var(--color-brand-black)] focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none`,
+  languageFilterChevron:
+    "pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-black/50",
   astrologerList:
     "grid grid-cols-1 gap-4 pb-8 md:grid-cols-2 md:gap-5",
   astrologerGrid: "grid grid-cols-2 gap-x-5 gap-y-2.5 pb-10 pt-2 xl:grid-cols-3",
@@ -117,22 +125,28 @@ export const CONSULTATION_HOME_LAYOUT = {
   tabBadgeOutlinedIdle: "bg-[var(--color-brand-primary)] text-white",
   body: "flex-1 pb-6",
   empty: `pt-12 text-center ${TYPO.chatBubble} text-black/50`,
-  meetingCard: "mb-4 rounded-xl border border-black/[0.04] bg-white px-3 py-5",
-  meetingCardCompleted: "border-black/[0.04] bg-white",
-  meetingRow: "flex items-start gap-2",
+  meetingList: "flex w-full flex-col gap-3 pb-6",
+  meetingCard:
+    `${TYPO.chatCardTextBot} w-full overflow-hidden rounded-2xl border border-[var(--color-chat-bot-border)] bg-[var(--color-chat-bot-bubble)] px-4 py-4 shadow-[0_1px_6px_rgb(0_0_0_/_0.06)]`,
+  meetingCardCompleted: "",
+  meetingRow: "flex min-w-0 flex-1 items-center gap-3",
   meetingAvatar:
-    "size-[41px] shrink-0 overflow-hidden rounded-full border-[2.6px] border-[var(--color-consult-user-bg)]/30 bg-neutral-200",
-  meetingName: `${TYPO.sizeBodySm} ${TYPO.weightMedium} ${TYPO.leadingRelaxed} text-[var(--color-brand-black)]/80`,
-  meetingDate: `mt-1 ${TYPO.bodySemibold} text-[var(--color-brand-black)]`,
-  answersBanner:
-    `mt-3 rounded-[20px] bg-[#DDE8A9] py-2.5 text-center ${TYPO.chatBubble} text-[#4B5909]`,
-  actionRow: "mt-3 flex flex-wrap items-center gap-2 ",
+    "flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--color-chat-bot-border)] bg-[var(--color-home-screen-mint)]/50",
+  meetingMeta: "min-w-0 flex-1",
+  meetingName: `${TYPO.chatCardTextBot} ${TYPO.weightExtrabold}`,
+  meetingDate: `${TYPO.chatBubble} mt-0.5 text-black/55`,
+  meetingActions:
+    "flex w-full flex-wrap items-center gap-2 sm:w-auto sm:shrink-0 sm:justify-end",
+  actionRow: "mt-3 flex w-full flex-wrap items-center gap-2",
   actionBtn:
-    `inline-flex shrink-0 items-center justify-center rounded-md border border-[#87AE0E] px-3 py-1.5 text-center ${TYPO.labelSemibold} text-[#87AE0E] transition-opacity hover:opacity-90`,
+    "inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-chat-consult-btn-border)] bg-[var(--color-chat-consult-btn-bg)] px-4 py-1.5 text-center text-xs font-bold leading-tight text-[var(--color-chat-consult-btn-text)] transition-colors hover:bg-[var(--color-chat-consult-btn-border)]/8",
+  actionBtnPrimary:
+    "inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-brand-primary)] bg-[var(--color-brand-primary)] px-4 py-1.5 text-center text-xs font-bold leading-tight text-white transition-opacity hover:opacity-90",
 } as const;
 
 export const CONSULTATION_HUB_ASTRO_CARD = {
-  root: `consult-hub-card rounded-2xl border border-black/[0.06] bg-white px-4 py-4 ${mintCardShadow} will-change-transform transition-transform duration-200 ease-out hover:-translate-y-0.5`,
+  root: `consult-hub-card relative cursor-pointer rounded-2xl border border-black/[0.06] bg-white px-4 py-4 ${mintCardShadow} will-change-transform transition-transform duration-200 ease-out hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-primary)]`,
+  content: "relative",
   headerRow: "flex items-start gap-3",
   avatarWrap: "relative shrink-0",
   avatar:
@@ -143,22 +157,17 @@ export const CONSULTATION_HUB_ASTRO_CARD = {
     "absolute bottom-0.5 right-0.5 size-2.5 rounded-full border-2 border-white bg-[var(--color-brand-primary)]",
   headerMain: "min-w-0 flex-1",
   nameRow: "flex min-w-0 items-center gap-1.5",
-  /** Heavier than chat body — extrabold so names/stats/prices punch through. */
   name: `${TYPO.sizeBase} ${TYPO.weightExtrabold} ${TYPO.leadingSnug} truncate text-[var(--color-brand-black)]`,
   verifiedIcon: "size-4 shrink-0",
   verifiedBadge:
     "flex size-4 items-center justify-center rounded-full bg-[var(--color-brand-primary)] text-white",
   verifiedGlyph: `${TYPO.size3xs} ${TYPO.weightBold} leading-none`,
   langs: `${TYPO.sizeSm} ${TYPO.weightMedium} ${TYPO.leadingRelaxed} mt-0.5 truncate text-black/55`,
-  topRated: `${TYPO.sizeSm} ${TYPO.weightBold} inline-flex shrink-0 items-center gap-1 rounded-full bg-[color-mix(in_srgb,var(--color-chat-star)_18%,white)] px-2 py-0.5 text-[var(--color-chat-star)]`,
   statsRow:
     "mt-4 grid grid-cols-2 divide-x divide-black/[0.08] rounded-xl bg-black/[0.03] px-1 py-3",
-  statCell: "flex flex-col px-3",
-  ratingValueRow: "flex items-center gap-1",
-  star: `${TYPO.sizeBase} text-[var(--color-chat-star)]`,
-  ratingValue: `${TYPO.sizeBase} ${TYPO.weightExtrabold} ${TYPO.leadingSnug} text-[var(--color-brand-black)]`,
-  reviewsMeta: `${TYPO.sizeSm} ${TYPO.weightMedium} ${TYPO.leadingRelaxed} mt-0.5 text-black/55 transition-colors hover:text-[var(--color-brand-primary)]`,
-  viewReviews: `${TYPO.sizeSm} ${TYPO.weightBold} ${TYPO.leadingRelaxed} mt-1 inline-flex text-[var(--color-brand-primary)] underline underline-offset-2 hover:opacity-80`,
+  statCell: "flex flex-col justify-center px-3",
+  reviewsLabel: `${TYPO.sizeSm} ${TYPO.weightMedium} ${TYPO.leadingRelaxed} text-black/55`,
+  viewReviews: `${TYPO.sizeSm} ${TYPO.weightBold} ${TYPO.leadingRelaxed} mt-0.5 inline-flex text-[var(--color-brand-primary)] underline underline-offset-2 hover:opacity-80`,
   experienceValue: `${TYPO.sizeBase} ${TYPO.weightExtrabold} ${TYPO.leadingSnug} text-[var(--color-brand-black)]`,
   experienceLabel: `${TYPO.sizeSm} ${TYPO.weightMedium} ${TYPO.leadingRelaxed} mt-0.5 text-black/55`,
   footerRow: "mt-4 flex items-center justify-between gap-3",

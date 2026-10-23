@@ -107,10 +107,16 @@ export function AstrologerDashboard() {
       </div>
       <div className="flex gap-4">
         <DashCard
+          title={AP.card.events.title}
+          subtitle={AP.card.events.subtitle}
+          href={ROUTES.astrologerMarathon}
+          iconSrc={ASTROLOGER_ASSETS.eventsIcon}
+        />
+        <DashCard
           title={AP.card.askRequests.title}
           subtitle={AP.card.askRequests.subtitle}
           href={ROUTES.astrologerAskRequests}
-          iconSrc={ASTROLOGER_ASSETS.meetingIcon}
+          iconSrc={ASTROLOGER_ASSETS.askRequestsIcon}
         />
       </div>
     </div>

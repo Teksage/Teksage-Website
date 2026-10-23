@@ -30,8 +30,11 @@ export const MUHURTHA_LAYOUT = {
     "h-12 w-full appearance-none rounded-xl border border-neutral-200 bg-white px-4 pr-11 text-sm font-medium text-neutral-800 focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/20",
   selectChevron:
     "pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-brand-black)]/70",
-  dateInput:
-    "mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-800 focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/20",
+  dateField: "relative mt-1.5",
+  dateTrigger:
+    "flex h-12 w-full items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-4 text-left text-sm font-medium text-neutral-800 focus-visible:border-[var(--color-brand-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-primary)]/20",
+  dateIcon: "size-4 shrink-0 text-[var(--color-brand-black)]/70",
+  dateInputNative: "sr-only",
   locationInput: "bg-white",
   submitWrap: "flex justify-center pt-2",
   submitCta: primaryCta,

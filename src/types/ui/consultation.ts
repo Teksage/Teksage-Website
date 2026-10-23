@@ -25,6 +25,8 @@ export interface ConsultationLanguageFieldProps {
   enabled: boolean;
   error?: string | null;
   compact?: boolean;
+  /** Keep white field background when a language is selected (Expert Hours checkout). */
+  neutral?: boolean;
   onChange: (languageId: string) => void;
 }
 

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { ConsultationSlotsDateStrip } from "@/components/consultation/ConsultationSlotsDateStrip";
 import { ConsultationSlotsProfileHeader } from "@/components/consultation/ConsultationSlotsProfileHeader";
@@ -89,14 +90,15 @@ function formatSlotDate(iso: string, locale: string): string {
   });
 }
 
-function formatSlotRange(start: string, end: string, locale: string): string {
-  return `${formatSlotDate(start, locale)} · ${formatSlotTime12(start, locale)} – ${formatSlotTime12(end, locale)}`;
+function formatSlotRange(start: string, end: string, locale: string, timeZone?: string | null): string {
+  return `${formatSlotDate(start, locale)} · ${formatSlotTime12(start, locale, timeZone)} – ${formatSlotTime12(end, locale, timeZone)}`;
 }
 
 export function ConsultationSlotsView({ astrologerId }: Props) {
   const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
   const { locale, t } = useT();
   const dateLocale = bcp47FromAppLocale(locale);
+  const viewerZone = useViewerTimezone();
   const router = useRouter();
   const today = useMemo(() => new Date(), []);
 
@@ -310,7 +312,8 @@ export function ConsultationSlotsView({ astrologerId }: Props) {
                       {formatSlotRange(
                         selected.start_datetime,
                         selected.end_datetime,
-                        dateLocale
+                        dateLocale,
+                        viewerZone
                       )}
                     </p>
                   </div>

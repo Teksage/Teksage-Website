@@ -1,9 +1,6 @@
 import { getStoredChatAvatar, getStoredChatStyle } from "@/lib/chat-preference-storage";
 import { STORAGE_KEYS } from "@/lib/constants";
-import {
-  CHAT_AVATAR_OPTIONS,
-  CHAT_PREFERENCE_KEYS,
-} from "@/lib/constants/chat-preferences";
+import { CHAT_PREFERENCE_KEYS } from "@/lib/constants/chat-preferences";
 import { CHAT_DEFAULTS } from "@/lib/constants/chat-screen";
 
 /** Body for `POST /api/auth/logout` — mirrors Flutter `AuthService.logout`. */
@@ -20,8 +17,8 @@ export function buildLogoutRequestBody(): LogoutRequestBody | null {
   const refresh_token = localStorage.getItem(STORAGE_KEYS.refreshToken)?.trim();
   if (!refresh_token) return null;
 
-  const format = getStoredChatStyle() ?? CHAT_DEFAULTS.format;
-  const avatar = getStoredChatAvatar() ?? CHAT_AVATAR_OPTIONS[0].storageTitle;
+  const format = getStoredChatStyle() ?? "";
+  const avatar = getStoredChatAvatar() ?? "";
   const chat_languages = readChatLanguagesForLogout();
 
   return { refresh_token, format, avatar, chat_languages };

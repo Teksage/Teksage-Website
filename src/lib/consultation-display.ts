@@ -1,4 +1,7 @@
-import { consultationLanguageLabel } from "@/lib/constants/consultation-languages";
+import {
+  consultationLanguageLabel,
+  normalizeConsultationLanguageId,
+} from "@/lib/constants/consultation-languages";
 import { TEKSAGE_APP_ASTROLOGER_PROFILE_SLUGS } from "@/lib/constants/consultation-featured-astrologers";
 import { buildAstrologerPublicProfileUrl } from "@/lib/astrologer-public-profile";
 import type { ConsultationAstrologer } from "@/types/consultation";
@@ -38,8 +41,9 @@ export function formatConsultationCategoryLabel(category: string): string {
 export function formatConsultationLanguageList(languages: string[]): string {
   return languages
     .map((lang) => {
-      const native = consultationLanguageLabel(lang);
-      if (native !== lang) return native;
+      const id = normalizeConsultationLanguageId(lang);
+      const native = consultationLanguageLabel(id);
+      if (native !== id) return native;
       return lang.charAt(0).toUpperCase() + lang.slice(1);
     })
     .join(", ");
@@ -57,6 +61,35 @@ export function consultationAstrologerName(
     .split(" ")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+/** Alphabetical A→Z by display name (case-insensitive). */
+export function sortConsultationAstrologersByName(
+  rows: ConsultationAstrologer[],
+  translate: (value: string) => string = (value) => value
+): ConsultationAstrologer[] {
+  return [...rows].sort((a, b) =>
+    consultationAstrologerName(a.user, translate).localeCompare(
+      consultationAstrologerName(b.user, translate),
+      undefined,
+      { sensitivity: "base" }
+    )
+  );
+}
+
+/**
+ * Match filter id (`tamil`) against API languages which may be native script
+ * (`தமிழ்`), English title-case (`Tamil`), or lowercase ids.
+ */
+export function astrologerSpeaksLanguage(
+  languages: string[] | undefined,
+  languageId: string
+): boolean {
+  const needle = normalizeConsultationLanguageId(languageId);
+  if (!needle) return true;
+  return (languages ?? []).some(
+    (lang) => normalizeConsultationLanguageId(lang) === needle
+  );
 }
 
 /** Initials from a display name — e.g. "Subathra Devi E" → "SD", "Astrologer A" → "AA". */

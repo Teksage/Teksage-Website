@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18nConstants, useT } from "@/hooks/useT";
+import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { cn } from "@/lib/utils";
 import {
   CONSULTATION_SLOTS_LAYOUT,
@@ -11,18 +12,28 @@ import { bcp47FromAppLocale } from "@/lib/i18n/locale";
 import type { ConsultationSlotsTimePickerProps } from "@/types/ui/consultation";
 import type { ConsultationSlot } from "@/types/consultation";
 
-function slotHour(iso: string): number {
+function slotHour(iso: string, timeZone?: string | null): number {
+  const tz = timeZone?.trim();
+  if (tz && tz.toUpperCase() !== "UTC") {
+    const hour = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      hourCycle: "h23",
+      timeZone: tz,
+    }).formatToParts(new Date(iso)).find((part) => part.type === "hour")?.value;
+    return Number(hour ?? 0);
+  }
   return new Date(iso).getHours();
 }
 
-function groupSlots(slots: ConsultationSlot[]) {
+function groupSlots(slots: ConsultationSlot[], timeZone?: string | null) {
   const upcoming = slots.filter((s) => !isSlotInPast(s));
   return {
-    morning: upcoming.filter((s) => slotHour(s.start_datetime) < 12),
-    afternoon: upcoming.filter(
-      (s) => slotHour(s.start_datetime) >= 12 && slotHour(s.start_datetime) < 17
-    ),
-    evening: upcoming.filter((s) => slotHour(s.start_datetime) >= 17),
+    morning: upcoming.filter((s) => slotHour(s.start_datetime, timeZone) < 12),
+    afternoon: upcoming.filter((s) => {
+      const hour = slotHour(s.start_datetime, timeZone);
+      return hour >= 12 && hour < 17;
+    }),
+    evening: upcoming.filter((s) => slotHour(s.start_datetime, timeZone) >= 17),
   };
 }
 
@@ -31,11 +42,13 @@ function SlotGroup({
   slots,
   selected,
   onSelect,
+  timeZone,
 }: {
   label: string;
   slots: ConsultationSlot[];
   selected: ConsultationSlot | null;
   onSelect: (slot: ConsultationSlot) => void;
+  timeZone?: string | null;
 }) {
   const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
   const { locale } = useT();
@@ -63,7 +76,7 @@ function SlotGroup({
               )}
             >
               <span className="block lowercase">
-                {formatSlotTime12(slot.start_datetime, dateLocale)}
+                {formatSlotTime12(slot.start_datetime, dateLocale, timeZone)}
               </span>
               <span
                 className={cn(
@@ -91,7 +104,8 @@ export function ConsultationSlotsTimePicker({
   const CS = useI18nConstants(CONSULTATION_SLOTS_SCREEN);
   const { locale } = useT();
   const dateLocale = bcp47FromAppLocale(locale);
-  const { morning, afternoon, evening } = groupSlots(slots);
+  const viewerZone = useViewerTimezone();
+  const { morning, afternoon, evening } = groupSlots(slots, viewerZone);
   const totalOpen = morning.length + afternoon.length + evening.length;
   const dayLabel = selectedDate.toLocaleDateString(dateLocale, {
     weekday: "short",
@@ -120,14 +134,15 @@ export function ConsultationSlotsTimePicker({
         <p className={CONSULTATION_SLOTS_LAYOUT.slotsEmpty}>{CS.slotsEmpty}</p>
       ) : (
         <>
-          <SlotGroup label={CS.morning} slots={morning} selected={selected} onSelect={onSelect} />
+          <SlotGroup label={CS.morning} slots={morning} selected={selected} onSelect={onSelect} timeZone={viewerZone} />
           <SlotGroup
             label={CS.afternoon}
             slots={afternoon}
             selected={selected}
             onSelect={onSelect}
+            timeZone={viewerZone}
           />
-          <SlotGroup label={CS.evening} slots={evening} selected={selected} onSelect={onSelect} />
+          <SlotGroup label={CS.evening} slots={evening} selected={selected} onSelect={onSelect} timeZone={viewerZone} />
         </>
       )}
     </section>

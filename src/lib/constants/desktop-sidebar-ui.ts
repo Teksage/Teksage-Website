@@ -30,8 +30,9 @@ export const DESKTOP_SIDEBAR_UI = {
   navIcon:
     "size-7 shrink-0 object-contain opacity-80 transition-opacity group-hover:opacity-100",
   navIconActive: "size-7 shrink-0 object-contain opacity-100",
-  navLabel: `${TYPO.sizeBase} ${TYPO.weightSemibold} flex-1 leading-snug text-black/70`,
-  navLabelActive: `${TYPO.sizeBase} ${TYPO.weightSemibold} flex-1 leading-snug text-black/80`,
+  navLabel: `${TYPO.sizeBase} ${TYPO.weightSemibold} min-w-0 flex-1 leading-snug text-black/70`,
+  navTimer: `${TYPO.caption} shrink-0 tabular-nums text-[var(--color-brand-primary)]`,
+  navLabelActive: `${TYPO.sizeBase} ${TYPO.weightSemibold} min-w-0 flex-1 leading-snug text-black/80`,
   submenuItem: `flex w-full items-center gap-2.5 rounded-xl py-2 pl-1 text-left ${TYPO.sizeBodySm} ${TYPO.weightMedium} text-black/65 transition-colors hover:bg-black/[0.03] hover:text-black/80`,
   submenuItemActive: `flex w-full items-center gap-2.5 rounded-xl bg-[var(--color-home-screen-mint)]/50 py-2 pl-1 text-left ${TYPO.sizeBodySm} ${TYPO.weightSemibold} text-black/80`,
   submenuDot: "size-1.5 shrink-0 rounded-full bg-[var(--color-brand-primary)]",

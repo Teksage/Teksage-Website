@@ -20,6 +20,8 @@ export * from "./consultation-detail";
 export * from "./consultation-slots";
 export * from "./consultation-checkout";
 export * from "./consultation-booking";
+export * from "./consultation-summary";
+export * from "./consultation-answers-ready";
 export * from "./consultation-currency";
 export * from "./consultation-routes";
 export * from "./getting-started";
@@ -44,6 +46,8 @@ export * from "./prediction-circle-nav";
 export * from "./login-email-form";
 export * from "./login-mobile-form";
 export * from "./country-dial-picker";
+export * from "./auth-screen";
+export * from "./auth-hero";
 export * from "./login-screen";
 export * from "./otp-verify-screen";
 export * from "./prediction-premium-gate";
@@ -73,6 +77,7 @@ export * from "./settings-change-contact";
 export * from "./auth-http";
 export * from "./turnstile";
 export * from "./feature-discovery";
+export * from "./astroconnect-popup";
 export * from "./welcome-onboarding";
 
 // App-wide string/number constants
@@ -110,7 +115,7 @@ export const LEGACY_AUTH_STORAGE_KEYS = {
 export const PAGE_SIZE = 10;
 
 // OTP
-export const OTP_LENGTH = 6;
+export const OTP_LENGTH = 4;
 export const OTP_EXPIRY_SECONDS = 120;
 /** Client-side resend button cooldown (backend also enforces 60s). */
 export const OTP_RESEND_COOLDOWN_SECONDS = 60;

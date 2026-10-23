@@ -12,6 +12,7 @@ export const CONSULTATION_SLOTS_LOW_OPEN_COUNT = 3 as const;
 export const CONSULTATION_SLOTS_SCREEN = {
   pickDate: "Pick a date",
   timesInIST: "times shown in IST",
+  timesInYourZone: "times shown in your timezone",
   chooseTime: "Choose a time",
   slotsOpen: "slots open",
   morning: "Morning",

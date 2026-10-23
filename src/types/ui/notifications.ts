@@ -19,6 +19,8 @@ export interface NotificationConsultationListProps {
   items: ConsultationNotificationEvent[];
   isAstrologer: boolean;
   askItems?: AskAstrologerNotificationItem[];
+  /** Split Consultation into appointments vs Ask Astrologer. */
+  variant?: "appointments" | "ask";
 }
 
 export interface NotificationDetailDialogProps {

@@ -26,6 +26,8 @@ export const API_ENDPOINTS = {
   // --- Profile — `api/endpoints/profile.py`, same `/auth` prefix ---
   profile: "/api/auth/profile",
   updateProfile: "/api/auth/update-profile",
+  /** `PUT` — `UserPreferencesUpdate`: format, avatar, chat_languages */
+  updateChatFormat: "/api/auth/update-chat-format",
   /** `GET` — user horoscope payload (D1 + D9 + birth details) */
   horoscope: "/api/auth/horoscope",
   /** `GET` — all D1–D60 divisional charts as HTML */
@@ -98,6 +100,12 @@ export const API_ENDPOINTS = {
   astrologerBook: "/api/astrologer/book",
   astrologerQuestions: "/api/astrologer/questions",
   astroEvents: "/api/astrologer/events",
+  /** `GET` — one-time answers-ready popup payload for the logged-in customer. */
+  consultationPendingAnswersPopup: "/api/astrologer/events/pending-answers-popup",
+  /**
+   * `POST` — ack answers-ready popup. Append `/{eventId}/acknowledge-answers-ready`.
+   */
+  consultationAcknowledgeAnswersReady: "/api/astrologer/events",
   /**
    * Consultation Full Horoscope for assigned astrologer.
    * Append `/{eventId}/horoscope/{charts|dasa|…}`.
@@ -164,8 +172,21 @@ export const API_ENDPOINTS = {
   askAstrologerPendingAnswerPopup: "/api/ask-astrologer/pending-answer-popup",
   /** Append `/{request_id}/acknowledge-answer-ready` — mark popup as seen. */
   askAstrologerAcknowledgeAnswerReady: "/api/ask-astrologer",
+  /** Append `/{request_id}/review` — submit/edit/clear Ask review. */
+  askAstrologerReview: "/api/ask-astrologer",
   /** Append `/{request_id}` — single request detail for the logged-in customer. */
   askAstrologerRequest: "/api/ask-astrologer",
+
+  marathonPublic: "/api/marathon/public",
+  marathonPopup: "/api/marathon/popup",
+  marathonPopupDismiss: "/api/marathon/popup/dismiss",
+  marathonCheckout: "/api/marathon/slots",
+  marathonRelatedProfiles: "/api/marathon/related-profiles",
+  marathonMine: "/api/marathon/mine",
+  marathonAccept: "/api/marathon/bookings",
+  marathonAstrologerSeats: "/api/marathon/astrologer/seats",
+  marathonAstrologerDrafts: "/api/marathon/astrologer/drafts",
+  marathonConfirm: "/api/marathon",
 
   // --- Astrologer portal: Ask requests ---
   astrologerAskRequests: "/api/astrologer/ask-requests",

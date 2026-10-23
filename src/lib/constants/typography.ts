@@ -66,6 +66,8 @@ export const TYPO = {
   sizeLg: "text-lg",
   sizeXl: "text-xl",
   size2xl: "text-2xl",
+  size3xl: "text-3xl",
+  size4xl: "text-4xl",
   sizePageTitle: "text-page-title",
   sizeCardTitle: "text-card-title",
   sizeTitleMd: "text-title-md",
@@ -79,6 +81,8 @@ export const TYPO = {
   weightRegular: "font-normal",
   weightMedium: "font-medium",
   weightSemibold: "font-semibold",
+  /** Alias used by auth-screen and similar (same as weightSemibold). */
+  weightSemiBold: "font-semibold",
   weightBold: "font-bold",
   weightExtrabold: "font-extrabold",
 

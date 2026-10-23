@@ -7,6 +7,7 @@ import { PartnerDiscountHomeBanner } from "@/components/home/PartnerDiscountHome
 import { PredictionCircles } from "@/components/home/PredictionCircles";
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { MatchMakingCard } from "@/components/home/MatchMakingCard";
+import { MarathonBanner } from "@/components/home/MarathonBanner";
 import { MuhurthaBanner } from "@/components/home/MuhurthaBanner";
 import { ChatBanner } from "@/components/home/ChatBanner";
 import { HomeChatPanel } from "@/components/home/HomeChatPanel";
@@ -92,6 +93,7 @@ export default function HomePage() {
               />
             </div>
 
+            <MarathonBanner />
             <MuhurthaBanner />
           </div>
 

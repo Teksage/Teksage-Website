@@ -1,4 +1,8 @@
 import {
+  CONSULTATION_CHECKOUT_FOCUS_CATEGORIES,
+  CONSULTATION_FOCUS_MAX,
+} from "@/lib/constants/consultation-checkout";
+import {
   formatConsultationCategoryLabel,
   consultationAstrologerName,
 } from "@/lib/consultation-display";
@@ -16,6 +20,30 @@ import { fetchPartnerMyDiscount } from "@/lib/services/partner-discount-api";
 import { fetchProfile } from "@/lib/services/profile";
 import type { ConsultationBookingDraft, ConsultationCouponResult } from "@/types/consultation";
 import type { UserProfile } from "@/types";
+
+const FOCUS_CHIP_ALIASES: Record<string, (typeof CONSULTATION_CHECKOUT_FOCUS_CATEGORIES)[number]> = {
+  career: "Career",
+  wealth: "Wealth",
+  marriage: "Marriage",
+  "marriage & relationships": "Marriage",
+  health: "Health",
+  education: "Education",
+  property: "Property",
+};
+
+/** Map stored categories onto the review chips and keep at most three. */
+export function focusTopicsFromCategories(categories: string[]): string[] {
+  const allowed = new Set<string>(CONSULTATION_CHECKOUT_FOCUS_CATEGORIES);
+  const topics: string[] = [];
+  for (const raw of categories) {
+    const key = raw.trim().toLowerCase();
+    const mapped = FOCUS_CHIP_ALIASES[key] ?? formatConsultationCategoryLabel(raw);
+    if (!allowed.has(mapped) || topics.includes(mapped)) continue;
+    topics.push(mapped);
+    if (topics.length >= CONSULTATION_FOCUS_MAX) break;
+  }
+  return topics;
+}
 
 export type ConsultationCheckoutLoadResult = {
   draft: ConsultationBookingDraft;
@@ -58,7 +86,7 @@ export async function loadConsultationCheckoutData(
     },
     profile: userProfile,
     astrologerPicture: detail.astrologer.picture ?? null,
-    focusTopics: draft.categories.map((c) => formatConsultationCategoryLabel(c)).slice(0, 3),
+    focusTopics: focusTopicsFromCategories(draft.categories),
     pricing,
     partnerCouponApplied: partnerPct > 0,
   };

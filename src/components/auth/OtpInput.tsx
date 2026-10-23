@@ -1,14 +1,23 @@
 "use client";
 
-import { useRef, KeyboardEvent, ClipboardEvent } from "react";
+import { useEffect, useRef, useState, KeyboardEvent, ClipboardEvent } from "react";
 import { cn } from "@/lib/utils";
-import { OTP_LENGTH } from "@/lib/constants";
+import { AUTH_SCREEN, OTP_LENGTH } from "@/lib/constants";
 import type { OtpInputProps } from "@/types";
 
-export function OtpInput({ value, onChange, hasError, className }: OtpInputProps) {
+export function OtpInput({ value, onChange, hasError, className, cellClassName, autoFocus }: OtpInputProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const cells = Array.from({ length: OTP_LENGTH }, (_, i) => value[i] ?? "");
+
+  useEffect(() => {
+    if (!autoFocus) return;
+    const firstEmpty = cells.findIndex((digit) => !digit);
+    const index = firstEmpty >= 0 ? firstEmpty : 0;
+    inputRefs.current[index]?.focus();
+    // One-shot focus when the OTP step appears.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoFocus]);
 
   function handleChange(index: number, raw: string) {
     const digit = raw.replace(/\D/g, "").slice(-1);
@@ -47,7 +56,7 @@ export function OtpInput({ value, onChange, hasError, className }: OtpInputProps
   }
 
   return (
-    <div className={cn("flex justify-center gap-3", className)}>
+    <div className={cn(AUTH_SCREEN.otpRowClassName, className)}>
       {Array.from({ length: OTP_LENGTH }).map((_, index) => (
         <input
           key={index}
@@ -62,14 +71,17 @@ export function OtpInput({ value, onChange, hasError, className }: OtpInputProps
           onChange={(e) => handleChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
+          onFocus={() => setFocusedIndex(index)}
+          onBlur={() => setFocusedIndex((current) => (current === index ? null : current))}
           className={cn(
-            "h-14 w-12 rounded-xl border-2 text-center text-xl font-bold outline-none transition-colors",
-            "focus:border-[var(--color-brand-primary)]",
+            AUTH_SCREEN.otpCellClassName,
             hasError
-              ? "border-[var(--color-brand-error)] text-[var(--color-brand-error)]"
+              ? AUTH_SCREEN.otpCellErrorClassName
               : cells[index]
-                ? "border-[var(--color-brand-primary)] text-gray-900"
-                : "border-black/20 text-gray-900"
+                ? AUTH_SCREEN.otpCellFilledClassName
+                : AUTH_SCREEN.otpCellIdleClassName,
+            cellClassName,
+            !hasError && focusedIndex === index ? AUTH_SCREEN.otpCellFocusedClassName : null
           )}
           aria-label={`OTP digit ${index + 1}`}
         />

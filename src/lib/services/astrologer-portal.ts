@@ -88,6 +88,10 @@ function mapEventDetail(raw: Record<string, unknown>): AstroEventDetail {
             customerRaw.mobile_number != null
               ? String(customerRaw.mobile_number)
               : null,
+          relationship:
+            customerRaw.relationship != null
+              ? String(customerRaw.relationship)
+              : null,
         }
       : null,
     userHoroscope:

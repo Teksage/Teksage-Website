@@ -24,6 +24,7 @@ export function ProfileLocationField({
   errorMessage,
   onFocusAttempt,
   inputClassName,
+  labelClassName,
 }: ProfileLocationFieldProps) {
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -118,8 +119,8 @@ export function ProfileLocationField({
       : null;
 
   return (
-    <div className="relative flex flex-col gap-1.5">
-      <Label className={FU.label}>
+    <div className="relative flex min-w-0 flex-col gap-1.5">
+      <Label className={cn(FU.label, labelClassName)}>
         {label}
         {required ? <span className={FU.labelRequired}>*</span> : null}
       </Label>

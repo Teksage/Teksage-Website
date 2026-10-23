@@ -14,7 +14,8 @@ import {
 } from "@/lib/constants/astrologer-portal";
 import { hasAstrologerMeetingHoroscope } from "@/lib/astrologer-horoscope-display";
 import { nameFromDetailEvent } from "@/lib/astrologer-meeting-display";
-import { ROUTES } from "@/lib/constants/routes";
+import { RELATED_RELATIONSHIP_COPY, relatedRelationshipLabel } from "@/lib/constants/related-profiles";
+import { MARATHON_HOROSCOPE_RETURN, marathonHoroscopeReturnPath, ROUTES } from "@/lib/constants/routes";
 
 interface AstrologerMeetingHoroscopePageProps {
   eventId: string;
@@ -24,6 +25,7 @@ export function AstrologerMeetingHoroscopePage({
   eventId,
 }: AstrologerMeetingHoroscopePageProps) {
   const AP = useI18nConstants(ASTRO_PORTAL_UI);
+  const relations = useI18nConstants(RELATED_RELATIONSHIP_COPY);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { event, loading, error } = useAstrologerEventDetail(eventId);
@@ -31,11 +33,17 @@ export function AstrologerMeetingHoroscopePage({
     event?.share_horoscope ? eventId : null
   );
   const nameParam = searchParams.get(MEETING_DETAIL_QUERY.name);
-  const fullName = event
-    ? nameFromDetailEvent(event, nameParam).fullName
-    : (nameParam?.trim() ?? "");
+  const chartName = event ? nameFromDetailEvent(event).fullName : "";
+  const relationship = event?.customer?.relationship?.trim() ?? "";
+  const subjectName =
+    relationship && chartName && chartName !== AP.detail.unknownCustomer
+      ? `${chartName} (${relatedRelationshipLabel(relations, relationship)})`
+      : "";
+  const fullName = subjectName || nameParam?.trim() || chartName;
 
-  const backHref = `${ROUTES.astrologerMeetings}/${eventId}?${searchParams.toString()}`;
+  const backHref =
+    marathonHoroscopeReturnPath(searchParams.get(MARATHON_HOROSCOPE_RETURN)) ??
+    `${ROUTES.astrologerMeetings}/${eventId}?${searchParams.toString()}`;
   const hasBasic = hasAstrologerMeetingHoroscope(event?.userHoroscope ?? null);
   const canFull = Boolean(event?.share_horoscope);
 

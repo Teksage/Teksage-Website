@@ -25,6 +25,7 @@ export function ChatAvatarOnboarding({
         embedded ? CHAT_LAYOUT.onboardingRootEmbedded : CHAT_LAYOUT.onboardingRootStandalone
       )}
     >
+      <div className={CHAT_LAYOUT.onboardingGlow} aria-hidden />
       <ChatOnboardingHeader onBack={onBack} />
 
       <div className={CHAT_LAYOUT.onboardingContent}>
@@ -32,7 +33,7 @@ export function ChatAvatarOnboarding({
           <h1 className={CHAT_LAYOUT.onboardingTitle}>
             {CP.avatarOnboardingTitle}
           </h1>
-          <div className="mt-8 lg:mt-10">
+          <div className="mt-6">
             <ChatAvatarPicker
               selectedIndex={selectedIndex}
               onSelectIndex={setSelectedIndex}
@@ -44,7 +45,7 @@ export function ChatAvatarOnboarding({
         <Button
           type="button"
           onClick={() => onContinue(selectedIndex)}
-          className="h-auto w-full rounded-full py-3.5 text-lg font-semibold lg:max-w-sm lg:self-center"
+          className={CHAT_LAYOUT.onboardingCta}
         >
           {CP.continueCta}
         </Button>

@@ -12,9 +12,21 @@ export const ASTROLOGER_ASSETS = {
   dashLine: flutterSvg("astroHomeDashLine.svg"),
   meetingIcon: flutterSvg("astroMeeting.svg"),
   calendarIcon: flutterSvg("astroCalender.svg"),
+  /** Expert Hours / Events — Flutter `astroMarathon.svg` (distinct from availability calendar). */
+  eventsIcon: flutterSvg("astroMarathon.svg"),
+  /** Ask Requests — Flutter `questions.svg` (distinct from meetings icon). */
+  askRequestsIcon: flutterSvg("questions.svg"),
   calendarArrow: flutterSvg("astroCalenderArrow.svg"),
   calendarLine: flutterSvg("astroCalenderLine.svg"),
   dashedLine: flutterSvg("astroDashedLine.svg"),
+} as const;
+
+export const MARATHON_ASSETS = {
+  heroArt: "/marathon/hero-wheel.jpg",
+  popupBanner: "/marathon/popup-banner.png",
+  whatsapp: flutterSvg("whatsapp-brand.svg"),
+  /** Same green mark as the profile email and phone fields. */
+  verified: flutterSvg("verified.svg"),
 } as const;
 
 export const PUBLIC_ASSETS = {
@@ -75,8 +87,10 @@ export const DASHBOARD_ASSETS = {
   sidebarProfile: flutterSvg("sidebar-profile.svg"),
   sidebarChevronDown: flutterSvg("sidebar-chevron-down.svg"),
   sidebarPremiumCrown: flutterSvg("subscription.svg"),
-  /** Muhurtha — outline rings + star (matches desktop sidebar icon set). */
+  /** Muhurtha — outline rings (matches desktop sidebar icon set). */
   sidebarMuhurtha: flutterSvg("sidebar-muhurtha.svg"),
+  /** Consultation marathon — stopwatch, distinct from the Muhurtha rings. */
+  sidebarMarathon: flutterSvg("sidebar-marathon.svg"),
   muhurthaHero: flutterSvg("sidebar-muhurtha.svg"),
 } as const;
 

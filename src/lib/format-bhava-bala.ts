@@ -90,10 +90,11 @@ export function sortBhavaBalaRows(
       return (a.house - b.house) * dir;
     }
     if (sortKey === "rank") {
+      // Rank I is highest. High → Low lists I before VII.
       if (a.rank == null && b.rank == null) return a.house - b.house;
-      if (a.rank == null) return ascending ? 1 : -1;
-      if (b.rank == null) return ascending ? -1 : 1;
-      if (a.rank !== b.rank) return (a.rank - b.rank) * dir;
+      if (a.rank == null) return 1;
+      if (b.rank == null) return -1;
+      if (a.rank !== b.rank) return (b.rank - a.rank) * dir;
       return a.house - b.house;
     }
     const score = (r: BhavaBalaRow): number => {

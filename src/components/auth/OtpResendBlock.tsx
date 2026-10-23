@@ -2,6 +2,7 @@
 
 import { Loader } from "@/components/common/Loader";
 import { TurnstileField } from "@/components/auth/TurnstileField";
+import { AUTH_SCREEN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { OtpResendBlockProps } from "@/types";
 
@@ -25,7 +26,7 @@ export function OtpResendBlock({
       <button
         type="button"
         className={cn(
-          "mt-6 text-center text-sm text-neutral-500 transition-colors",
+          AUTH_SCREEN.resendClassName,
           canResend
             ? "hover:text-[var(--color-brand-primary)]"
             : "cursor-not-allowed opacity-60"

@@ -29,10 +29,13 @@ export interface ConsultationAstrologer {
 
 export interface ConsultationReviewEvent {
   rating?: number | null;
+  feedback?: string | null;
   customer_id?: number;
   first_name?: string | null;
   last_name?: string | null;
 }
+
+export type ConsultationReviewStatus = "pending" | "approved" | "rejected";
 
 export interface ConsultationAstrologerDetail {
   astrologer: ConsultationAstrologer;
@@ -98,6 +101,11 @@ export interface ConsultationEventSummary {
   languages?: string[];
   consultation_fee?: number;
   currency?: string;
+  queries_answered?: boolean | null;
+  astrologer_id?: number;
+  rating?: number | null;
+  feedback?: string | null;
+  review_status?: ConsultationReviewStatus | null;
 }
 
 export interface ConsultationQuestion {
@@ -118,8 +126,33 @@ export interface ConsultationCompletedBooking {
   currency: string;
   astrologerName: string;
   astrologerPicture?: string | null;
+  astrologerId?: number;
   /** When completed with no saved queries, summary hides the query UI. */
   status?: string;
+  queriesAnswered?: boolean | null;
+  rating?: number | null;
+  feedback?: string | null;
+  reviewStatus?: ConsultationReviewStatus | null;
+}
+
+/** Pending answers-ready popup payload from `/events/pending-answers-popup`. */
+export interface ConsultationAnswersReadyPending {
+  id: number;
+  astrologerId: number;
+  astrologerName: string;
+  astrologerPicture?: string | null;
+  startDatetime?: string | null;
+  endDatetime?: string | null;
+  eventLink?: string | null;
+  categories: string[];
+  languages: string[];
+  consultationFee: number;
+  currency: string;
+  status: string;
+  queriesAnswered: boolean;
+  rating?: number | null;
+  feedback?: string | null;
+  reviewStatus?: ConsultationReviewStatus | null;
 }
 
 /** User consultation home — mirrors Flutter `AstroConsultationEventModel`. */

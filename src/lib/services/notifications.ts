@@ -21,8 +21,15 @@ interface EventsListApiBody {
     id: number;
     status: string;
     start_datetime: string;
+    end_datetime?: string | null;
     event_link: string | null;
     queries_answered: boolean | null;
+    category?: string[] | null;
+    languages?: string[] | null;
+    consultation_fee?: number | null;
+    consultation_duration?: number | null;
+    currency?: string | null;
+    astrologer_id?: number | null;
     astrologer_first_name: string | null;
     astrologer_last_name: string | null;
     astrologer_picture: string | null;
@@ -87,12 +94,21 @@ export async function fetchConsultationNotificationEvents(
     .filter(
       (e) =>
         (e.status === "confirmed" || e.status === "completed") &&
-        e.queries_answered === false
+        e.queries_answered === false &&
+        e.consultation_duration !== 10
     )
     .map((e) => ({
       id: e.id,
+      status: e.status,
       startDatetime: e.start_datetime,
+      endDatetime: e.end_datetime ?? e.start_datetime,
       eventLink: e.event_link,
+      categories: e.category ?? [],
+      languages: e.languages ?? [],
+      consultationFee: Number(e.consultation_fee ?? 0),
+      currency: e.currency ?? "INR",
+      queriesAnswered: e.queries_answered ?? null,
+      astrologerId: e.astrologer_id ?? null,
       astrologerPicture: e.astrologer_picture,
       astrologerFirstName: e.astrologer_first_name,
       astrologerLastName: e.astrologer_last_name,

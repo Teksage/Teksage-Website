@@ -58,6 +58,7 @@ export interface ChatAvatarPickerProps {
 export interface ChatStyleOptionCardProps {
   label: string;
   hint: string;
+  icon: string;
   selected: boolean;
   onSelect: () => void;
 }

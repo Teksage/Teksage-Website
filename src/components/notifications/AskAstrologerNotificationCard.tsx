@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { useI18nConstants } from "@/hooks/useT";
 import { ROUTES } from "@/lib/constants/routes";
 import {
-  NOTIFICATIONS_TAB_CONSULTATION,
+  NOTIFICATIONS_SCREEN,
   NOTIFICATIONS_UI,
   NOTIFICATION_ASK_PAID_AT_FORMAT,
 } from "@/lib/constants/notifications-screen";
@@ -16,6 +16,7 @@ import {
   ASK_NOTIFICATION_STATUS_COLOR,
   ASK_NOTIFICATION_STATUS_LABEL,
 } from "@/lib/constants/chat-ask-astrologer";
+import { ASK_SUMMARY_QUERY_ID } from "@/lib/constants/ask-astrologer-summary";
 import { PUBLIC_ASSETS } from "@/lib/constants/assets";
 import { parseApiDateTime, isValidDate } from "@/lib/api-datetime";
 import { askDisplayDateIso } from "@/lib/notifications-consultation-feed";
@@ -36,12 +37,20 @@ export function AskAstrologerNotificationCard({
 }) {
   const router = useRouter();
   const AA = useI18nConstants(ASK_ASTROLOGER_SCREEN);
+  const NS = useI18nConstants(NOTIFICATIONS_SCREEN);
   const statusLabels = useI18nConstants(ASK_NOTIFICATION_STATUS_LABEL);
   const statusLabel = statusLabels[item.status] ?? item.status;
   const statusColor =
     ASK_NOTIFICATION_STATUS_COLOR[item.status] ?? "bg-neutral-100 text-black/60";
   const isAnswered = item.status === "answered";
   const displayDateIso = askDisplayDateIso(item);
+
+  const openSummary = () => {
+    void acknowledgeAnswerReady(item.id);
+    router.push(
+      `${ROUTES.askAstrologerSummary}?${ASK_SUMMARY_QUERY_ID}=${item.id}`
+    );
+  };
 
   return (
     <li className={NOTIFICATIONS_UI.listCard}>
@@ -96,15 +105,10 @@ export function AskAstrologerNotificationCard({
             <div className={NOTIFICATIONS_UI.notificationActionRow}>
               <button
                 type="button"
-                onClick={() => {
-                  void acknowledgeAnswerReady(item.id);
-                  router.push(
-                    `${ROUTES.notifications}?tab=${NOTIFICATIONS_TAB_CONSULTATION}&ask=${item.id}`
-                  );
-                }}
+                onClick={openSummary}
                 className={NOTIFICATIONS_UI.consultationMeetBtn}
               >
-                {AA.askViewAnswer}
+                {NS.viewAnswers}
               </button>
             </div>
           ) : null}

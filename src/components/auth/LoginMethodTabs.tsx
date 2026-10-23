@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18nConstants } from "@/hooks/useT";
-import { LOGIN_SCREEN } from "@/lib/constants/login-screen";
+import { AUTH_SCREEN, LOGIN_SCREEN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { LoginMethodTab } from "@/types/login-flow";
 
@@ -12,22 +12,30 @@ type LoginMethodTabsProps = {
 
 export function LoginMethodTabs({ active, onChange }: LoginMethodTabsProps) {
   const LS = useI18nConstants(LOGIN_SCREEN);
+  const emailActive = active === "email";
 
   return (
     <div
-      className="mb-6 flex rounded-xl bg-neutral-100 p-1"
+      className={AUTH_SCREEN.tabsTrackClassName}
       role="tablist"
       aria-label={LS.tabListAria}
     >
+      <div
+        className={cn(
+          AUTH_SCREEN.tabPillClassName,
+          emailActive && AUTH_SCREEN.tabPillEmailClassName
+        )}
+        aria-hidden
+      />
       <button
         type="button"
         role="tab"
         aria-selected={active === "mobile"}
         className={cn(
-          "flex-1 rounded-lg py-2.5 text-sm font-semibold transition-colors",
+          AUTH_SCREEN.tabClassName,
           active === "mobile"
-            ? "bg-white text-neutral-900 shadow-sm"
-            : "text-neutral-500"
+            ? AUTH_SCREEN.tabActiveClassName
+            : AUTH_SCREEN.tabIdleClassName
         )}
         onClick={() => onChange("mobile")}
       >
@@ -38,10 +46,10 @@ export function LoginMethodTabs({ active, onChange }: LoginMethodTabsProps) {
         role="tab"
         aria-selected={active === "email"}
         className={cn(
-          "flex-1 rounded-lg py-2.5 text-sm font-semibold transition-colors",
+          AUTH_SCREEN.tabClassName,
           active === "email"
-            ? "bg-white text-neutral-900 shadow-sm"
-            : "text-neutral-500"
+            ? AUTH_SCREEN.tabActiveClassName
+            : AUTH_SCREEN.tabIdleClassName
         )}
         onClick={() => onChange("email")}
       >
