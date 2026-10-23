@@ -91,6 +91,20 @@ export function marathonDateParts(iso: string, zone?: string | null, locale = "e
   return { month, day, time, weekday };
 }
 
+/** "Sun, 1 Nov 2026" for the AstroConnect Pro popup. */
+export function marathonPopupDate(iso: string, zone?: string | null, locale = "en-US") {
+  const date = new Date(iso);
+  const tz = resolveViewerTimezone(zone);
+  const withZone = tz ? ({ timeZone: tz } as const) : undefined;
+  return new Intl.DateTimeFormat(locale, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    ...withZone,
+  }).format(date);
+}
+
 /** "Sun, 23 Aug" for the time-slot heading. */
 export function marathonShortDay(iso: string, zone?: string | null, locale = "en-US") {
   const date = new Date(iso);

@@ -1,7 +1,10 @@
-import { redirect } from "next/navigation";
-import { ROUTES } from "@/lib/constants/routes";
+"use client";
 
-/** Session step was removed. Old event links return to the list. */
+import { useParams } from "next/navigation";
+import { MarathonListView } from "@/components/marathon/MarathonListView";
+
+/** AstroConnect Pro list, opened on the event from the popup or a shared link. */
 export default function AstroConnectDetailPage() {
-  redirect(ROUTES.expertHours);
+  const params = useParams<{ slug: string }>();
+  return <MarathonListView focusSlug={params.slug} />;
 }

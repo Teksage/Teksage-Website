@@ -57,7 +57,7 @@ export const MARATHON_COPY = {
   confirmHint: "Confirm you will take part. Admin publishes after astrologers confirm.",
   bannerCta: "View details",
   guidance: "Better guidance",
-  tomorrows: "Brighter tomorrows",
+  tomorrows: "Brighter tomorrow",
   selectSlot: "Select a time slot",
   selectSlotHint: "Choose from available time slots for this session.",
   /** Same hints as 30-min consultation date strip. */
@@ -73,7 +73,7 @@ export const MARATHON_COPY = {
   webApp: "Login to Web App",
   whatsapp: "Contact via WhatsApp",
   nextSession: "Your Next Session",
-  tagline: "Better guidance ✦ brighter tomorrows",
+  tagline: "Better guidance ✦ brighter tomorrow",
   minutes: "15 minutes",
   seatsLeft: "{count} seats",
   emptyAstrologer: "No events are waiting right now.",

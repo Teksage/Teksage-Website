@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonEventFact, MarathonFlowPager } from "@/components/marathon/MarathonEventFact";
@@ -15,10 +15,22 @@ import { marathonBookedSlotIds } from "@/lib/marathon-display";
 import { fetchMyMarathonBookings, fetchPublicMarathons } from "@/lib/services/marathon";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth.store";
-import type { MarathonBooking, MarathonEvent } from "@/types/marathon";
+import type { MarathonBooking, MarathonEvent, MarathonListViewProps } from "@/types/marathon";
 
 function isUpcoming(event: MarathonEvent, now: number): boolean {
   return new Date(event.ends_at).getTime() >= now && !event.admin_ended;
+}
+
+function matchesFocus(event: MarathonEvent, focusSlug: string): boolean {
+  return event.public_slug === focusSlug || String(event.id) === focusSlug;
+}
+
+function withFocusFirst(rows: MarathonEvent[], focusSlug?: string): MarathonEvent[] {
+  if (!focusSlug) return rows;
+  const pinned = rows.filter((event) => matchesFocus(event, focusSlug));
+  if (pinned.length === 0) return rows;
+  const rest = rows.filter((event) => !matchesFocus(event, focusSlug));
+  return [...pinned, ...rest];
 }
 
 function openSlotId(event: MarathonEvent, rows: MarathonBooking[]): number | null {
@@ -29,7 +41,7 @@ function openSlotId(event: MarathonEvent, rows: MarathonBooking[]): number | nul
   return slot ? Number(slot.id) : null;
 }
 
-export function MarathonListView() {
+export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
   const copy = useI18nConstants(MARATHON_COPY);
   const flow = useI18nConstants(MARATHON_FLOW_COPY);
   const ui = MARATHON_FLOW_UI;
@@ -40,6 +52,7 @@ export function MarathonListView() {
   const [loading, setLoading] = useState(true);
   const [showUpcoming, setShowUpcoming] = useState(true);
   const [index, setIndex] = useState(0);
+  const focusedTabSet = useRef(false);
 
   useEffect(() => {
     setLoading(true);
@@ -68,12 +81,19 @@ export function MarathonListView() {
     setIndex(0);
   }, [showUpcoming]);
 
+  useEffect(() => {
+    if (focusedTabSet.current || !focusSlug || events.length === 0) return;
+    const match = events.find((event) => matchesFocus(event, focusSlug));
+    if (!match) return;
+    focusedTabSet.current = true;
+    setShowUpcoming(isUpcoming(match, Date.now()));
+  }, [events, focusSlug]);
+
   const now = Date.now();
   const visible = useMemo(() => {
-    const upcoming = events.filter((event) => isUpcoming(event, now));
-    const past = events.filter((event) => !isUpcoming(event, now));
-    return showUpcoming ? upcoming : past;
-  }, [events, now, showUpcoming]);
+    const rows = events.filter((event) => isUpcoming(event, now) === showUpcoming);
+    return withFocusFirst(rows, focusSlug);
+  }, [events, focusSlug, now, showUpcoming]);
   const pageCount = Math.max(1, Math.ceil(visible.length / MARATHON_LIST_PAGE_SIZE));
   const page = Math.min(index, pageCount - 1);
   const slice = visible.slice(page * MARATHON_LIST_PAGE_SIZE, (page + 1) * MARATHON_LIST_PAGE_SIZE);
@@ -84,8 +104,8 @@ export function MarathonListView() {
       <div className={MARATHON_PAGE.pageInner}>
         <div className={ui.stage}>
           <div className={ui.listHead}>
-            <h1 className={ui.pageTitle}>{copy.title}</h1>
-            <p className={ui.pageSub}>{flow.tagline}</p>
+            <h1 className={ui.listTitle}>{copy.title}</h1>
+            <p className={ui.listTagline}>{flow.tagline}</p>
           </div>
           <div className={ui.pillRow}>
             <button type="button" className={showUpcoming ? ui.pillOn : ui.pillOff} onClick={() => setShowUpcoming(true)}>

@@ -93,8 +93,8 @@ export default function HomePage() {
               />
             </div>
 
-            <MuhurthaBanner />
             <MarathonBanner />
+            <MuhurthaBanner />
           </div>
 
           <ChatBanner isLoggedIn={isAuthenticated} />

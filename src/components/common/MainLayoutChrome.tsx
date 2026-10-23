@@ -8,6 +8,7 @@ import { HomeDesktopTopHeader } from "@/components/home/HomeDesktopTopHeader";
 import { ProtectedRoutePrompt } from "@/components/common/ProtectedRoutePrompt";
 import { AskAnswerReadyPrompt } from "@/components/common/AskAnswerReadyPrompt";
 import { ConsultationAnswersReadyPrompt } from "@/components/common/ConsultationAnswersReadyPrompt";
+import { AstroConnectPopup } from "@/components/common/AstroConnectPopup";
 import { FeatureDiscoveryPrompt } from "@/components/common/FeatureDiscoveryPrompt";
 import { HOME_LAYOUT, ROUTES, isPredictionsPath } from "@/lib/constants";
 import {
@@ -65,6 +66,7 @@ function MainLayoutChromeInner({ children }: { children: React.ReactNode }) {
         <AskAnswerReadyPrompt />
         <ConsultationAnswersReadyPrompt />
         <FeatureDiscoveryPrompt />
+        <AstroConnectPopup />
       </Suspense>
       <div className="flex min-h-screen flex-col bg-transparent lg:h-dvh lg:overflow-hidden">
         <div className="relative z-0 flex min-h-0 flex-1">
