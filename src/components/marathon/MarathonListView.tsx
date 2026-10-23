@@ -15,7 +15,7 @@ import { marathonBookedSlotIds } from "@/lib/marathon-display";
 import { fetchMyMarathonBookings, fetchPublicMarathons } from "@/lib/services/marathon";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth.store";
-import type { MarathonBooking, MarathonEvent } from "@/types/marathon";
+import type { MarathonBooking, MarathonEvent, MarathonListViewProps } from "@/types/marathon";
 
 function isUpcoming(event: MarathonEvent, now: number): boolean {
   return new Date(event.ends_at).getTime() >= now && !event.admin_ended;
@@ -29,7 +29,7 @@ function openSlotId(event: MarathonEvent, rows: MarathonBooking[]): number | nul
   return slot ? Number(slot.id) : null;
 }
 
-export function MarathonListView() {
+export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
   const copy = useI18nConstants(MARATHON_COPY);
   const flow = useI18nConstants(MARATHON_FLOW_COPY);
   const ui = MARATHON_FLOW_UI;
@@ -69,11 +69,17 @@ export function MarathonListView() {
   }, [showUpcoming]);
 
   const now = Date.now();
+  const scoped = useMemo(() => {
+    if (!focusSlug) return events;
+    return events.filter(
+      (event) => event.public_slug === focusSlug || String(event.id) === focusSlug
+    );
+  }, [events, focusSlug]);
   const visible = useMemo(() => {
-    const upcoming = events.filter((event) => isUpcoming(event, now));
-    const past = events.filter((event) => !isUpcoming(event, now));
+    const upcoming = scoped.filter((event) => isUpcoming(event, now));
+    const past = scoped.filter((event) => !isUpcoming(event, now));
     return showUpcoming ? upcoming : past;
-  }, [events, now, showUpcoming]);
+  }, [scoped, now, showUpcoming]);
   const pageCount = Math.max(1, Math.ceil(visible.length / MARATHON_LIST_PAGE_SIZE));
   const page = Math.min(index, pageCount - 1);
   const slice = visible.slice(page * MARATHON_LIST_PAGE_SIZE, (page + 1) * MARATHON_LIST_PAGE_SIZE);
@@ -84,8 +90,8 @@ export function MarathonListView() {
       <div className={MARATHON_PAGE.pageInner}>
         <div className={ui.stage}>
           <div className={ui.listHead}>
-            <h1 className={ui.pageTitle}>{copy.title}</h1>
-            <p className={ui.pageSub}>{flow.tagline}</p>
+            <h1 className={ui.listTitle}>{copy.title}</h1>
+            <p className={ui.listTagline}>{flow.tagline}</p>
           </div>
           <div className={ui.pillRow}>
             <button type="button" className={showUpcoming ? ui.pillOn : ui.pillOff} onClick={() => setShowUpcoming(true)}>

@@ -178,6 +178,8 @@ export const API_ENDPOINTS = {
   askAstrologerRequest: "/api/ask-astrologer",
 
   marathonPublic: "/api/marathon/public",
+  marathonPopup: "/api/marathon/popup",
+  marathonPopupDismiss: "/api/marathon/popup/dismiss",
   marathonCheckout: "/api/marathon/slots",
   marathonRelatedProfiles: "/api/marathon/related-profiles",
   marathonMine: "/api/marathon/mine",

@@ -1,5 +1,5 @@
 export const MARATHON_FLOW_COPY = {
-  tagline: "Better guidance · Brighter tomorrows",
+  tagline: "Better guidance · Brighter tomorrow",
   bookSlot: "Book a Slot",
   registrationOpen: "Registration open",
   slotsAvailable: "{count} Slots Available",
@@ -25,7 +25,7 @@ export const MARATHON_FLOW_COPY = {
   totalGst: "Total incl. GST",
   privacy: "Your details are private and shared only with your assigned astrologer.",
   securePay: "You'll be taken to our secure payment partner · UPI, cards, net banking",
-  whatsappAfter: "Questions after paying? Message us on WhatsApp right away.",
+  whatsappAfter: "Need help after booking? Contact us on WhatsApp anytime.",
   readingForLabel: "Reading for",
   born: "Born",
   meetingTo: "Meeting link to",

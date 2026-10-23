@@ -2,9 +2,11 @@ import { TYPO } from "@/lib/constants/typography";
 
 /** Expert Hours flow — same Urbanist sizes as the chat conversation cards. */
 export const MARATHON_FLOW_UI = {
-  pageTitle: `${TYPO.h3Bold} text-[var(--color-brand-black)]`,
-  pageSub: `${TYPO.sizeBodySm} mt-1 font-normal text-black/50`,
-  listHead: "-mx-4 -mt-4 bg-white px-5 py-4 sm:-mx-5 sm:px-6",
+  pageTitle: `${TYPO.chatCardText} text-[var(--color-brand-black)]`,
+  pageSub: `${TYPO.sizeBodySm} mt-0.5 font-normal text-black/50`,
+  listTitle: `${TYPO.sizeMd} ${TYPO.weightBold} ${TYPO.leadingTight} text-[var(--color-brand-black)]`,
+  listTagline: `mt-0.5 ${TYPO.sizeSm} ${TYPO.weightRegular} ${TYPO.leadingSnug} text-black/50`,
+  listHead: "-mx-4 -mt-4 bg-white px-5 py-2.5 sm:-mx-5 sm:px-6",
   pillRow: "mt-4 flex flex-wrap items-center gap-2",
   pillOn: `cursor-pointer rounded-full bg-[var(--color-brand-primary)] px-4 py-1.5 text-white ${TYPO.chatBubble}`,
   pillOff: `cursor-pointer rounded-full border border-black/10 bg-white px-4 py-1.5 text-black/55 ${TYPO.chatBubble}`,

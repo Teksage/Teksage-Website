@@ -307,6 +307,12 @@ export type {
 } from "./chat-prompts";
 
 export type {
+  AstroConnectPopupDialogProps,
+  AstroConnectPopupEvent,
+  AstroConnectPopupStatus,
+} from "./astroconnect-popup";
+
+export type {
   WhatsAppConsentState,
   WhatsAppConsentRequestResult,
   WhatsAppConsentRequestPayload,

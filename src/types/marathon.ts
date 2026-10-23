@@ -17,6 +17,10 @@ export type MarathonSlotStripProps = {
   onSelect: (id: number) => void;
 };
 
+export type MarathonListViewProps = {
+  focusSlug?: string;
+};
+
 export type MarathonEventBannerProps = {
   event: MarathonEvent;
   linked?: boolean;
