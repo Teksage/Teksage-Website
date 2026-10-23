@@ -21,6 +21,10 @@ export type MarathonListViewProps = {
   focusSlug?: string;
 };
 
+export type MarathonListEmptyProps = {
+  upcoming: boolean;
+};
+
 export type MarathonEventBannerProps = {
   event: MarathonEvent;
   linked?: boolean;

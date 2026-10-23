@@ -17,7 +17,6 @@ export function MarathonBanner() {
   const localeTag = bcp47FromAppLocale(locale);
   const viewerZone = useViewerTimezone();
   const event = useSoonestMarathon();
-  if (!event) return null;
   const when = event
     ? marathonDateParts(event.starts_at, viewerZone, localeTag)
     : null;
