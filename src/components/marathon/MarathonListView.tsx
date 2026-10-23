@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonEventFact, MarathonFlowPager } from "@/components/marathon/MarathonEventFact";
@@ -19,6 +19,18 @@ import type { MarathonBooking, MarathonEvent, MarathonListViewProps } from "@/ty
 
 function isUpcoming(event: MarathonEvent, now: number): boolean {
   return new Date(event.ends_at).getTime() >= now && !event.admin_ended;
+}
+
+function matchesFocus(event: MarathonEvent, focusSlug: string): boolean {
+  return event.public_slug === focusSlug || String(event.id) === focusSlug;
+}
+
+function withFocusFirst(rows: MarathonEvent[], focusSlug?: string): MarathonEvent[] {
+  if (!focusSlug) return rows;
+  const pinned = rows.filter((event) => matchesFocus(event, focusSlug));
+  if (pinned.length === 0) return rows;
+  const rest = rows.filter((event) => !matchesFocus(event, focusSlug));
+  return [...pinned, ...rest];
 }
 
 function openSlotId(event: MarathonEvent, rows: MarathonBooking[]): number | null {
@@ -40,6 +52,7 @@ export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
   const [loading, setLoading] = useState(true);
   const [showUpcoming, setShowUpcoming] = useState(true);
   const [index, setIndex] = useState(0);
+  const focusedTabSet = useRef(false);
 
   useEffect(() => {
     setLoading(true);
@@ -68,18 +81,19 @@ export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
     setIndex(0);
   }, [showUpcoming]);
 
-  const now = Date.now();
-  const scoped = useMemo(() => {
-    if (!focusSlug) return events;
-    return events.filter(
-      (event) => event.public_slug === focusSlug || String(event.id) === focusSlug
-    );
+  useEffect(() => {
+    if (focusedTabSet.current || !focusSlug || events.length === 0) return;
+    const match = events.find((event) => matchesFocus(event, focusSlug));
+    if (!match) return;
+    focusedTabSet.current = true;
+    setShowUpcoming(isUpcoming(match, Date.now()));
   }, [events, focusSlug]);
+
+  const now = Date.now();
   const visible = useMemo(() => {
-    const upcoming = scoped.filter((event) => isUpcoming(event, now));
-    const past = scoped.filter((event) => !isUpcoming(event, now));
-    return showUpcoming ? upcoming : past;
-  }, [scoped, now, showUpcoming]);
+    const rows = events.filter((event) => isUpcoming(event, now) === showUpcoming);
+    return withFocusFirst(rows, focusSlug);
+  }, [events, focusSlug, now, showUpcoming]);
   const pageCount = Math.max(1, Math.ceil(visible.length / MARATHON_LIST_PAGE_SIZE));
   const page = Math.min(index, pageCount - 1);
   const slice = visible.slice(page * MARATHON_LIST_PAGE_SIZE, (page + 1) * MARATHON_LIST_PAGE_SIZE);
