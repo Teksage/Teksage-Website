@@ -2,9 +2,9 @@ import { SETTINGS_SCREEN } from "@/lib/constants/settings-screen";
 import { TYPO } from "@/lib/constants/typography";
 
 export const MARATHON_COPY = {
-  title: "Teksage Expert Hours",
+  title: "AstroConnect Pro",
   subtitle: "15-minute sessions. Pay first. An astrologer is assigned after payment.",
-  empty: "No Expert Hours event is open right now.",
+  empty: "No AstroConnect Pro event is open right now.",
   booked: "Booked",
   bookingClosed: "Booking for this event has closed.",
   adminEnded: "Event ended by admin",
@@ -46,7 +46,7 @@ export const MARATHON_COPY = {
   whatsappInquiry: "You can also contact us immediately for inquiries through WhatsApp after payment.",
   android: "Get it on Android",
   website: "Get on website",
-  pastTitle: "Your Expert Hours bookings",
+  pastTitle: "Your AstroConnect Pro bookings",
   upcomingTab: "Upcoming",
   pastTab: "Past",
   accept: "Accept",

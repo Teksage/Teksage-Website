@@ -18,7 +18,7 @@ export const HOME_DASHBOARD_SIDEBAR = {
   loveCompatibility: "Love Compatibility",
   panchangam: "Panchang",
   eventPlanner: "Event Planner (Muhurtha)",
-  consultationMarathon: "Teksage Expert Hours",
+  consultationMarathon: "AstroConnect Pro",
   horoscope: "Horoscope",
   subscriptions: "Subscriptions",
   unlockPremium: "Unlock Premium",
