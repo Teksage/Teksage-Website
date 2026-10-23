@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonEventFact, MarathonFlowPager } from "@/components/marathon/MarathonEventFact";
+import { MarathonListEmpty } from "@/components/marathon/MarathonListEmpty";
 import { MarathonMineSection } from "@/components/marathon/MarathonMineSection";
 import { useI18nConstants } from "@/hooks/useT";
 import { CHAT_LAYOUT } from "@/lib/constants/chat-screen";
@@ -116,28 +117,30 @@ export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
             </button>
           </div>
           {error ? <p className={MARATHON_PORTAL_UI.error}>{error}</p> : null}
-          {!loading && slice.length === 0 && !error ? <p className={ui.pageSub}>{copy.empty}</p> : null}
-          <div className={ui.listGrid}>
-            {slice.map((event) => {
-              const mine = bookings.filter((row) => Number(row.marathon_id) === Number(event.id));
-              const slotId = openSlotId(event, mine);
-              return (
-                <article key={event.id} className={ui.card}>
-                  <MarathonEventFact event={event}>
-                    <div className={ui.actions}>
-                      {slotId ? (
-                        <Link href={marathonCheckoutPath(event.public_slug || event.id, slotId)} className={ui.book}>
-                          {flow.bookSlot}
-                          <span aria-hidden>›</span>
-                        </Link>
-                      ) : null}
-                      <MarathonMineSection marathonId={event.id} rows={mine} />
-                    </div>
-                  </MarathonEventFact>
-                </article>
-              );
-            })}
-          </div>
+          {!loading && slice.length === 0 && !error ? <MarathonListEmpty upcoming={showUpcoming} /> : null}
+          {slice.length > 0 ? (
+            <div className={ui.listGrid}>
+              {slice.map((event) => {
+                const mine = bookings.filter((row) => Number(row.marathon_id) === Number(event.id));
+                const slotId = openSlotId(event, mine);
+                return (
+                  <article key={event.id} className={ui.card}>
+                    <MarathonEventFact event={event}>
+                      <div className={ui.actions}>
+                        {slotId ? (
+                          <Link href={marathonCheckoutPath(event.public_slug || event.id, slotId)} className={ui.book}>
+                            {flow.bookSlot}
+                            <span aria-hidden>›</span>
+                          </Link>
+                        ) : null}
+                        <MarathonMineSection marathonId={event.id} rows={mine} />
+                      </div>
+                    </MarathonEventFact>
+                  </article>
+                );
+              })}
+            </div>
+          ) : null}
           <MarathonFlowPager
             index={page}
             total={pageCount}

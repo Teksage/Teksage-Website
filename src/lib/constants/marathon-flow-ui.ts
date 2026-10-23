@@ -1,5 +1,9 @@
 import { TYPO } from "@/lib/constants/typography";
 
+/** Calendar mark for the AstroConnect Pro list when a tab has no events. */
+export const MARATHON_EMPTY_ICON_PATH =
+  "M8 3v3M16 3v3M5 9h14M7 5h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2";
+
 /** Expert Hours flow — same Urbanist sizes as the chat conversation cards. */
 export const MARATHON_FLOW_UI = {
   pageTitle: `${TYPO.chatCardText} text-[var(--color-brand-black)]`,
@@ -12,6 +16,13 @@ export const MARATHON_FLOW_UI = {
   pillOff: `cursor-pointer rounded-full border border-black/10 bg-white px-4 py-1.5 text-black/55 ${TYPO.chatBubble}`,
   stage: "w-full",
   listGrid: "mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2",
+  emptyCard:
+    "mx-auto mt-8 flex w-full max-w-md flex-col items-center rounded-3xl border border-black/[0.06] bg-white px-6 py-10 text-center shadow-[0_10px_28px_rgb(16_24_16_/_0.06)]",
+  emptyIcon:
+    "flex size-14 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_14%,white)] text-[var(--color-brand-primary)]",
+  emptyGlyph: "size-7",
+  emptyTitle: `${TYPO.sizeMd} ${TYPO.weightBold} ${TYPO.leadingTight} text-[var(--color-brand-black)]`,
+  emptyHint: `mt-2 max-w-xs ${TYPO.sizeSm} ${TYPO.weightRegular} ${TYPO.leadingSnug} text-black/50`,
   card: "rounded-3xl border border-black/[0.06] bg-white p-5 shadow-[0_10px_28px_rgb(16_24_16_/_0.06)] sm:p-6",
   stack: "@container/login flex min-w-0 flex-col gap-4",
   grid: "mt-4 grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]",
