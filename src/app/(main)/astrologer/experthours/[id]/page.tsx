@@ -1,15 +1,12 @@
-"use client";
-
-import { use } from "react";
-import { MarathonAstrologerBookings } from "@/components/marathon/MarathonAstrologerBookings";
+import { redirect } from "next/navigation";
+import { ROUTES, astrologerMarathonEventPath } from "@/lib/constants/routes";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function AstrologerMarathonEventPage({ params }: PageProps) {
-  const { id } = use(params);
+export default async function AstrologerExpertHoursEventRedirectPage({ params }: PageProps) {
+  const { id } = await params;
   const marathonId = Number(id);
-
-  return Number.isFinite(marathonId) ? <MarathonAstrologerBookings marathonId={marathonId} /> : null;
+  redirect(Number.isFinite(marathonId) ? astrologerMarathonEventPath(marathonId) : ROUTES.astrologerMarathon);
 }

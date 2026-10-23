@@ -1,11 +1,11 @@
-"use client";
+import { redirect } from "next/navigation";
+import { marathonBookingPath } from "@/lib/constants/routes";
 
-import { useParams } from "next/navigation";
-import { MarathonBookingView } from "@/components/marathon/MarathonBookingView";
-
-export default function ExpertHoursBookingPage() {
-  const params = useParams<{ id: string }>();
-  const id = Number(params.id);
-  if (!Number.isFinite(id)) return null;
-  return <MarathonBookingView bookingId={id} />;
+export default async function ExpertHoursBookingRedirectPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  redirect(marathonBookingPath(Number(id)));
 }

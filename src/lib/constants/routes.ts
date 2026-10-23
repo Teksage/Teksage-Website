@@ -34,7 +34,7 @@ export const ROUTES = {
   astrologerMeetings: "/astrologer/meetings",
   astrologerAvailability: "/astrologer/availability",
   astrologerChatPrompts: "/astrologer/chat-prompts",
-  astrologerMarathon: "/astrologer/experthours",
+  astrologerMarathon: "/astrologer/astroconnect",
   predictions: "/predictions",
   predictionsDaily: "/predictions/daily",
   predictionsWeekly: "/predictions/weekly",
@@ -44,8 +44,8 @@ export const ROUTES = {
   matchmakingDetails: "/matchmaking/details",
   eventPlanner: "/event-planner",
   marathon: "/marathon",
-  /** Public Expert Hours list/detail (event-date slug URLs). */
-  expertHours: "/experthours",
+  /** Public AstroConnect Pro list (event-date slug URLs). */
+  expertHours: "/astroconnect",
   eventPlannerResults: "/event-planner/results",
   muhurtha: "/muhurtha",
 
