@@ -64,11 +64,9 @@ export function MarathonCheckoutView({ marathonId, slotId, eventKey }: MarathonC
       setStep(1);
       return;
     }
+    setStep(2);
     void fetchProfile()
-      .then((profile) => {
-        useAuthStore.getState().updateUser(profile);
-        setStep(2);
-      })
+      .then((profile) => useAuthStore.getState().updateUser(profile))
       .catch((err: unknown) => setError(marathonErrorMessage(err)));
   }, [hydrated, event, isAuthenticated, step]);
 

@@ -10,8 +10,10 @@ import type {
 } from "@/types/marathon";
 
 function detailOf(error: unknown): string {
-  const data = (error as { response?: { data?: { detail?: string } } })?.response?.data;
-  return data?.detail || "Something went wrong. Try again.";
+  const data = (error as { response?: { data?: { detail?: unknown; data?: unknown } } })?.response?.data;
+  if (typeof data?.detail === "string" && data.detail) return data.detail;
+  if (typeof data?.data === "string" && data.data) return data.data;
+  return "Something went wrong. Try again.";
 }
 
 export { detailOf as marathonErrorMessage };
