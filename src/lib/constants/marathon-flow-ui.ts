@@ -29,7 +29,7 @@ export const MARATHON_FLOW_UI = {
   priceCol: "flex shrink-0 flex-col items-end",
   strike: `${TYPO.caption} text-black/35 line-through`,
   price: `${TYPO.h2} leading-none text-[var(--color-brand-primary)]`,
-  save: `${TYPO.caption} text-[var(--color-brand-primary)]`,
+  save: `${TYPO.caption} text-black/45`,
   offerTimer: "whitespace-nowrap",
   stack: "@container/login flex min-w-0 flex-col gap-4",
   grid: "mt-4 grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]",
