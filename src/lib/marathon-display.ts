@@ -1,5 +1,26 @@
 import { resolveViewerTimezone } from "@/lib/viewer-timezone";
 
+export function marathonRupee(amount: number): string {
+  const whole = Number.isInteger(amount);
+  const text = amount.toLocaleString("en-IN", {
+    minimumFractionDigits: whole ? 0 : 2,
+    maximumFractionDigits: whole ? 0 : 2,
+  });
+  return `₹${text}`;
+}
+
+export function marathonListOffer(fee: string, compareAt: number) {
+  const live = Number(fee);
+  const price = Number.isFinite(live) ? live : 0;
+  const showCompare = compareAt > price && price > 0;
+  return {
+    liveLabel: marathonRupee(price),
+    compareLabel: marathonRupee(compareAt),
+    saveLabel: marathonRupee(compareAt - price),
+    showCompare,
+  };
+}
+
 export function marathonFeeLabel(fee: string, usd?: string | null) {
   const inr = Number(fee);
   const inrText = Number.isFinite(inr) ? `₹${inr.toFixed(2)}` : `₹${fee}`;

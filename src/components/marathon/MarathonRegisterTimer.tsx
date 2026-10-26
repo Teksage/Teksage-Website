@@ -29,6 +29,7 @@ export function MarathonRegisterTimer({ closesAt, className, compact = false }: 
   const left = end - now;
   if (compact && left <= 0) return null;
   const text = left <= 0 ? copy.bookingClosed : compact ? remainingLabel(left) : copy.registerEnds.replace("{time}", remainingLabel(left));
+  const Tag = compact ? "span" : "p";
 
-  return <p className={className ?? MARATHON_PORTAL_UI.timer}>{text}</p>;
+  return <Tag className={className ?? MARATHON_PORTAL_UI.timer}>{text}</Tag>;
 }

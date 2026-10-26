@@ -14,7 +14,7 @@ import { fetchMyMarathonBookings } from "@/lib/services/marathon";
 import { useAuthStore } from "@/store/auth.store";
 import type { MarathonBooking, MarathonMineSectionProps } from "@/types/marathon";
 
-export function MarathonMineSection({ marathonId, rows: preset }: MarathonMineSectionProps) {
+export function MarathonMineSection({ marathonId, rows: preset, className }: MarathonMineSectionProps) {
   const copy = useI18nConstants(MARATHON_COPY);
   const { locale } = useT();
   const localeTag = bcp47FromAppLocale(locale);
@@ -50,7 +50,7 @@ export function MarathonMineSection({ marathonId, rows: preset }: MarathonMineSe
 
   if (rows.length === 1) {
     return (
-      <Link href={marathonBookingPath(rows[0].id)} className={ui.viewBooking}>
+      <Link href={marathonBookingPath(rows[0].id)} className={className ?? ui.viewBooking}>
         {copy.viewBookings}
         <span aria-hidden>→</span>
       </Link>
@@ -59,7 +59,7 @@ export function MarathonMineSection({ marathonId, rows: preset }: MarathonMineSe
 
   return (
     <div ref={menuRef} className={cn(history.menuAnchor, open && history.menuOpen)}>
-      <button type="button" className={ui.viewBooking} onClick={() => setOpen((value) => !value)}>
+      <button type="button" className={className ?? ui.viewBooking} onClick={() => setOpen((value) => !value)}>
         {copy.viewBookings}
         <span aria-hidden>{open ? "▴" : "▾"}</span>
       </button>

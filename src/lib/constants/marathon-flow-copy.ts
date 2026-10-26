@@ -1,6 +1,7 @@
 export const MARATHON_FLOW_COPY = {
   tagline: "Better guidance · Brighter tomorrow",
   bookSlot: "Book a Slot",
+  saveAmount: "Save {amount}",
   registrationOpen: "Registration open",
   slotsAvailable: "{count} Slots Available",
   session: "Session",
@@ -44,3 +45,6 @@ export const MARATHON_LOW_SEATS = 2;
 
 /** Two cards per row, ten events per page, then previous / next. */
 export const MARATHON_LIST_PAGE_SIZE = 10;
+
+/** List-card anchor. The live fee from the event replaces this when it is lower. */
+export const MARATHON_COMPARE_AT_INR = 1399;
