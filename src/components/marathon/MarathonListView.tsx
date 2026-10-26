@@ -123,17 +123,20 @@ export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
               {slice.map((event) => {
                 const mine = bookings.filter((row) => Number(row.marathon_id) === Number(event.id));
                 const slotId = openSlotId(event, mine);
+                const checkoutHref = slotId
+                  ? marathonCheckoutPath(event.public_slug || event.id, slotId)
+                  : "";
                 return (
                   <article key={event.id} className={ui.card}>
                     <MarathonEventFact event={event}>
                       <div className={ui.actions}>
                         {slotId ? (
-                          <Link href={marathonCheckoutPath(event.public_slug || event.id, slotId)} className={ui.book}>
+                          <Link href={checkoutHref} className={ui.actionSolid}>
                             {flow.bookSlot}
-                            <span aria-hidden>›</span>
+                            <span aria-hidden>→</span>
                           </Link>
                         ) : null}
-                        <MarathonMineSection marathonId={event.id} rows={mine} />
+                        <MarathonMineSection marathonId={event.id} rows={mine} className={ui.book} />
                       </div>
                     </MarathonEventFact>
                   </article>
