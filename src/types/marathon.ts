@@ -39,6 +39,8 @@ export type MarathonBookingHistoryProps = {
 export type MarathonMineSectionProps = {
   marathonId: number;
   rows?: MarathonBooking[];
+  /** Replaces the default solid booking button when this list already has a primary action. */
+  className?: string;
 };
 
 export type MarathonEvent = {

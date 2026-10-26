@@ -4,10 +4,11 @@ import type { ReactNode } from "react";
 import { useI18nConstants, useT } from "@/hooks/useT";
 import { useViewerTimezone } from "@/hooks/useViewerTimezone";
 import { bcp47FromAppLocale } from "@/lib/i18n/locale";
+import { MarathonRegisterTimer } from "@/components/marathon/MarathonRegisterTimer";
 import { MARATHON_COPY } from "@/lib/constants/marathon";
-import { MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
+import { MARATHON_COMPARE_AT_INR, MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
 import { MARATHON_FLOW_UI } from "@/lib/constants/marathon-flow-ui";
-import { marathonDateParts, marathonDisplayName, marathonOpenSlotCount, marathonTimeRange } from "@/lib/marathon-display";
+import { marathonDateParts, marathonDisplayName, marathonListOffer, marathonOpenSlotCount, marathonTimeRange } from "@/lib/marathon-display";
 import { cn } from "@/lib/utils";
 import type { MarathonEvent } from "@/types/marathon";
 
@@ -24,6 +25,7 @@ export function MarathonEventFact({ event, children }: { event: MarathonEvent; c
   const open = event.booking_open && !event.admin_ended;
   const status = event.admin_ended ? copy.adminEnded : open ? flow.registrationOpen : copy.bookingClosed;
   const slots = flow.slotsAvailable.replace("{count}", String(marathonOpenSlotCount(event)));
+  const offer = marathonListOffer(event.fee, MARATHON_COMPARE_AT_INR);
 
   return (
     <>
@@ -34,11 +36,28 @@ export function MarathonEventFact({ event, children }: { event: MarathonEvent; c
         </p>
         <p className={ui.dot}>
           <span className={open ? ui.dotMark : ui.dotOff} aria-hidden />
-          <span className={open ? ui.dotText : ui.dotMuted}>{status}</span>
+          <span className={cn(open ? ui.dotText : ui.dotMuted, "truncate")}>
+            {status}
+            {open && event.booking_closes_at ? (
+              <>
+                {" · "}
+                <MarathonRegisterTimer closesAt={event.booking_closes_at} className={ui.offerTimer} compact />
+              </>
+            ) : null}
+          </span>
         </p>
       </div>
-      <h2 className={ui.factTitle}>{marathonDisplayName(event.name)}</h2>
-      {event.description ? <p className={ui.factText}>{t(event.description)}</p> : null}
+      <div className={ui.titlePrice}>
+        <div className={ui.titleCopy}>
+          <h2 className={cn(ui.factTitle, "mt-0")}>{marathonDisplayName(event.name)}</h2>
+          {event.description ? <p className={ui.factText}>{t(event.description)}</p> : null}
+        </div>
+        <div className={ui.priceCol}>
+          {offer.showCompare ? <p className={ui.strike}>{offer.compareLabel}</p> : null}
+          <p className={ui.price}>{offer.liveLabel}</p>
+          {offer.showCompare ? <p className={ui.save}>{flow.saveAmount.replace("{amount}", offer.saveLabel)}</p> : null}
+        </div>
+      </div>
       <div className={ui.dateRow}>
         <div className={ui.dateTile}>
           <span className={ui.dateDay}>{when.day}</span>
