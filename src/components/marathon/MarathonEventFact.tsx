@@ -32,11 +32,11 @@ export function MarathonEventFact({ event, children }: { event: MarathonEvent; c
       <div className={ui.dotRow}>
         <p className={ui.categoryBadge}>
           <span className={open ? ui.dotMark : ui.dotOff} aria-hidden />
-          <span className={cn(open ? ui.dotText : ui.dotMuted, "truncate")}>{category ? t(category) : flow.session}</span>
+          <span className={cn(open ? ui.dotText : ui.dotMuted, "lg:truncate")}>{category ? t(category) : flow.session}</span>
         </p>
         <p className={ui.dot}>
           <span className={open ? ui.dotMark : ui.dotOff} aria-hidden />
-          <span className={cn(open ? ui.dotText : ui.dotMuted, "truncate")}>
+          <span className={cn(open ? ui.dotText : ui.dotMuted, "lg:truncate")}>
             {status}
             {open && event.booking_closes_at ? (
               <>
