@@ -25,6 +25,7 @@ export const MARATHON_ASSETS = {
   heroArt: "/marathon/hero-wheel.jpg",
   popupBanner: "/marathon/popup-banner.png",
   whatsapp: flutterSvg("whatsapp-brand.svg"),
+  instagram: flutterSvg("instagram-brand.svg"),
   /** Same green mark as the profile email and phone fields. */
   verified: flutterSvg("verified.svg"),
 } as const;

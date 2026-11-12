@@ -187,6 +187,10 @@ export const API_ENDPOINTS = {
   marathonAstrologerSeats: "/api/marathon/astrologer/seats",
   marathonAstrologerDrafts: "/api/marathon/astrologer/drafts",
   marathonConfirm: "/api/marathon",
+  /** `POST` — public AstroConnect lead capture (no auth). */
+  marathonLeads: "/api/marathon/leads",
+  /** `GET` — lookup existing lead by phone + event. */
+  marathonLeadsLookup: "/api/marathon/leads/lookup",
 
   // --- Astrologer portal: Ask requests ---
   astrologerAskRequests: "/api/astrologer/ask-requests",
