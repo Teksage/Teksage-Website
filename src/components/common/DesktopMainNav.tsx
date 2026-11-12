@@ -24,7 +24,12 @@ import {
 import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
 import { HOME_DASHBOARD_SIDEBAR } from "@/lib/constants/home-dashboard-sidebar";
 import { HOME_LAYOUT } from "@/lib/constants/home-layout";
-import { APP_NAME, PUBLIC_ASSETS } from "@/lib/constants";
+import {
+  APP_LOGO_INTRINSIC_HEIGHT,
+  APP_LOGO_INTRINSIC_WIDTH,
+  APP_NAME,
+  PUBLIC_ASSETS,
+} from "@/lib/constants";
 import type { DesktopMainNavProps } from "@/types";
 import { cn, isAstrologerHomeSession } from "@/lib/utils";
 
@@ -61,8 +66,8 @@ export function DesktopMainNav({ className }: DesktopMainNavProps) {
         <Image
           src={PUBLIC_ASSETS.appLogo}
           alt=""
-          width={36}
-          height={36}
+          width={APP_LOGO_INTRINSIC_WIDTH}
+          height={APP_LOGO_INTRINSIC_HEIGHT}
           unoptimized
           className={DESKTOP_SIDEBAR_UI.brandLogo}
         />

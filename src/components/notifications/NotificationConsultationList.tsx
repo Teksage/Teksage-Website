@@ -14,7 +14,11 @@ import {
 import { ROUTES } from "@/lib/constants/routes";
 import { writeConsultationSummary } from "@/lib/consultation-session";
 import { parseApiDateTime, isValidDate } from "@/lib/api-datetime";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
+import {
+  APP_LOGO_INTRINSIC_HEIGHT,
+  APP_LOGO_INTRINSIC_WIDTH,
+  PUBLIC_ASSETS,
+} from "@/lib/constants/assets";
 import type { NotificationConsultationListProps } from "@/types/ui/notifications";
 import type { ConsultationNotificationEvent } from "@/types/notifications";
 
@@ -82,8 +86,8 @@ function EventNotificationCard({
             <Image
               src={PUBLIC_ASSETS.appLogo}
               alt=""
-              width={24}
-              height={24}
+              width={APP_LOGO_INTRINSIC_WIDTH}
+              height={APP_LOGO_INTRINSIC_HEIGHT}
               unoptimized
               className={NOTIFICATIONS_UI.notificationAvatarFallback}
             />

@@ -15,6 +15,7 @@ export function DesktopNavLabel({
     return (
       <span className="flex min-w-0 flex-1 flex-col leading-snug">
         <span
+          suppressHydrationWarning
           className={
             active
               ? DESKTOP_SIDEBAR_UI.navLabelActive
@@ -25,6 +26,7 @@ export function DesktopNavLabel({
         </span>
         {labelLines.secondary ? (
           <span
+            suppressHydrationWarning
             className={
               active
                 ? DESKTOP_SIDEBAR_UI.navLabelActive
@@ -40,6 +42,7 @@ export function DesktopNavLabel({
 
   return (
     <span
+      suppressHydrationWarning
       className={
         active ? DESKTOP_SIDEBAR_UI.navLabelActive : DESKTOP_SIDEBAR_UI.navLabel
       }

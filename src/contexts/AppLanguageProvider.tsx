@@ -59,6 +59,7 @@ export function AppLanguageProvider({
   useEffect(() => {
     const storedName = getStoredAppLanguageName();
     const stored = localeFromBackendName(storedName);
+    // Cookie must match localStorage before refresh so the next RSC payload hydrates cleanly.
     persistAppLanguage(storedName);
     document.documentElement.lang = htmlLangFromLocale(stored);
     if (stored !== initialLocale) {

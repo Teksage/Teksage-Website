@@ -110,7 +110,11 @@ export function MarathonAstrologerList() {
               endsAt={row.ends_at}
               locale={localeTag}
               timeZone={viewerZone}
-              category={row.categories[0] ? t(row.categories[0]) : undefined}
+              category={
+                row.categories.length
+                  ? row.categories.map((name) => t(name)).join(", ")
+                  : undefined
+              }
               active={!text}
               status={text ?? (row.booking_closes_at ? <MarathonRegisterTimer closesAt={row.booking_closes_at} className="inline" /> : null)}
               title={marathonDisplayName(row.name)}

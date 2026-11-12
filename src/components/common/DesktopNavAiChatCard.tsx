@@ -38,8 +38,12 @@ export function DesktopNavAiChatCard() {
         </span>
       </span>
       <span className="flex min-w-0 flex-1 flex-col leading-snug">
-        <span className={DESKTOP_SIDEBAR_UI.aiLine1}>{HDS.aiChatLine1}</span>
-        <span className={DESKTOP_SIDEBAR_UI.aiLine2}>{HDS.aiChatLine2}</span>
+        <span suppressHydrationWarning className={DESKTOP_SIDEBAR_UI.aiLine1}>
+          {HDS.aiChatLine1}
+        </span>
+        <span suppressHydrationWarning className={DESKTOP_SIDEBAR_UI.aiLine2}>
+          {HDS.aiChatLine2}
+        </span>
       </span>
     </Link>
   );

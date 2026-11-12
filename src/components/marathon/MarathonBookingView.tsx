@@ -66,9 +66,11 @@ export function MarathonBookingView({ bookingId }: { bookingId: number }) {
                 </div>
                 <h1 className={ui.title}>{copy.paymentDone}</h1>
                 <p className={ui.event}>{marathonDisplayName(booking.event_name)}</p>
-                {booking.categories[0] ? (
+                {booking.categories.length > 0 ? (
                   <div className={ui.chips}>
-                    <span className={page.showChip}>{t(booking.categories[0])}</span>
+                    <span className={page.showChip}>
+                      {booking.categories.map((name) => t(name)).join(", ")}
+                    </span>
                   </div>
                 ) : null}
                 {link ? (
