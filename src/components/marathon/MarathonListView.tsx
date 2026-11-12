@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { MarathonEventFact, MarathonFlowPager } from "@/components/marathon/MarathonEventFact";
+import { MarathonLeadNotifyButton } from "@/components/marathon/MarathonLeadNotifyButton";
 import { MarathonListEmpty } from "@/components/marathon/MarathonListEmpty";
 import { MarathonMineSection } from "@/components/marathon/MarathonMineSection";
 import { useI18nConstants } from "@/hooks/useT";
@@ -136,6 +137,7 @@ export function MarathonListView({ focusSlug }: MarathonListViewProps = {}) {
                             <span aria-hidden>→</span>
                           </Link>
                         ) : null}
+                        <MarathonLeadNotifyButton event={event} />
                         <MarathonMineSection marathonId={event.id} rows={mine} className={ui.book} />
                       </div>
                     </MarathonEventFact>

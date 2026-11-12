@@ -117,6 +117,11 @@ export function marathonCheckoutPath(
   return `${marathonEventPath(marathonIdOrSlug)}/checkout?slot=${slotId}`;
 }
 
+/** Lead notify form page (opens after Notify me on the event card). */
+export function marathonNotifyPath(marathonIdOrSlug: number | string): string {
+  return `${marathonEventPath(marathonIdOrSlug)}/notify`;
+}
+
 export function isPredictionsPath(pathname: string): boolean {
   return (
     pathname === ROUTES.predictions || pathname.startsWith(`${ROUTES.predictions}/`)

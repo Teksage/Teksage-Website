@@ -8,7 +8,14 @@ import { MarathonRegisterTimer } from "@/components/marathon/MarathonRegisterTim
 import { MARATHON_COPY } from "@/lib/constants/marathon";
 import { MARATHON_COMPARE_AT_INR, MARATHON_FLOW_COPY } from "@/lib/constants/marathon-flow-copy";
 import { MARATHON_FLOW_UI } from "@/lib/constants/marathon-flow-ui";
-import { marathonDateParts, marathonDisplayName, marathonListOffer, marathonOpenSlotCount, marathonTimeRange } from "@/lib/marathon-display";
+import {
+  marathonCategoryLine,
+  marathonDateParts,
+  marathonDisplayName,
+  marathonListOffer,
+  marathonOpenSlotCount,
+  marathonTimeRange,
+} from "@/lib/marathon-display";
 import { cn } from "@/lib/utils";
 import type { MarathonEvent } from "@/types/marathon";
 
@@ -21,7 +28,7 @@ export function MarathonEventFact({ event, children }: { event: MarathonEvent; c
   const ui = MARATHON_FLOW_UI;
   const when = marathonDateParts(event.starts_at, zone, localeTag);
   const end = marathonDateParts(event.ends_at, zone, localeTag);
-  const category = event.categories[0];
+  const category = marathonCategoryLine(event.categories, t);
   const open = event.booking_open && !event.admin_ended;
   const status = event.admin_ended ? copy.adminEnded : open ? flow.registrationOpen : copy.bookingClosed;
   const slots = flow.slotsAvailable.replace("{count}", String(marathonOpenSlotCount(event)));
@@ -32,7 +39,9 @@ export function MarathonEventFact({ event, children }: { event: MarathonEvent; c
       <div className={ui.dotRow}>
         <p className={ui.categoryBadge}>
           <span className={open ? ui.dotMark : ui.dotOff} aria-hidden />
-          <span className={cn(open ? ui.dotText : ui.dotMuted, "lg:truncate")}>{category ? t(category) : flow.session}</span>
+          <span className={cn(open ? ui.dotText : ui.dotMuted, "lg:truncate")}>
+            {category || flow.session}
+          </span>
         </p>
         <p className={ui.dot}>
           <span className={open ? ui.dotMark : ui.dotOff} aria-hidden />

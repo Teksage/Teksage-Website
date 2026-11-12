@@ -194,6 +194,21 @@ export function marathonDisplayName(name: string | null | undefined): string {
   return cleaned.replace(/\s*\(IST\)\s*$/i, "").trim();
 }
 
+/** Non-empty event category labels, in admin order. */
+export function marathonCategoryLabels(categories: string[] | null | undefined): string[] {
+  return (categories ?? []).map((name) => name.trim()).filter(Boolean);
+}
+
+/** Admin-style joined label: "Career, Wealth". */
+export function marathonCategoryLine(
+  categories: string[] | null | undefined,
+  translate: (value: string) => string = (value) => value
+): string {
+  return marathonCategoryLabels(categories)
+    .map((name) => translate(name))
+    .join(", ");
+}
+
 /** Same style as consultation: local clock times, no zone suffix. */
 export function marathonTimeRange(startTime: string, endTime: string): string {
   return `${startTime} – ${endTime}`;

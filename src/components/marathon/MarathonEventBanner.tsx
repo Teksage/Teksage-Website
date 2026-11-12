@@ -9,7 +9,12 @@ import { MarathonRegisterTimer } from "@/components/marathon/MarathonRegisterTim
 import { MARATHON_BANNER_UI } from "@/lib/constants/marathon-banner";
 import { MARATHON_COPY, MARATHON_PAGE } from "@/lib/constants/marathon";
 import { useViewerTimezone } from "@/hooks/useViewerTimezone";
-import { marathonDateParts, marathonDisplayName, marathonTimeRange } from "@/lib/marathon-display";
+import {
+  marathonCategoryLine,
+  marathonDateParts,
+  marathonDisplayName,
+  marathonTimeRange,
+} from "@/lib/marathon-display";
 import { marathonBookingPath, marathonEventPath } from "@/lib/constants/routes";
 import type { MarathonBookingHistoryProps, MarathonEventBannerProps } from "@/types/marathon";
 
@@ -62,7 +67,7 @@ export function MarathonEventBanner({ event, linked = true, canOpen = true, book
   const viewerZone = useViewerTimezone();
   const when = marathonDateParts(event.starts_at, viewerZone, localeTag);
   const end = marathonDateParts(event.ends_at, viewerZone, localeTag);
-  const category = event.categories[0];
+  const category = marathonCategoryLine(event.categories, t);
   const showDetails = linked && canOpen;
   const single = bookings.length === 1 ? bookings[0] : null;
 
@@ -77,7 +82,7 @@ export function MarathonEventBanner({ event, linked = true, canOpen = true, book
         <div className={date.copy}>
           <div className={date.titleRow}>
             <p className={ui.showTitle}>{marathonDisplayName(event.name)}</p>
-            {category ? <span className={ui.showChip}>{t(category)}</span> : null}
+            {category ? <span className={ui.showChip}>{category}</span> : null}
           </div>
           {event.description ? <p className={ui.showText}>{t(event.description)}</p> : null}
           <div className={date.meta}>

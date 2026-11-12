@@ -17,7 +17,11 @@ import {
   ASK_NOTIFICATION_STATUS_LABEL,
 } from "@/lib/constants/chat-ask-astrologer";
 import { ASK_SUMMARY_QUERY_ID } from "@/lib/constants/ask-astrologer-summary";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
+import {
+  APP_LOGO_INTRINSIC_HEIGHT,
+  APP_LOGO_INTRINSIC_WIDTH,
+  PUBLIC_ASSETS,
+} from "@/lib/constants/assets";
 import { parseApiDateTime, isValidDate } from "@/lib/api-datetime";
 import { askDisplayDateIso } from "@/lib/notifications-consultation-feed";
 import { acknowledgeAnswerReady } from "@/lib/services/ask-astrologer";
@@ -59,8 +63,8 @@ export function AskAstrologerNotificationCard({
           <Image
             src={PUBLIC_ASSETS.appLogo}
             alt=""
-            width={24}
-            height={24}
+            width={APP_LOGO_INTRINSIC_WIDTH}
+            height={APP_LOGO_INTRINSIC_HEIGHT}
             unoptimized
             className={NOTIFICATIONS_UI.notificationAvatarFallback}
           />
