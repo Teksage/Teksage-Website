@@ -35,11 +35,15 @@ export const PUBLIC_ASSETS = {
   dashLogin: flutterSvg("dashLogin.svg"),
   /** Flutter `loginLogo.svg` */
   loginLogo: flutterSvg("loginLogo_ios.svg"),
-  /** Flutter `logo_ios.svg` */
+  /** Flutter `logo_ios.svg` / `welcomeLogo.svg` (intrinsic 36×35, not square). */
   appLogo: flutterSvg("welcomeLogo.svg"),
   /** Browser tab icon — cropped from `loginLogo_ios.svg` (`src/app/icon.svg`). */
   siteIcon: "/icon.svg",
 } as const;
+
+/** Intrinsic pixel size of `welcomeLogo.svg` — keep Image aspect ratio correct. */
+export const APP_LOGO_INTRINSIC_WIDTH = 36 as const;
+export const APP_LOGO_INTRINSIC_HEIGHT = 35 as const;
 
 /** Home dashboard — same files as Flutter `imageConstant.dart` home / bottom nav. */
 export const DASHBOARD_ASSETS = {

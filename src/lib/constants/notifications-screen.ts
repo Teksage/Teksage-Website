@@ -116,7 +116,7 @@ export const NOTIFICATIONS_UI = {
   notificationAvatar:
     "relative size-[41px] shrink-0 overflow-hidden rounded-full border-[2.6px] border-[var(--color-brand-primary)]/30 bg-[#f6f6f6]",
   notificationAvatarFallback:
-    "absolute inset-0 m-auto size-6 object-contain opacity-40",
+    "absolute inset-0 m-auto h-6 w-auto object-contain opacity-40",
   notificationContent: "min-w-0 flex-1",
   notificationHeaderRow: "flex items-center gap-2",
   notificationSectionLabel:

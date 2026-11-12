@@ -6,7 +6,8 @@ export const DESKTOP_SIDEBAR_UI = {
     "sticky top-0 z-30 hidden h-full shrink-0 flex-col border-r border-black/[0.06] bg-white lg:flex",
   brandRow:
     "flex items-center gap-2.5 border-b border-black/[0.06] py-3.5 pl-3 pr-3 xl:pr-4",
-  brandLogo: "size-12 shrink-0",
+  /** Height-only so 36×35 `welcomeLogo` keeps aspect ratio (`w-auto` on Image). */
+  brandLogo: "h-12 w-auto shrink-0 object-contain",
   brandName: `${TYPO.sizeLg} ${TYPO.weightBold} truncate capitalize text-[var(--color-brand-panchang)]`,
   /** Slight left inset so card radii show; more room on the right. */
   navScroll:

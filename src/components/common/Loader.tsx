@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { HalfTriangleDot } from "@/components/common/HalfTriangleDot";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
+import {
+  APP_LOGO_INTRINSIC_HEIGHT,
+  APP_LOGO_INTRINSIC_WIDTH,
+  PUBLIC_ASSETS,
+} from "@/lib/constants/assets";
 import { LOADER_DEFAULT_ARIA_LABEL } from "@/lib/constants";
 import { LOADER_ICON_PX, LOADER_UI } from "@/lib/constants/loader-ui";
 import { PAGE_SHELL } from "@/lib/constants/page-shell";
@@ -23,15 +27,18 @@ function resolveVariant(variant: LoaderProps["variant"]) {
 }
 
 function BrandLoaderMark({ size }: { size: LoaderSize }) {
-  const px = LOADER_ICON_PX[size];
+  const widthPx = LOADER_ICON_PX[size];
+  const heightPx = Math.round(
+    (widthPx * APP_LOGO_INTRINSIC_HEIGHT) / APP_LOGO_INTRINSIC_WIDTH
+  );
   return (
     <Image
       src={PUBLIC_ASSETS.appLogo}
       alt=""
-      width={px}
-      height={px}
+      width={widthPx}
+      height={heightPx}
       unoptimized
-      className="teksage-brand-logo-pulse object-contain"
+      className="teksage-brand-logo-pulse h-auto w-auto object-contain"
       aria-hidden
     />
   );

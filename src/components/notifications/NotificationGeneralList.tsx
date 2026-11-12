@@ -9,7 +9,11 @@ import {
   NOTIFICATIONS_UI,
   NOTIFICATION_SENT_AT_FORMAT,
 } from "@/lib/constants/notifications-screen";
-import { PUBLIC_ASSETS } from "@/lib/constants/assets";
+import {
+  APP_LOGO_INTRINSIC_HEIGHT,
+  APP_LOGO_INTRINSIC_WIDTH,
+  PUBLIC_ASSETS,
+} from "@/lib/constants/assets";
 import { parseApiDateTime, isValidDate } from "@/lib/api-datetime";
 import { notificationDisplayCopy } from "@/lib/notification-display";
 import { cn } from "@/lib/utils";
@@ -50,10 +54,10 @@ export function NotificationGeneralList({
                 <Image
                   src={PUBLIC_ASSETS.appLogo}
                   alt=""
-                  width={24}
-                  height={24}
+                  width={APP_LOGO_INTRINSIC_WIDTH}
+                  height={APP_LOGO_INTRINSIC_HEIGHT}
                   unoptimized
-                  className="absolute inset-0 m-auto size-6 object-contain opacity-40"
+                  className="absolute inset-0 m-auto h-6 w-auto object-contain opacity-40"
                 />
               </div>
               <div className="min-w-0 flex-1 space-y-1">
