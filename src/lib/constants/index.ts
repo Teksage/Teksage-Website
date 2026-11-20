@@ -75,6 +75,7 @@ export * from "./chat-assets";
 export * from "./notifications-screen";
 export * from "./settings-change-contact";
 export * from "./auth-http";
+export * from "./http-timeouts";
 export * from "./turnstile";
 export * from "./feature-discovery";
 export * from "./astroconnect-popup";

@@ -1436,5 +1436,7 @@
   "You're all set": "நீங்கள் தயாராக உள்ளீர்கள்",
   "WhatsApp alerts are enabled for your interests. Follow us for more updates.": "உங்கள் விருப்பங்களுக்கு ஏற்ப வாட்ஸ்அப் அறிவிப்புகள் செயல்படுத்தப்பட்டுள்ளன. மேலும் தகவல்களுக்கு எங்களைப் பின்தொடருங்கள்.",
   "View notification": "அறிவிப்பைக் காண்க",
-  "WhatsApp is opening with prefilled message. Tap Send to confirm updates.": "வாட்ஸ்அப் முன்பே நிரப்பப்பட்ட செய்தியுடன் திறக்கிறது. புதுப்பிப்புகளை உறுதிப்படுத்த, அனுப்பு என்பதைத் தட்டவும்."
+  "WhatsApp is opening with prefilled message. Tap Send to confirm updates.": "வாட்ஸ்அப் முன்பே நிரப்பப்பட்ட செய்தியுடன் திறக்கிறது. புதுப்பிப்புகளை உறுதிப்படுத்த, அனுப்பு என்பதைத் தட்டவும்.",
+  "Generating your prediction… This may take up to a minute.": "உங்கள் கணிப்பு உருவாக்கப்படுகிறது… இதற்கு ஒரு நிமிடம் வரை ஆகலாம்.",
+  "Generating…": "உருவாக்குகிறது…"
 }

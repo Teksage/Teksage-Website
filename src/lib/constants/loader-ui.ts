@@ -1,10 +1,14 @@
 /** Loader UI — Teksage logo pulse (no card shell). */
 
+import { TYPO } from "@/lib/constants/typography";
+
 export const LOADER_DEFAULT_ARIA_LABEL = "Loading" as const;
 
 export const LOADER_UI = {
   overlay:
-    "fixed inset-0 z-[200] flex items-center justify-center bg-black/20 backdrop-blur-[1px]",
+    "fixed inset-0 z-[200] flex flex-col items-center justify-center gap-3 bg-black/20 backdrop-blur-[1px]",
+  /** Status line under overlay loader (prediction generate, etc.). */
+  overlayMessage: `${TYPO.sizeSm} ${TYPO.weightMedium} max-w-xs px-4 text-center text-white`,
   /** In-page centered loader (lists, sections). */
   center: "flex items-center justify-center py-24",
   /** Spinner on a brand-green button — white ring, not the green logo. */

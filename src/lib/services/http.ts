@@ -27,10 +27,11 @@ import {
 } from "@/lib/auth-session";
 import { setAuthCookie } from "@/lib/auth-cookie";
 import { getPublicApiBaseUrl } from "@/lib/env";
+import { HTTP_TIMEOUTS } from "@/lib/constants/http-timeouts";
 import { getStoredAppLanguageName } from "@/lib/settings-language-storage";
 
 const http = axios.create({
-  timeout: 30000,
+  timeout: HTTP_TIMEOUTS.default,
   headers: {
     "Content-Type": "application/json",
     [AUTH_HTTP_HEADERS.clientPlatform]: AUTH_CLIENT_PLATFORM.web,
