@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { PredictionProfilePrompt } from "@/components/predictions/PredictionProfilePrompt";
 import { LifePredictionLandingLayout } from "@/components/predictions/LifePredictionLandingLayout";
 import { LifePredictionLayout } from "@/components/predictions/LifePredictionLayout";
 import { LifePredictionShell } from "@/components/predictions/LifePredictionShell";
 import { isPredictionProfileIncompleteMessage } from "@/lib/prediction-request-error";
+import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import {
   fetchLifePredictionInitial,
   generateLifePrediction,
@@ -18,6 +19,7 @@ type LifeView = "loading" | "landing" | "detail" | "profile";
 
 export function LifePredictionBody({ onBackClick }: { onBackClick: () => void }) {
   const { languageVersion } = useT();
+  const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   const [view, setView] = useState<LifeView>("loading");
   const [data, setData] = useState<StructuredPredictionDetail | null>(null);
   const [generating, setGenerating] = useState(false);
@@ -85,6 +87,15 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
     }
   }
 
+  if (view === "loading") {
+    return (
+      <>
+        <LifePredictionShell>{null}</LifePredictionShell>
+        <LoadingOverlay open message={PD.generatingOverlay} />
+      </>
+    );
+  }
+
   if (view === "detail" && data) {
     return (
       <LifePredictionShell>
@@ -115,7 +126,10 @@ export function LifePredictionBody({ onBackClick }: { onBackClick: () => void })
           generating={generating}
         />
       </LifePredictionShell>
-      <LoadingOverlay open={view === "loading"} />
+      <LoadingOverlay
+        open={generating}
+        message={generating ? PD.generatingOverlay : undefined}
+      />
     </>
   );
 }

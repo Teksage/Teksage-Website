@@ -1436,5 +1436,7 @@
   "You're all set": "तुम सब सेट हो",
   "WhatsApp alerts are enabled for your interests. Follow us for more updates.": "आपकी रुचियों के लिए WhatsApp अलर्ट चालू कर दिए गए हैं। अधिक अपडेट के लिए हमें फॉलो करें।",
   "View notification": "सूचना देखें",
-  "WhatsApp is opening with prefilled message. Tap Send to confirm updates.": "WhatsApp पहले से भरे हुए संदेश के साथ खुल रहा है। अपडेट की पुष्टि करने के लिए भेजें पर टैप करें।"
+  "WhatsApp is opening with prefilled message. Tap Send to confirm updates.": "WhatsApp पहले से भरे हुए संदेश के साथ खुल रहा है। अपडेट की पुष्टि करने के लिए भेजें पर टैप करें।",
+  "Generating your prediction… This may take up to a minute.": "आपकी भविष्यवाणी तैयार की जा रही है... इसमें एक मिनट तक का समय लग सकता है।",
+  "Generating…": "उत्पन्न हो रहा है…"
 }
