@@ -9,6 +9,8 @@ export const PREDICTION_DETAIL_SCREEN = {
   emptyTitle: "No prediction yet",
   emptyDescription:
     "We could not find a prediction for you yet. Try again later or regenerate from the app if available.",
+  /** Shown while daily/weekly cache miss runs Thara Bala + OpenAI (can take >30s). */
+  generatingOverlay: "Generating your prediction… This may take up to a minute.",
   quoteLabel: "Today’s note",
   balaRow: "Thara / Chandra",
   downloadPdfCta: "Download PDF",

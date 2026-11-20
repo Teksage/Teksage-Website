@@ -1,5 +1,6 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import { HTTP_TIMEOUTS } from "@/lib/constants/http-timeouts";
 import { fetchAppNotifications } from "@/lib/services/notifications";
 import type { Notification } from "@/types";
 
@@ -27,7 +28,8 @@ function mapDailyInner(inner: unknown): DailyPredictionSummary {
 
 export async function fetchDailyPredictionSummary(): Promise<DailyPredictionSummary> {
   const { data: body } = await http.get<DailyPredictionApiBody>(
-    API_ENDPOINTS.dailyPrediction
+    API_ENDPOINTS.dailyPrediction,
+    { timeout: HTTP_TIMEOUTS.prediction }
   );
   const inner = body?.data;
   if (typeof inner === "string") return {};

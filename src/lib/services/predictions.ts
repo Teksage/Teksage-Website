@@ -1,5 +1,6 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import { HTTP_TIMEOUTS } from "@/lib/constants/http-timeouts";
 import {
   PREDICTION_PROFILE_INCOMPLETE,
   PREDICTION_NO_DATA,
@@ -51,7 +52,9 @@ async function fetchPredictionRaw(
       : endpointForKind(kind);
 
   try {
-    const { data: body } = await http.get<unknown>(path);
+    const { data: body } = await http.get<unknown>(path, {
+      timeout: HTTP_TIMEOUTS.prediction,
+    });
     const parsed = parsePredictionApiBody(body);
     if ("message" in parsed) return parsed;
 
@@ -126,7 +129,7 @@ export async function fetchYearlyPredictionInitial(
   try {
     const { data: body } = await http.get<unknown>(
       `${API_ENDPOINTS.yearlyPrediction}?generate=false`,
-      { signal }
+      { signal, timeout: HTTP_TIMEOUTS.prediction }
     );
     const parsed = parsePredictionApiBody(body);
     if ("message" in parsed) {
@@ -201,7 +204,7 @@ export async function fetchLifePredictionInitial(
   try {
     const { data: body } = await http.get<unknown>(
       `${API_ENDPOINTS.lifePrediction}?generate=false`,
-      { signal }
+      { signal, timeout: HTTP_TIMEOUTS.prediction }
     );
     const parsed = parsePredictionApiBody(body);
     if ("message" in parsed) {

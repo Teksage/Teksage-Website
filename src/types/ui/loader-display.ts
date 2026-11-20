@@ -18,4 +18,6 @@ export interface LoaderProps {
 export interface LoadingOverlayProps {
   open: boolean;
   className?: string;
+  /** Optional status line under the loader (e.g. prediction generating). */
+  message?: string;
 }
