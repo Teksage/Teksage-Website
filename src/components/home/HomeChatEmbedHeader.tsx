@@ -18,12 +18,19 @@ export function HomeChatEmbedHeader({
   maintainHistory,
   planStatus,
   onToast,
+  compact = false,
 }: HomeChatEmbedHeaderProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
   const landingCopy = useI18nConstants(CHAT_LANDING_UI);
 
   return (
-    <header className={CHAT_LANDING_LAYOUT.headerRoot}>
+    <header
+      className={
+        compact
+          ? CHAT_LANDING_LAYOUT.headerRootCompact
+          : CHAT_LANDING_LAYOUT.headerRoot
+      }
+    >
       <div className={CHAT_LANDING_LAYOUT.headerRow}>
         {showReturnToLanding ? (
           <button

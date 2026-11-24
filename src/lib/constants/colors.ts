@@ -18,6 +18,13 @@ export const COLORS = {
 
   // Home screen (design ref: mint behind dashboard + AI chat strip)
   homeScreenMint: "#C6E7B9",
+  yearly2027Star: "#E8B923",
+  yearly2027BannerFrom: "#EAF8DF",
+  yearly2027BannerMid: "#C9ECB0",
+  yearly2027BannerTo: "#9FD87A",
+  yearly2027Panel: "#DFF3D0",
+  yearly2027Ink: "#1F6B28",
+
   /** Greeting + “Explore Other Predictions” title (ref: black, not panchang green). */
   homeDashboardHeading: "#000000",
   /** Hairlines under greeting + flanking explore title — black @ ~26% on mint (ref: soft grey). */

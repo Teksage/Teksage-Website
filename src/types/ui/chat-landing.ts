@@ -13,6 +13,7 @@ export interface ChatLandingHeaderMetaProps {
   themeIsPositive?: boolean;
   dasaSummary?: CurrentDasaSummary | null;
   loading?: boolean;
+  compact?: boolean;
 }
 
 export interface ChatLandingQuestionCardProps {
@@ -22,6 +23,7 @@ export interface ChatLandingQuestionCardProps {
 
 export interface ChatEnergyScoreRowProps {
   scores: ChatLandingEnergyScores;
+  compact?: boolean;
 }
 
 export interface ChatStarRatingProps {
@@ -36,12 +38,15 @@ export interface ChatTryAskingSectionProps {
 export interface ChatLandingMicHeroProps {
   onSpeak: () => void;
   disabled?: boolean;
+  compact?: boolean;
 }
 
 export interface ChatLandingViewProps {
   onSelectQuestion: (question: string) => void;
   onSpeak: () => void;
   speakDisabled?: boolean;
+  /** Home embed — denser layout so promo + landing fit without scroll. */
+  compact?: boolean;
 }
 
 export interface HomeChatEmbedHeaderProps {
@@ -54,6 +59,7 @@ export interface HomeChatEmbedHeaderProps {
   maintainHistory: boolean;
   planStatus: string;
   onToast: (message: string) => void;
+  compact?: boolean;
 }
 
 export type { ChatLandingQuestionCategory };

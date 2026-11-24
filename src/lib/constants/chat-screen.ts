@@ -99,6 +99,8 @@ export const CHAT_LAYOUT = {
   conversationScroll:
     "chat-conversation-surface flex min-h-0 flex-1 flex-col overflow-y-auto",
   landingScroll: "flex min-h-0 flex-1 flex-col overflow-y-auto",
+  /** Embedded home landing — no scroll; content densifies around the promo banner. */
+  landingScrollStatic: "flex min-h-0 flex-1 flex-col overflow-hidden",
   messageColumn:
     "flex max-w-[min(92%,34rem)] flex-col gap-2 lg:max-w-[min(90%,42rem)]",
   /** Card chrome — same idea as energy-score pills: solid fill + border + soft shadow. */

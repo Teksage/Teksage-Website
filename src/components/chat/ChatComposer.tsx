@@ -4,7 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import { ChatRecordingComposer } from "@/components/chat/ChatRecordingComposer";
 import { CHAT_ASSETS } from "@/lib/constants/chat-assets";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
-import { CHAT_LANDING_LAYOUT } from "@/lib/constants/chat-landing-ui";
+import { CHAT_LANDING_LAYOUT, CHAT_LANDING_UI } from "@/lib/constants/chat-landing-ui";
 import { cn } from "@/lib/utils";
 import type { ChatComposerProps } from "@/types/ui/chat";
 
@@ -26,6 +26,7 @@ export function ChatComposer({
   embedded = false,
 }: ChatComposerProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
+  const landingCopy = useI18nConstants(CHAT_LANDING_UI);
   const canSend = Boolean(value.trim()) && !disabled && !isTranscribing;
   const micBusy = disabled || micDisabled || isTranscribing;
   const showRecordingBar = isRecording || isTranscribing;
@@ -47,6 +48,9 @@ export function ChatComposer({
   if (embedded) {
     return (
       <div className={CHAT_LANDING_LAYOUT.embeddedComposerShell}>
+        <p className={CHAT_LANDING_LAYOUT.tryAskingLabelEmbedded}>
+          {landingCopy.sectionTitle}
+        </p>
         {preferenceBar}
         <form
           className={CHAT_LANDING_LAYOUT.embeddedComposerRow}
@@ -63,7 +67,7 @@ export function ChatComposer({
               placeholder={placeholder}
               rows={1}
               className={cn(
-                "max-h-28 min-h-[2.75rem] flex-1 resize-none border-0 bg-transparent py-2.5",
+                "max-h-24 min-h-[2.5rem] flex-1 resize-none border-0 bg-transparent py-2",
                 "text-body-sm leading-snug text-black outline-none",
                 "placeholder:text-black/40 disabled:opacity-60"
               )}
@@ -97,14 +101,14 @@ export function ChatComposer({
             type="button"
             disabled={micBusy}
             onClick={onMicPress}
-            className={CHAT_LANDING_LAYOUT.speakButton}
+            className={CHAT_LANDING_LAYOUT.speakButtonCompact}
             aria-label={CS.speakLabel}
             aria-pressed={isRecording}
           >
             <img
               src={CHAT_ASSETS.mic}
               alt=""
-              className="size-5 brightness-0 invert"
+              className="size-4 brightness-0 invert"
             />
             {CS.speakLabel}
           </button>

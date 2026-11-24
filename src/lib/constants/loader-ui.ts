@@ -5,8 +5,9 @@ import { TYPO } from "@/lib/constants/typography";
 export const LOADER_DEFAULT_ARIA_LABEL = "Loading" as const;
 
 export const LOADER_UI = {
+  /** Center in the visible main pane (excludes desktop sidebar rail). */
   overlay:
-    "fixed inset-0 z-[200] flex flex-col items-center justify-center gap-3 bg-black/20 backdrop-blur-[1px]",
+    "fixed inset-0 z-[200] flex flex-col items-center justify-center gap-3 bg-black/20 backdrop-blur-[1px] lg:left-[var(--desktop-sidebar-rail-width,var(--desktop-sidebar-width))]",
   /** Status line under overlay loader (prediction generate, etc.). */
   overlayMessage: `${TYPO.sizeSm} ${TYPO.weightMedium} max-w-xs px-4 text-center text-white`,
   /** In-page centered loader (lists, sections). */
