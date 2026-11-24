@@ -7,6 +7,7 @@ import { AuthGatedLink } from "@/components/common/AuthGatedLink";
 import { ProfileQuickMenu } from "@/components/common/ProfileQuickMenu";
 import { HomePanchangTimingPills } from "@/components/home/HomePanchangTimingPills";
 import { HomeReferralTopBarPill } from "@/components/home/HomeReferralTopBarPill";
+import { Yearly2027HeaderChip } from "@/components/home/Yearly2027HeaderChip";
 import {
   DASHBOARD_ASSETS,
   HOME_DASHBOARD,
@@ -52,6 +53,7 @@ export function HomeDesktopTopHeader({ className }: HomeDesktopTopHeaderProps) {
             {HDS.hello}, {displayName}
           </p>
           <div className={UI.actionsRow}>
+            <Yearly2027HeaderChip />
             <HomeReferralTopBarPill discount={user?.partnerDiscount} />
             <Link href={ROUTES.gettingStarted} className={UI.gettingStartedPill}>
               <Image

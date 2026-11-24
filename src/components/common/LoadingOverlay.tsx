@@ -7,7 +7,7 @@ import type { LoadingOverlayProps } from "@/types";
 import { cn } from "@/lib/utils";
 
 /** Flutter `CustomLoader.show` — blocks interaction over current page. */
-export function LoadingOverlay({ open, className }: LoadingOverlayProps) {
+export function LoadingOverlay({ open, className, message }: LoadingOverlayProps) {
   if (!open) return null;
 
   return (
@@ -15,9 +15,12 @@ export function LoadingOverlay({ open, className }: LoadingOverlayProps) {
       className={cn(LOADER_UI.overlay, className)}
       role="status"
       aria-live="polite"
-      aria-label={LOADER_DEFAULT_ARIA_LABEL}
+      aria-label={message?.trim() || LOADER_DEFAULT_ARIA_LABEL}
     >
       <Loader variant="brand" size="lg" />
+      {message?.trim() ? (
+        <p className={LOADER_UI.overlayMessage}>{message}</p>
+      ) : null}
     </div>
   );
 }

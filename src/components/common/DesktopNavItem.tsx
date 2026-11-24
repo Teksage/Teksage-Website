@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DesktopNavLabel } from "@/components/common/DesktopNavLabel";
+import { DesktopSidebarTooltip } from "@/components/common/DesktopSidebarTooltip";
 import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
 import { cn } from "@/lib/utils";
 import type { DesktopNavItemProps } from "@/types/ui/desktop-nav";
@@ -15,10 +16,17 @@ export function DesktopNavItem({
   trailing,
   onClick,
   ariaExpanded,
+  collapsed = false,
+  showTooltip = true,
 }: DesktopNavItemProps) {
-  const rowClass = active
-    ? DESKTOP_SIDEBAR_UI.navItemActive
-    : DESKTOP_SIDEBAR_UI.navItem;
+  const title = label ?? labelLines?.primary;
+  const rowClass = collapsed
+    ? active
+      ? DESKTOP_SIDEBAR_UI.navItemCollapsedActive
+      : DESKTOP_SIDEBAR_UI.navItemCollapsed
+    : active
+      ? DESKTOP_SIDEBAR_UI.navItemActive
+      : DESKTOP_SIDEBAR_UI.navItem;
 
   const content = (
     <>
@@ -32,27 +40,34 @@ export function DesktopNavItem({
           active ? DESKTOP_SIDEBAR_UI.navIconActive : DESKTOP_SIDEBAR_UI.navIcon
         }
       />
-      <DesktopNavLabel label={label} labelLines={labelLines} active={active} />
-      {trailing ? <span className="ml-auto shrink-0">{trailing}</span> : null}
+      {collapsed ? null : (
+        <>
+          <DesktopNavLabel label={label} labelLines={labelLines} active={active} />
+          {trailing ? <span className="ml-auto shrink-0">{trailing}</span> : null}
+        </>
+      )}
     </>
   );
 
-  if (onClick) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        className={rowClass}
-        aria-expanded={ariaExpanded}
-      >
-        {content}
-      </button>
-    );
-  }
-
-  return (
-    <Link href={href ?? "#"} className={cn(rowClass)}>
+  const control = onClick ? (
+    <button
+      type="button"
+      onClick={onClick}
+      className={rowClass}
+      aria-expanded={ariaExpanded}
+      aria-label={title}
+    >
+      {content}
+    </button>
+  ) : (
+    <Link href={href ?? "#"} className={cn(rowClass)} aria-label={title}>
       {content}
     </Link>
+  );
+
+  return (
+    <DesktopSidebarTooltip label={title} enabled={collapsed && showTooltip}>
+      {control}
+    </DesktopSidebarTooltip>
   );
 }

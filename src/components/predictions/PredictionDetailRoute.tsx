@@ -175,7 +175,7 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
               {PD.tryAgainCta}
             </Button>
           </div>
-        ) : vm?.kind === "daily" ? (
+        ) : loading ? null : vm?.kind === "daily" ? (
           <DailyPredictionBody data={vm} pageTitle={title} onBackClick={() => router.back()} />
         ) : vm?.kind === "weekly" ? (
           <WeeklyPredictionBody data={vm} onBackClick={() => router.back()} />
@@ -183,7 +183,12 @@ export function PredictionDetailRoute({ kind }: { kind: PredictionDetailKind }) 
           <p className="text-center text-neutral-600">{PD.emptyDescription}</p>
         )}
       </div>
-      <LoadingOverlay open={loading} />
+      <LoadingOverlay
+        open={loading}
+        message={
+          kind === "daily" || kind === "weekly" ? PD.generatingOverlay : undefined
+        }
+      />
     </div>
   );
 }

@@ -11,14 +11,29 @@ import type { ChatEnergyScoreRowProps } from "@/types/ui/chat-landing";
 
 const SCORE_KEYS = ["career", "relationship", "wealth", "health"] as const;
 
-export function ChatEnergyScoreRow({ scores }: ChatEnergyScoreRowProps) {
+export function ChatEnergyScoreRow({
+  scores,
+  compact = false,
+}: ChatEnergyScoreRowProps) {
   const copy = useI18nConstants(CHAT_LANDING_UI);
   const labels = useI18nConstants(CHAT_LANDING_ENERGY_LABELS);
 
   return (
-    <section className={CHAT_LANDING_LAYOUT.energySection}>
+    <section
+      className={
+        compact
+          ? CHAT_LANDING_LAYOUT.energySectionCompact
+          : CHAT_LANDING_LAYOUT.energySection
+      }
+    >
       <div className={CHAT_LANDING_LAYOUT.energyBar}>
-        <div className={CHAT_LANDING_LAYOUT.energyContent}>
+        <div
+          className={
+            compact
+              ? CHAT_LANDING_LAYOUT.energyContentCompact
+              : CHAT_LANDING_LAYOUT.energyContent
+          }
+        >
           <span className={CHAT_LANDING_LAYOUT.energyTitle}>
             {copy.energyScoreTitle}
             {copy.metaSeparator}

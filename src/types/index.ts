@@ -319,3 +319,11 @@ export type {
   WhatsAppConsentPhoneMode,
   WhatsAppConsentRevokeResult,
 } from "./whatsapp-updates";
+
+export type {
+  Yearly2027Scores,
+  Yearly2027PromoStatus,
+  Yearly2027PromoBannerProps,
+  Yearly2027PromoSheetProps,
+  Yearly2027HeaderChipProps,
+} from "./yearly-2027-promo";

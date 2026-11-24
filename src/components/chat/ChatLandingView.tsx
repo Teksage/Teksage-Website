@@ -12,21 +12,35 @@ export function ChatLandingView({
   onSelectQuestion,
   onSpeak,
   speakDisabled = false,
+  compact = false,
 }: ChatLandingViewProps) {
   const { loading, theme, themeIsPositive, scores, dasaSummary } =
     useChatLandingData();
 
   return (
-    <div className={CHAT_LANDING_LAYOUT.landingRoot}>
-      <ChatLandingMicHero onSpeak={onSpeak} disabled={speakDisabled} />
+    <div
+      className={
+        compact
+          ? CHAT_LANDING_LAYOUT.landingRootCompact
+          : CHAT_LANDING_LAYOUT.landingRoot
+      }
+    >
+      <ChatLandingMicHero
+        onSpeak={onSpeak}
+        disabled={speakDisabled}
+        compact={compact}
+      />
       <ChatLandingHeaderMeta
         theme={theme}
         themeIsPositive={themeIsPositive}
         dasaSummary={dasaSummary}
         loading={loading}
+        compact={compact}
       />
-      <ChatEnergyScoreRow scores={loading ? {} : scores} />
-      <ChatTryAskingSection onSelectQuestion={onSelectQuestion} />
+      <ChatEnergyScoreRow scores={loading ? {} : scores} compact={compact} />
+      {compact ? null : (
+        <ChatTryAskingSection onSelectQuestion={onSelectQuestion} />
+      )}
     </div>
   );
 }

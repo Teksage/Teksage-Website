@@ -4,6 +4,7 @@ import { useI18nConstants } from "@/hooks/useT";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { DesktopSidebarTooltip } from "@/components/common/DesktopSidebarTooltip";
 import { DESKTOP_SIDEBAR_AI_CHAT_HREF } from "@/lib/constants/desktop-sidebar-nav";
 import { DESKTOP_SIDEBAR_UI } from "@/lib/constants/desktop-sidebar-ui";
 import {
@@ -11,14 +12,43 @@ import {
   HOME_DASHBOARD_SIDEBAR_ASSETS,
 } from "@/lib/constants/home-dashboard-sidebar";
 import { ROUTES } from "@/lib/constants/routes";
+import { useDesktopSidebarStore } from "@/store/desktop-sidebar.store";
 
 export function DesktopNavAiChatCard() {
   const HDS = useI18nConstants(HOME_DASHBOARD_SIDEBAR);
   const pathname = usePathname();
+  const collapsed = useDesktopSidebarStore((s) => s.collapsed);
   const active =
     pathname === ROUTES.home ||
     pathname === ROUTES.chat ||
     pathname.startsWith(`${ROUTES.chat}/`);
+
+  const title = `${HDS.aiChatLine1} ${HDS.aiChatLine2}`;
+
+  if (collapsed) {
+    return (
+      <DesktopSidebarTooltip label={title} enabled>
+        <Link
+          href={DESKTOP_SIDEBAR_AI_CHAT_HREF}
+          className={DESKTOP_SIDEBAR_UI.aiCardCollapsed}
+          aria-label={title}
+        >
+          <span className={DESKTOP_SIDEBAR_UI.aiIconWrap}>
+            <span className={DESKTOP_SIDEBAR_UI.aiIconInner}>
+              <Image
+                src={HOME_DASHBOARD_SIDEBAR_ASSETS.aiChatIcon}
+                alt=""
+                width={24}
+                height={24}
+                unoptimized
+                className={DESKTOP_SIDEBAR_UI.aiIcon}
+              />
+            </span>
+          </span>
+        </Link>
+      </DesktopSidebarTooltip>
+    );
+  }
 
   return (
     <Link

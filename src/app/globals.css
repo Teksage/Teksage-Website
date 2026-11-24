@@ -61,12 +61,25 @@
   --color-brand-banner-border: #C8EF54;
   --color-brand-consultation-heading: #3a3b00;
   --color-home-screen-mint: #c6e7b9;
+  --color-yearly-2027-star: #f0a818;
+  --color-yearly-2027-banner-from: #f7fcf4;
+  --color-yearly-2027-banner-mid: #f1fdf1;
+  --color-yearly-2027-banner-to: #e4f6d8;
+  --color-yearly-2027-panel: #f5fbf2;
+  --color-yearly-2027-ink: #1b5e24;
+  --color-yearly-2027-badge-to: #0d8f00;
+  --color-yearly-2027-sheet-cream: #f7fcf4;
+  --color-yearly-2027-sheet-hero-deep: #0a7a08;
+
   --color-consult-user-bg: #94c10d;
   --color-consult-user-text: #87b303;
   --color-consult-filter-chip: #7fa900;
   --color-consult-match-track: #d9d9d9;
   --desktop-sidebar-width: 17.5rem;
   --desktop-sidebar-width-xl: 19rem;
+  --desktop-sidebar-collapsed-width: 4.75rem;
+  /** Live rail width for loaders/overlays — updated when sidebar collapses. */
+  --desktop-sidebar-rail-width: var(--desktop-sidebar-width);
   --color-home-timing-rail-bg: #e8f4e4;
   --color-home-timing-chip-bg: #f4faf2;
   --color-home-timing-rahu: #c45c2a;
@@ -781,6 +794,10 @@ html:lang(mr) .locale-heading-card {
     width: var(--desktop-sidebar-width);
   }
 
+  .desktop-sidebar-width-collapsed {
+    width: var(--desktop-sidebar-collapsed-width);
+  }
+
   @media (min-width: 1280px) {
     :root {
       --desktop-sidebar-width: var(--desktop-sidebar-width-xl);
@@ -805,6 +822,58 @@ html:lang(mr) .locale-heading-card {
 
   .chat-avatar-sheet-pathfinder {
     background: linear-gradient(180deg, #00b18e 0%, #ffffff 55%);
+  }
+
+  /**
+   * Soft mint wash behind HD zodiac hero + live Yearly Prediction copy.
+   */
+  .yearly-2027-banner-silk {
+    background:
+      radial-gradient(ellipse 48% 100% at 12% 50%, rgb(120 180 90 / 0.18) 0%, transparent 58%),
+      radial-gradient(ellipse 55% 90% at 40% 100%, rgb(198 230 170 / 0.32) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 70% at 62% 0%, rgb(255 255 255 / 0.75) 0%, transparent 55%),
+      linear-gradient(
+        100deg,
+        #e8f6dc 0%,
+        var(--color-yearly-2027-banner-from) 22%,
+        var(--color-yearly-2027-banner-mid) 55%,
+        var(--color-yearly-2027-banner-to) 100%
+      );
+  }
+
+  .yearly-2027-banner-silk::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='960' height='220' viewBox='0 0 960 220' fill='none'%3E%3Cpath d='M180 200C280 150 340 80 440 100C540 120 600 190 720 160C820 135 880 90 1040 120' stroke='%23c8e8b0' stroke-opacity='0.4' stroke-width='40' stroke-linecap='round'/%3E%3Cpath d='M220 40C320 70 400 140 520 110C640 80 720 30 900 70' stroke='%23ffffff' stroke-opacity='0.5' stroke-width='26' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 110% 130%;
+    background-position: 20% 30%;
+    opacity: 0.85;
+  }
+
+  /** Full-bleed chakra/zodiac hero — soft brand wash so badge/close stay readable. */
+  .yearly-2027-sheet-hero-shade {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--color-yearly-2027-sheet-hero-deep) 55%, transparent) 0%,
+        transparent 42%,
+        transparent 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(0 0 0 / 0.18) 0%,
+        transparent 40%,
+        color-mix(in srgb, var(--color-yearly-2027-sheet-cream) 35%, transparent) 100%
+      );
+  }
+
+  .yearly-2027-sheet-wave {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 28' preserveAspectRatio='none'%3E%3Cpath d='M0 12C60 2 120 22 200 12C280 2 340 18 400 10V28H0Z' fill='%23f7fcf4'/%3E%3Cpath d='M0 12C60 2 120 22 200 12C280 2 340 18 400 10' fill='none' stroke='%23f0a818' stroke-opacity='0.55' stroke-width='1.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
   }
 }
 

@@ -22,6 +22,10 @@ export const API_ENDPOINTS = {
   maintainHistory: "/api/auth/maintain_history",
   featureDiscoveryStatus: "/api/auth/feature-discovery",
   featureDiscoveryDismiss: "/api/auth/feature-discovery/dismiss",
+  /** `GET` — 2027 yearly promo status (scores only; may generate-once). */
+  yearly2027PromoStatus: "/api/auth/yearly-2027-promo/status",
+  /** `POST` — hide banner/sheet for the rest of today. */
+  yearly2027PromoDismiss: "/api/auth/yearly-2027-promo/dismiss",
 
   // --- Profile — `api/endpoints/profile.py`, same `/auth` prefix ---
   profile: "/api/auth/profile",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
+import { useI18nConstants, useT } from "@/hooks/useT";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { PredictionProfilePrompt } from "@/components/predictions/PredictionProfilePrompt";
 import { YearlyPredictionLandingLayout } from "@/components/predictions/YearlyPredictionLandingLayout";
@@ -9,10 +9,16 @@ import { YearlyPredictionLayout } from "@/components/predictions/YearlyPredictio
 import { YearlyPredictionShell } from "@/components/predictions/YearlyPredictionShell";
 import { isPredictionProfileIncompleteMessage } from "@/lib/prediction-request-error";
 import { YEARLY_PREDICTION_ASSETS } from "@/lib/constants/prediction-assets";
+import { PREDICTION_DETAIL_SCREEN } from "@/lib/constants/prediction-detail-screen";
 import {
   fetchYearlyPredictionInitial,
   generateYearlyPrediction,
 } from "@/lib/services/predictions";
+import {
+  dismissYearly2027Promo,
+  localTodayIso,
+  writePromoHiddenLocal,
+} from "@/lib/services/yearly-2027-promo";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import type { YearlyPredictionDetail } from "@/types/prediction-yearly";
@@ -21,10 +27,16 @@ type YearlyView = "loading" | "landing" | "detail" | "profile";
 
 export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void }) {
   const { languageVersion } = useT();
+  const PD = useI18nConstants(PREDICTION_DETAIL_SCREEN);
   const [view, setView] = useState<YearlyView>("loading");
   const [data, setData] = useState<YearlyPredictionDetail | null>(null);
   const [generating, setGenerating] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    writePromoHiddenLocal(localTodayIso());
+    void dismissYearly2027Promo().catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +93,15 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
     }
   }
 
+  if (view === "loading") {
+    return (
+      <>
+        <YearlyPredictionShell>{null}</YearlyPredictionShell>
+        <LoadingOverlay open message={PD.generatingOverlay} />
+      </>
+    );
+  }
+
   if (view === "detail" && data) {
     return (
       <YearlyPredictionShell>
@@ -128,7 +149,10 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
           generating={generating}
         />
       </YearlyPredictionShell>
-      <LoadingOverlay open={view === "loading"} />
+      <LoadingOverlay
+        open={generating}
+        message={generating ? PD.generatingOverlay : undefined}
+      />
     </>
   );
 }
