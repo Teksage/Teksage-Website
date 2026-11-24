@@ -14,6 +14,11 @@ import {
   fetchYearlyPredictionInitial,
   generateYearlyPrediction,
 } from "@/lib/services/predictions";
+import {
+  dismissYearly2027Promo,
+  localTodayIso,
+  writePromoHiddenLocal,
+} from "@/lib/services/yearly-2027-promo";
 import { APP_SNACKBAR_MESSAGES } from "@/lib/constants/app-snackbar";
 import { showSuccessAppSnackBar } from "@/lib/app-snackbar";
 import type { YearlyPredictionDetail } from "@/types/prediction-yearly";
@@ -27,6 +32,11 @@ export function YearlyPredictionBody({ onBackClick }: { onBackClick: () => void 
   const [data, setData] = useState<YearlyPredictionDetail | null>(null);
   const [generating, setGenerating] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    writePromoHiddenLocal(localTodayIso());
+    void dismissYearly2027Promo().catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;

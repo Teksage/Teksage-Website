@@ -10,6 +10,7 @@ export function ChatLandingHeaderMeta({
   theme,
   dasaSummary,
   loading = false,
+  compact = false,
 }: ChatLandingHeaderMetaProps) {
   const copy = useI18nConstants(CHAT_LANDING_UI);
   const themeText = theme?.trim();
@@ -28,14 +29,31 @@ export function ChatLandingHeaderMeta({
           }`
         : "—";
 
+  const pill = compact
+    ? CHAT_LANDING_LAYOUT.metaPillCompact
+    : CHAT_LANDING_LAYOUT.metaPill;
+  const label = compact
+    ? CHAT_LANDING_LAYOUT.metaLabelCompact
+    : CHAT_LANDING_LAYOUT.metaLabel;
+  const themeValue = compact
+    ? CHAT_LANDING_LAYOUT.metaThemeValueCompact
+    : CHAT_LANDING_LAYOUT.metaThemeValue;
+  const valueCls = compact
+    ? CHAT_LANDING_LAYOUT.metaValueCompact
+    : CHAT_LANDING_LAYOUT.metaValue;
+
   return (
-    <div className={CHAT_LANDING_LAYOUT.metaRow}>
-      <span className={CHAT_LANDING_LAYOUT.metaPill}>
-        <span className={CHAT_LANDING_LAYOUT.metaLabel}>
+    <div
+      className={
+        compact ? CHAT_LANDING_LAYOUT.metaRowCompact : CHAT_LANDING_LAYOUT.metaRow
+      }
+    >
+      <span className={pill}>
+        <span className={label}>
           {copy.themeLabel}
           {copy.metaSeparator}
         </span>
-        <span className={CHAT_LANDING_LAYOUT.metaThemeValue}>
+        <span className={themeValue}>
           {themeText ? (
             <Image
               src={CHAT_ASSETS.themeSparkle}
@@ -49,12 +67,12 @@ export function ChatLandingHeaderMeta({
           {themeDisplay}
         </span>
       </span>
-      <span className={CHAT_LANDING_LAYOUT.metaPill}>
-        <span className={CHAT_LANDING_LAYOUT.metaLabel}>
+      <span className={pill}>
+        <span className={label}>
           {copy.currentDasaLabel}
           {copy.metaSeparator}
         </span>
-        <span className={CHAT_LANDING_LAYOUT.metaValue}>{dasaDisplay}</span>
+        <span className={valueCls}>{dasaDisplay}</span>
       </span>
     </div>
   );

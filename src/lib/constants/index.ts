@@ -80,6 +80,9 @@ export * from "./turnstile";
 export * from "./feature-discovery";
 export * from "./astroconnect-popup";
 export * from "./welcome-onboarding";
+export * from "./yearly-2027-promo";
+export * from "./yearly-2027-promo-ui";
+export * from "./yearly-2027-sheet-ui";
 
 // App-wide string/number constants
 export const APP_NAME = "teksage";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { BottomNav } from "@/components/common/BottomNav";
 import { DesktopMainNav } from "@/components/common/DesktopMainNav";
@@ -10,6 +10,7 @@ import { AskAnswerReadyPrompt } from "@/components/common/AskAnswerReadyPrompt";
 import { ConsultationAnswersReadyPrompt } from "@/components/common/ConsultationAnswersReadyPrompt";
 import { AstroConnectPopup } from "@/components/common/AstroConnectPopup";
 import { FeatureDiscoveryPrompt } from "@/components/common/FeatureDiscoveryPrompt";
+import { Yearly2027PromoPrompt } from "@/components/home/Yearly2027PromoPrompt";
 import { HOME_LAYOUT, ROUTES, isPredictionsPath } from "@/lib/constants";
 import {
   isConsultationAstrologerSlotsPath,
@@ -18,14 +19,37 @@ import {
 } from "@/lib/constants/consultation-routes";
 import { useWebEmbed } from "@/hooks/useWebEmbed";
 import { useAuthStore } from "@/store/auth.store";
+import { useDesktopSidebarStore } from "@/store/desktop-sidebar.store";
+import { useYearly2027PromoUiStore } from "@/store/yearly-2027-promo.store";
 import { cn } from "@/lib/utils";
 import { useSyncAuthProfileRole } from "@/hooks/useSyncAuthProfileRole";
+
+function syncSidebarRailWidth(collapsed: boolean) {
+  if (typeof document === "undefined") return;
+  document.documentElement.style.setProperty(
+    "--desktop-sidebar-rail-width",
+    collapsed
+      ? "var(--desktop-sidebar-collapsed-width)"
+      : "var(--desktop-sidebar-width)"
+  );
+}
 
 function MainLayoutChromeInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const embed = useWebEmbed();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const yearlySheetOpen = useYearly2027PromoUiStore((s) => s.sheetOpen);
+  const sidebarCollapsed = useDesktopSidebarStore((s) => s.collapsed);
+  const hydrateSidebar = useDesktopSidebarStore((s) => s.hydrate);
   useSyncAuthProfileRole();
+
+  useEffect(() => {
+    hydrateSidebar();
+  }, [hydrateSidebar]);
+
+  useEffect(() => {
+    syncSidebarRailWidth(sidebarCollapsed);
+  }, [sidebarCollapsed]);
   const isChatRoute = pathname === ROUTES.chat || pathname.startsWith(`${ROUTES.chat}/`);
   const isHomeRoute = pathname === ROUTES.home || pathname.startsWith(`${ROUTES.home}/`);
   const isConsultGreen = isConsultationGreenFullBleedPath(pathname);
@@ -37,7 +61,8 @@ function MainLayoutChromeInner({ children }: { children: React.ReactNode }) {
     isPredictionsPath(pathname) || pathname.startsWith(ROUTES.matchmaking);
   const isFullHeightPane =
     isChatRoute || isHomeRoute || isSubscriptionFlow;
-  const hideBottomNav = embed || isChatRoute || isSubscriptionFlow;
+  const hideBottomNav =
+    embed || isChatRoute || isSubscriptionFlow || yearlySheetOpen;
 
   const mainPaneClass = cn(
     isFullHeightPane &&
@@ -77,6 +102,7 @@ function MainLayoutChromeInner({ children }: { children: React.ReactNode }) {
           )}
           <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
             {embed || !isAuthenticated ? null : <HomeDesktopTopHeader />}
+            <Yearly2027PromoPrompt surface="sheet" />
             <main className={mainPaneClass}>{children}</main>
             {hideBottomNav ? null : <BottomNav />}
           </div>

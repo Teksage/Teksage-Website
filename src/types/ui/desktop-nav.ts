@@ -14,4 +14,8 @@ export interface DesktopNavItemProps {
   trailing?: ReactNode;
   onClick?: () => void;
   ariaExpanded?: boolean;
+  /** Icon-only rail when the desktop sidebar is collapsed. */
+  collapsed?: boolean;
+  /** When false, skip hover tooltip even if collapsed. */
+  showTooltip?: boolean;
 }

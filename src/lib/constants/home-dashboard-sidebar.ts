@@ -25,6 +25,8 @@ export const HOME_DASHBOARD_SIDEBAR = {
   unlockPremiumHint: "Get advanced insights & personalized guidance",
   premiumBadge: "PREMIUM",
   upgradeNow: "Upgrade Now",
+  expandSidebar: "Expand sidebar",
+  collapseSidebar: "Collapse sidebar",
 } as const;
 
 export const HOME_DASHBOARD_SIDEBAR_ASSETS = {

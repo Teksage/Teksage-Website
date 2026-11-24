@@ -16,16 +16,21 @@ import { ChatSubscribeStrip } from "@/components/chat/ChatSubscribeStrip";
 import { SubscribePromptDialog } from "@/components/common/SubscribePromptDialog";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import { HomeChatEmbedHeader } from "@/components/home/HomeChatEmbedHeader";
+import { Yearly2027PromoPrompt } from "@/components/home/Yearly2027PromoPrompt";
 import { CHAT_LAYOUT, CHAT_SCREEN } from "@/lib/constants/chat-screen";
 import { CHAT_LANDING_LAYOUT } from "@/lib/constants/chat-landing-ui";
 import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/useChat";
 import { useChatPreferences } from "@/hooks/useChatPreferences";
 import { useChatVoiceInput } from "@/hooks/useChatVoiceInput";
+import { useYearly2027PromoUiStore } from "@/store/yearly-2027-promo.store";
 import type { ChatPageViewProps } from "@/types/ui/chat";
 
 export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProps) {
   const CS = useI18nConstants(CHAT_SCREEN);
+  const promoBannerVisible = useYearly2027PromoUiStore((s) => s.bannerVisible);
+  /** Compact only while the yearly promo banner is open — otherwise restore prior full landing. */
+  const landingCompact = embedded && promoBannerVisible;
   const listEndRef = useRef<HTMLDivElement>(null);
   const [composerPlaceholder, setComposerPlaceholder] = useState<string>(
     CS.composerPlaceholder
@@ -135,6 +140,7 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
     embedHeader ??
     (embedded ? (
       <HomeChatEmbedHeader
+        compact={landingCompact}
         showPreviousChat={isLanding && hasPreviousChat}
         onPreviousChat={() => void openPreviousChat()}
         showReturnToLanding={isConversation}
@@ -203,6 +209,7 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
           onToast={showToast}
         />
       )}
+      {embedded ? <Yearly2027PromoPrompt surface="chat" /> : null}
       {embedded ? null : <ChatConsultStrip />}
 
       {toast ? (
@@ -216,13 +223,16 @@ export function ChatPageView({ embedded = false, embedHeader }: ChatPageViewProp
           className={
             isConversation
               ? CHAT_LAYOUT.conversationScroll
-              : CHAT_LAYOUT.landingScroll
+              : landingCompact
+                ? CHAT_LAYOUT.landingScrollStatic
+                : CHAT_LAYOUT.landingScroll
           }
         >
           {!sessionReady ? null : (
             <>
               {isLanding ? (
                 <ChatLandingView
+                  compact={landingCompact}
                   onSelectQuestion={(question) =>
                     void sendPredefinedQuestion(question)
                   }
