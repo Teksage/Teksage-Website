@@ -1,27 +1,7 @@
 import { http } from "./http";
 import { API_ENDPOINTS } from "@/lib/constants/api";
-import type { CompatibilityFormValues, RashiOption } from "@/types/match-making";
+import type { CompatibilityFormValues } from "@/types/match-making";
 import { parseCompatibilityGet, parseCompatibilityPost } from "@/lib/prediction-api-parse";
-
-export async function fetchRashiList(): Promise<RashiOption[]> {
-  const { data } = await http.get<{ data?: { id: number; name: string }[] }>(
-    API_ENDPOINTS.astrologerRashi
-  );
-  return (data.data ?? []).map((r) => ({ id: r.id, name: r.name }));
-}
-
-export async function fetchNakshatraList(
-  signId?: number
-): Promise<{ id: number; name: string }[]> {
-  const q =
-    signId != null
-      ? `${API_ENDPOINTS.astrologerNakshatra}?sign_id=${signId}`
-      : API_ENDPOINTS.astrologerNakshatra;
-  const { data } = await http.get<{
-    data?: { id: number; name: string }[];
-  }>(q);
-  return (data.data ?? []).map((n) => ({ id: n.id, name: n.name }));
-}
 
 export function fetchExistingMatch() {
   return http.get<unknown>(API_ENDPOINTS.matchMakingCompatibility);

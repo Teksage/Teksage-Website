@@ -1,6 +1,6 @@
 # Manual test — Predictions & match making (Phase B)
 
-Use after **API** and **Panchang / Horoscope** manual tests pass. This covers **prediction detail pages** (`GET /api/prediction/{daily|weekly|yearly|life}`), **share PDF** (`POST /api/share/...` — *UI disabled for now*), and **match making** (`GET`/`POST /api/prediction/compatibility`, astrologer rashi/nakshatra lists).
+Use after **API** and **Panchang / Horoscope** manual tests pass. This covers **prediction detail pages** (`GET /api/prediction/{daily|weekly|yearly|life}`), **share PDF** (`POST /api/share/...` — *UI disabled for now*), and **match making** (`GET`/`POST /api/prediction/compatibility` with DOB/TOB/POB; backend derives rashi/nakshatra).
 
 **Flutter parity reference:** `lib/Screens/prediction/`, `lib/Components/Predictions/predictionLandingPage.dart`, `lib/Screens/MatchMaking/matchMakingDetails.dart`.
 
@@ -73,10 +73,10 @@ All routes use **Flutter full-bleed** layout (no `max-w-lg` letterboxing). Logge
 | Step | Action | Expected |
 |------|--------|----------|
 | C1a | Logged out | Sign-in copy; login preserves return to `/matchmaking`. |
-| C1b | Logged in | `GET /api/astrologer/rashi` populates both **Rasi** dropdowns. |
-| C1c | Choose **Boy** rasi | `GET /api/astrologer/nakshatra?sign_id=<id>` for boy nakshatras; changing rasi clears nakshatra. |
-| C1d | Same for **Girl** | Independent lists. |
-| C1e | Fill names + all fields → **Calculate Match** | `POST /api/prediction/compatibility` body: `boy_name`, `boy_rashi`, `boy_nakshatra`, `girl_name`, `girl_rashi`, `girl_nakshatra` (strings). On success → **`/matchmaking/details`**. |
+| C1b | Logged in | Form shows **Name**, **Date of Birth**, **Time of Birth**, **Place of Birth** for boy and girl (no rashi/nakshatra dropdowns). |
+| C1c | Place of birth | Place autocomplete works (same Places pattern as profile). |
+| C1d | Fill boy + girl name/DOB/TOB/POB → **Calculate Match** | `POST /api/prediction/compatibility` body: `boy_name`, `boy_date_of_birth`, `boy_time_of_birth`, `boy_birth_location`, `girl_name`, `girl_date_of_birth`, `girl_time_of_birth`, `girl_birth_location`. On success → **`/matchmaking/details`**. |
+| C1e | Details hero | Shows **derived** Rasi / Nakshatram from birth details (not user-typed). |
 | C1f | **View saved match** | Goes to `/matchmaking/details` without submitting. |
 
 ### C2. Details (`/matchmaking/details`)

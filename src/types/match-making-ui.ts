@@ -15,3 +15,16 @@ export type MatchMakingPartnerColumnProps = {
   rasi: string;
   nakshatra: string;
 };
+
+export type MatchMakingPartnerSectionProps = {
+  variant: "boy" | "girl";
+  name: string;
+  onNameChange: (v: string) => void;
+  dateOfBirth: string;
+  onDateOfBirthChange: (v: string) => void;
+  timeOfBirth: string;
+  onTimeOfBirthChange: (v: string) => void;
+  placeOfBirth: string;
+  birthLocationFull: string;
+  onPlaceOfBirthChange: (city: string, full: string) => void;
+};

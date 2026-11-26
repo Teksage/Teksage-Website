@@ -15,6 +15,15 @@ export const MATCH_MAKING_LAYOUT = {
     "relative z-20 grid w-full grid-cols-[auto_1fr_auto] items-center px-4 pt-6 lg:px-8 lg:pt-8",
   headerTitle: `${TYPO.h2} lg:text-2xl ${TYPO.weightBold} text-center text-white drop-shadow-sm`,
   formBody: `${PREDICTION_DESKTOP_LAYOUT.contentColumn} ${PREDICTION_DESKTOP_LAYOUT.contentGutter} flex flex-col gap-4 pb-12 pt-6`,
+  /** Shared with name/date/time — keep place autocomplete visually identical. */
+  formFieldInput: "rounded-xl border-neutral-200 bg-transparent",
+  locationFieldInput:
+    "h-8 rounded-xl border-neutral-200 bg-transparent px-2.5 focus-visible:border-neutral-300 focus-visible:bg-transparent",
+  locationFieldLabel: "sr-only",
+  formFieldLabel: "mb-1 block text-xs font-semibold text-neutral-700",
+  dobTobRow: "grid grid-cols-2 gap-3",
+  dobTobField: "min-w-0",
+
   detailsContent: `${PREDICTION_DESKTOP_LAYOUT.contentColumn} ${PREDICTION_DESKTOP_LAYOUT.contentGutter} relative z-10 space-y-4 pb-28 pt-4 lg:pb-12`,
   /** Desktop only — icon + label on one line. */
   detailsCtaRow: "mx-auto hidden w-full max-w-2xl flex-row gap-2 sm:gap-3 lg:flex",
