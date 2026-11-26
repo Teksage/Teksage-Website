@@ -37,9 +37,19 @@ export interface MatchMakingExisting {
 
 export interface CompatibilityFormValues {
   boy_name: string;
+  boy_date_of_birth: string;
+  boy_time_of_birth: string;
+  boy_birth_location: string;
   girl_name: string;
-  boy_rashi: string;
-  boy_nakshatra: string;
-  girl_rashi: string;
-  girl_nakshatra: string;
+  girl_date_of_birth: string;
+  girl_time_of_birth: string;
+  girl_birth_location: string;
 }
+
+export type MatchMakingPartnerBirthFields = {
+  name: string;
+  dateOfBirth: string;
+  timeOfBirth: string;
+  placeOfBirth: string;
+  birthLocationFull: string;
+};
